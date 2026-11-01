@@ -1,0 +1,30 @@
+{
+  "title": "Paramètres de l'espace de travail",
+  "description": "Intégrations pour tout l'espace de travail.",
+  "adminOnly": "Seuls les administrateurs de l'espace de travail peuvent modifier ses paramètres",
+  "jira": {
+    "title": "Connexion Jira",
+    "loading": "Chargement de la connexion Jira",
+    "loadError": "Impossible de charger la connexion Jira",
+    "retry": "Réessayer",
+    "connected": "Connecté",
+    "notConnected": "Non connecté",
+    "connectedAs": "en tant que {{name}} ({{email}}) sur {{siteUrl}} depuis le {{date}}",
+    "siteUrl": "URL du site",
+    "accountEmail": "E-mail de l'utilisateur Jira",
+    "apiToken": "Jeton d'API",
+    "apiTokenKeep": "Laissez vide pour garder le jeton enregistré",
+    "apiTokenHelp": "Créer un jeton d'API",
+    "hint": "Utilisez l'e-mail et le jeton d'API personnel de n'importe quel utilisateur Jira. Les droits d'administrateur Jira ne sont pas nécessaires.",
+    "submit": "Tester et enregistrer",
+    "success": "Jira connecté en tant que {{name}}",
+    "errors": {
+      "siteUrlRequired": "Saisissez l'URL du site",
+      "emailInvalid": "Saisissez un e-mail valide",
+      "apiTokenRequired": "Saisissez le jeton d'API",
+      "invalidCredentials": "Jira a refusé cet e-mail et ce jeton d'API.",
+      "unreachable": "Impossible de joindre Jira. Vérifiez l'URL du site.",
+      "invalidRequest": "Vérifiez l'URL du site (par exemple https://your-team.atlassian.net) et saisissez le jeton d'API."
+    }
+  }
+}

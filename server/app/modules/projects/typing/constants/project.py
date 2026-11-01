@@ -1,0 +1,3 @@
+PROJECT_KEY_PATTERN = r"^[A-Z][A-Z0-9]{1,9}$"
+MIME_TYPE_PATTERN = r"^[a-z]+/[a-z0-9.+-]+$"
+MAX_MEMBER_CANDIDATES = 20

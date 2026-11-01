@@ -1,0 +1,114 @@
+{
+  "title": "Stories",
+  "pageDescription": "Stories Jira synchronisées, avec leur statut de test.",
+  "filters": {
+    "search": "Rechercher par clé ou titre",
+    "sprint": "Sprint",
+    "status": "Statut de test",
+    "allSprints": "Tous les sprints",
+    "allStatuses": "Tous les statuts"
+  },
+  "columns": {
+    "key": "Clé",
+    "title": "Titre",
+    "sprint": "Sprint",
+    "jiraStatus": "Statut Jira",
+    "testStatus": "Statut de test",
+    "jira": "Jira"
+  },
+  "testStatuses": {
+    "not_started": "Non commencée",
+    "ready_for_test": "Prête pour le test",
+    "in_test": "En test",
+    "passed": "Validée",
+    "failed": "Échouée"
+  },
+  "list": {
+    "openInJira": "Ouvrir dans Jira",
+    "notInScope": "Hors périmètre Jira",
+    "noSprint": "Sans sprint"
+  },
+  "empty": {
+    "title": "Aucune story pour l'instant",
+    "description": "Les stories apparaissent après une synchronisation Jira."
+  },
+  "emptyFiltered": {
+    "title": "Aucune story correspondante",
+    "description": "Essayez d'autres filtres."
+  },
+  "loadError": "Impossible de charger les stories",
+  "retry": "Réessayer",
+  "detail": {
+    "back": "Toutes les stories",
+    "openInJira": "Ouvrir dans Jira",
+    "noSprint": "Sans sprint",
+    "lastSynced": "Synchronisée le {{date}}",
+    "loadError": "Impossible de charger cette story",
+    "missing": {
+      "title": "Plus dans le périmètre Jira",
+      "body": "Cette story a quitté les sprints synchronisés le {{date}}. Son historique reste ici."
+    },
+    "notFound": {
+      "title": "Story introuvable",
+      "description": "Vérifiez la clé ou synchronisez avec Jira."
+    }
+  },
+  "tabs": {
+    "ariaLabel": "Sections de la story",
+    "overview": "Aperçu",
+    "testCases": "Cas de test",
+    "gaps": "Questions",
+    "runs": "Exécutions",
+    "traceability": "Traçabilité"
+  },
+  "description": {
+    "title": "Description",
+    "empty": "Aucune description dans Jira."
+  },
+  "adf": {
+    "attachment": "Pièce jointe – ouvrez la story dans Jira pour la voir."
+  },
+  "criteria": {
+    "title": "Critères d'acceptation",
+    "removed": "Retiré de Jira le {{date}}",
+    "empty": {
+      "title": "Aucun critère d'acceptation trouvé",
+      "description": "Tessio lit la liste sous un titre « Critères d'acceptation » dans Jira, ou la première liste."
+    }
+  },
+  "actions": {
+    "markReadyForTest": "Marquer prête pour le test",
+    "markNotStarted": "Repasser en non commencée",
+    "markPassed": "Marquer validée",
+    "markFailed": "Marquer échouée"
+  },
+  "confirm": {
+    "passed": {
+      "title": "Valider {{jiraKey}} ?",
+      "message": "La story est validée comme testée."
+    },
+    "failed": {
+      "title": "Marquer {{jiraKey}} échouée ?",
+      "message": "La story repart à l'équipe pour correction."
+    }
+  },
+  "toasts": {
+    "statusChanged": "Le statut de test est maintenant {{status}}."
+  },
+  "errors": {
+    "signOffBlocked": "Résolvez les échecs actifs et attendez la fin des exécutions avant de valider.",
+    "invalidTransition": "Le statut a changé entre-temps. La page a été actualisée.",
+    "jiraNotConfigured": "Demandez à un administrateur de connecter Jira."
+  },
+  "sync": {
+    "action": "Synchroniser avec Jira",
+    "never": "Jamais synchronisé",
+    "queued": "Synchronisation en attente…",
+    "running": "Synchronisation…",
+    "succeeded": "Dernière synchronisation {{date}}",
+    "failed": "Échec de la dernière synchronisation : {{reason}}",
+    "lastSucceeded": "Dernière réussite {{date}}",
+    "stale": "La dernière synchronisation ne répond plus.",
+    "unavailable": "Statut de synchronisation indisponible"
+  }
+}

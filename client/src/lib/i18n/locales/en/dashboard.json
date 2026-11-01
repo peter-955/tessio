@@ -1,0 +1,154 @@
+{
+  "title": "Dashboard",
+  "description": "Where the current sprint stands and what needs your attention.",
+  "retry": "Retry",
+  "home": {
+    "loadError": "Could not load your projects."
+  },
+  "sprint": {
+    "title": "Current sprint",
+    "pickerLabel": "Sprint",
+    "pickerPlaceholder": "Current sprint",
+    "option": "{{name}} · {{state}}",
+    "dates": "{{start}} – {{end}}",
+    "states": {
+      "active": "Active",
+      "future": "Future",
+      "closed": "Closed"
+    },
+    "loadError": "Could not load the sprint summary.",
+    "notFound": {
+      "title": "Sprint not found",
+      "description": "This sprint is not part of the project.",
+      "reset": "Show the current sprint"
+    },
+    "empty": {
+      "title": "No active sprint",
+      "description": "Pick a sprint, or sync with Jira once a sprint starts."
+    }
+  },
+  "stats": {
+    "stories": "Stories",
+    "openGaps": "Open gaps",
+    "activeFailures": "Active failures",
+    "coverage": "AC covered",
+    "percent": "{{percent}}%",
+    "noValue": "—"
+  },
+  "testStatus": {
+    "title": "Stories by test status",
+    "not_started": "Not started",
+    "ready_for_test": "Ready for test",
+    "in_test": "In test",
+    "passed": "Passed",
+    "failed": "Failed"
+  },
+  "coverage": {
+    "title": "AC coverage",
+    "summary": "{{covered}} of {{total}} AC covered",
+    "empty": "No acceptance criteria in this sprint yet.",
+    "segments": {
+      "passed": "Passed",
+      "failed": "Failed",
+      "blocked": "Blocked",
+      "notRun": "Not run",
+      "uncovered": "Uncovered"
+    },
+    "barLabel": "{{passed}} passed, {{failed}} failed, {{blocked}} blocked, {{notRun}} not run, {{uncovered}} uncovered"
+  },
+  "myWork": {
+    "title": "My work",
+    "role": "As {{role}}",
+    "roles": {
+      "admin": "Admin",
+      "pm": "PM",
+      "ba": "BA",
+      "qc": "QC",
+      "dev": "Dev",
+      "viewer": "Viewer"
+    },
+    "nothingForRole": "Nothing is assigned to your role.",
+    "loadError": "Could not load your work.",
+    "showing": "Showing {{count}} of {{total}}",
+    "viewAll": "View all",
+    "unassigned": "{{count}} unassigned failures",
+    "noUnassigned": "No unassigned failures",
+    "uncovered": {
+      "title": "AC without a test case",
+      "empty": "Every AC has a case.",
+      "write": "Write a case"
+    },
+    "drafts": {
+      "title": "My draft cases",
+      "empty": "No draft cases."
+    },
+    "failures": {
+      "title": "Failures to fix",
+      "empty": "No failures to fix.",
+      "opened": "Opened {{date}}"
+    },
+    "gaps": {
+      "title": "Gaps to answer",
+      "empty": "No gaps to answer."
+    }
+  },
+  "statuses": {
+    "case": {
+      "draft": "Draft",
+      "in_review": "In review",
+      "ready": "Ready",
+      "deprecated": "Deprecated"
+    },
+    "failure": {
+      "open": "Open",
+      "reopened": "Reopened",
+      "fixed": "Fixed",
+      "verified": "Verified"
+    },
+    "severity": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "gapType": {
+      "missing_ac": "Missing AC",
+      "unclear_goal": "Unclear goal",
+      "missing_step": "Missing step",
+      "missing_test_data": "Missing test data",
+      "other": "Other"
+    }
+  },
+  "recentRuns": {
+    "title": "Recent runs",
+    "viewAll": "View all runs",
+    "loadError": "Could not load recent runs.",
+    "empty": {
+      "title": "No runs yet",
+      "description": "Runs started by Claude or by hand show up here."
+    },
+    "columns": {
+      "status": "Status",
+      "story": "Story",
+      "executor": "Executor",
+      "environment": "Environment",
+      "startedBy": "Started by",
+      "startedAt": "Started",
+      "results": "Results"
+    },
+    "status": {
+      "running": "Running",
+      "passed": "Passed",
+      "failed": "Failed",
+      "aborted": "Aborted"
+    },
+    "abortReason": {
+      "no_results": "no results",
+      "inactive": "inactive"
+    },
+    "executor": {
+      "claude": "Claude",
+      "manual": "Manual"
+    },
+    "results": "{{passed}} passed · {{failed}} failed of {{total}}"
+  }
+}

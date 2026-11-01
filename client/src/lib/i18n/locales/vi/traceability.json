@@ -1,0 +1,76 @@
+{
+  "title": "Truy vết",
+  "loadError": "Không tải được truy vết.",
+  "retry": "Thử lại",
+  "matrix": {
+    "caption": "Tiêu chí chấp nhận theo test case của {{jiraKey}}",
+    "criterion": "Tiêu chí chấp nhận",
+    "status": "Trạng thái AC",
+    "notLinked": "Chưa liên kết",
+    "removed": "Đã xóa khỏi Jira {{date}}",
+    "needsReview": "Cần review",
+    "notReady": {
+      "draft": "Nháp",
+      "in_review": "Đang review"
+    }
+  },
+  "criterionStatus": {
+    "uncovered": "Chưa có test case",
+    "not_run": "Chưa chạy",
+    "passed": "Đạt",
+    "failed": "Lỗi",
+    "blocked": "Bị chặn"
+  },
+  "resultStatus": {
+    "passed": "Đạt",
+    "failed": "Lỗi",
+    "blocked": "Bị chặn",
+    "skipped": "Bỏ qua",
+    "not_run": "Chưa chạy"
+  },
+  "runStatus": {
+    "running": "Đang chạy",
+    "passed": "Đạt",
+    "failed": "Lỗi",
+    "aborted": "Đã hủy"
+  },
+  "coverage": {
+    "covered": "{{covered}}/{{total}} AC đã có test case",
+    "passed": "{{count}} đạt",
+    "failed": "{{count}} lỗi",
+    "blocked": "{{count}} bị chặn",
+    "notRun": "{{count}} chưa chạy"
+  },
+  "uncovered": {
+    "title_one": "{{count}} tiêu chí chấp nhận chưa có test case",
+    "title_other": "{{count}} tiêu chí chấp nhận chưa có test case",
+    "description": "Chưa được bao phủ: {{codes}}",
+    "action": "Test case mới"
+  },
+  "empty": {
+    "noCriteria": {
+      "title": "Chưa có tiêu chí chấp nhận",
+      "description": "Thêm AC cho story trong Jira rồi đồng bộ."
+    },
+    "noCases": {
+      "title": "Chưa có test case",
+      "description": "Viết test case liên kết với AC để xem độ bao phủ."
+    }
+  },
+  "storyColumns": {
+    "coverage": "Độ bao phủ AC",
+    "openGaps": "Câu hỏi mở",
+    "failures": "Lỗi đang mở",
+    "lastRun": "Lượt chạy gần nhất",
+    "noRun": "Chưa chạy",
+    "unknown": "Không có dữ liệu",
+    "coverageValue": "{{covered}}/{{total}}",
+    "failing": "{{count}} lỗi",
+    "blocked": "{{count}} bị chặn",
+    "uncovered": "{{count}} chưa bao phủ",
+    "allPassing": "Tất cả đạt"
+  },
+  "caseColumns": {
+    "latestResult": "Kết quả gần nhất"
+  }
+}

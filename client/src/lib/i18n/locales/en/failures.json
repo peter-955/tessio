@@ -1,0 +1,129 @@
+{
+  "title": "Failures",
+  "pageDescription": "Failed test cases to fix and verify.",
+  "loadError": "Could not load failures.",
+  "retry": "Retry",
+  "status": {
+    "open": "Open",
+    "fixed": "Fixed",
+    "verified": "Verified",
+    "reopened": "Reopened"
+  },
+  "result": {
+    "passed": "Passed",
+    "failed": "Failed",
+    "blocked": "Blocked",
+    "skipped": "Skipped"
+  },
+  "executor": {
+    "claude": "Claude",
+    "manual": "Manual"
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Viewer"
+  },
+  "filters": {
+    "status": "Status",
+    "active": "Active",
+    "all": "All statuses",
+    "assignee": "Assignee",
+    "anyone": "Anyone",
+    "unassigned": "Unassigned",
+    "me": "Assigned to me",
+    "story": "Story",
+    "allStories": "All stories",
+    "deactivatedMember": "{{name}} (Deactivated)"
+  },
+  "columns": {
+    "testCase": "Test case",
+    "story": "Story",
+    "status": "Status",
+    "assignee": "Assignee",
+    "lastFailed": "Last failed",
+    "run": "Run",
+    "result": "Result",
+    "executor": "Executor",
+    "duration": "Duration",
+    "startedBy": "Started by"
+  },
+  "empty": {
+    "title": "No failures",
+    "description": "Failed results from runs show up here.",
+    "noMatch": "No failures match these filters",
+    "noMatchDescription": "Try other filters.",
+    "clearFilters": "Clear filters"
+  },
+  "assignee": {
+    "unassigned": "Unassigned",
+    "deactivated": "Deactivated",
+    "deactivatedHint": "The assignee is deactivated. Reassign this failure."
+  },
+  "detail": {
+    "back": "Back to failures",
+    "notFoundTitle": "Failure not found",
+    "notFoundDescription": "It may belong to another project.",
+    "loadError": "Could not load this failure.",
+    "opened": "Opened {{date}}",
+    "lastFailed": "Last failed {{date}}",
+    "statusChangedBy": "Status changed by {{name}} on {{date}}"
+  },
+  "step": {
+    "title": "Failed step",
+    "none": "No failed step was reported.",
+    "openRun": "Open run",
+    "order": "Step {{order}}",
+    "action": "Action",
+    "expected": "Expected",
+    "actual": "Actual result",
+    "error": "Error"
+  },
+  "screenshot": {
+    "none": "No screenshot",
+    "uploading": "Screenshot uploading…",
+    "missing": "Screenshot missing",
+    "unavailable": "Screenshot not available",
+    "alt": "Screenshot of step {{order}}",
+    "close": "Close"
+  },
+  "history": {
+    "title": "History",
+    "empty": "No results yet."
+  },
+  "timeline": {
+    "title": "Timeline",
+    "opened": "Failure opened",
+    "failedAgain": "Failed again",
+    "statusChanged": "{{from}} → {{to}}",
+    "assigned": "Assigned to {{name}}",
+    "unassigned": "Unassigned",
+    "by": "by {{name}}",
+    "automatic": "Automatic"
+  },
+  "actions": {
+    "markFixed": "Mark fixed",
+    "verify": "Verify",
+    "reopen": "Reopen",
+    "assign": "Assign",
+    "reassign": "Reassign"
+  },
+  "assign": {
+    "title": "Assign failure",
+    "label": "Assignee",
+    "submit": "Save",
+    "unassigned": "Unassigned"
+  },
+  "toasts": {
+    "statusChanged": "{{code}} is now {{status}}.",
+    "assigned": "{{code}} assigned to {{name}}.",
+    "unassigned": "{{code}} is now unassigned."
+  },
+  "errors": {
+    "changedMeanwhile": "This failure changed meanwhile. It has been reloaded.",
+    "assigneeNotActive": "Pick an active project member."
+  }
+}

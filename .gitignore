@@ -1,0 +1,12 @@
+.DS_Store
+node_modules/
+.env*.local
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.production
+.serena/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/

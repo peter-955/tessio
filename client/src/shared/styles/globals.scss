@@ -1,0 +1,58 @@
+@use "tokens/color";
+@use "tokens/size";
+
+@layer reset, mantine;
+
+body {
+  min-height: 100dvh;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+@layer reset {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+:where(a, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+:root[data-mantine-color-scheme="dark"] {
+  --mantine-color-placeholder: var(--mantine-color-dark-2);
+}
+
+.mantine-Input-input[data-variant="default"]:not(
+    [data-error],
+    [data-success],
+    :focus,
+    :focus-within
+  ) {
+  --input-bd: var(--color-input-border);
+}
+
+.mantine-Checkbox-input:not(:checked, :disabled, [data-indeterminate], [data-error]) {
+  border-color: var(--color-input-border);
+}
+
+.mantine-Radio-radio:not(:checked, :disabled, [data-error]) {
+  border-color: var(--color-input-border);
+}
+
+.mantine-Switch-input:not(:checked, :disabled, [data-disabled]) + .mantine-Switch-track {
+  --switch-bg: var(--color-input-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

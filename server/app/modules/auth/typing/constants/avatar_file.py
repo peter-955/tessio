@@ -1,0 +1,2 @@
+AVATAR_FILE_KIND = "avatar"
+UPLOADED_FILE_STATUS = "uploaded"

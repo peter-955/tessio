@@ -1,0 +1,18 @@
+{
+  "dashboard": "Tổng quan",
+  "sprints": "Sprint",
+  "stories": "Story",
+  "testCases": "Ca kiểm thử",
+  "runs": "Lần chạy",
+  "failures": "Lỗi",
+  "testData": "Dữ liệu kiểm thử",
+  "members": "Thành viên",
+  "settings": "Cài đặt",
+  "projects": "Dự án",
+  "users": "Người dùng",
+  "workspaceSettings": "Cài đặt không gian làm việc",
+  "profile": "Hồ sơ",
+  "connectClaude": "Kết nối Claude",
+  "gapInbox": "Khoảng trống của tôi",
+  "environments": "Môi trường"
+}

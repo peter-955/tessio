@@ -1,0 +1,129 @@
+{
+  "title": "Lỗi kiểm thử",
+  "pageDescription": "Các test case thất bại cần sửa và xác minh.",
+  "loadError": "Không thể tải danh sách lỗi kiểm thử.",
+  "retry": "Thử lại",
+  "status": {
+    "open": "Mở",
+    "fixed": "Đã sửa",
+    "verified": "Đã xác minh",
+    "reopened": "Mở lại"
+  },
+  "result": {
+    "passed": "Đạt",
+    "failed": "Thất bại",
+    "blocked": "Bị chặn",
+    "skipped": "Bỏ qua"
+  },
+  "executor": {
+    "claude": "Claude",
+    "manual": "Thủ công"
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Người xem"
+  },
+  "filters": {
+    "status": "Trạng thái",
+    "active": "Đang xử lý",
+    "all": "Mọi trạng thái",
+    "assignee": "Người được giao",
+    "anyone": "Bất kỳ ai",
+    "unassigned": "Chưa giao",
+    "me": "Giao cho tôi",
+    "story": "Story",
+    "allStories": "Tất cả story",
+    "deactivatedMember": "{{name}} (Đã vô hiệu hóa)"
+  },
+  "columns": {
+    "testCase": "Test case",
+    "story": "Story",
+    "status": "Trạng thái",
+    "assignee": "Người được giao",
+    "lastFailed": "Lần thất bại gần nhất",
+    "run": "Lần chạy",
+    "result": "Kết quả",
+    "executor": "Người thực hiện",
+    "duration": "Thời lượng",
+    "startedBy": "Người bắt đầu"
+  },
+  "empty": {
+    "title": "Không có lỗi kiểm thử",
+    "description": "Các kết quả thất bại từ những lần chạy sẽ hiển thị ở đây.",
+    "noMatch": "Không có lỗi kiểm thử nào khớp với bộ lọc",
+    "noMatchDescription": "Hãy thử bộ lọc khác.",
+    "clearFilters": "Xóa bộ lọc"
+  },
+  "assignee": {
+    "unassigned": "Chưa giao",
+    "deactivated": "Đã vô hiệu hóa",
+    "deactivatedHint": "Người được giao đã bị vô hiệu hóa. Hãy giao lại lỗi kiểm thử này."
+  },
+  "detail": {
+    "back": "Quay lại danh sách lỗi kiểm thử",
+    "notFoundTitle": "Không tìm thấy lỗi kiểm thử",
+    "notFoundDescription": "Có thể nó thuộc về một dự án khác.",
+    "loadError": "Không thể tải lỗi kiểm thử này.",
+    "opened": "Mở lúc {{date}}",
+    "lastFailed": "Thất bại gần nhất lúc {{date}}",
+    "statusChangedBy": "{{name}} đổi trạng thái lúc {{date}}"
+  },
+  "step": {
+    "title": "Bước thất bại",
+    "none": "Không có bước thất bại nào được báo cáo.",
+    "openRun": "Mở lần chạy",
+    "order": "Bước {{order}}",
+    "action": "Thao tác",
+    "expected": "Kết quả mong đợi",
+    "actual": "Kết quả thực tế",
+    "error": "Lỗi"
+  },
+  "screenshot": {
+    "none": "Không có ảnh chụp",
+    "uploading": "Đang tải ảnh chụp lên…",
+    "missing": "Thiếu ảnh chụp",
+    "unavailable": "Ảnh chụp không khả dụng",
+    "alt": "Ảnh chụp của bước {{order}}",
+    "close": "Đóng"
+  },
+  "history": {
+    "title": "Lịch sử",
+    "empty": "Chưa có kết quả."
+  },
+  "timeline": {
+    "title": "Dòng thời gian",
+    "opened": "Lỗi kiểm thử được mở",
+    "failedAgain": "Thất bại lại",
+    "statusChanged": "{{from}} → {{to}}",
+    "assigned": "Đã giao cho {{name}}",
+    "unassigned": "Chưa giao",
+    "by": "bởi {{name}}",
+    "automatic": "Tự động"
+  },
+  "actions": {
+    "markFixed": "Đánh dấu đã sửa",
+    "verify": "Xác minh",
+    "reopen": "Mở lại",
+    "assign": "Giao",
+    "reassign": "Giao lại"
+  },
+  "assign": {
+    "title": "Giao lỗi kiểm thử",
+    "label": "Người được giao",
+    "submit": "Lưu",
+    "unassigned": "Chưa giao"
+  },
+  "toasts": {
+    "statusChanged": "{{code}} hiện ở trạng thái {{status}}.",
+    "assigned": "Đã giao {{code}} cho {{name}}.",
+    "unassigned": "{{code}} hiện chưa được giao."
+  },
+  "errors": {
+    "changedMeanwhile": "Lỗi kiểm thử này đã thay đổi trong lúc đó. Dữ liệu đã được tải lại.",
+    "assigneeNotActive": "Hãy chọn một thành viên đang hoạt động của dự án."
+  }
+}

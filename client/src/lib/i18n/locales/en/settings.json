@@ -1,0 +1,30 @@
+{
+  "title": "Workspace settings",
+  "description": "Integrations for the whole workspace.",
+  "adminOnly": "Only workspace admins can change workspace settings",
+  "jira": {
+    "title": "Jira connection",
+    "loading": "Loading the Jira connection",
+    "loadError": "The Jira connection could not be loaded",
+    "retry": "Try again",
+    "connected": "Connected",
+    "notConnected": "Not connected",
+    "connectedAs": "as {{name}} ({{email}}) on {{siteUrl}} since {{date}}",
+    "siteUrl": "Site URL",
+    "accountEmail": "Jira user email",
+    "apiToken": "API token",
+    "apiTokenKeep": "Leave empty to keep the saved token",
+    "apiTokenHelp": "Create an API token",
+    "hint": "Use any Jira user's email and personal API token. Jira admin rights are not needed.",
+    "submit": "Test and save",
+    "success": "Jira connected as {{name}}",
+    "errors": {
+      "siteUrlRequired": "Enter the site URL",
+      "emailInvalid": "Enter a valid email",
+      "apiTokenRequired": "Enter the API token",
+      "invalidCredentials": "Jira refused this email and API token.",
+      "unreachable": "Jira could not be reached. Check the site URL.",
+      "invalidRequest": "Check the site URL (for example https://your-team.atlassian.net) and enter the API token."
+    }
+  }
+}

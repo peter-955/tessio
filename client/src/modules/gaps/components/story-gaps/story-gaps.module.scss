@@ -1,0 +1,17 @@
+.root {
+  min-width: 0;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.filter {
+  max-width: 100%;
+  overflow-x: auto;
+}

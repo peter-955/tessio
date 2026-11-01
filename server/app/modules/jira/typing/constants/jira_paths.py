@@ -1,0 +1,5 @@
+JIRA_MYSELF_PATH = "/rest/api/3/myself"
+JIRA_PROJECT_SEARCH_PATH = "/rest/api/3/project/search"
+JIRA_BOARDS_PATH = "/rest/agile/1.0/board"
+JIRA_BOARD_SPRINTS_PATH = "/rest/agile/1.0/board/{board_id}/sprint"
+JIRA_ISSUE_SEARCH_PATH = "/rest/api/3/search/jql"

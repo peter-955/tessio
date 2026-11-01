@@ -1,0 +1,23 @@
+@use "shared/styles/mixins" as *;
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.status {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.story {
+  flex: 0 1 20rem;
+  min-width: 0;
+
+  @include tablet-down {
+    flex-basis: 100%;
+  }
+}

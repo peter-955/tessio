@@ -1,0 +1,75 @@
+@use "@/shared/styles/mixins";
+
+.grid {
+  min-width: 0;
+  max-width: 100%;
+
+  th.rowHeader {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  th.keyHeader {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+  }
+
+  tbody tr:hover th.rowHeader,
+  tbody tr:focus-within th.rowHeader {
+    background: var(--color-surface-muted);
+  }
+}
+
+.toolbar {
+  margin-bottom: var(--space-4);
+}
+
+.search {
+  width: 320px;
+  max-width: 100%;
+
+  @include mixins.tablet-down {
+    width: 100%;
+  }
+}
+
+.keyCell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.key {
+  font-family: var(--mantine-font-family-monospace);
+}
+
+.columnHeader {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.hint {
+  margin-bottom: var(--space-4);
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

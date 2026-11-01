@@ -1,0 +1,12 @@
+@use "shared/styles/mixins" as *;
+
+.navigation {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@include tablet-down {
+  .navigation {
+    justify-content: center;
+  }
+}

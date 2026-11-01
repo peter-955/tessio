@@ -1,0 +1,2 @@
+class InvalidCipherTextError(Exception):
+    pass

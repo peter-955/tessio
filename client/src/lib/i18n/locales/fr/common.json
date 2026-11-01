@@ -1,0 +1,62 @@
+{
+  "actions": {
+    "cancel": "Annuler",
+    "copy": "Copier",
+    "copied": "Copié",
+    "close": "Fermer"
+  },
+  "colorScheme": {
+    "label": "Thème de couleur",
+    "light": "Clair",
+    "dark": "Sombre",
+    "auto": "Système"
+  },
+  "language": {
+    "label": "Langue"
+  },
+  "duration": {
+    "seconds": "{{seconds}} s",
+    "minutesSeconds": "{{minutes}} min {{seconds}} s"
+  },
+  "pinInput": {
+    "digitLabel": "{{label}}, chiffre {{position}} sur {{total}}"
+  },
+  "passwordInput": {
+    "toggleVisibility": "Afficher ou masquer le mot de passe"
+  },
+  "appShell": {
+    "skipToContent": "Aller au contenu principal",
+    "openNavigation": "Ouvrir la navigation",
+    "closeNavigation": "Fermer la navigation",
+    "navigationLabel": "Navigation",
+    "projectNavigation": "Navigation du projet",
+    "workspaceNavigation": "Navigation de l'espace de travail",
+    "projectLoading": "Chargement du projet",
+    "projectSwitcher": {
+      "currentPrefix": "Changer de projet, projet actuel :",
+      "placeholder": "Choisir un projet",
+      "listLabel": "Vos projets",
+      "loading": "Chargement des projets…",
+      "empty": "Aucun projet pour l'instant",
+      "loadError": "Impossible de charger les projets",
+      "allProjects": "Tous les projets",
+      "archived": "Archivé"
+    },
+    "search": {
+      "label": "Rechercher",
+      "comingSoon": "La recherche arrivera dans une prochaine version"
+    },
+    "userMenu": {
+      "label": "Menu du compte",
+      "signOut": "Se déconnecter",
+      "signOutAll": "Se déconnecter de tous les appareils"
+    },
+    "noProject": {
+      "description": "Choisissez un projet pour voir ses sprints, stories et exécutions."
+    },
+    "archivedBanner": {
+      "title": "Ce projet est archivé",
+      "message": "Vous pouvez tout consulter, mais rien ne peut être modifié."
+    }
+  }
+}

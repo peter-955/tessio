@@ -1,0 +1,1 @@
+LIKE_ESCAPE_CHARACTER = "\\"

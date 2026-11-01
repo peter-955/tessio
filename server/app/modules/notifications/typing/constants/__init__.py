@@ -1,0 +1,9 @@
+from app.modules.notifications.typing.constants.notification import (
+    ACTOR_EXCLUDED_KINDS,
+    DEFAULT_PAGE_SIZE,
+    MAX_PAGE_SIZE,
+    MAX_PAYLOAD_TEXT_LENGTH,
+    TRUNCATION_MARK,
+)
+
+__all__ = ["ACTOR_EXCLUDED_KINDS", "DEFAULT_PAGE_SIZE", "MAX_PAGE_SIZE", "MAX_PAYLOAD_TEXT_LENGTH", "TRUNCATION_MARK"]

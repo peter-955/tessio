@@ -1,0 +1,18 @@
+{
+  "dashboard": "Dashboard",
+  "sprints": "Sprints",
+  "stories": "Stories",
+  "testCases": "Test cases",
+  "runs": "Runs",
+  "failures": "Failures",
+  "testData": "Test data",
+  "members": "Members",
+  "settings": "Settings",
+  "projects": "Projects",
+  "users": "Users",
+  "workspaceSettings": "Workspace settings",
+  "profile": "Profile",
+  "connectClaude": "Connect Claude",
+  "gapInbox": "My gaps",
+  "environments": "Environments"
+}

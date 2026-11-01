@@ -1,0 +1,132 @@
+{
+  "title": "Lượt chạy",
+  "description": "Mọi lượt chạy bằng Claude và thủ công trên các story của dự án.",
+  "filters": {
+    "statusLabel": "Lọc theo trạng thái",
+    "all": "Tất cả",
+    "storyLabel": "Story",
+    "storyPlaceholder": "Mọi story",
+    "clear": "Xóa bộ lọc"
+  },
+  "status": {
+    "running": "Đang chạy",
+    "passed": "Đạt",
+    "failed": "Lỗi",
+    "aborted": "Đã hủy",
+    "blocked": "Bị chặn",
+    "skipped": "Bỏ qua",
+    "pending": "Đang chờ",
+    "not_reported": "Chưa báo cáo"
+  },
+  "executor": {
+    "claude": "Claude",
+    "manual": "Thủ công"
+  },
+  "abortReason": {
+    "no_results": "Không có kết quả nào được báo cáo",
+    "inactive": "Không có hoạt động trong 4 giờ"
+  },
+  "table": {
+    "label": "Lượt chạy",
+    "started": "Bắt đầu",
+    "story": "Story",
+    "status": "Trạng thái",
+    "executor": "Người thực hiện",
+    "environment": "Môi trường",
+    "startedBy": "Người chạy",
+    "results": "Kết quả",
+    "duration": "Thời lượng",
+    "running": "Đang chạy"
+  },
+  "counts": {
+    "total_one": "{{count}} ca",
+    "total_other": "{{count}} ca",
+    "passed": "{{count}} đạt",
+    "failed": "{{count}} lỗi",
+    "blocked": "{{count}} bị chặn",
+    "skipped": "{{count}} bỏ qua",
+    "notReported": "{{count}} chưa báo cáo"
+  },
+  "lineage": {
+    "rerunOf": "Chạy lại của lượt trước",
+    "reruns": "Các lần chạy lại",
+    "rerunNumber": "Lần chạy lại {{number}}"
+  },
+  "detail": {
+    "title": "Lượt chạy trên {{jiraKey}}",
+    "details": "Chi tiết",
+    "story": "Story",
+    "startedAt": "Bắt đầu",
+    "finishedAt": "Kết thúc",
+    "live": "Trực tiếp",
+    "progress": "Đã báo cáo {{reported}}/{{total}} ca",
+    "notReportedHint": "Chưa báo cáo trong lượt này: ca giữ kết quả trước đó."
+  },
+  "notFound": {
+    "title": "Không tìm thấy lượt chạy",
+    "description": "Lượt chạy không tồn tại hoặc bạn không có quyền xem.",
+    "back": "Quay lại danh sách"
+  },
+  "tabs": {
+    "label": "Mục của lượt chạy",
+    "results": "Kết quả",
+    "report": "Báo cáo"
+  },
+  "case": {
+    "listLabel": "Kết quả ca kiểm thử",
+    "version": "v{{number}}",
+    "showSteps": "Hiện các bước",
+    "hideSteps": "Ẩn các bước",
+    "stepsLabel": "Các bước của {{code}}"
+  },
+  "step": {
+    "label": "Bước {{order}}",
+    "expected": "Mong đợi",
+    "actualResult": "Kết quả thực tế",
+    "error": "Lỗi"
+  },
+  "screenshot": {
+    "alt": "Ảnh chụp {{code}} bước {{order}}",
+    "uploading": "Đang tải ảnh lên…",
+    "missing": "Thiếu ảnh chụp",
+    "loadFailed": "Không tải được ảnh",
+    "close": "Đóng",
+    "openEvidence": "Mở bằng chứng"
+  },
+  "report": {
+    "summary": "Tóm tắt",
+    "noSummary": "Chưa có tóm tắt.",
+    "builtAt": "Tạo lúc {{time}}",
+    "notReady": "Báo cáo được tạo khi lượt chạy kết thúc.",
+    "failedCases": "Ca lỗi",
+    "noFailures": "Không có ca lỗi",
+    "failedStep": "Lỗi ở bước {{order}}: {{action}}",
+    "criteria": "Ảnh hưởng tới tiêu chí chấp nhận",
+    "noCriteria": "Story này chưa có tiêu chí chấp nhận",
+    "criterion": "Tiêu chí",
+    "runCases": "Ca đã chạy",
+    "failedCaseCodes": "Ca lỗi",
+    "missingScreenshots": "Thiếu ảnh chụp",
+    "missingItem": "{{code}} · bước {{order}}"
+  },
+  "criterionStatus": {
+    "uncovered": "Chưa bao phủ",
+    "not_run": "Chưa chạy",
+    "passed": "Đạt",
+    "failed": "Lỗi",
+    "blocked": "Bị chặn"
+  },
+  "empty": {
+    "title": "Chưa có lượt chạy",
+    "description": "Hãy nhờ Claude chạy các story của dự án hoặc bắt đầu chạy thủ công.",
+    "filteredTitle": "Không có lượt chạy phù hợp",
+    "filteredDescription": "Hãy thử trạng thái hoặc story khác.",
+    "storyTitle": "Story này chưa có lượt chạy",
+    "storyDescription": "Lượt chạy sẽ hiện ở đây khi Claude hoặc người kiểm thử bắt đầu.",
+    "viewAll": "Xem mọi lượt chạy"
+  },
+  "limitNotice": "Đang hiện {{count}} lượt chạy gần nhất.",
+  "loading": "Đang tải lượt chạy",
+  "loadError": "Không tải được lượt chạy",
+  "retry": "Thử lại"
+}

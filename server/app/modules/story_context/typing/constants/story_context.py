@@ -1,0 +1,8 @@
+from datetime import timedelta
+
+MAX_RESOLVE_KEYS = 50
+MAX_DATA_KEY_LENGTH = 100
+TEST_FILE_LINK_LIFETIME = timedelta(minutes=5)
+DATA_REFERENCE_PREFIX = "{{data."
+REFERENCE_SUFFIX = "}}"
+CASE_CODE_PREFIX = "TC-"

@@ -1,0 +1,162 @@
+{
+  "list": {
+    "title": "Projects",
+    "description": "All projects you can open.",
+    "newProject": "New project",
+    "showArchived": "Show archived",
+    "loading": "Loading projects",
+    "columns": {
+      "name": "Name",
+      "key": "Key",
+      "jira": "Jira project",
+      "role": "My role",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "archived": "Archived",
+    "noRole": "No role",
+    "actionsFor": "Actions for {{name}}",
+    "actions": {
+      "members": "Members",
+      "settings": "Settings",
+      "archive": "Archive",
+      "unarchive": "Unarchive"
+    },
+    "empty": {
+      "adminTitle": "No projects yet",
+      "memberTitle": "You are not in any project yet",
+      "memberDescription": "Ask a workspace admin to add you."
+    },
+    "loadError": "Projects could not be loaded"
+  },
+  "archive": {
+    "title": "Archive {{name}}?",
+    "body": "Everyone keeps read access; nothing can be changed.",
+    "confirm": "Archive",
+    "success": "Project archived"
+  },
+  "unarchive": {
+    "title": "Unarchive {{name}}?",
+    "body": "Members can change it again.",
+    "confirm": "Unarchive",
+    "success": "Project unarchived"
+  },
+  "create": {
+    "title": "New project",
+    "description": "Link a Jira project and board.",
+    "submit": "Create project",
+    "success": "Project created",
+    "loading": "Loading the Jira connection",
+    "adminOnly": "Only workspace admins can create projects",
+    "jiraRequired": {
+      "title": "Connect Jira first",
+      "description": "Each project is linked to one Jira project.",
+      "action": "Set up the Jira connection"
+    }
+  },
+  "fields": {
+    "jiraProject": "Jira project",
+    "jiraBoard": "Jira board",
+    "name": "Name",
+    "key": "Key",
+    "keyDescription": "2–10 capital letters or digits, starting with a letter. It cannot be changed later.",
+    "description": "Description"
+  },
+  "hints": {
+    "allJiraProjectsLinked": "Every Jira project is already linked",
+    "noBoards": "This Jira project has no board. Create one in Jira first.",
+    "noMatch": "Nothing matches"
+  },
+  "errors": {
+    "jiraProjectRequired": "Pick a Jira project",
+    "jiraBoardRequired": "Pick a board",
+    "nameRequired": "Enter a name",
+    "keyInvalid": "Use 2–10 capital letters or digits, starting with a letter",
+    "tooLong": "Use at most {{count}} characters",
+    "jiraLoadFailed": "Jira data could not be loaded",
+    "openJiraSettings": "Open Jira settings",
+    "retry": "Try again"
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Viewer"
+  },
+  "members": {
+    "title": "Members",
+    "description": "People in this project and their roles.",
+    "add": "Add member",
+    "empty": "No members yet",
+    "loading": "Loading members",
+    "loadError": "Members could not be loaded",
+    "roleFor": "Role for {{name}}",
+    "remove": "Remove {{name}}",
+    "removeTitle": "Remove {{name}}?",
+    "removeBody": "They lose access to this project.",
+    "removeSelf": "You will lose access to this project.",
+    "removeConfirm": "Remove",
+    "roleUpdated": "Role updated",
+    "memberAdded": "Member added",
+    "memberRemoved": "Member removed",
+    "invited": "Invited",
+    "deactivated": "Deactivated",
+    "columns": {
+      "member": "Member",
+      "status": "Status",
+      "role": "Role",
+      "added": "Added",
+      "actions": "Actions"
+    }
+  },
+  "addMember": {
+    "title": "Add member",
+    "search": "Search by name or email",
+    "user": "User",
+    "role": "Role",
+    "submit": "Add",
+    "noCandidates": "No matching users without access",
+    "invitedSuffix": "(invited)"
+  },
+  "settings": {
+    "title": "Project settings",
+    "description": "Name, Jira board, defaults and file types.",
+    "save": "Save",
+    "saved": "Settings saved",
+    "readOnlyArchived": "This project is archived and read-only",
+    "needsAdmin": "You need the project Admin role to change settings",
+    "general": {
+      "title": "General",
+      "boardLoadFailed": "Boards could not be loaded; the current board is kept.",
+      "boardLoading": "Loading boards…"
+    },
+    "defaults": {
+      "title": "Defaults",
+      "environment": "Default environment",
+      "environmentDescription": "Used when a run does not pick one.",
+      "noEnvironments": "No environments yet.",
+      "manageEnvironments": "Manage environments",
+      "environmentInvalid": "Pick an active environment",
+      "loading": "Loading environments",
+      "loadError": "Environments could not be loaded"
+    },
+    "fileTypes": {
+      "title": "Allowed file types",
+      "label": "File types",
+      "description": "Screenshots from runs are always allowed.",
+      "otherType": "Other MIME type",
+      "add": "Add",
+      "reset": "Reset to defaults",
+      "atLeastOne": "Keep at least one file type",
+      "invalidType": "Enter a MIME type such as text/markdown",
+      "tooMany": "At most 50 file types"
+    },
+    "archive": {
+      "title": "Archive project",
+      "description": "Archived projects stay readable for everyone.",
+      "action": "Archive project"
+    }
+  }
+}

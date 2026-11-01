@@ -1,0 +1,135 @@
+{
+  "title": "Données de test",
+  "description": "Variables, endpoints et secrets, par projet et par environnement.",
+  "tabs": {
+    "ariaLabel": "Sections des données de test",
+    "data": "Données",
+    "environments": "Environnements"
+  },
+  "actions": {
+    "add": "Ajouter une donnée",
+    "import": "Importer",
+    "edit": "Modifier {{key}} dans {{scope}}",
+    "delete": "Supprimer",
+    "deleteItem": "Supprimer {{key}} dans {{scope}}",
+    "reveal": "Afficher",
+    "hide": "Masquer",
+    "override": "Remplacer {{key}} dans {{scope}}",
+    "addInScope": "Ajouter {{key}} dans {{scope}}",
+    "save": "Enregistrer",
+    "create": "Ajouter",
+    "back": "Retour",
+    "commit": "Importer la sélection",
+    "selectAll": "Tout sélectionner",
+    "cancelUpload": "Annuler l’envoi",
+    "retry": "Réessayer"
+  },
+  "grid": {
+    "ariaLabel": "Données de test par environnement",
+    "key": "Clé",
+    "allEnvironments": "Tous les environnements",
+    "archived": "Archivé",
+    "search": "Rechercher des clés",
+    "searchPlaceholder": "Filtrer par clé",
+    "showArchived": "Afficher les environnements archivés",
+    "inherited": "Utilise la valeur de Tous les environnements",
+    "noValue": "—",
+    "noMatch": "Aucune clé ne correspond à cette recherche.",
+    "noEnvironmentsHint": "Ce projet n’a pas encore d’environnement : les valeurs de Tous les environnements s’appliquent partout.",
+    "manageEnvironments": "Gérer les environnements",
+    "loading": "Chargement des données de test"
+  },
+  "kind": {
+    "variable": "Variable",
+    "endpoint": "Endpoint",
+    "secret": "Secret"
+  },
+  "secret": {
+    "mask": "Valeur secrète masquée",
+    "revealLabel": "Afficher {{key}}",
+    "hideLabel": "Masquer {{key}}",
+    "revealOnlyRoles": "Seuls les Admins et les QC peuvent voir les valeurs secrètes",
+    "autoHide": "Masquée de nouveau après 30 secondes",
+    "noValue": "Aucune valeur"
+  },
+  "empty": {
+    "title": "Aucune donnée de test pour l’instant",
+    "description": "Ajoutez des variables, des endpoints et des secrets, ou importez un fichier .env, JSON ou YAML."
+  },
+  "form": {
+    "createTitle": "Ajouter une donnée de test",
+    "editTitle": "Modifier la donnée de test",
+    "key": "Clé",
+    "keyHint": "Commence par une lettre. Lettres, chiffres, _ . et - uniquement.",
+    "keyInvalid": "Commencez par une lettre et utilisez uniquement des lettres, des chiffres, _ . et - (100 caractères au plus).",
+    "kind": "Type",
+    "secretLocked": "Seuls les Admins et les QC peuvent enregistrer des secrets.",
+    "scope": "Portée",
+    "value": "Valeur",
+    "secretValue": "Valeur secrète",
+    "keepSecretHint": "Laissez vide pour garder la valeur actuelle",
+    "valueRequired": "Saisissez une valeur.",
+    "valueTooLong": "Utilisez au plus {{max}} caractères."
+  },
+  "delete": {
+    "title": "Supprimer la donnée de test",
+    "message": "Supprimer {{key}} dans {{scope}} ?"
+  },
+  "toasts": {
+    "created": "Donnée de test ajoutée",
+    "updated": "Donnée de test enregistrée",
+    "deleted": "Donnée de test supprimée",
+    "imported": "Import terminé : {{created}} créées, {{updated}} mises à jour, {{unchanged}} inchangées"
+  },
+  "import": {
+    "title": "Importer des données de test",
+    "fileStepTitle": "Étape 1 sur 2 : choisissez un fichier",
+    "previewStepTitle": "Étape 2 sur 2 : choisissez ce qu’il faut importer",
+    "scope": "Importer dans",
+    "dropTitle": "Déposez un fichier ici ou cliquez pour en choisir un",
+    "dropDescription": ".env, JSON ou YAML, 1 Mo au plus",
+    "uploading": "Envoi… {{percent}} %",
+    "reading": "Lecture du fichier…",
+    "format": "Format",
+    "formatName": {
+      "dotenv": ".env",
+      "json": "JSON",
+      "yaml": "YAML"
+    },
+    "include": "Inclure",
+    "includeKey": "Inclure {{key}}",
+    "key": "Clé",
+    "value": "Valeur",
+    "kind": "Type",
+    "kindOf": "Type de {{key}}",
+    "actionColumn": "Changement",
+    "action": {
+      "create": "Nouveau",
+      "update": "Mise à jour",
+      "unchanged": "Inchangé"
+    },
+    "secretLocked": "Les lignes qui ressemblent à des secrets sont exclues, car seuls les Admins et les QC peuvent enregistrer des secrets.",
+    "noRows": "Ce fichier ne contient aucune ligne à importer.",
+    "skippedTitle": "Lignes ignorées",
+    "skipReason": {
+      "invalid_line": "Ce n’est pas une clé et une valeur",
+      "invalid_key": "La clé n’est pas valide",
+      "unsupported_value": "Seuls du texte, des nombres et true ou false peuvent être importés",
+      "value_too_long": "La valeur dépasse 10 000 caractères"
+    },
+    "nothingSelected": "Choisissez au moins une ligne à importer.",
+    "errors": {
+      "extension": "Choisissez un fichier .env, .json, .yaml ou .yml.",
+      "size": "Ce fichier dépasse 1 Mo.",
+      "typeNotAllowed": "Ce projet n’accepte pas ce type de fichier. Ajoutez text/plain ou application/json aux types de fichiers autorisés dans les paramètres du projet.",
+      "invalidFile": "Impossible de lire ce fichier. Vérifiez qu’il s’agit d’un fichier .env, JSON ou YAML valide.",
+      "uploadNotCompleted": "L’envoi n’a pas abouti. Réessayez."
+    }
+  },
+  "errors": {
+    "keyAlreadyUsed": "Cette clé est déjà utilisée dans cette portée.",
+    "environmentArchived": "Cet environnement est archivé. Choisissez une autre portée.",
+    "loadFailed": "Impossible de charger les données de test.",
+    "environmentsLoadFailed": "Impossible de charger les environnements : seule la colonne Tous les environnements est affichée."
+  }
+}

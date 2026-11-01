@@ -1,0 +1,9 @@
+.toolbar {
+  margin-bottom: var(--space-4);
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

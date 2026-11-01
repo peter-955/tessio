@@ -1,0 +1,9 @@
+.dates {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}

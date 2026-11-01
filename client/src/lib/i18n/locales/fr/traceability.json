@@ -1,0 +1,76 @@
+{
+  "title": "Traçabilité",
+  "loadError": "Impossible de charger la traçabilité.",
+  "retry": "Réessayer",
+  "matrix": {
+    "caption": "Critères d'acceptation par cas de test pour {{jiraKey}}",
+    "criterion": "Critère d'acceptation",
+    "status": "Statut du CA",
+    "notLinked": "Non lié",
+    "removed": "Retiré de Jira le {{date}}",
+    "needsReview": "À revoir",
+    "notReady": {
+      "draft": "Brouillon",
+      "in_review": "En revue"
+    }
+  },
+  "criterionStatus": {
+    "uncovered": "Non couvert",
+    "not_run": "Non exécuté",
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "blocked": "Bloqué"
+  },
+  "resultStatus": {
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "blocked": "Bloqué",
+    "skipped": "Ignoré",
+    "not_run": "Non exécuté"
+  },
+  "runStatus": {
+    "running": "En cours",
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "aborted": "Interrompu"
+  },
+  "coverage": {
+    "covered": "{{covered}} CA couverts sur {{total}}",
+    "passed": "{{count}} réussis",
+    "failed": "{{count}} échoués",
+    "blocked": "{{count}} bloqués",
+    "notRun": "{{count}} non exécutés"
+  },
+  "uncovered": {
+    "title_one": "{{count}} critère d'acceptation n'a aucun cas de test",
+    "title_other": "{{count}} critères d'acceptation n'ont aucun cas de test",
+    "description": "Non couverts : {{codes}}",
+    "action": "Nouveau cas de test"
+  },
+  "empty": {
+    "noCriteria": {
+      "title": "Aucun critère d'acceptation",
+      "description": "Ajoutez des CA à la story dans Jira, puis synchronisez."
+    },
+    "noCases": {
+      "title": "Aucun cas de test",
+      "description": "Rédigez des cas de test liés aux CA pour voir la couverture."
+    }
+  },
+  "storyColumns": {
+    "coverage": "Couverture CA",
+    "openGaps": "Questions ouvertes",
+    "failures": "Défaillances",
+    "lastRun": "Dernière exécution",
+    "noRun": "Aucune exécution",
+    "unknown": "Indisponible",
+    "coverageValue": "{{covered}}/{{total}}",
+    "failing": "{{count}} en échec",
+    "blocked": "{{count}} bloqués",
+    "uncovered": "{{count}} non couverts",
+    "allPassing": "Tout réussi"
+  },
+  "caseColumns": {
+    "latestResult": "Dernier résultat"
+  }
+}

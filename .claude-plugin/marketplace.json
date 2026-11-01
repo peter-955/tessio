@@ -1,0 +1,14 @@
+{
+  "name": "tessio",
+  "owner": {
+    "name": "Tessio team"
+  },
+  "description": "Tessio Claude Code plugin",
+  "plugins": [
+    {
+      "name": "tessio",
+      "source": "./claude",
+      "description": "Run Tessio test cases with Claude"
+    }
+  ]
+}

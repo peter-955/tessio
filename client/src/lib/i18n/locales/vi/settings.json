@@ -1,0 +1,30 @@
+{
+  "title": "Cài đặt không gian làm việc",
+  "description": "Các tích hợp cho toàn bộ không gian làm việc.",
+  "adminOnly": "Chỉ quản trị viên không gian làm việc mới có thể thay đổi cài đặt không gian làm việc",
+  "jira": {
+    "title": "Kết nối Jira",
+    "loading": "Đang tải kết nối Jira",
+    "loadError": "Không thể tải kết nối Jira",
+    "retry": "Thử lại",
+    "connected": "Đã kết nối",
+    "notConnected": "Chưa kết nối",
+    "connectedAs": "với tư cách {{name}} ({{email}}) trên {{siteUrl}} từ {{date}}",
+    "siteUrl": "URL trang",
+    "accountEmail": "Email người dùng Jira",
+    "apiToken": "API token",
+    "apiTokenKeep": "Để trống để giữ API token đã lưu",
+    "apiTokenHelp": "Tạo API token",
+    "hint": "Dùng email và API token cá nhân của bất kỳ người dùng Jira nào. Không cần quyền quản trị Jira.",
+    "submit": "Kiểm tra và lưu",
+    "success": "Đã kết nối Jira với tư cách {{name}}",
+    "errors": {
+      "siteUrlRequired": "Hãy nhập URL trang",
+      "emailInvalid": "Hãy nhập email hợp lệ",
+      "apiTokenRequired": "Hãy nhập API token",
+      "invalidCredentials": "Jira đã từ chối email và API token này.",
+      "unreachable": "Không thể kết nối tới Jira. Hãy kiểm tra URL trang.",
+      "invalidRequest": "Hãy kiểm tra URL trang (ví dụ https://your-team.atlassian.net) và nhập API token."
+    }
+  }
+}

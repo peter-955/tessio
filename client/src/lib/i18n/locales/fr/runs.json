@@ -1,0 +1,132 @@
+{
+  "title": "Exécutions",
+  "description": "Toutes les exécutions Claude et manuelles des stories du projet.",
+  "filters": {
+    "statusLabel": "Filtrer par statut",
+    "all": "Toutes",
+    "storyLabel": "Story",
+    "storyPlaceholder": "Toutes les stories",
+    "clear": "Effacer les filtres"
+  },
+  "status": {
+    "running": "En cours",
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "aborted": "Interrompu",
+    "blocked": "Bloqué",
+    "skipped": "Ignoré",
+    "pending": "En attente",
+    "not_reported": "Non signalé"
+  },
+  "executor": {
+    "claude": "Claude",
+    "manual": "Manuelle"
+  },
+  "abortReason": {
+    "no_results": "Aucun résultat signalé",
+    "inactive": "Aucune activité pendant 4 heures"
+  },
+  "table": {
+    "label": "Exécutions",
+    "started": "Démarrée",
+    "story": "Story",
+    "status": "Statut",
+    "executor": "Exécutant",
+    "environment": "Environnement",
+    "startedBy": "Lancée par",
+    "results": "Résultats",
+    "duration": "Durée",
+    "running": "En cours"
+  },
+  "counts": {
+    "total_one": "{{count}} cas",
+    "total_other": "{{count}} cas",
+    "passed": "{{count}} réussi(s)",
+    "failed": "{{count}} échoué(s)",
+    "blocked": "{{count}} bloqué(s)",
+    "skipped": "{{count}} ignoré(s)",
+    "notReported": "{{count}} non signalé(s)"
+  },
+  "lineage": {
+    "rerunOf": "Relance d'une exécution précédente",
+    "reruns": "Relances",
+    "rerunNumber": "Relance {{number}}"
+  },
+  "detail": {
+    "title": "Exécution sur {{jiraKey}}",
+    "details": "Détails",
+    "story": "Story",
+    "startedAt": "Démarrée",
+    "finishedAt": "Terminée",
+    "live": "En direct",
+    "progress": "{{reported}} cas signalés sur {{total}}",
+    "notReportedHint": "Non signalé dans cette exécution : le cas garde son résultat précédent."
+  },
+  "notFound": {
+    "title": "Exécution introuvable",
+    "description": "Elle n'existe pas ou vous n'y avez pas accès.",
+    "back": "Retour aux exécutions"
+  },
+  "tabs": {
+    "label": "Sections de l'exécution",
+    "results": "Résultats",
+    "report": "Rapport"
+  },
+  "case": {
+    "listLabel": "Résultats des cas de test",
+    "version": "v{{number}}",
+    "showSteps": "Afficher les étapes",
+    "hideSteps": "Masquer les étapes",
+    "stepsLabel": "Étapes de {{code}}"
+  },
+  "step": {
+    "label": "Étape {{order}}",
+    "expected": "Attendu",
+    "actualResult": "Résultat obtenu",
+    "error": "Erreur"
+  },
+  "screenshot": {
+    "alt": "Capture de {{code}} étape {{order}}",
+    "uploading": "Envoi de la capture…",
+    "missing": "Capture manquante",
+    "loadFailed": "Impossible de charger la capture",
+    "close": "Fermer",
+    "openEvidence": "Ouvrir la preuve"
+  },
+  "report": {
+    "summary": "Résumé",
+    "noSummary": "Aucun résumé rédigé.",
+    "builtAt": "Généré {{time}}",
+    "notReady": "Le rapport est généré à la fin de l'exécution.",
+    "failedCases": "Cas échoués",
+    "noFailures": "Aucun cas échoué",
+    "failedStep": "Échec à l'étape {{order}} : {{action}}",
+    "criteria": "Impact sur les critères d'acceptation",
+    "noCriteria": "Aucun critère d'acceptation sur cette story",
+    "criterion": "Critère",
+    "runCases": "Cas exécutés",
+    "failedCaseCodes": "Cas échoués",
+    "missingScreenshots": "Captures manquantes",
+    "missingItem": "{{code}} · étape {{order}}"
+  },
+  "criterionStatus": {
+    "uncovered": "Non couvert",
+    "not_run": "Non exécuté",
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "blocked": "Bloqué"
+  },
+  "empty": {
+    "title": "Aucune exécution",
+    "description": "Demandez à Claude d'exécuter les stories du projet, ou lancez une exécution manuelle.",
+    "filteredTitle": "Aucune exécution ne correspond",
+    "filteredDescription": "Essayez un autre statut ou une autre story.",
+    "storyTitle": "Aucune exécution sur cette story",
+    "storyDescription": "Les exécutions apparaissent ici dès que Claude ou un testeur en lance une.",
+    "viewAll": "Voir toutes les exécutions"
+  },
+  "limitNotice": "Affichage des {{count}} exécutions les plus récentes.",
+  "loading": "Chargement des exécutions",
+  "loadError": "Impossible de charger les exécutions",
+  "retry": "Réessayer"
+}

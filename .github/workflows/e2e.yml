@@ -1,0 +1,56 @@
+name: E2E
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: e2e
+    env:
+      HUSKY: 0
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
+      - run: npm run format:check
+      - name: Start the e2e stack
+        run: npm run stack:up
+      - name: Run the end-to-end suite
+        run: npm test
+      - name: Save the stack logs
+        if: failure()
+        run: docker compose -f compose.e2e.yml logs --no-color > stack.log
+      - name: Upload the report and logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-report
+          path: |
+            e2e/playwright-report
+            e2e/test-results
+            e2e/stack.log
+          retention-days: 7
+      - name: Stop the e2e stack
+        if: always()
+        run: npm run stack:down

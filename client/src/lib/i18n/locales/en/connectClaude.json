@@ -1,0 +1,70 @@
+{
+  "title": "Connect Claude",
+  "description": "Let Claude Code run your test cases with a personal token.",
+  "steps": {
+    "label": "How to connect",
+    "create": "Create a token for one project.",
+    "install": "Run the command it shows in your terminal.",
+    "restart": "Restart Claude Code or run /reload-plugins."
+  },
+  "create": {
+    "title": "New token",
+    "name": "Name",
+    "namePlaceholder": "e.g. My laptop",
+    "nameRequired": "Enter a name for this token.",
+    "nameTooLong": "Use at most 100 characters.",
+    "project": "Project",
+    "projectPlaceholder": "Choose a project",
+    "projectRequired": "Choose a project.",
+    "projectNotFound": "No matching project",
+    "lifetime": "Expires after",
+    "lifetimeOption_one": "{{count}} day",
+    "lifetimeOption_other": "{{count}} days",
+    "submit": "Create token",
+    "viewerHint": "You are a Viewer in this project, so Claude can read but not record results.",
+    "limitReached": "You have 10 active tokens. Revoke one to create another.",
+    "noProjects": "You are not a member of any project yet.",
+    "projectsLoadFailed": "Projects could not be loaded"
+  },
+  "created": {
+    "title": "Token for {{projectKey}}",
+    "shownOnce": "Copy it now. You will not see this token again.",
+    "commandLabel": "Run this in your terminal:",
+    "marketplaceMissing": "The plugin source is not configured. Replace <marketplace> with the value your admin gives you.",
+    "restart": "Then restart Claude Code.",
+    "tokenLabel": "Token only",
+    "done": "Done"
+  },
+  "table": {
+    "title": "Your tokens",
+    "activeCount": "{{count}} of {{max}} active",
+    "name": "Name",
+    "project": "Project",
+    "token": "Token",
+    "status": "Status",
+    "expires": "Expires",
+    "lastUsed": "Last used",
+    "created": "Created",
+    "actions": "Actions",
+    "never": "Never",
+    "revoke": "Revoke {{name}}",
+    "empty": "No tokens yet",
+    "loadFailed": "Tokens could not be loaded",
+    "retry": "Try again"
+  },
+  "status": {
+    "active": "Active",
+    "expired": "Expired",
+    "revoked": "Revoked"
+  },
+  "revoke": {
+    "title": "Revoke this token?",
+    "description": "Claude stops working with \"{{name}}\" in {{projectKey}} at once.",
+    "confirm": "Revoke",
+    "done": "Token revoked"
+  },
+  "errors": {
+    "notMember": "You can only create a token for a project you are a member of.",
+    "projectNotFound": "This project no longer exists."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "bell": {
+    "label": "Thông báo",
+    "labelWithCount_one": "Thông báo, {{count}} chưa đọc",
+    "labelWithCount_other": "Thông báo, {{count}} chưa đọc"
+  },
+  "panel": {
+    "title": "Thông báo",
+    "close": "Đóng thông báo",
+    "filterLabel": "Hiển thị thông báo",
+    "filterAll": "Tất cả",
+    "filterUnread": "Chưa đọc",
+    "markAllRead": "Đánh dấu tất cả là đã đọc",
+    "loadMore": "Tải thêm",
+    "loading": "Đang tải thông báo"
+  },
+  "empty": {
+    "allTitle": "Chưa có thông báo",
+    "allDescription": "Bạn sẽ được báo tại đây khi có khoảng trống hoặc lỗi được giao cho bạn, hoặc khi một lượt chạy bạn theo dõi kết thúc.",
+    "unreadTitle": "Bạn đã xem hết",
+    "unreadDescription": "Không có thông báo chưa đọc."
+  },
+  "error": {
+    "title": "Không tải được thông báo",
+    "retry": "Thử lại"
+  },
+  "item": {
+    "unread": "Chưa đọc:",
+    "markRead": "Đánh dấu là đã đọc",
+    "byActor": "bởi {{actorName}}"
+  },
+  "kind": {
+    "gapAssigned": {
+      "title": "Khoảng trống được giao cho bạn ở {{storyKey}}",
+      "description": "{{question}}"
+    },
+    "failureAssigned": {
+      "title": "Lỗi được giao cho bạn ở {{storyKey}}",
+      "description": "{{testCaseCode}} · {{testCaseTitle}}"
+    },
+    "runFinished": {
+      "title": {
+        "passed": "Lượt chạy đạt ở {{storyKey}}",
+        "failed": "Lượt chạy không đạt ở {{storyKey}}",
+        "aborted": "Lượt chạy bị hủy ở {{storyKey}}"
+      },
+      "description": "{{passedCount}} đạt · {{failedCount}} không đạt · {{blockedCount}} bị chặn"
+    }
+  }
+}

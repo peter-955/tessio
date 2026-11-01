@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "mcp__plugin_tessio_tessio__record_case_result",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/upload_screenshots.py\"",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}

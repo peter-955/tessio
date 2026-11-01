@@ -1,0 +1,50 @@
+{
+  "bell": {
+    "label": "Notifications",
+    "labelWithCount_one": "Notifications, {{count}} non lue",
+    "labelWithCount_other": "Notifications, {{count}} non lues"
+  },
+  "panel": {
+    "title": "Notifications",
+    "close": "Fermer les notifications",
+    "filterLabel": "Afficher les notifications",
+    "filterAll": "Toutes",
+    "filterUnread": "Non lues",
+    "markAllRead": "Tout marquer comme lu",
+    "loadMore": "Afficher plus",
+    "loading": "Chargement des notifications"
+  },
+  "empty": {
+    "allTitle": "Aucune notification",
+    "allDescription": "Vous serez prévenu ici quand un écart ou un échec vous est attribué, ou quand une exécution que vous suivez se termine.",
+    "unreadTitle": "Vous êtes à jour",
+    "unreadDescription": "Aucune notification non lue."
+  },
+  "error": {
+    "title": "Impossible de charger les notifications",
+    "retry": "Réessayer"
+  },
+  "item": {
+    "unread": "Non lue :",
+    "markRead": "Marquer comme lue",
+    "byActor": "par {{actorName}}"
+  },
+  "kind": {
+    "gapAssigned": {
+      "title": "Écart qui vous est attribué sur {{storyKey}}",
+      "description": "{{question}}"
+    },
+    "failureAssigned": {
+      "title": "Échec qui vous est attribué sur {{storyKey}}",
+      "description": "{{testCaseCode}} · {{testCaseTitle}}"
+    },
+    "runFinished": {
+      "title": {
+        "passed": "Exécution réussie sur {{storyKey}}",
+        "failed": "Exécution en échec sur {{storyKey}}",
+        "aborted": "Exécution interrompue sur {{storyKey}}"
+      },
+      "description": "{{passedCount}} réussis · {{failedCount}} en échec · {{blockedCount}} bloqués"
+    }
+  }
+}

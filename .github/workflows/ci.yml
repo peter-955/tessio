@@ -1,0 +1,169 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    services:
+      postgres:
+        image: postgres:17.11-alpine
+        env:
+          POSTGRES_USER: tessio
+          POSTGRES_PASSWORD: tessio
+          POSTGRES_DB: tessio
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U tessio -d tessio"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.13.6"
+      - run: uv python install 3.14
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run lint-imports
+      - run: uv run mypy
+      - run: uv run pytest
+      - name: Migrations match the tables
+        env:
+          DATABASE_URL: postgresql+asyncpg://tessio:tessio@localhost:5432/tessio
+        run: uv run alembic upgrade head && uv run alembic check
+      - name: OpenAPI document is up to date
+        run: uv run python -m app.commands.export_openapi && git diff --exit-code ../client/src/lib/api/openapi.json
+
+  client:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    env:
+      HUSKY: 0
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci
+      - name: Generated API types match openapi.json
+        run: npm run generate:api && git diff --exit-code src/lib/api/openapi.type.ts
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run format:check
+      - run: npm test
+      - run: npm run build
+
+  commitlint:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      HUSKY: 0
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - name: Commit messages follow Conventional Commits
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: cd client && npm ci && npx commitlint --config commitlint.config.mjs --from "$BASE_SHA" --to "$HEAD_SHA"
+
+  claude-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.9"
+      - run: python3 -m py_compile claude/hooks/upload_screenshots.py claude/hooks/tests/*.py
+      - run: python3 -m unittest discover -s claude/hooks/tests -v
+
+  docker:
+    needs: [server, client]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: docker/setup-buildx-action@v3
+      - name: Lowercase the registry owner
+        run: echo "OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: API image
+        uses: docker/build-push-action@v6
+        with:
+          context: server
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+          tags: |
+            ghcr.io/${{ env.OWNER }}/tessio-api:${{ github.sha }}
+            ghcr.io/${{ env.OWNER }}/tessio-api:main
+          cache-from: type=gha,scope=tessio-api
+          cache-to: type=gha,mode=max,scope=tessio-api
+      - name: Client image
+        uses: docker/build-push-action@v6
+        with:
+          context: client
+          build-args: |
+            NEXT_PUBLIC_TESSIO_PLUGIN_MARKETPLACE=${{ vars.TESSIO_PLUGIN_MARKETPLACE }}
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+          tags: |
+            ghcr.io/${{ env.OWNER }}/tessio-client:${{ github.sha }}
+            ghcr.io/${{ env.OWNER }}/tessio-client:main
+          cache-from: type=gha,scope=tessio-client
+          cache-to: type=gha,mode=max,scope=tessio-client
+
+  deploy:
+    needs: docker
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - name: Install the SSH key
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+      - name: Deploy on the VPS
+        env:
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: ssh -o StrictHostKeyChecking=accept-new "$VPS_USER@$VPS_HOST" "cd /opt/tessio && TESSIO_IMAGE_TAG=${{ github.sha }} ./deploy/deploy.sh"

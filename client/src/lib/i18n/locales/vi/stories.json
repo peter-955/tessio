@@ -1,0 +1,114 @@
+{
+  "title": "Story",
+  "pageDescription": "Các user story đồng bộ từ Jira, kèm trạng thái kiểm thử.",
+  "filters": {
+    "search": "Tìm theo mã hoặc tiêu đề",
+    "sprint": "Sprint",
+    "status": "Trạng thái kiểm thử",
+    "allSprints": "Tất cả sprint",
+    "allStatuses": "Tất cả trạng thái"
+  },
+  "columns": {
+    "key": "Mã",
+    "title": "Tiêu đề",
+    "sprint": "Sprint",
+    "jiraStatus": "Trạng thái Jira",
+    "testStatus": "Trạng thái kiểm thử",
+    "jira": "Jira"
+  },
+  "testStatuses": {
+    "not_started": "Chưa bắt đầu",
+    "ready_for_test": "Sẵn sàng kiểm thử",
+    "in_test": "Đang kiểm thử",
+    "passed": "Đạt",
+    "failed": "Không đạt"
+  },
+  "list": {
+    "openInJira": "Mở trong Jira",
+    "notInScope": "Ngoài phạm vi Jira",
+    "noSprint": "Không có sprint"
+  },
+  "empty": {
+    "title": "Chưa có story nào",
+    "description": "Story sẽ xuất hiện sau khi đồng bộ từ Jira."
+  },
+  "emptyFiltered": {
+    "title": "Không có story phù hợp",
+    "description": "Hãy thử bộ lọc khác."
+  },
+  "loadError": "Không tải được danh sách story",
+  "retry": "Thử lại",
+  "detail": {
+    "back": "Tất cả story",
+    "openInJira": "Mở trong Jira",
+    "noSprint": "Không có sprint",
+    "lastSynced": "Đồng bộ lúc {{date}}",
+    "loadError": "Không tải được story này",
+    "missing": {
+      "title": "Không còn trong phạm vi Jira",
+      "body": "Story này đã rời các sprint được đồng bộ vào {{date}}. Lịch sử vẫn được giữ ở đây."
+    },
+    "notFound": {
+      "title": "Không tìm thấy story",
+      "description": "Kiểm tra lại mã hoặc đồng bộ từ Jira."
+    }
+  },
+  "tabs": {
+    "ariaLabel": "Các phần của story",
+    "overview": "Tổng quan",
+    "testCases": "Test case",
+    "gaps": "Câu hỏi",
+    "runs": "Lượt chạy",
+    "traceability": "Truy vết"
+  },
+  "description": {
+    "title": "Mô tả",
+    "empty": "Không có mô tả trong Jira."
+  },
+  "adf": {
+    "attachment": "Tệp đính kèm – mở story trong Jira để xem."
+  },
+  "criteria": {
+    "title": "Tiêu chí chấp nhận",
+    "removed": "Đã xóa khỏi Jira {{date}}",
+    "empty": {
+      "title": "Không tìm thấy tiêu chí chấp nhận",
+      "description": "Tessio đọc danh sách dưới tiêu đề \"Tiêu chí chấp nhận\" trong Jira, hoặc danh sách đầu tiên."
+    }
+  },
+  "actions": {
+    "markReadyForTest": "Đánh dấu sẵn sàng kiểm thử",
+    "markNotStarted": "Chuyển về chưa bắt đầu",
+    "markPassed": "Đánh dấu đạt",
+    "markFailed": "Đánh dấu không đạt"
+  },
+  "confirm": {
+    "passed": {
+      "title": "Đánh dấu {{jiraKey}} đạt?",
+      "message": "Story sẽ được xác nhận đã kiểm thử xong."
+    },
+    "failed": {
+      "title": "Đánh dấu {{jiraKey}} không đạt?",
+      "message": "Story sẽ được trả lại cho nhóm để sửa."
+    }
+  },
+  "toasts": {
+    "statusChanged": "Trạng thái kiểm thử hiện là {{status}}."
+  },
+  "errors": {
+    "signOffBlocked": "Hãy xử lý các lỗi đang mở và chờ lượt chạy kết thúc trước khi đánh dấu đạt.",
+    "invalidTransition": "Trạng thái đã thay đổi. Trang đã được làm mới.",
+    "jiraNotConfigured": "Hãy nhờ quản trị viên kết nối Jira trước."
+  },
+  "sync": {
+    "action": "Đồng bộ từ Jira",
+    "never": "Chưa đồng bộ lần nào",
+    "queued": "Đang chờ đồng bộ…",
+    "running": "Đang đồng bộ…",
+    "succeeded": "Đồng bộ lần cuối {{date}}",
+    "failed": "Lần đồng bộ cuối thất bại: {{reason}}",
+    "lastSucceeded": "Lần thành công gần nhất {{date}}",
+    "stale": "Lần đồng bộ trước không phản hồi.",
+    "unavailable": "Không có trạng thái đồng bộ"
+  }
+}

@@ -1,0 +1,21 @@
+@use "shared/styles/mixins" as *;
+
+.control {
+  @include tablet-down {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.danger {
+  color: var(--color-danger);
+}

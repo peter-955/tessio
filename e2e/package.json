@@ -1,0 +1,22 @@
+{
+  "name": "tessio-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "stack:up": "docker compose -f compose.e2e.yml up -d --build --wait --wait-timeout 600",
+    "stack:down": "docker compose -f compose.e2e.yml down -v",
+    "fake-jira": "node fake-jira/server.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "^24.19.2",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.3"
+  }
+}

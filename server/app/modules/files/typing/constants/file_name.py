@@ -1,0 +1,5 @@
+import re
+
+MAX_FILE_NAME_LENGTH = 120
+FALLBACK_FILE_NAME = "file"
+UNSAFE_FILE_NAME_CHARACTERS = re.compile(r"[^A-Za-z0-9._-]")

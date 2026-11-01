@@ -1,0 +1,135 @@
+{
+  "title": "Test data",
+  "description": "Variables, endpoints and secrets, per project and per environment.",
+  "tabs": {
+    "ariaLabel": "Test data sections",
+    "data": "Data",
+    "environments": "Environments"
+  },
+  "actions": {
+    "add": "Add data",
+    "import": "Import",
+    "edit": "Edit {{key}} in {{scope}}",
+    "delete": "Delete",
+    "deleteItem": "Delete {{key}} in {{scope}}",
+    "reveal": "Reveal",
+    "hide": "Hide",
+    "override": "Override {{key}} in {{scope}}",
+    "addInScope": "Add {{key}} in {{scope}}",
+    "save": "Save",
+    "create": "Add",
+    "back": "Back",
+    "commit": "Import selected",
+    "selectAll": "Select all",
+    "cancelUpload": "Cancel upload",
+    "retry": "Try again"
+  },
+  "grid": {
+    "ariaLabel": "Test data by environment",
+    "key": "Key",
+    "allEnvironments": "All environments",
+    "archived": "Archived",
+    "search": "Search keys",
+    "searchPlaceholder": "Filter by key",
+    "showArchived": "Show archived environments",
+    "inherited": "Uses All environments value",
+    "noValue": "—",
+    "noMatch": "No keys match this search.",
+    "noEnvironmentsHint": "This project has no environments yet, so values in All environments apply everywhere.",
+    "manageEnvironments": "Manage environments",
+    "loading": "Loading test data"
+  },
+  "kind": {
+    "variable": "Variable",
+    "endpoint": "Endpoint",
+    "secret": "Secret"
+  },
+  "secret": {
+    "mask": "Hidden secret value",
+    "revealLabel": "Reveal {{key}}",
+    "hideLabel": "Hide {{key}}",
+    "revealOnlyRoles": "Only Admins and QC can see secret values",
+    "autoHide": "Hidden again after 30 seconds",
+    "noValue": "No value"
+  },
+  "empty": {
+    "title": "No test data yet",
+    "description": "Add variables, endpoints and secrets, or import a .env, JSON or YAML file."
+  },
+  "form": {
+    "createTitle": "Add test data",
+    "editTitle": "Edit test data",
+    "key": "Key",
+    "keyHint": "Starts with a letter. Letters, digits, _ . and - only.",
+    "keyInvalid": "Start with a letter and use only letters, digits, _ . and - (at most 100 characters).",
+    "kind": "Kind",
+    "secretLocked": "Only Admins and QC can save secrets.",
+    "scope": "Scope",
+    "value": "Value",
+    "secretValue": "Secret value",
+    "keepSecretHint": "Leave empty to keep the current value",
+    "valueRequired": "Enter a value.",
+    "valueTooLong": "Use at most {{max}} characters."
+  },
+  "delete": {
+    "title": "Delete test data",
+    "message": "Delete {{key}} in {{scope}}?"
+  },
+  "toasts": {
+    "created": "Test data added",
+    "updated": "Test data saved",
+    "deleted": "Test data deleted",
+    "imported": "Imported: {{created}} created, {{updated}} updated, {{unchanged}} unchanged"
+  },
+  "import": {
+    "title": "Import test data",
+    "fileStepTitle": "Step 1 of 2: choose a file",
+    "previewStepTitle": "Step 2 of 2: choose what to import",
+    "scope": "Import into",
+    "dropTitle": "Drop a file here or click to choose one",
+    "dropDescription": ".env, JSON or YAML, up to 1 MB",
+    "uploading": "Uploading… {{percent}}%",
+    "reading": "Reading the file…",
+    "format": "Format",
+    "formatName": {
+      "dotenv": ".env",
+      "json": "JSON",
+      "yaml": "YAML"
+    },
+    "include": "Include",
+    "includeKey": "Include {{key}}",
+    "key": "Key",
+    "value": "Value",
+    "kind": "Kind",
+    "kindOf": "Kind of {{key}}",
+    "actionColumn": "Change",
+    "action": {
+      "create": "New",
+      "update": "Update",
+      "unchanged": "Unchanged"
+    },
+    "secretLocked": "Rows that look like secrets are left out, because only Admins and QC can save secrets.",
+    "noRows": "This file has no rows to import.",
+    "skippedTitle": "Skipped lines",
+    "skipReason": {
+      "invalid_line": "Not a key and value",
+      "invalid_key": "The key is not valid",
+      "unsupported_value": "Only text, numbers and true or false can be imported",
+      "value_too_long": "The value is longer than 10,000 characters"
+    },
+    "nothingSelected": "Choose at least one row to import.",
+    "errors": {
+      "extension": "Choose a .env, .json, .yaml or .yml file.",
+      "size": "This file is larger than 1 MB.",
+      "typeNotAllowed": "This project does not accept this file type. Add text/plain or application/json to the allowed file types in the project settings.",
+      "invalidFile": "This file cannot be read. Check that it is valid .env, JSON or YAML.",
+      "uploadNotCompleted": "The upload did not finish. Try again."
+    }
+  },
+  "errors": {
+    "keyAlreadyUsed": "This key is already used in this scope.",
+    "environmentArchived": "This environment is archived. Choose another scope.",
+    "loadFailed": "Test data could not be loaded.",
+    "environmentsLoadFailed": "Environments could not be loaded, so only the All environments column is shown."
+  }
+}

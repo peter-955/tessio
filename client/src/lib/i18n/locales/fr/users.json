@@ -1,0 +1,126 @@
+{
+  "title": "Utilisateurs",
+  "description": "Invitez des personnes dans l'espace de travail et gérez leurs accès.",
+  "you": "Vous",
+  "retry": "Réessayer",
+  "loadError": "Impossible de charger les utilisateurs",
+  "filters": {
+    "search": "Rechercher par nom ou e-mail",
+    "status": "Statut",
+    "role": "Rôle dans l'espace",
+    "all": "Tous"
+  },
+  "columns": {
+    "user": "Utilisateur",
+    "role": "Rôle dans l'espace",
+    "status": "Statut",
+    "twoFactor": "Double authentification",
+    "actions": "Actions"
+  },
+  "workspaceRoles": {
+    "owner": "Propriétaire",
+    "admin": "Administrateur de l'espace",
+    "member": "Membre"
+  },
+  "statuses": {
+    "invited": "Invité",
+    "active": "Actif",
+    "deactivated": "Désactivé"
+  },
+  "twoFactor": {
+    "setUp": "Configurée",
+    "notSetUp": "Non configurée"
+  },
+  "empty": {
+    "title": "Aucun utilisateur ne correspond à ces filtres",
+    "description": "Modifiez les filtres ou invitez quelqu'un."
+  },
+  "noAccess": {
+    "title": "Seuls les administrateurs de l'espace peuvent gérer les utilisateurs",
+    "description": "Demandez à un administrateur si quelqu'un doit être ajouté."
+  },
+  "actions": {
+    "menu": "Actions pour {{name}}",
+    "invite": "Inviter un utilisateur",
+    "viewAccess": "Voir l'accès aux projets",
+    "resendInvite": "Renvoyer l'invitation",
+    "changeRole": "Changer le rôle",
+    "resetTwoFactor": "Réinitialiser la double authentification",
+    "deactivate": "Désactiver",
+    "reactivate": "Réactiver"
+  },
+  "invite": {
+    "title": "Inviter un utilisateur",
+    "email": "E-mail",
+    "name": "Nom",
+    "role": "Rôle dans l'espace",
+    "submit": "Envoyer l'invitation",
+    "adminOwnerOnly": "Seul le propriétaire peut inviter des administrateurs.",
+    "success": "Invitation envoyée à {{email}}"
+  },
+  "changeRole": {
+    "title": "Changer le rôle de {{name}}",
+    "submit": "Enregistrer le rôle",
+    "success": "{{name}} est maintenant {{role}}"
+  },
+  "confirm": {
+    "deactivate": {
+      "title": "Désactiver {{name}} ?",
+      "action": "Désactiver",
+      "message": "Toutes ses sessions sont fermées et ses jetons d'API cessent de fonctionner. Son historique est conservé."
+    },
+    "reactivate": {
+      "title": "Réactiver {{name}} ?",
+      "action": "Réactiver",
+      "message": "Cette personne pourra se reconnecter. Si l'invitation n'a jamais été acceptée, une nouvelle est envoyée."
+    },
+    "resetTwoFactor": {
+      "title": "Réinitialiser la double authentification de {{name}} ?",
+      "action": "Réinitialiser",
+      "message": "Cette personne est déconnectée et devra configurer une application d'authentification à la prochaine connexion."
+    }
+  },
+  "toasts": {
+    "inviteResent": "Invitation renvoyée à {{email}}",
+    "deactivated": "{{name}} est désactivé",
+    "reactivated": "{{name}} est de nouveau actif",
+    "reactivatedInvited": "{{name}} est réactivé et une nouvelle invitation a été envoyée",
+    "twoFactorReset": "Double authentification réinitialisée pour {{name}}"
+  },
+  "errors": {
+    "emailInvalid": "Saisissez une adresse e-mail valide",
+    "emailUsed": "Un utilisateur avec cet e-mail existe déjà",
+    "nameRequired": "Saisissez un nom de 100 caractères au plus",
+    "cannotChange": "Vous ne pouvez pas modifier votre propre compte ni celui du propriétaire.",
+    "ownerOnly": "Seul le propriétaire de l'espace peut faire cela.",
+    "notInvited": "Cet utilisateur a déjà accepté l'invitation."
+  },
+  "access": {
+    "back": "Tous les utilisateurs",
+    "title": "Accès aux projets",
+    "columns": {
+      "project": "Projet",
+      "key": "Clé",
+      "role": "Rôle",
+      "state": "État"
+    },
+    "archived": "Archivé",
+    "workspaceAdminNote": "Les administrateurs de l'espace agissent comme Admin dans tous les projets, y compris ceux qui ne sont pas listés.",
+    "empty": {
+      "title": "Membre d'aucun projet",
+      "description": "Ajoutez cette personne depuis la page Membres d'un projet."
+    },
+    "notFound": {
+      "title": "Utilisateur introuvable"
+    },
+    "loadError": "Impossible de charger l'accès aux projets"
+  },
+  "projectRoles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Lecteur"
+  }
+}

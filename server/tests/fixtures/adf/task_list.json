@@ -1,0 +1,14 @@
+{
+  "type": "doc",
+  "version": 1,
+  "content": [
+    {"type": "paragraph", "content": [{"type": "text", "text": "Critères d’acceptation"}]},
+    {"type": "taskList", "attrs": {"localId": "list-1"}, "content": [
+      {"type": "taskItem", "attrs": {"localId": "item-1", "state": "TODO"}, "content": [{"type": "text", "text": "Le panier se vide"}]},
+      {"type": "taskItem", "attrs": {"localId": "item-2", "state": "DONE"}, "content": [{"type": "text", "text": "Le total est mis à jour"}]},
+      {"type": "taskList", "attrs": {"localId": "list-2"}, "content": [
+        {"type": "taskItem", "attrs": {"localId": "item-3", "state": "TODO"}, "content": [{"type": "text", "text": "TVA incluse"}]}
+      ]}
+    ]}
+  ]
+}

@@ -1,0 +1,5 @@
+from app.modules.notifications.infrastructure.notification_table import NotificationTable
+from app.modules.notifications.infrastructure.postgres_notification_repository import PostgresNotificationRepository
+from app.modules.notifications.infrastructure.postgres_recipient_directory import PostgresRecipientDirectory
+
+__all__ = ["NotificationTable", "PostgresNotificationRepository", "PostgresRecipientDirectory"]

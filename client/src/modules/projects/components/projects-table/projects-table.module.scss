@@ -1,0 +1,39 @@
+.nameCell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 200px;
+}
+
+.description {
+  max-width: 360px;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  text-overflow: ellipsis;
+}
+
+.mono {
+  font-family: var(--mantine-font-family-monospace);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.actionsCell {
+  width: 1%;
+  text-align: right;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

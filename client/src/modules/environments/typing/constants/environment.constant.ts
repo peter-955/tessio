@@ -1,0 +1,7 @@
+export const ENVIRONMENT_URL_PATTERN = /^https?:\/\/\S+$/;
+
+export const MAX_ENVIRONMENT_NAME_LENGTH = 100;
+
+export const MAX_ENVIRONMENT_URL_LENGTH = 2000;
+
+export const ENVIRONMENT_SKELETON_ROW_COUNT = 4;

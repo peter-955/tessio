@@ -1,0 +1,132 @@
+{
+  "tab": {
+    "listLabel": "Câu hỏi khoảng trống"
+  },
+  "filter": {
+    "label": "Hiển thị khoảng trống",
+    "open": "Đang mở ({{count}})",
+    "resolved": "Đã trả lời ({{count}})",
+    "all": "Tất cả ({{count}})"
+  },
+  "banner": {
+    "title_one": "{{count}} khoảng trống đang mở chặn lượt chạy",
+    "title_other": "{{count}} khoảng trống đang mở chặn lượt chạy",
+    "description": "Mọi khoảng trống phải được trả lời trước khi chạy story này."
+  },
+  "type": {
+    "missing_ac": "Thiếu tiêu chí",
+    "unclear_goal": "Mục tiêu chưa rõ",
+    "missing_step": "Thiếu bước",
+    "missing_test_data": "Thiếu dữ liệu kiểm thử",
+    "other": "Khác"
+  },
+  "severity": {
+    "high": "Cao",
+    "medium": "Trung bình",
+    "low": "Thấp"
+  },
+  "status": {
+    "open": "Đang mở",
+    "resolved": "Đã trả lời"
+  },
+  "target": {
+    "label": "Đối tượng",
+    "story": "Story",
+    "criterion": "Tiêu chí chấp nhận",
+    "test_case": "Ca kiểm thử"
+  },
+  "dataScope": {
+    "label": "Phạm vi dữ liệu",
+    "project": "Dữ liệu dự án",
+    "environment": "Dữ liệu môi trường"
+  },
+  "badge": {
+    "viaClaude": "qua Claude",
+    "deactivated": "Đã vô hiệu hóa"
+  },
+  "card": {
+    "raisedBy": "{{name}} nêu",
+    "answeredBy": "{{name}} trả lời",
+    "reopenedBy": "{{name}} mở lại",
+    "assignedTo": "Giao cho {{name}}",
+    "assignedToRole": "Giao cho bất kỳ {{role}}",
+    "unassigned": "Chưa giao",
+    "reassignHint": "Hãy giao lại: người được giao đã bị vô hiệu hóa."
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev"
+  },
+  "actions": {
+    "raise": "Nêu khoảng trống",
+    "answer": "Trả lời",
+    "reassign": "Giao lại",
+    "reopen": "Mở lại",
+    "openStory": "Mở story"
+  },
+  "answer": {
+    "title": "Trả lời khoảng trống",
+    "label": "Câu trả lời của bạn",
+    "submit": "Trả lời và đóng"
+  },
+  "reassign": {
+    "title": "Giao lại khoảng trống",
+    "label": "Giao cho",
+    "submit": "Giao lại",
+    "anyRole": "Bất kỳ {{role}}"
+  },
+  "reopen": {
+    "title": "Mở lại khoảng trống",
+    "description": "Khoảng trống quay lại người được giao và lại chặn lượt chạy.",
+    "submit": "Mở lại"
+  },
+  "raise": {
+    "title": "Nêu khoảng trống",
+    "typeLabel": "Loại",
+    "severityLabel": "Mức độ",
+    "targetRefLabel": "Mục nào",
+    "questionLabel": "Câu hỏi",
+    "assigneeLabel": "Người được giao",
+    "assigneeAutomatic": "Tự động (theo loại)",
+    "noTargets": "Không có mục nào trong story này",
+    "submit": "Nêu"
+  },
+  "toasts": {
+    "raised": "Đã nêu khoảng trống",
+    "answered": "Đã trả lời",
+    "reassigned": "Đã giao lại",
+    "reopened": "Đã mở lại"
+  },
+  "empty": {
+    "openTitle": "Không có khoảng trống đang mở",
+    "openDescription": "Không có khoảng trống nào chặn lượt chạy của story này.",
+    "resolvedTitle": "Chưa có khoảng trống đã trả lời",
+    "allTitle": "Story này chưa có khoảng trống"
+  },
+  "inbox": {
+    "title": "Khoảng trống của tôi",
+    "description": "Câu hỏi được giao cho bạn hoặc vai trò của bạn, trong mọi dự án.",
+    "filterLabel": "Hiển thị",
+    "filterOpen": "Đang mở",
+    "filterAll": "Tất cả",
+    "emptyTitle": "Không có gì chờ bạn",
+    "emptyDescription": "Khoảng trống giao cho bạn sẽ hiện ở đây.",
+    "limitNotice": "Đang hiện {{count}} khoảng trống gần nhất."
+  },
+  "loading": "Đang tải khoảng trống",
+  "loadError": "Không tải được khoảng trống",
+  "retry": "Thử lại",
+  "errors": {
+    "alreadyResolved": "Khoảng trống này đã được trả lời.",
+    "alreadyOpen": "Khoảng trống này đang mở.",
+    "unknownTarget": "Mục này không thuộc story.",
+    "assigneeNotActive": "Chọn thành viên đang hoạt động có thể trả lời.",
+    "questionRequired": "Hãy nhập câu hỏi.",
+    "answerRequired": "Hãy nhập câu trả lời.",
+    "targetRequired": "Hãy chọn đối tượng.",
+    "typeRequired": "Hãy chọn loại khoảng trống."
+  }
+}

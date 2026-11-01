@@ -1,0 +1,162 @@
+{
+  "list": {
+    "title": "Projets",
+    "description": "Tous les projets que vous pouvez ouvrir.",
+    "newProject": "Nouveau projet",
+    "showArchived": "Afficher les projets archivés",
+    "loading": "Chargement des projets",
+    "columns": {
+      "name": "Nom",
+      "key": "Clé",
+      "jira": "Projet Jira",
+      "role": "Mon rôle",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "archived": "Archivé",
+    "noRole": "Aucun rôle",
+    "actionsFor": "Actions pour {{name}}",
+    "actions": {
+      "members": "Membres",
+      "settings": "Paramètres",
+      "archive": "Archiver",
+      "unarchive": "Désarchiver"
+    },
+    "empty": {
+      "adminTitle": "Aucun projet pour le moment",
+      "memberTitle": "Vous ne faites encore partie d'aucun projet",
+      "memberDescription": "Demandez à un administrateur de l'espace de travail de vous ajouter."
+    },
+    "loadError": "Impossible de charger les projets"
+  },
+  "archive": {
+    "title": "Archiver {{name}} ?",
+    "body": "Tout le monde garde l'accès en lecture ; plus rien ne peut être modifié.",
+    "confirm": "Archiver",
+    "success": "Projet archivé"
+  },
+  "unarchive": {
+    "title": "Désarchiver {{name}} ?",
+    "body": "Les membres pourront de nouveau le modifier.",
+    "confirm": "Désarchiver",
+    "success": "Projet désarchivé"
+  },
+  "create": {
+    "title": "Nouveau projet",
+    "description": "Associez un projet et un tableau Jira.",
+    "submit": "Créer le projet",
+    "success": "Projet créé",
+    "loading": "Chargement de la connexion Jira",
+    "adminOnly": "Seuls les administrateurs de l'espace de travail peuvent créer des projets",
+    "jiraRequired": {
+      "title": "Connectez d'abord Jira",
+      "description": "Chaque projet est associé à un projet Jira.",
+      "action": "Configurer la connexion Jira"
+    }
+  },
+  "fields": {
+    "jiraProject": "Projet Jira",
+    "jiraBoard": "Tableau Jira",
+    "name": "Nom",
+    "key": "Clé",
+    "keyDescription": "2 à 10 lettres majuscules ou chiffres, en commençant par une lettre. Elle ne pourra plus être modifiée.",
+    "description": "Description"
+  },
+  "hints": {
+    "allJiraProjectsLinked": "Tous les projets Jira sont déjà associés",
+    "noBoards": "Ce projet Jira n'a aucun tableau. Créez-en un dans Jira d'abord.",
+    "noMatch": "Aucun résultat"
+  },
+  "errors": {
+    "jiraProjectRequired": "Choisissez un projet Jira",
+    "jiraBoardRequired": "Choisissez un tableau",
+    "nameRequired": "Saisissez un nom",
+    "keyInvalid": "Utilisez 2 à 10 lettres majuscules ou chiffres, en commençant par une lettre",
+    "tooLong": "Utilisez au plus {{count}} caractères",
+    "jiraLoadFailed": "Impossible de charger les données Jira",
+    "openJiraSettings": "Ouvrir les paramètres Jira",
+    "retry": "Réessayer"
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Lecteur"
+  },
+  "members": {
+    "title": "Membres",
+    "description": "Les personnes de ce projet et leurs rôles.",
+    "add": "Ajouter un membre",
+    "empty": "Aucun membre pour le moment",
+    "loading": "Chargement des membres",
+    "loadError": "Impossible de charger les membres",
+    "roleFor": "Rôle de {{name}}",
+    "remove": "Retirer {{name}}",
+    "removeTitle": "Retirer {{name}} ?",
+    "removeBody": "Cette personne perdra l'accès à ce projet.",
+    "removeSelf": "Vous perdrez l'accès à ce projet.",
+    "removeConfirm": "Retirer",
+    "roleUpdated": "Rôle mis à jour",
+    "memberAdded": "Membre ajouté",
+    "memberRemoved": "Membre retiré",
+    "invited": "Invité",
+    "deactivated": "Désactivé",
+    "columns": {
+      "member": "Membre",
+      "status": "Statut",
+      "role": "Rôle",
+      "added": "Ajouté le",
+      "actions": "Actions"
+    }
+  },
+  "addMember": {
+    "title": "Ajouter un membre",
+    "search": "Rechercher par nom ou e-mail",
+    "user": "Utilisateur",
+    "role": "Rôle",
+    "submit": "Ajouter",
+    "noCandidates": "Aucun utilisateur correspondant sans accès",
+    "invitedSuffix": "(invité)"
+  },
+  "settings": {
+    "title": "Paramètres du projet",
+    "description": "Nom, tableau Jira, valeurs par défaut et types de fichier.",
+    "save": "Enregistrer",
+    "saved": "Paramètres enregistrés",
+    "readOnlyArchived": "Ce projet est archivé et en lecture seule",
+    "needsAdmin": "Le rôle Admin du projet est nécessaire pour modifier les paramètres",
+    "general": {
+      "title": "Général",
+      "boardLoadFailed": "Impossible de charger les tableaux ; le tableau actuel est conservé.",
+      "boardLoading": "Chargement des tableaux…"
+    },
+    "defaults": {
+      "title": "Valeurs par défaut",
+      "environment": "Environnement par défaut",
+      "environmentDescription": "Utilisé quand une exécution n'en choisit pas.",
+      "noEnvironments": "Aucun environnement pour le moment.",
+      "manageEnvironments": "Gérer les environnements",
+      "environmentInvalid": "Choisissez un environnement actif",
+      "loading": "Chargement des environnements",
+      "loadError": "Impossible de charger les environnements"
+    },
+    "fileTypes": {
+      "title": "Types de fichier autorisés",
+      "label": "Types de fichier",
+      "description": "Les captures d'écran des exécutions sont toujours autorisées.",
+      "otherType": "Autre type MIME",
+      "add": "Ajouter",
+      "reset": "Rétablir les valeurs par défaut",
+      "atLeastOne": "Gardez au moins un type de fichier",
+      "invalidType": "Saisissez un type MIME, par exemple text/markdown",
+      "tooMany": "50 types de fichier au maximum"
+    },
+    "archive": {
+      "title": "Archiver le projet",
+      "description": "Les projets archivés restent lisibles par tout le monde.",
+      "action": "Archiver le projet"
+    }
+  }
+}

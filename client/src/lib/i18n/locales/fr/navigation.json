@@ -1,0 +1,18 @@
+{
+  "dashboard": "Tableau de bord",
+  "sprints": "Sprints",
+  "stories": "Stories",
+  "testCases": "Cas de test",
+  "runs": "Exécutions",
+  "failures": "Échecs",
+  "testData": "Données de test",
+  "members": "Membres",
+  "settings": "Paramètres",
+  "projects": "Projets",
+  "users": "Utilisateurs",
+  "workspaceSettings": "Paramètres de l'espace de travail",
+  "profile": "Profil",
+  "connectClaude": "Connecter Claude",
+  "gapInbox": "Mes écarts",
+  "environments": "Environnements"
+}

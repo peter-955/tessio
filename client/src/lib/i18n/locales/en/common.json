@@ -1,0 +1,62 @@
+{
+  "actions": {
+    "cancel": "Cancel",
+    "copy": "Copy",
+    "copied": "Copied",
+    "close": "Close"
+  },
+  "colorScheme": {
+    "label": "Color theme",
+    "light": "Light",
+    "dark": "Dark",
+    "auto": "System"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "duration": {
+    "seconds": "{{seconds}}s",
+    "minutesSeconds": "{{minutes}}m {{seconds}}s"
+  },
+  "pinInput": {
+    "digitLabel": "{{label}}, digit {{position}} of {{total}}"
+  },
+  "passwordInput": {
+    "toggleVisibility": "Show or hide password"
+  },
+  "appShell": {
+    "skipToContent": "Skip to main content",
+    "openNavigation": "Open navigation",
+    "closeNavigation": "Close navigation",
+    "navigationLabel": "Navigation",
+    "projectNavigation": "Project navigation",
+    "workspaceNavigation": "Workspace navigation",
+    "projectLoading": "Loading the project",
+    "projectSwitcher": {
+      "currentPrefix": "Switch project, current:",
+      "placeholder": "Choose a project",
+      "listLabel": "Your projects",
+      "loading": "Loading projects…",
+      "empty": "No projects yet",
+      "loadError": "Projects could not be loaded",
+      "allProjects": "All projects",
+      "archived": "Archived"
+    },
+    "search": {
+      "label": "Search",
+      "comingSoon": "Search is coming in a later version"
+    },
+    "userMenu": {
+      "label": "Account menu",
+      "signOut": "Sign out",
+      "signOutAll": "Sign out of all devices"
+    },
+    "noProject": {
+      "description": "Pick a project to see its sprints, stories and runs."
+    },
+    "archivedBanner": {
+      "title": "This project is archived",
+      "message": "You can still view everything, but nothing can be changed."
+    }
+  }
+}

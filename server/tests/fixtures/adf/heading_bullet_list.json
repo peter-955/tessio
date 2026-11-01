@@ -1,0 +1,20 @@
+{
+  "type": "doc",
+  "version": 1,
+  "content": [
+    {"type": "paragraph", "content": [{"type": "text", "text": "As a shopper I want to pay by card."}]},
+    {"type": "bulletList", "content": [
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Context note, not a criterion"}]}]}
+    ]},
+    {"type": "heading", "attrs": {"level": 2}, "content": [{"type": "text", "text": "Acceptance Criteria"}]},
+    {"type": "bulletList", "content": [
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Card   payment   succeeds"}]}]},
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Declined card shows "}, {"type": "text", "text": "an error", "marks": [{"type": "strong"}]}]}]},
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "   "}]}]}
+    ]},
+    {"type": "heading", "attrs": {"level": 2}, "content": [{"type": "text", "text": "Notes"}]},
+    {"type": "bulletList", "content": [
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Out of scope"}]}]}
+    ]}
+  ]
+}

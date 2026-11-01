@@ -1,0 +1,14 @@
+{
+  "type": "doc",
+  "version": 1,
+  "content": [
+    {"type": "paragraph", "content": [{"type": "text", "text": "Show the order history."}]},
+    {"type": "bulletList", "content": [
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Orders are listed newest first"}]}]},
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Each order shows its total"}]}]}
+    ]},
+    {"type": "orderedList", "content": [
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Second list is ignored"}]}]}
+    ]}
+  ]
+}

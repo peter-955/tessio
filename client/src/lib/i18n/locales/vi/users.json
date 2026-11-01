@@ -1,0 +1,126 @@
+{
+  "title": "Người dùng",
+  "description": "Mời mọi người vào không gian làm việc và quản lý quyền truy cập.",
+  "you": "Bạn",
+  "retry": "Thử lại",
+  "loadError": "Không tải được danh sách người dùng",
+  "filters": {
+    "search": "Tìm theo tên hoặc email",
+    "status": "Trạng thái",
+    "role": "Vai trò trong không gian",
+    "all": "Tất cả"
+  },
+  "columns": {
+    "user": "Người dùng",
+    "role": "Vai trò",
+    "status": "Trạng thái",
+    "twoFactor": "Xác thực hai lớp",
+    "actions": "Thao tác"
+  },
+  "workspaceRoles": {
+    "owner": "Chủ sở hữu",
+    "admin": "Quản trị viên",
+    "member": "Thành viên"
+  },
+  "statuses": {
+    "invited": "Đã mời",
+    "active": "Đang hoạt động",
+    "deactivated": "Đã vô hiệu hóa"
+  },
+  "twoFactor": {
+    "setUp": "Đã thiết lập",
+    "notSetUp": "Chưa thiết lập"
+  },
+  "empty": {
+    "title": "Không có người dùng nào khớp bộ lọc",
+    "description": "Hãy đổi bộ lọc hoặc mời một người."
+  },
+  "noAccess": {
+    "title": "Chỉ quản trị viên mới quản lý được người dùng",
+    "description": "Hãy nhờ quản trị viên nếu cần thêm người."
+  },
+  "actions": {
+    "menu": "Thao tác cho {{name}}",
+    "invite": "Mời người dùng",
+    "viewAccess": "Xem quyền truy cập dự án",
+    "resendInvite": "Gửi lại lời mời",
+    "changeRole": "Đổi vai trò",
+    "resetTwoFactor": "Đặt lại xác thực hai lớp",
+    "deactivate": "Vô hiệu hóa",
+    "reactivate": "Kích hoạt lại"
+  },
+  "invite": {
+    "title": "Mời người dùng",
+    "email": "Email",
+    "name": "Tên",
+    "role": "Vai trò",
+    "submit": "Gửi lời mời",
+    "adminOwnerOnly": "Chỉ chủ sở hữu mới mời được quản trị viên.",
+    "success": "Đã gửi lời mời tới {{email}}"
+  },
+  "changeRole": {
+    "title": "Đổi vai trò của {{name}}",
+    "submit": "Lưu vai trò",
+    "success": "{{name}} giờ là {{role}}"
+  },
+  "confirm": {
+    "deactivate": {
+      "title": "Vô hiệu hóa {{name}}?",
+      "action": "Vô hiệu hóa",
+      "message": "Người này bị đăng xuất khỏi mọi nơi và token API ngừng hoạt động. Lịch sử vẫn được giữ."
+    },
+    "reactivate": {
+      "title": "Kích hoạt lại {{name}}?",
+      "action": "Kích hoạt lại",
+      "message": "Người này có thể đăng nhập lại. Nếu chưa từng chấp nhận lời mời, một lời mời mới sẽ được gửi."
+    },
+    "resetTwoFactor": {
+      "title": "Đặt lại xác thực hai lớp cho {{name}}?",
+      "action": "Đặt lại",
+      "message": "Người này bị đăng xuất và phải thiết lập lại ứng dụng xác thực ở lần đăng nhập sau."
+    }
+  },
+  "toasts": {
+    "inviteResent": "Đã gửi lại lời mời tới {{email}}",
+    "deactivated": "Đã vô hiệu hóa {{name}}",
+    "reactivated": "{{name}} đã hoạt động trở lại",
+    "reactivatedInvited": "Đã kích hoạt lại {{name}} và gửi lời mời mới",
+    "twoFactorReset": "Đã đặt lại xác thực hai lớp cho {{name}}"
+  },
+  "errors": {
+    "emailInvalid": "Nhập địa chỉ email hợp lệ",
+    "emailUsed": "Đã có người dùng với email này",
+    "nameRequired": "Nhập tên tối đa 100 ký tự",
+    "cannotChange": "Bạn không thể thay đổi tài khoản của mình hoặc của chủ sở hữu.",
+    "ownerOnly": "Chỉ chủ sở hữu không gian làm việc mới làm được việc này.",
+    "notInvited": "Người dùng này đã chấp nhận lời mời."
+  },
+  "access": {
+    "back": "Tất cả người dùng",
+    "title": "Quyền truy cập dự án",
+    "columns": {
+      "project": "Dự án",
+      "key": "Mã",
+      "role": "Vai trò",
+      "state": "Trạng thái"
+    },
+    "archived": "Đã lưu trữ",
+    "workspaceAdminNote": "Quản trị viên không gian làm việc có quyền Admin trong mọi dự án, kể cả dự án không có ở đây.",
+    "empty": {
+      "title": "Chưa là thành viên dự án nào",
+      "description": "Hãy thêm từ trang Thành viên của dự án."
+    },
+    "notFound": {
+      "title": "Không tìm thấy người dùng"
+    },
+    "loadError": "Không tải được quyền truy cập dự án"
+  },
+  "projectRoles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Người xem"
+  }
+}

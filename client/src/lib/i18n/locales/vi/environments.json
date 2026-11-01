@@ -1,0 +1,65 @@
+{
+  "title": "Môi trường",
+  "description": "Nơi chạy kiểm thử: URL gốc và URL kiểm tra tình trạng.",
+  "actions": {
+    "add": "Thêm môi trường",
+    "edit": "Sửa",
+    "archive": "Lưu trữ",
+    "unarchive": "Bỏ lưu trữ",
+    "delete": "Xóa",
+    "save": "Lưu",
+    "create": "Tạo môi trường",
+    "retry": "Thử lại"
+  },
+  "table": {
+    "ariaLabel": "Môi trường",
+    "name": "Tên",
+    "baseUrl": "URL gốc",
+    "healthCheckUrl": "URL kiểm tra tình trạng",
+    "status": "Trạng thái",
+    "actions": "Thao tác",
+    "actionsFor": "Thao tác cho {{name}}",
+    "default": "Mặc định",
+    "noValue": "—",
+    "loading": "Đang tải môi trường"
+  },
+  "status": {
+    "active": "Đang dùng",
+    "archived": "Đã lưu trữ"
+  },
+  "showArchived": "Hiện môi trường đã lưu trữ",
+  "empty": {
+    "title": "Chưa có môi trường nào",
+    "description": "Thêm những nơi chạy kiểm thử, ví dụ staging hoặc production."
+  },
+  "form": {
+    "createTitle": "Thêm môi trường",
+    "editTitle": "Sửa môi trường",
+    "name": "Tên",
+    "baseUrl": "URL gốc",
+    "baseUrlPlaceholder": "https://staging.example.com",
+    "healthCheckUrl": "URL kiểm tra tình trạng",
+    "healthCheckHint": "Không bắt buộc. Một URL phản hồi khi môi trường đang hoạt động.",
+    "healthCheckUrlPlaceholder": "https://staging.example.com/health",
+    "nameRequired": "Hãy nhập tên.",
+    "nameTooLong": "Dùng tối đa {{max}} ký tự.",
+    "urlInvalid": "Hãy nhập URL bắt đầu bằng http:// hoặc https://, không có khoảng trắng.",
+    "urlTooLong": "Dùng tối đa {{max}} ký tự."
+  },
+  "delete": {
+    "title": "Xóa môi trường",
+    "message": "Xóa {{name}}? Dữ liệu kiểm thử riêng của môi trường này cũng sẽ bị xóa."
+  },
+  "toasts": {
+    "created": "Đã tạo môi trường",
+    "updated": "Đã lưu môi trường",
+    "archived": "Đã lưu trữ môi trường",
+    "unarchived": "Đã bỏ lưu trữ môi trường",
+    "deleted": "Đã xóa môi trường"
+  },
+  "errors": {
+    "nameAlreadyUsed": "Đã có môi trường mang tên này.",
+    "inUse": "Có lần chạy đang dùng môi trường này. Hãy lưu trữ thay vì xóa.",
+    "loadFailed": "Không tải được danh sách môi trường."
+  }
+}

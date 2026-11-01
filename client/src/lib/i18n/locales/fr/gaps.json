@@ -1,0 +1,132 @@
+{
+  "tab": {
+    "listLabel": "Questions d'écart"
+  },
+  "filter": {
+    "label": "Afficher les écarts",
+    "open": "Ouverts ({{count}})",
+    "resolved": "Répondus ({{count}})",
+    "all": "Tous ({{count}})"
+  },
+  "banner": {
+    "title_one": "{{count}} écart ouvert bloque les exécutions",
+    "title_other": "{{count}} écarts ouverts bloquent les exécutions",
+    "description": "Tous les écarts doivent recevoir une réponse avant de lancer une exécution sur cette story."
+  },
+  "type": {
+    "missing_ac": "Critère manquant",
+    "unclear_goal": "Objectif flou",
+    "missing_step": "Étape manquante",
+    "missing_test_data": "Données de test manquantes",
+    "other": "Autre"
+  },
+  "severity": {
+    "high": "Haute",
+    "medium": "Moyenne",
+    "low": "Basse"
+  },
+  "status": {
+    "open": "Ouvert",
+    "resolved": "Répondu"
+  },
+  "target": {
+    "label": "Cible",
+    "story": "Story",
+    "criterion": "Critère d'acceptation",
+    "test_case": "Cas de test"
+  },
+  "dataScope": {
+    "label": "Portée des données",
+    "project": "Données du projet",
+    "environment": "Données d'environnement"
+  },
+  "badge": {
+    "viaClaude": "via Claude",
+    "deactivated": "Désactivé"
+  },
+  "card": {
+    "raisedBy": "Soulevé par {{name}}",
+    "answeredBy": "Répondu par {{name}}",
+    "reopenedBy": "Rouvert par {{name}}",
+    "assignedTo": "Attribué à {{name}}",
+    "assignedToRole": "Attribué à tout {{role}}",
+    "unassigned": "Non attribué",
+    "reassignHint": "Réattribuez cet écart : la personne attribuée est désactivée."
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev"
+  },
+  "actions": {
+    "raise": "Signaler un écart",
+    "answer": "Répondre",
+    "reassign": "Réattribuer",
+    "reopen": "Rouvrir",
+    "openStory": "Ouvrir la story"
+  },
+  "answer": {
+    "title": "Répondre à l'écart",
+    "label": "Votre réponse",
+    "submit": "Répondre et résoudre"
+  },
+  "reassign": {
+    "title": "Réattribuer l'écart",
+    "label": "Attribuer à",
+    "submit": "Réattribuer",
+    "anyRole": "Tout {{role}}"
+  },
+  "reopen": {
+    "title": "Rouvrir l'écart",
+    "description": "L'écart revient à la personne attribuée et bloque de nouveau les exécutions.",
+    "submit": "Rouvrir"
+  },
+  "raise": {
+    "title": "Signaler un écart",
+    "typeLabel": "Type",
+    "severityLabel": "Gravité",
+    "targetRefLabel": "Lequel",
+    "questionLabel": "Question",
+    "assigneeLabel": "Personne attribuée",
+    "assigneeAutomatic": "Automatique (selon le type)",
+    "noTargets": "Rien à choisir sur cette story",
+    "submit": "Signaler"
+  },
+  "toasts": {
+    "raised": "Écart signalé",
+    "answered": "Réponse enregistrée",
+    "reassigned": "Écart réattribué",
+    "reopened": "Écart rouvert"
+  },
+  "empty": {
+    "openTitle": "Aucun écart ouvert",
+    "openDescription": "Aucun écart ne bloque les exécutions de cette story.",
+    "resolvedTitle": "Aucun écart répondu",
+    "allTitle": "Aucun écart sur cette story"
+  },
+  "inbox": {
+    "title": "Mes écarts",
+    "description": "Questions d'écart qui vous sont adressées, ou à votre rôle, dans vos projets.",
+    "filterLabel": "Afficher",
+    "filterOpen": "Ouverts",
+    "filterAll": "Tous",
+    "emptyTitle": "Rien ne vous attend",
+    "emptyDescription": "Les écarts qui vous sont adressés apparaîtront ici.",
+    "limitNotice": "Affichage des {{count}} écarts les plus récents."
+  },
+  "loading": "Chargement des écarts",
+  "loadError": "Impossible de charger les écarts",
+  "retry": "Réessayer",
+  "errors": {
+    "alreadyResolved": "Cet écart a déjà reçu une réponse.",
+    "alreadyOpen": "Cet écart est déjà ouvert.",
+    "unknownTarget": "Cet élément n'est pas dans cette story.",
+    "assigneeNotActive": "Choisissez un membre actif pouvant répondre.",
+    "questionRequired": "Saisissez la question.",
+    "answerRequired": "Saisissez une réponse.",
+    "targetRequired": "Choisissez l'objet de l'écart.",
+    "typeRequired": "Choisissez un type d'écart."
+  }
+}

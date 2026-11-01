@@ -1,0 +1,135 @@
+{
+  "title": "Dữ liệu kiểm thử",
+  "description": "Biến, endpoint và bí mật, theo dự án và theo môi trường.",
+  "tabs": {
+    "ariaLabel": "Các mục dữ liệu kiểm thử",
+    "data": "Dữ liệu",
+    "environments": "Môi trường"
+  },
+  "actions": {
+    "add": "Thêm dữ liệu",
+    "import": "Nhập",
+    "edit": "Sửa {{key}} trong {{scope}}",
+    "delete": "Xóa",
+    "deleteItem": "Xóa {{key}} trong {{scope}}",
+    "reveal": "Hiện",
+    "hide": "Ẩn",
+    "override": "Ghi đè {{key}} trong {{scope}}",
+    "addInScope": "Thêm {{key}} trong {{scope}}",
+    "save": "Lưu",
+    "create": "Thêm",
+    "back": "Quay lại",
+    "commit": "Nhập các dòng đã chọn",
+    "selectAll": "Chọn tất cả",
+    "cancelUpload": "Hủy tải lên",
+    "retry": "Thử lại"
+  },
+  "grid": {
+    "ariaLabel": "Dữ liệu kiểm thử theo môi trường",
+    "key": "Khóa",
+    "allEnvironments": "Mọi môi trường",
+    "archived": "Đã lưu trữ",
+    "search": "Tìm khóa",
+    "searchPlaceholder": "Lọc theo khóa",
+    "showArchived": "Hiện môi trường đã lưu trữ",
+    "inherited": "Dùng giá trị của Mọi môi trường",
+    "noValue": "—",
+    "noMatch": "Không có khóa nào khớp với tìm kiếm này.",
+    "noEnvironmentsHint": "Dự án này chưa có môi trường nào, nên giá trị trong Mọi môi trường được áp dụng ở mọi nơi.",
+    "manageEnvironments": "Quản lý môi trường",
+    "loading": "Đang tải dữ liệu kiểm thử"
+  },
+  "kind": {
+    "variable": "Biến",
+    "endpoint": "Endpoint",
+    "secret": "Bí mật"
+  },
+  "secret": {
+    "mask": "Giá trị bí mật đã ẩn",
+    "revealLabel": "Hiện {{key}}",
+    "hideLabel": "Ẩn {{key}}",
+    "revealOnlyRoles": "Chỉ Admin và QC mới xem được giá trị bí mật",
+    "autoHide": "Tự ẩn lại sau 30 giây",
+    "noValue": "Chưa có giá trị"
+  },
+  "empty": {
+    "title": "Chưa có dữ liệu kiểm thử",
+    "description": "Thêm biến, endpoint và bí mật, hoặc nhập một tệp .env, JSON hay YAML."
+  },
+  "form": {
+    "createTitle": "Thêm dữ liệu kiểm thử",
+    "editTitle": "Sửa dữ liệu kiểm thử",
+    "key": "Khóa",
+    "keyHint": "Bắt đầu bằng một chữ cái. Chỉ gồm chữ cái, chữ số, _ . và -.",
+    "keyInvalid": "Hãy bắt đầu bằng một chữ cái và chỉ dùng chữ cái, chữ số, _ . và - (tối đa 100 ký tự).",
+    "kind": "Loại",
+    "secretLocked": "Chỉ Admin và QC mới lưu được bí mật.",
+    "scope": "Phạm vi",
+    "value": "Giá trị",
+    "secretValue": "Giá trị bí mật",
+    "keepSecretHint": "Để trống để giữ giá trị hiện tại",
+    "valueRequired": "Hãy nhập giá trị.",
+    "valueTooLong": "Dùng tối đa {{max}} ký tự."
+  },
+  "delete": {
+    "title": "Xóa dữ liệu kiểm thử",
+    "message": "Xóa {{key}} trong {{scope}}?"
+  },
+  "toasts": {
+    "created": "Đã thêm dữ liệu kiểm thử",
+    "updated": "Đã lưu dữ liệu kiểm thử",
+    "deleted": "Đã xóa dữ liệu kiểm thử",
+    "imported": "Đã nhập: {{created}} mới, {{updated}} cập nhật, {{unchanged}} không đổi"
+  },
+  "import": {
+    "title": "Nhập dữ liệu kiểm thử",
+    "fileStepTitle": "Bước 1/2: chọn tệp",
+    "previewStepTitle": "Bước 2/2: chọn những gì cần nhập",
+    "scope": "Nhập vào",
+    "dropTitle": "Thả tệp vào đây hoặc bấm để chọn",
+    "dropDescription": ".env, JSON hoặc YAML, tối đa 1 MB",
+    "uploading": "Đang tải lên… {{percent}}%",
+    "reading": "Đang đọc tệp…",
+    "format": "Định dạng",
+    "formatName": {
+      "dotenv": ".env",
+      "json": "JSON",
+      "yaml": "YAML"
+    },
+    "include": "Nhập",
+    "includeKey": "Nhập {{key}}",
+    "key": "Khóa",
+    "value": "Giá trị",
+    "kind": "Loại",
+    "kindOf": "Loại của {{key}}",
+    "actionColumn": "Thay đổi",
+    "action": {
+      "create": "Mới",
+      "update": "Cập nhật",
+      "unchanged": "Không đổi"
+    },
+    "secretLocked": "Các dòng trông giống bí mật bị bỏ qua, vì chỉ Admin và QC mới lưu được bí mật.",
+    "noRows": "Tệp này không có dòng nào để nhập.",
+    "skippedTitle": "Các dòng bị bỏ qua",
+    "skipReason": {
+      "invalid_line": "Không phải cặp khóa và giá trị",
+      "invalid_key": "Khóa không hợp lệ",
+      "unsupported_value": "Chỉ nhập được văn bản, số và true hoặc false",
+      "value_too_long": "Giá trị dài hơn 10.000 ký tự"
+    },
+    "nothingSelected": "Hãy chọn ít nhất một dòng để nhập.",
+    "errors": {
+      "extension": "Hãy chọn tệp .env, .json, .yaml hoặc .yml.",
+      "size": "Tệp này lớn hơn 1 MB.",
+      "typeNotAllowed": "Dự án này không chấp nhận loại tệp này. Hãy thêm text/plain hoặc application/json vào các loại tệp được phép trong phần cài đặt dự án.",
+      "invalidFile": "Không đọc được tệp này. Hãy kiểm tra xem đó có phải tệp .env, JSON hoặc YAML hợp lệ không.",
+      "uploadNotCompleted": "Tải lên chưa hoàn tất. Hãy thử lại."
+    }
+  },
+  "errors": {
+    "keyAlreadyUsed": "Khóa này đã được dùng trong phạm vi này.",
+    "environmentArchived": "Môi trường này đã được lưu trữ. Hãy chọn phạm vi khác.",
+    "loadFailed": "Không tải được dữ liệu kiểm thử.",
+    "environmentsLoadFailed": "Không tải được môi trường, nên chỉ hiển thị cột Mọi môi trường."
+  }
+}

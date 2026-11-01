@@ -1,0 +1,14 @@
+{
+  "type": "doc",
+  "version": 1,
+  "content": [
+    {"type": "paragraph", "content": [{"type": "text", "text": "Search products by name."}]},
+    {"type": "panel", "attrs": {"panelType": "info"}, "content": [
+      {"type": "heading", "attrs": {"level": 4}, "content": [{"type": "text", "text": "Acceptance criteria"}]},
+      {"type": "bulletList", "content": [
+        {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Results match the search text"}]}]},
+        {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "No results shows an empty state"}]}]}
+      ]}
+    ]}
+  ]
+}

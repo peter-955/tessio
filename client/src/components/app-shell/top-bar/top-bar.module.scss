@@ -1,0 +1,27 @@
+@use "shared/styles/mixins" as *;
+
+.topBar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+
+  @include tablet-down {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+.start {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.menuButton {
+  display: none;
+
+  @include tablet-down {
+    display: inline-flex;
+  }
+}

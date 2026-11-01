@@ -1,0 +1,35 @@
+{
+  "title": "Sprints",
+  "description": "Sprints synced from the Jira board.",
+  "columns": {
+    "name": "Sprint",
+    "state": "State",
+    "dates": "Dates",
+    "stories": "Stories"
+  },
+  "states": {
+    "active": "Active",
+    "future": "Upcoming",
+    "closed": "Closed"
+  },
+  "dates": {
+    "range": "{{start}} – {{end}}",
+    "notSet": "No dates",
+    "completed": "Completed {{date}}"
+  },
+  "empty": {
+    "title": "No sprints yet",
+    "description": "An Admin, PM or BA can sync from Jira to bring in the board's sprints."
+  },
+  "loadError": "Sprints could not be loaded",
+  "retry": "Try again",
+  "detail": {
+    "back": "All sprints",
+    "storiesTitle": "Stories in this sprint",
+    "loadError": "This sprint could not be loaded",
+    "notFound": {
+      "title": "Sprint not found",
+      "description": "It may have left the sync scope."
+    }
+  }
+}

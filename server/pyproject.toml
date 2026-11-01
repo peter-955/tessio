@@ -1,0 +1,263 @@
+[project]
+name = "tessio-server"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "aiosmtplib>=5.1.3",
+    "alembic>=1.20.1",
+    "argon2-cffi>=25.1.0",
+    "asyncpg>=0.32.0",
+    "boto3>=1.43.123",
+    "bullmq>=3.4.6",
+    "cryptography>=50.0.2",
+    "fastapi>=0.162.0",
+    "httpx>=0.28.1",
+    "mcp>=2.3.0",
+    "openpyxl>=3.1.5",
+    "pydantic-settings>=2.16.2",
+    "pydantic[email]>=2.14.2",
+    "pyotp>=2.10.0",
+    "pyyaml>=6.0.3",
+    "redis>=8.1.0",
+    "sentry-sdk>=2.73.0",
+    "sqlalchemy[asyncio]>=2.1.6",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "asgi-lifespan>=2.1.0",
+    "boto3-stubs[s3]>=1.43.123",
+    "import-linter>=2.15",
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.4.1",
+    "ruff>=0.17.3",
+    "testcontainers[postgres,redis]>=4.15.0",
+    "types-openpyxl>=3.1.5.20261017",
+    "types-pyyaml>=6.0.12.20261030",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF", "ASYNC", "S", "TID", "PL"]
+ignore = ["PLR0913", "PLR0917"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "PLR2004"]
+"app/**/typing/enums/*.py" = ["S105"]
+"app/shared/permissions/*capability.py" = ["S105"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.mypy]
+strict = true
+python_version = "3.14"
+plugins = ["pydantic.mypy"]
+files = ["app", "tests", "migrations"]
+
+[[tool.mypy.overrides]]
+module = ["testcontainers.*", "bullmq.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+testpaths = ["tests"]
+
+[tool.importlinter]
+root_package = "app"
+
+[[tool.importlinter.contracts]]
+name = "shared and config never import modules or api"
+type = "forbidden"
+source_modules = ["app.shared", "app.config"]
+forbidden_modules = ["app.modules", "app.api"]
+
+[[tool.importlinter.contracts]]
+name = "modules never import api"
+type = "forbidden"
+source_modules = ["app.modules"]
+forbidden_modules = ["app.api"]
+
+[[tool.importlinter.contracts]]
+name = "only the container imports infrastructure"
+type = "forbidden"
+source_modules = [
+    "app.api",
+    "app.modules.auth.usecases",
+    "app.modules.auth.domains",
+    "app.modules.auth.ports",
+    "app.modules.auth.router",
+    "app.modules.auth.users_router",
+    "app.modules.auth.me_router",
+    "app.modules.auth.dependencies",
+    "app.modules.auth.models",
+    "app.modules.auth.utils",
+    "app.modules.auth.job_handlers",
+    "app.modules.users.domains",
+    "app.modules.users.utils",
+    "app.modules.runs.usecases",
+    "app.modules.runs.domains",
+    "app.modules.runs.ports",
+    "app.modules.runs.router",
+    "app.modules.runs.manual_router",
+    "app.modules.runs.dependencies",
+    "app.modules.runs.models",
+    "app.modules.runs.utils",
+    "app.modules.runs.typing",
+    "app.modules.runs.errors",
+    "app.modules.runs.mcp_tools",
+    "app.modules.runs.job_handlers",
+    "app.modules.live_events",
+    "app.modules.projects.usecases",
+    "app.modules.projects.domains",
+    "app.modules.projects.ports",
+    "app.modules.projects.router",
+    "app.modules.projects.dependencies",
+    "app.modules.projects.models",
+    "app.modules.projects.utils",
+    "app.modules.files.usecases",
+    "app.modules.files.domains",
+    "app.modules.files.ports",
+    "app.modules.files.router",
+    "app.modules.files.dependencies",
+    "app.modules.files.job_handlers",
+    "app.modules.files.models",
+    "app.modules.files.utils",
+    "app.modules.audit.usecases",
+    "app.modules.audit.domains",
+    "app.modules.health.usecases",
+    "app.modules.health.domains",
+    "app.modules.health.ports",
+    "app.modules.health.router",
+    "app.modules.health.dependencies",
+    "app.modules.health.models",
+    "app.modules.api_tokens.usecases",
+    "app.modules.api_tokens.domains",
+    "app.modules.api_tokens.router",
+    "app.modules.api_tokens.dependencies",
+    "app.modules.api_tokens.mcp_dependencies",
+    "app.modules.api_tokens.models",
+    "app.modules.api_tokens.utils",
+    "app.modules.jira.usecases",
+    "app.modules.jira.domains",
+    "app.modules.jira.ports",
+    "app.modules.jira.router",
+    "app.modules.jira.dependencies",
+    "app.modules.jira.models",
+    "app.modules.jira.utils",
+    "app.modules.jira.typing",
+    "app.modules.jira.errors",
+    "app.modules.test_data.usecases",
+    "app.modules.test_data.domains",
+    "app.modules.test_data.ports",
+    "app.modules.test_data.router",
+    "app.modules.test_data.dependencies",
+    "app.modules.test_data.models",
+    "app.modules.test_data.utils",
+    "app.modules.stories.usecases",
+    "app.modules.stories.domains",
+    "app.modules.stories.ports",
+    "app.modules.stories.router",
+    "app.modules.stories.dependencies",
+    "app.modules.stories.models",
+    "app.modules.stories.utils",
+    "app.modules.stories.job_handlers",
+    "app.modules.stories.typing",
+    "app.modules.stories.errors",
+    "app.modules.notifications.usecases",
+    "app.modules.notifications.domains",
+    "app.modules.notifications.ports",
+    "app.modules.notifications.router",
+    "app.modules.notifications.dependencies",
+    "app.modules.notifications.models",
+    "app.modules.notifications.utils",
+    "app.modules.notifications.typing",
+    "app.modules.notifications.errors",
+    "app.modules.test_cases.usecases",
+    "app.modules.test_cases.domains",
+    "app.modules.test_cases.ports",
+    "app.modules.test_cases.router",
+    "app.modules.test_cases.dependencies",
+    "app.modules.test_cases.models",
+    "app.modules.test_cases.utils",
+    "app.modules.test_cases.typing",
+    "app.modules.test_cases.errors",
+    "app.modules.gaps.usecases",
+    "app.modules.gaps.domains",
+    "app.modules.gaps.ports",
+    "app.modules.gaps.router",
+    "app.modules.gaps.dependencies",
+    "app.modules.gaps.models",
+    "app.modules.gaps.utils",
+    "app.modules.gaps.typing",
+    "app.modules.gaps.errors",
+    "app.modules.gaps.mcp_tools",
+    "app.modules.failures.usecases",
+    "app.modules.failures.domains",
+    "app.modules.failures.ports",
+    "app.modules.failures.router",
+    "app.modules.failures.dependencies",
+    "app.modules.failures.models",
+    "app.modules.failures.utils",
+    "app.modules.failures.typing",
+    "app.modules.failures.errors",
+    "app.modules.story_context.usecases",
+    "app.modules.story_context.domains",
+    "app.modules.story_context.ports",
+    "app.modules.story_context.utils",
+    "app.modules.story_context.typing",
+    "app.modules.story_context.errors",
+    "app.modules.story_context.mcp_tools",
+    "app.modules.insights.usecases",
+    "app.modules.insights.domains",
+    "app.modules.insights.ports",
+    "app.modules.insights.router",
+    "app.modules.insights.dependencies",
+    "app.modules.insights.models",
+    "app.modules.insights.utils",
+    "app.modules.insights.typing",
+]
+forbidden_modules = [
+    "app.modules.auth.infrastructure",
+    "app.modules.users.infrastructure",
+    "app.modules.projects.infrastructure",
+    "app.modules.files.infrastructure",
+    "app.modules.audit.infrastructure",
+    "app.modules.health.infrastructure",
+    "app.modules.api_tokens.infrastructure",
+    "app.modules.jira.infrastructure",
+    "app.modules.test_data.infrastructure",
+    "app.modules.stories.infrastructure",
+    "app.modules.notifications.infrastructure",
+    "app.modules.test_cases.infrastructure",
+    "app.modules.gaps.infrastructure",
+    "app.modules.runs.infrastructure",
+    "app.modules.failures.infrastructure",
+    "app.modules.story_context.infrastructure",
+    "app.modules.insights.infrastructure",
+]
+
+[[tool.importlinter.contracts]]
+name = "module layers"
+type = "layers"
+layers = [
+    "app.modules.live_events | app.modules.health",
+    "app.modules.story_context | app.modules.insights",
+    "app.modules.failures",
+    "app.modules.runs",
+    "app.modules.gaps",
+    "app.modules.test_cases",
+    "app.modules.stories",
+    "app.modules.api_tokens | app.modules.jira | app.modules.test_data",
+    "app.modules.files | app.modules.audit | app.modules.notifications",
+    "app.modules.projects",
+    "app.modules.auth",
+    "app.modules.users",
+]

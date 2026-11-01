@@ -1,0 +1,64 @@
+{
+  "title": "Profile",
+  "description": "Your account, preferences and security.",
+  "details": {
+    "title": "Personal details",
+    "email": "Email",
+    "name": "Name",
+    "nameRequired": "Enter your name.",
+    "nameTooLong": "Use at most 100 characters.",
+    "save": "Save",
+    "saved": "Name saved"
+  },
+  "avatar": {
+    "change": "Change photo",
+    "remove": "Remove photo",
+    "removed": "Photo removed",
+    "dialogTitle": "Change your photo",
+    "dropTitle": "Drop an image here or click to choose",
+    "dropDescription": "PNG, JPEG or WebP. It is cropped to a square.",
+    "save": "Save photo",
+    "saved": "Photo saved",
+    "cropFailed": "This image could not be read. Try another file."
+  },
+  "preferences": {
+    "title": "Preferences",
+    "theme": "Theme",
+    "language": "Language",
+    "description": "Saved to your account and applied on every device."
+  },
+  "password": {
+    "title": "Password",
+    "current": "Current password",
+    "currentRequired": "Enter your current password.",
+    "new": "New password",
+    "confirm": "Confirm new password",
+    "rule": "At least 12 characters.",
+    "tooShort": "Use at least 12 characters.",
+    "mismatch": "The passwords do not match.",
+    "submit": "Change password",
+    "changed": "Password changed",
+    "otherDevicesSignedOut": "Your other devices were signed out."
+  },
+  "twoFactor": {
+    "title": "Two-factor authentication",
+    "regenerate": "Generate new recovery codes",
+    "regenerateDescription": "Your old codes stop working.",
+    "reset": "Reset authenticator",
+    "resetDescription": "You will set up your authenticator app again right away.",
+    "resetWarning": "Your other devices are signed out and your recovery codes stop working.",
+    "passwordLabel": "Confirm with your password",
+    "passwordRequired": "Enter your password.",
+    "confirm": "Continue"
+  },
+  "sessions": {
+    "title": "Sessions",
+    "description": "Sign out everywhere, including this browser.",
+    "action": "Sign out of all devices"
+  },
+  "signOutAll": {
+    "title": "Sign out of all devices?",
+    "description": "Every session ends, this one included. You will need your password and authenticator to sign in again.",
+    "confirm": "Sign out everywhere"
+  }
+}

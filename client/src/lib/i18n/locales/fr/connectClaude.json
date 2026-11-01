@@ -1,0 +1,70 @@
+{
+  "title": "Connecter Claude",
+  "description": "Laissez Claude Code exécuter vos cas de test avec un jeton personnel.",
+  "steps": {
+    "label": "Comment se connecter",
+    "create": "Créez un jeton pour un projet.",
+    "install": "Exécutez la commande affichée dans votre terminal.",
+    "restart": "Redémarrez Claude Code ou exécutez /reload-plugins."
+  },
+  "create": {
+    "title": "Nouveau jeton",
+    "name": "Nom",
+    "namePlaceholder": "ex. Mon ordinateur portable",
+    "nameRequired": "Saisissez un nom pour ce jeton.",
+    "nameTooLong": "Utilisez 100 caractères au maximum.",
+    "project": "Projet",
+    "projectPlaceholder": "Choisissez un projet",
+    "projectRequired": "Choisissez un projet.",
+    "projectNotFound": "Aucun projet correspondant",
+    "lifetime": "Expire après",
+    "lifetimeOption_one": "{{count}} jour",
+    "lifetimeOption_other": "{{count}} jours",
+    "submit": "Créer le jeton",
+    "viewerHint": "Vous êtes Lecteur dans ce projet : Claude peut lire mais pas enregistrer de résultats.",
+    "limitReached": "Vous avez 10 jetons actifs. Révoquez-en un pour en créer un autre.",
+    "noProjects": "Vous n'êtes encore membre d'aucun projet.",
+    "projectsLoadFailed": "Les projets n'ont pas pu être chargés"
+  },
+  "created": {
+    "title": "Jeton pour {{projectKey}}",
+    "shownOnce": "Copiez-le maintenant. Vous ne reverrez plus ce jeton.",
+    "commandLabel": "Exécutez ceci dans votre terminal :",
+    "marketplaceMissing": "La source du plugin n'est pas configurée. Remplacez <marketplace> par la valeur fournie par votre administrateur.",
+    "restart": "Redémarrez ensuite Claude Code.",
+    "tokenLabel": "Jeton seul",
+    "done": "Terminé"
+  },
+  "table": {
+    "title": "Vos jetons",
+    "activeCount": "{{count}} sur {{max}} actifs",
+    "name": "Nom",
+    "project": "Projet",
+    "token": "Jeton",
+    "status": "Statut",
+    "expires": "Expire",
+    "lastUsed": "Dernière utilisation",
+    "created": "Créé",
+    "actions": "Actions",
+    "never": "Jamais",
+    "revoke": "Révoquer {{name}}",
+    "empty": "Aucun jeton pour l'instant",
+    "loadFailed": "Les jetons n'ont pas pu être chargés",
+    "retry": "Réessayer"
+  },
+  "status": {
+    "active": "Actif",
+    "expired": "Expiré",
+    "revoked": "Révoqué"
+  },
+  "revoke": {
+    "title": "Révoquer ce jeton ?",
+    "description": "Claude cesse immédiatement de fonctionner avec « {{name}} » dans {{projectKey}}.",
+    "confirm": "Révoquer",
+    "done": "Jeton révoqué"
+  },
+  "errors": {
+    "notMember": "Vous ne pouvez créer un jeton que pour un projet dont vous êtes membre.",
+    "projectNotFound": "Ce projet n'existe plus."
+  }
+}

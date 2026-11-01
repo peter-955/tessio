@@ -1,0 +1,25 @@
+.link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-surface-muted);
+    color: var(--color-text);
+  }
+
+  &[aria-current="page"] {
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+}

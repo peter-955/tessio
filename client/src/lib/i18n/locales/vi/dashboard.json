@@ -1,0 +1,154 @@
+{
+  "title": "Tổng quan",
+  "description": "Tình hình sprint hiện tại và những việc cần bạn xử lý.",
+  "retry": "Thử lại",
+  "home": {
+    "loadError": "Không tải được dự án của bạn."
+  },
+  "sprint": {
+    "title": "Sprint hiện tại",
+    "pickerLabel": "Sprint",
+    "pickerPlaceholder": "Sprint hiện tại",
+    "option": "{{name}} · {{state}}",
+    "dates": "{{start}} – {{end}}",
+    "states": {
+      "active": "Đang chạy",
+      "future": "Sắp tới",
+      "closed": "Đã đóng"
+    },
+    "loadError": "Không tải được tóm tắt sprint.",
+    "notFound": {
+      "title": "Không tìm thấy sprint",
+      "description": "Sprint này không thuộc dự án.",
+      "reset": "Xem sprint hiện tại"
+    },
+    "empty": {
+      "title": "Không có sprint đang chạy",
+      "description": "Chọn một sprint, hoặc đồng bộ với Jira khi sprint bắt đầu."
+    }
+  },
+  "stats": {
+    "stories": "Story",
+    "openGaps": "Khoảng trống đang mở",
+    "activeFailures": "Lỗi đang mở",
+    "coverage": "Tiêu chí đã phủ",
+    "percent": "{{percent}}%",
+    "noValue": "—"
+  },
+  "testStatus": {
+    "title": "Story theo trạng thái kiểm thử",
+    "not_started": "Chưa bắt đầu",
+    "ready_for_test": "Sẵn sàng kiểm thử",
+    "in_test": "Đang kiểm thử",
+    "passed": "Đạt",
+    "failed": "Không đạt"
+  },
+  "coverage": {
+    "title": "Độ phủ tiêu chí",
+    "summary": "Đã phủ {{covered}}/{{total}} tiêu chí",
+    "empty": "Sprint này chưa có tiêu chí chấp nhận.",
+    "segments": {
+      "passed": "Đạt",
+      "failed": "Không đạt",
+      "blocked": "Bị chặn",
+      "notRun": "Chưa chạy",
+      "uncovered": "Chưa phủ"
+    },
+    "barLabel": "{{passed}} đạt, {{failed}} không đạt, {{blocked}} bị chặn, {{notRun}} chưa chạy, {{uncovered}} chưa phủ"
+  },
+  "myWork": {
+    "title": "Việc của tôi",
+    "role": "Với vai trò {{role}}",
+    "roles": {
+      "admin": "Quản trị",
+      "pm": "PM",
+      "ba": "BA",
+      "qc": "QC",
+      "dev": "Dev",
+      "viewer": "Người xem"
+    },
+    "nothingForRole": "Không có việc nào cho vai trò của bạn.",
+    "loadError": "Không tải được việc của bạn.",
+    "showing": "Hiển thị {{count}}/{{total}}",
+    "viewAll": "Xem tất cả",
+    "unassigned": "{{count}} lỗi chưa giao",
+    "noUnassigned": "Không có lỗi chưa giao",
+    "uncovered": {
+      "title": "Tiêu chí chưa có ca kiểm thử",
+      "empty": "Mọi tiêu chí đều có ca.",
+      "write": "Viết ca kiểm thử"
+    },
+    "drafts": {
+      "title": "Ca nháp của tôi",
+      "empty": "Không có ca nháp."
+    },
+    "failures": {
+      "title": "Lỗi cần sửa",
+      "empty": "Không có lỗi cần sửa.",
+      "opened": "Mở lúc {{date}}"
+    },
+    "gaps": {
+      "title": "Khoảng trống cần trả lời",
+      "empty": "Không có khoảng trống cần trả lời."
+    }
+  },
+  "statuses": {
+    "case": {
+      "draft": "Nháp",
+      "in_review": "Đang review",
+      "ready": "Sẵn sàng",
+      "deprecated": "Ngừng dùng"
+    },
+    "failure": {
+      "open": "Đang mở",
+      "reopened": "Mở lại",
+      "fixed": "Đã sửa",
+      "verified": "Đã xác minh"
+    },
+    "severity": {
+      "high": "Cao",
+      "medium": "Trung bình",
+      "low": "Thấp"
+    },
+    "gapType": {
+      "missing_ac": "Thiếu tiêu chí",
+      "unclear_goal": "Mục tiêu chưa rõ",
+      "missing_step": "Thiếu bước",
+      "missing_test_data": "Thiếu dữ liệu kiểm thử",
+      "other": "Khác"
+    }
+  },
+  "recentRuns": {
+    "title": "Lần chạy gần đây",
+    "viewAll": "Xem tất cả lần chạy",
+    "loadError": "Không tải được lần chạy gần đây.",
+    "empty": {
+      "title": "Chưa có lần chạy",
+      "description": "Các lần chạy do Claude hoặc chạy tay sẽ hiện ở đây."
+    },
+    "columns": {
+      "status": "Trạng thái",
+      "story": "Story",
+      "executor": "Người chạy",
+      "environment": "Môi trường",
+      "startedBy": "Người bắt đầu",
+      "startedAt": "Bắt đầu",
+      "results": "Kết quả"
+    },
+    "status": {
+      "running": "Đang chạy",
+      "passed": "Đạt",
+      "failed": "Không đạt",
+      "aborted": "Đã hủy"
+    },
+    "abortReason": {
+      "no_results": "không có kết quả",
+      "inactive": "không hoạt động"
+    },
+    "executor": {
+      "claude": "Claude",
+      "manual": "Thủ công"
+    },
+    "results": "{{passed}} đạt · {{failed}} không đạt / {{total}}"
+  }
+}

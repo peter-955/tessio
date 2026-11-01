@@ -1,0 +1,70 @@
+from datetime import datetime
+
+from app.modules.runs.domains.case_result.entity import CaseResult
+from app.modules.runs.domains.criterion_impact.entity import CriterionImpact
+from app.modules.runs.domains.failed_case_report.entity import FailedCaseReport
+from app.modules.runs.domains.missing_screenshot.entity import MissingScreenshot
+from app.modules.runs.domains.run_case_view.entity import RunCaseView
+from app.modules.runs.domains.run_report.entity import RunReport
+from app.modules.runs.domains.step_result.entity import StepResult
+from app.modules.runs.typing.constants.run_report import FAILING_RESULT_STATUSES
+from app.modules.runs.utils.run_counts import build_run_counts
+
+
+def build_run_report(
+    run_cases: list[RunCaseView],
+    case_results: list[CaseResult],
+    step_results: list[StepResult],
+    criterion_impacts: list[CriterionImpact],
+    missing_screenshots: list[MissingScreenshot],
+    summary: str | None,
+    now: datetime,
+) -> RunReport:
+    run_case_ids = {run_case.test_case_id for run_case in run_cases}
+    results_by_case_id = {
+        case_result.test_case_id: case_result
+        for case_result in case_results
+        if case_result.test_case_id in run_case_ids
+    }
+    return RunReport(
+        counts=build_run_counts(len(run_cases), [case_result.status for case_result in results_by_case_id.values()]),
+        failed_cases=[
+            build_failed_case_report(run_case, case_result, step_results)
+            for run_case in sorted(run_cases, key=lambda view: view.position)
+            if (case_result := results_by_case_id.get(run_case.test_case_id)) is not None
+            and case_result.status in FAILING_RESULT_STATUSES
+        ],
+        criterion_impacts=criterion_impacts,
+        missing_screenshots=missing_screenshots,
+        summary=summary,
+        built_at=now,
+    )
+
+
+def build_failed_case_report(
+    run_case: RunCaseView, case_result: CaseResult, step_results: list[StepResult]
+) -> FailedCaseReport:
+    failing_steps = sorted(
+        (
+            step_result
+            for step_result in step_results
+            if step_result.case_result_id == case_result.id and step_result.status in FAILING_RESULT_STATUSES
+        ),
+        key=lambda step_result: step_result.step_order,
+    )
+    first_failing_step = failing_steps[0] if failing_steps else None
+    version_step = (
+        None
+        if first_failing_step is None
+        else next((step for step in run_case.version.steps if step.order == first_failing_step.step_order), None)
+    )
+    return FailedCaseReport(
+        test_case_id=run_case.test_case_id,
+        code=run_case.code,
+        title=run_case.version.title,
+        status=case_result.status,
+        step_order=None if first_failing_step is None else first_failing_step.step_order,
+        step_action=None if version_step is None else version_step.action,
+        actual_result=None if first_failing_step is None else first_failing_step.actual_result,
+        error=None if first_failing_step is None else first_failing_step.error,
+    )

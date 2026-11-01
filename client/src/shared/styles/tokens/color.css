@@ -1,0 +1,50 @@
+:root {
+  --color-background: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  --color-surface: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+  --color-surface-muted: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  --color-border: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+  --color-text: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-0));
+  --color-text-muted: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2));
+  --color-accent: light-dark(var(--mantine-color-tessio-6), var(--mantine-color-tessio-4));
+  --color-accent-soft: light-dark(
+    var(--mantine-color-tessio-0),
+    color-mix(in srgb, var(--mantine-color-tessio-9) 45%, var(--mantine-color-dark-7))
+  );
+  --color-danger: light-dark(
+    color-mix(in srgb, var(--mantine-color-red-9) 85%, black),
+    var(--mantine-color-red-4)
+  );
+  --color-danger-soft: light-dark(
+    var(--mantine-color-red-0),
+    color-mix(in srgb, var(--mantine-color-red-9) 30%, var(--mantine-color-dark-7))
+  );
+  --color-success: light-dark(
+    color-mix(in srgb, var(--mantine-color-green-9) 80%, black),
+    var(--mantine-color-green-4)
+  );
+  --color-success-soft: light-dark(
+    var(--mantine-color-green-0),
+    color-mix(in srgb, var(--mantine-color-green-9) 30%, var(--mantine-color-dark-7))
+  );
+  --color-warning: light-dark(
+    color-mix(in srgb, var(--mantine-color-yellow-9) 70%, black),
+    var(--mantine-color-yellow-4)
+  );
+  --color-warning-soft: light-dark(
+    var(--mantine-color-yellow-0),
+    color-mix(in srgb, var(--mantine-color-yellow-9) 30%, var(--mantine-color-dark-7))
+  );
+  --color-red-text: light-dark(
+    color-mix(in srgb, var(--mantine-color-red-9) 85%, black),
+    var(--mantine-color-red-0)
+  );
+  --color-green-text: light-dark(
+    color-mix(in srgb, var(--mantine-color-green-9) 80%, black),
+    var(--mantine-color-green-0)
+  );
+  --color-yellow-text: light-dark(
+    color-mix(in srgb, var(--mantine-color-yellow-9) 70%, black),
+    var(--mantine-color-yellow-0)
+  );
+  --color-input-border: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-3));
+}

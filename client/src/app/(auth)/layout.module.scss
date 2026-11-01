@@ -1,0 +1,17 @@
+@use "shared/styles/mixins" as *;
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: var(--space-6);
+
+  @include tablet-down {
+    padding: var(--space-5);
+  }
+}
+
+.content {
+  width: 100%;
+}

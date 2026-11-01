@@ -1,0 +1,162 @@
+{
+  "list": {
+    "title": "Dự án",
+    "description": "Tất cả dự án bạn có thể mở.",
+    "newProject": "Dự án mới",
+    "showArchived": "Hiện dự án đã lưu trữ",
+    "loading": "Đang tải dự án",
+    "columns": {
+      "name": "Tên",
+      "key": "Mã",
+      "jira": "Dự án Jira",
+      "role": "Vai trò của tôi",
+      "status": "Trạng thái",
+      "actions": "Thao tác"
+    },
+    "archived": "Đã lưu trữ",
+    "noRole": "Không có vai trò",
+    "actionsFor": "Thao tác cho {{name}}",
+    "actions": {
+      "members": "Thành viên",
+      "settings": "Cài đặt",
+      "archive": "Lưu trữ",
+      "unarchive": "Bỏ lưu trữ"
+    },
+    "empty": {
+      "adminTitle": "Chưa có dự án nào",
+      "memberTitle": "Bạn chưa tham gia dự án nào",
+      "memberDescription": "Hãy nhờ quản trị viên không gian làm việc thêm bạn vào."
+    },
+    "loadError": "Không thể tải danh sách dự án"
+  },
+  "archive": {
+    "title": "Lưu trữ {{name}}?",
+    "body": "Mọi người vẫn xem được; không thể thay đổi gì nữa.",
+    "confirm": "Lưu trữ",
+    "success": "Đã lưu trữ dự án"
+  },
+  "unarchive": {
+    "title": "Bỏ lưu trữ {{name}}?",
+    "body": "Thành viên có thể thay đổi dự án trở lại.",
+    "confirm": "Bỏ lưu trữ",
+    "success": "Đã bỏ lưu trữ dự án"
+  },
+  "create": {
+    "title": "Dự án mới",
+    "description": "Liên kết một dự án và bảng Jira.",
+    "submit": "Tạo dự án",
+    "success": "Đã tạo dự án",
+    "loading": "Đang tải kết nối Jira",
+    "adminOnly": "Chỉ quản trị viên không gian làm việc mới có thể tạo dự án",
+    "jiraRequired": {
+      "title": "Hãy kết nối Jira trước",
+      "description": "Mỗi dự án được liên kết với một dự án Jira.",
+      "action": "Thiết lập kết nối Jira"
+    }
+  },
+  "fields": {
+    "jiraProject": "Dự án Jira",
+    "jiraBoard": "Bảng Jira",
+    "name": "Tên",
+    "key": "Mã",
+    "keyDescription": "2–10 chữ in hoa hoặc chữ số, bắt đầu bằng một chữ cái. Không thể đổi về sau.",
+    "description": "Mô tả"
+  },
+  "hints": {
+    "allJiraProjectsLinked": "Mọi dự án Jira đều đã được liên kết",
+    "noBoards": "Dự án Jira này chưa có bảng nào. Hãy tạo một bảng trong Jira trước.",
+    "noMatch": "Không có kết quả phù hợp"
+  },
+  "errors": {
+    "jiraProjectRequired": "Hãy chọn một dự án Jira",
+    "jiraBoardRequired": "Hãy chọn một bảng",
+    "nameRequired": "Hãy nhập tên",
+    "keyInvalid": "Dùng 2–10 chữ in hoa hoặc chữ số, bắt đầu bằng một chữ cái",
+    "tooLong": "Dùng tối đa {{count}} ký tự",
+    "jiraLoadFailed": "Không thể tải dữ liệu Jira",
+    "openJiraSettings": "Mở cài đặt Jira",
+    "retry": "Thử lại"
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Người xem"
+  },
+  "members": {
+    "title": "Thành viên",
+    "description": "Những người trong dự án này và vai trò của họ.",
+    "add": "Thêm thành viên",
+    "empty": "Chưa có thành viên nào",
+    "loading": "Đang tải thành viên",
+    "loadError": "Không thể tải danh sách thành viên",
+    "roleFor": "Vai trò của {{name}}",
+    "remove": "Gỡ {{name}}",
+    "removeTitle": "Gỡ {{name}}?",
+    "removeBody": "Người này sẽ mất quyền truy cập vào dự án.",
+    "removeSelf": "Bạn sẽ mất quyền truy cập vào dự án này.",
+    "removeConfirm": "Gỡ",
+    "roleUpdated": "Đã cập nhật vai trò",
+    "memberAdded": "Đã thêm thành viên",
+    "memberRemoved": "Đã gỡ thành viên",
+    "invited": "Đã mời",
+    "deactivated": "Đã vô hiệu hóa",
+    "columns": {
+      "member": "Thành viên",
+      "status": "Trạng thái",
+      "role": "Vai trò",
+      "added": "Ngày thêm",
+      "actions": "Thao tác"
+    }
+  },
+  "addMember": {
+    "title": "Thêm thành viên",
+    "search": "Tìm theo tên hoặc email",
+    "user": "Người dùng",
+    "role": "Vai trò",
+    "submit": "Thêm",
+    "noCandidates": "Không có người dùng phù hợp chưa có quyền truy cập",
+    "invitedSuffix": "(đã mời)"
+  },
+  "settings": {
+    "title": "Cài đặt dự án",
+    "description": "Tên, bảng Jira, giá trị mặc định và loại tệp.",
+    "save": "Lưu",
+    "saved": "Đã lưu cài đặt",
+    "readOnlyArchived": "Dự án này đã lưu trữ và chỉ có thể xem",
+    "needsAdmin": "Bạn cần vai trò Admin của dự án để thay đổi cài đặt",
+    "general": {
+      "title": "Chung",
+      "boardLoadFailed": "Không thể tải danh sách bảng; bảng hiện tại được giữ nguyên.",
+      "boardLoading": "Đang tải bảng…"
+    },
+    "defaults": {
+      "title": "Mặc định",
+      "environment": "Môi trường mặc định",
+      "environmentDescription": "Được dùng khi một lần chạy không chọn môi trường.",
+      "noEnvironments": "Chưa có môi trường nào.",
+      "manageEnvironments": "Quản lý môi trường",
+      "environmentInvalid": "Hãy chọn một môi trường đang hoạt động",
+      "loading": "Đang tải môi trường",
+      "loadError": "Không thể tải danh sách môi trường"
+    },
+    "fileTypes": {
+      "title": "Loại tệp được phép",
+      "label": "Loại tệp",
+      "description": "Ảnh chụp màn hình từ các lần chạy luôn được phép.",
+      "otherType": "Loại MIME khác",
+      "add": "Thêm",
+      "reset": "Khôi phục mặc định",
+      "atLeastOne": "Hãy giữ ít nhất một loại tệp",
+      "invalidType": "Nhập một loại MIME, ví dụ text/markdown",
+      "tooMany": "Tối đa 50 loại tệp"
+    },
+    "archive": {
+      "title": "Lưu trữ dự án",
+      "description": "Dự án đã lưu trữ vẫn xem được với mọi người.",
+      "action": "Lưu trữ dự án"
+    }
+  }
+}

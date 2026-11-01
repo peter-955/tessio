@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "tessio": {
+      "type": "http",
+      "url": "${user_config.tessio_url}/mcp",
+      "headers": {
+        "Authorization": "Bearer ${user_config.tessio_token}"
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "title": "Environnements",
+  "description": "Là où les tests s’exécutent : URL de base et URL de vérification d’état.",
+  "actions": {
+    "add": "Ajouter un environnement",
+    "edit": "Modifier",
+    "archive": "Archiver",
+    "unarchive": "Désarchiver",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "create": "Créer l’environnement",
+    "retry": "Réessayer"
+  },
+  "table": {
+    "ariaLabel": "Environnements",
+    "name": "Nom",
+    "baseUrl": "URL de base",
+    "healthCheckUrl": "URL de vérification d’état",
+    "status": "Statut",
+    "actions": "Actions",
+    "actionsFor": "Actions pour {{name}}",
+    "default": "Par défaut",
+    "noValue": "—",
+    "loading": "Chargement des environnements"
+  },
+  "status": {
+    "active": "Actif",
+    "archived": "Archivé"
+  },
+  "showArchived": "Afficher les archivés",
+  "empty": {
+    "title": "Aucun environnement pour l’instant",
+    "description": "Ajoutez les lieux où les tests s’exécutent, par exemple la préproduction ou la production."
+  },
+  "form": {
+    "createTitle": "Ajouter un environnement",
+    "editTitle": "Modifier l’environnement",
+    "name": "Nom",
+    "baseUrl": "URL de base",
+    "baseUrlPlaceholder": "https://staging.example.com",
+    "healthCheckUrl": "URL de vérification d’état",
+    "healthCheckHint": "Facultatif. Une URL qui répond quand l’environnement est disponible.",
+    "healthCheckUrlPlaceholder": "https://staging.example.com/health",
+    "nameRequired": "Saisissez un nom.",
+    "nameTooLong": "Utilisez au plus {{max}} caractères.",
+    "urlInvalid": "Saisissez une URL qui commence par http:// ou https://, sans espaces.",
+    "urlTooLong": "Utilisez au plus {{max}} caractères."
+  },
+  "delete": {
+    "title": "Supprimer l’environnement",
+    "message": "Supprimer {{name}} ? Les données de test propres à cet environnement seront aussi supprimées."
+  },
+  "toasts": {
+    "created": "Environnement créé",
+    "updated": "Environnement enregistré",
+    "archived": "Environnement archivé",
+    "unarchived": "Environnement désarchivé",
+    "deleted": "Environnement supprimé"
+  },
+  "errors": {
+    "nameAlreadyUsed": "Un environnement porte déjà ce nom.",
+    "inUse": "Des exécutions utilisent cet environnement. Archivez-le plutôt.",
+    "loadFailed": "Impossible de charger les environnements."
+  }
+}

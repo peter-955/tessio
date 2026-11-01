@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:17.11-alpine
+    environment:
+      POSTGRES_USER: tessio
+      POSTGRES_PASSWORD: tessio
+      POSTGRES_DB: tessio
+    ports:
+      - "3203:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tessio"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:8.10.3-alpine
+    command: redis-server --appendonly yes
+    ports:
+      - "3204:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  bull-board:
+    image: venatum/bull-board:3.4.15
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      BULL_PREFIX: bull
+      BULL_VERSION: BULLMQ
+      USER_LOGIN: tessio
+      USER_PASSWORD: tessio-local
+    ports:
+      - "3205:3000"
+
+  mailpit:
+    image: axllent/mailpit:v1.27.11
+    ports:
+      - "3206:1025"
+      - "3207:8025"
+
+  rustfs:
+    image: rustfs/rustfs:1.0.4
+    environment:
+      RUSTFS_ACCESS_KEY: tessio
+      RUSTFS_SECRET_KEY: tessio-local-secret
+    ports:
+      - "3208:9000"
+    volumes:
+      - rustfs-data:/data
+
+  rustfs-bucket:
+    image: amazon/aws-cli:2.39.3
+    depends_on:
+      - rustfs
+    environment:
+      AWS_ACCESS_KEY_ID: tessio
+      AWS_SECRET_ACCESS_KEY: tessio-local-secret
+      AWS_DEFAULT_REGION: eu-west-3
+    entrypoint: >
+      /bin/sh -c "until aws --endpoint-url http://rustfs:9000 s3 ls >/dev/null 2>&1; do sleep 1; done;
+      aws --endpoint-url http://rustfs:9000 s3 mb s3://tessio || true;
+      aws --endpoint-url http://rustfs:9000 s3api put-bucket-cors --bucket tessio --cors-configuration '{\"CORSRules\":[{\"AllowedOrigins\":[\"http://localhost:3201\"],\"AllowedMethods\":[\"POST\",\"GET\",\"HEAD\"],\"AllowedHeaders\":[\"*\"],\"ExposeHeaders\":[\"ETag\"],\"MaxAgeSeconds\":3600}]}'"
+
+volumes:
+  postgres-data:
+  redis-data:
+  rustfs-data:

@@ -1,0 +1,132 @@
+{
+  "tab": {
+    "listLabel": "Gap questions"
+  },
+  "filter": {
+    "label": "Show gaps",
+    "open": "Open ({{count}})",
+    "resolved": "Answered ({{count}})",
+    "all": "All ({{count}})"
+  },
+  "banner": {
+    "title_one": "{{count}} open gap blocks runs",
+    "title_other": "{{count}} open gaps block runs",
+    "description": "Every gap must be answered before a run can start on this story."
+  },
+  "type": {
+    "missing_ac": "Missing AC",
+    "unclear_goal": "Unclear goal",
+    "missing_step": "Missing step",
+    "missing_test_data": "Missing test data",
+    "other": "Other"
+  },
+  "severity": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "status": {
+    "open": "Open",
+    "resolved": "Answered"
+  },
+  "target": {
+    "label": "Target",
+    "story": "Story",
+    "criterion": "Acceptance criterion",
+    "test_case": "Test case"
+  },
+  "dataScope": {
+    "label": "Data scope",
+    "project": "Project data",
+    "environment": "Environment data"
+  },
+  "badge": {
+    "viaClaude": "via Claude",
+    "deactivated": "Deactivated"
+  },
+  "card": {
+    "raisedBy": "Raised by {{name}}",
+    "answeredBy": "Answered by {{name}}",
+    "reopenedBy": "Reopened by {{name}}",
+    "assignedTo": "Assigned to {{name}}",
+    "assignedToRole": "Assigned to any {{role}}",
+    "unassigned": "Unassigned",
+    "reassignHint": "Reassign this gap: its assignee is deactivated."
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev"
+  },
+  "actions": {
+    "raise": "Raise gap",
+    "answer": "Answer",
+    "reassign": "Reassign",
+    "reopen": "Reopen",
+    "openStory": "Open story"
+  },
+  "answer": {
+    "title": "Answer gap",
+    "label": "Your answer",
+    "submit": "Answer and resolve"
+  },
+  "reassign": {
+    "title": "Reassign gap",
+    "label": "Assign to",
+    "submit": "Reassign",
+    "anyRole": "Any {{role}}"
+  },
+  "reopen": {
+    "title": "Reopen gap",
+    "description": "The gap goes back to its assignee and blocks runs again.",
+    "submit": "Reopen"
+  },
+  "raise": {
+    "title": "Raise a gap",
+    "typeLabel": "Type",
+    "severityLabel": "Severity",
+    "targetRefLabel": "Which one",
+    "questionLabel": "Question",
+    "assigneeLabel": "Assignee",
+    "assigneeAutomatic": "Automatic (routed by type)",
+    "noTargets": "Nothing to pick on this story",
+    "submit": "Raise gap"
+  },
+  "toasts": {
+    "raised": "Gap raised",
+    "answered": "Gap answered",
+    "reassigned": "Gap reassigned",
+    "reopened": "Gap reopened"
+  },
+  "empty": {
+    "openTitle": "No open gaps",
+    "openDescription": "Runs are not blocked by gaps on this story.",
+    "resolvedTitle": "No answered gaps yet",
+    "allTitle": "No gaps on this story"
+  },
+  "inbox": {
+    "title": "My gaps",
+    "description": "Gap questions routed to you or your role, across your projects.",
+    "filterLabel": "Show",
+    "filterOpen": "Open",
+    "filterAll": "All",
+    "emptyTitle": "Nothing waiting for you",
+    "emptyDescription": "Gaps routed to you will appear here.",
+    "limitNotice": "Showing the {{count}} most recent gaps."
+  },
+  "loading": "Loading gaps",
+  "loadError": "Gaps could not be loaded",
+  "retry": "Try again",
+  "errors": {
+    "alreadyResolved": "This gap was already answered.",
+    "alreadyOpen": "This gap is already open.",
+    "unknownTarget": "This item is not on this story.",
+    "assigneeNotActive": "Pick an active member who can answer gaps.",
+    "questionRequired": "Write the question.",
+    "answerRequired": "Write an answer.",
+    "targetRequired": "Pick what the gap is about.",
+    "typeRequired": "Pick a gap type."
+  }
+}

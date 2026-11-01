@@ -1,0 +1,13 @@
+{
+  "type": "doc",
+  "version": 1,
+  "content": [
+    {"type": "paragraph", "content": [{"type": "text", "text": "Users can reset their password from the sign-in page."}]},
+    {"type": "paragraph", "content": [{"type": "text", "text": "Acceptance criteria:", "marks": [{"type": "strong"}]}]},
+    {"type": "paragraph", "content": [{"type": "text", "text": "The list below is what QA checks."}]},
+    {"type": "orderedList", "attrs": {"order": 1}, "content": [
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "A reset email is sent"}]}]},
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "The link expires after 30 minutes"}]}]}
+    ]}
+  ]
+}

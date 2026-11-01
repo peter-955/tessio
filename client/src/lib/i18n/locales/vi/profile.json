@@ -1,0 +1,64 @@
+{
+  "title": "Hồ sơ",
+  "description": "Tài khoản, tùy chọn và bảo mật của bạn.",
+  "details": {
+    "title": "Thông tin cá nhân",
+    "email": "Email",
+    "name": "Tên",
+    "nameRequired": "Nhập tên của bạn.",
+    "nameTooLong": "Dùng tối đa 100 ký tự.",
+    "save": "Lưu",
+    "saved": "Đã lưu tên"
+  },
+  "avatar": {
+    "change": "Đổi ảnh",
+    "remove": "Xóa ảnh",
+    "removed": "Đã xóa ảnh",
+    "dialogTitle": "Đổi ảnh của bạn",
+    "dropTitle": "Thả ảnh vào đây hoặc bấm để chọn",
+    "dropDescription": "PNG, JPEG hoặc WebP. Ảnh được cắt thành hình vuông.",
+    "save": "Lưu ảnh",
+    "saved": "Đã lưu ảnh",
+    "cropFailed": "Không đọc được ảnh này. Hãy thử tệp khác."
+  },
+  "preferences": {
+    "title": "Tùy chọn",
+    "theme": "Giao diện",
+    "language": "Ngôn ngữ",
+    "description": "Được lưu vào tài khoản và áp dụng trên mọi thiết bị."
+  },
+  "password": {
+    "title": "Mật khẩu",
+    "current": "Mật khẩu hiện tại",
+    "currentRequired": "Nhập mật khẩu hiện tại của bạn.",
+    "new": "Mật khẩu mới",
+    "confirm": "Xác nhận mật khẩu mới",
+    "rule": "Ít nhất 12 ký tự.",
+    "tooShort": "Dùng ít nhất 12 ký tự.",
+    "mismatch": "Mật khẩu không khớp.",
+    "submit": "Đổi mật khẩu",
+    "changed": "Đã đổi mật khẩu",
+    "otherDevicesSignedOut": "Các thiết bị khác của bạn đã được đăng xuất."
+  },
+  "twoFactor": {
+    "title": "Xác thực hai yếu tố",
+    "regenerate": "Tạo mã khôi phục mới",
+    "regenerateDescription": "Các mã cũ sẽ không còn dùng được.",
+    "reset": "Đặt lại ứng dụng xác thực",
+    "resetDescription": "Bạn sẽ thiết lập lại ứng dụng xác thực ngay lập tức.",
+    "resetWarning": "Các thiết bị khác của bạn bị đăng xuất và mã khôi phục không còn dùng được.",
+    "passwordLabel": "Xác nhận bằng mật khẩu của bạn",
+    "passwordRequired": "Nhập mật khẩu của bạn.",
+    "confirm": "Tiếp tục"
+  },
+  "sessions": {
+    "title": "Phiên đăng nhập",
+    "description": "Đăng xuất ở mọi nơi, kể cả trình duyệt này.",
+    "action": "Đăng xuất khỏi mọi thiết bị"
+  },
+  "signOutAll": {
+    "title": "Đăng xuất khỏi mọi thiết bị?",
+    "description": "Mọi phiên đều kết thúc, kể cả phiên này. Bạn sẽ cần mật khẩu và ứng dụng xác thực để đăng nhập lại.",
+    "confirm": "Đăng xuất ở mọi nơi"
+  }
+}

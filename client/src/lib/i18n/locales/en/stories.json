@@ -1,0 +1,114 @@
+{
+  "title": "Stories",
+  "pageDescription": "User stories synced from Jira, with their test status.",
+  "filters": {
+    "search": "Search by key or title",
+    "sprint": "Sprint",
+    "status": "Test status",
+    "allSprints": "All sprints",
+    "allStatuses": "All statuses"
+  },
+  "columns": {
+    "key": "Key",
+    "title": "Title",
+    "sprint": "Sprint",
+    "jiraStatus": "Jira status",
+    "testStatus": "Test status",
+    "jira": "Jira"
+  },
+  "testStatuses": {
+    "not_started": "Not started",
+    "ready_for_test": "Ready for test",
+    "in_test": "In test",
+    "passed": "Passed",
+    "failed": "Failed"
+  },
+  "list": {
+    "openInJira": "Open in Jira",
+    "notInScope": "Not in Jira scope",
+    "noSprint": "No sprint"
+  },
+  "empty": {
+    "title": "No stories yet",
+    "description": "Stories appear after a sync from Jira."
+  },
+  "emptyFiltered": {
+    "title": "No matching stories",
+    "description": "Try other filters."
+  },
+  "loadError": "Stories could not be loaded",
+  "retry": "Try again",
+  "detail": {
+    "back": "All stories",
+    "openInJira": "Open in Jira",
+    "noSprint": "No sprint",
+    "lastSynced": "Synced {{date}}",
+    "loadError": "This story could not be loaded",
+    "missing": {
+      "title": "No longer in Jira scope",
+      "body": "This story left the synced sprints on {{date}}. Its history stays here."
+    },
+    "notFound": {
+      "title": "Story not found",
+      "description": "Check the key or sync from Jira."
+    }
+  },
+  "tabs": {
+    "ariaLabel": "Story sections",
+    "overview": "Overview",
+    "testCases": "Test cases",
+    "gaps": "Gaps",
+    "runs": "Runs",
+    "traceability": "Traceability"
+  },
+  "description": {
+    "title": "Description",
+    "empty": "No description in Jira."
+  },
+  "adf": {
+    "attachment": "Attachment – open the story in Jira to view it."
+  },
+  "criteria": {
+    "title": "Acceptance criteria",
+    "removed": "Removed from Jira {{date}}",
+    "empty": {
+      "title": "No acceptance criteria found",
+      "description": "Tessio reads the list under an \"Acceptance criteria\" heading in Jira, or the first list."
+    }
+  },
+  "actions": {
+    "markReadyForTest": "Mark ready for test",
+    "markNotStarted": "Move back to not started",
+    "markPassed": "Mark passed",
+    "markFailed": "Mark failed"
+  },
+  "confirm": {
+    "passed": {
+      "title": "Mark {{jiraKey}} passed?",
+      "message": "This signs the story off as tested."
+    },
+    "failed": {
+      "title": "Mark {{jiraKey}} failed?",
+      "message": "The story goes back to the team for fixes."
+    }
+  },
+  "toasts": {
+    "statusChanged": "Test status is now {{status}}."
+  },
+  "errors": {
+    "signOffBlocked": "Resolve active failures and wait for running runs before marking it passed.",
+    "invalidTransition": "The status changed meanwhile. The page has been refreshed.",
+    "jiraNotConfigured": "Ask a workspace admin to connect Jira first."
+  },
+  "sync": {
+    "action": "Sync from Jira",
+    "never": "Never synced",
+    "queued": "Sync queued…",
+    "running": "Syncing…",
+    "succeeded": "Last synced {{date}}",
+    "failed": "Last sync failed: {{reason}}",
+    "lastSucceeded": "Last successful sync {{date}}",
+    "stale": "The last sync stopped responding.",
+    "unavailable": "Sync status unavailable"
+  }
+}

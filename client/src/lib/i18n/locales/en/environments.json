@@ -1,0 +1,65 @@
+{
+  "title": "Environments",
+  "description": "Where tests run: base URL and health-check URL.",
+  "actions": {
+    "add": "Add environment",
+    "edit": "Edit",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "delete": "Delete",
+    "save": "Save",
+    "create": "Create environment",
+    "retry": "Try again"
+  },
+  "table": {
+    "ariaLabel": "Environments",
+    "name": "Name",
+    "baseUrl": "Base URL",
+    "healthCheckUrl": "Health-check URL",
+    "status": "Status",
+    "actions": "Actions",
+    "actionsFor": "Actions for {{name}}",
+    "default": "Default",
+    "noValue": "—",
+    "loading": "Loading environments"
+  },
+  "status": {
+    "active": "Active",
+    "archived": "Archived"
+  },
+  "showArchived": "Show archived",
+  "empty": {
+    "title": "No environments yet",
+    "description": "Add the places where tests run, such as staging or production."
+  },
+  "form": {
+    "createTitle": "Add environment",
+    "editTitle": "Edit environment",
+    "name": "Name",
+    "baseUrl": "Base URL",
+    "baseUrlPlaceholder": "https://staging.example.com",
+    "healthCheckUrl": "Health-check URL",
+    "healthCheckHint": "Optional. A URL that answers when the environment is up.",
+    "healthCheckUrlPlaceholder": "https://staging.example.com/health",
+    "nameRequired": "Enter a name.",
+    "nameTooLong": "Use at most {{max}} characters.",
+    "urlInvalid": "Enter a URL that starts with http:// or https://, without spaces.",
+    "urlTooLong": "Use at most {{max}} characters."
+  },
+  "delete": {
+    "title": "Delete environment",
+    "message": "Delete {{name}}? This also deletes its environment-specific test data."
+  },
+  "toasts": {
+    "created": "Environment created",
+    "updated": "Environment saved",
+    "archived": "Environment archived",
+    "unarchived": "Environment unarchived",
+    "deleted": "Environment deleted"
+  },
+  "errors": {
+    "nameAlreadyUsed": "An environment with this name already exists.",
+    "inUse": "Runs use this environment. Archive it instead.",
+    "loadFailed": "Environments could not be loaded."
+  }
+}

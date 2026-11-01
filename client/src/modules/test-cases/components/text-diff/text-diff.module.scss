@@ -1,0 +1,31 @@
+.text {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.added {
+  color: var(--color-success);
+  text-decoration: underline;
+  background: var(--color-success-soft);
+  border-radius: var(--radius-sm);
+}
+
+.removed {
+  color: var(--color-danger);
+  text-decoration: line-through;
+  background: var(--color-danger-soft);
+  border-radius: var(--radius-sm);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

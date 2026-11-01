@@ -1,0 +1,35 @@
+{
+  "title": "Sprint",
+  "description": "Các sprint được đồng bộ từ bảng Jira.",
+  "columns": {
+    "name": "Sprint",
+    "state": "Trạng thái",
+    "dates": "Thời gian",
+    "stories": "Story"
+  },
+  "states": {
+    "active": "Đang chạy",
+    "future": "Sắp tới",
+    "closed": "Đã đóng"
+  },
+  "dates": {
+    "range": "{{start}} – {{end}}",
+    "notSet": "Chưa có ngày",
+    "completed": "Hoàn thành {{date}}"
+  },
+  "empty": {
+    "title": "Chưa có sprint nào",
+    "description": "Admin, PM hoặc BA có thể đồng bộ từ Jira để lấy các sprint của bảng."
+  },
+  "loadError": "Không tải được danh sách sprint",
+  "retry": "Thử lại",
+  "detail": {
+    "back": "Tất cả sprint",
+    "storiesTitle": "Story trong sprint này",
+    "loadError": "Không tải được sprint này",
+    "notFound": {
+      "title": "Không tìm thấy sprint",
+      "description": "Có thể sprint đã nằm ngoài phạm vi đồng bộ."
+    }
+  }
+}

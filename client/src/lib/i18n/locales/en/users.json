@@ -1,0 +1,126 @@
+{
+  "title": "Users",
+  "description": "Invite people to the workspace and manage their access.",
+  "you": "You",
+  "retry": "Try again",
+  "loadError": "Users could not be loaded",
+  "filters": {
+    "search": "Search by name or email",
+    "status": "Status",
+    "role": "Workspace role",
+    "all": "All"
+  },
+  "columns": {
+    "user": "User",
+    "role": "Workspace role",
+    "status": "Status",
+    "twoFactor": "Two-factor",
+    "actions": "Actions"
+  },
+  "workspaceRoles": {
+    "owner": "Owner",
+    "admin": "Workspace admin",
+    "member": "Member"
+  },
+  "statuses": {
+    "invited": "Invited",
+    "active": "Active",
+    "deactivated": "Deactivated"
+  },
+  "twoFactor": {
+    "setUp": "Set up",
+    "notSetUp": "Not set up"
+  },
+  "empty": {
+    "title": "No users match these filters",
+    "description": "Change the filters or invite someone."
+  },
+  "noAccess": {
+    "title": "Only workspace admins can manage users",
+    "description": "Ask a workspace admin if someone needs to be added."
+  },
+  "actions": {
+    "menu": "Actions for {{name}}",
+    "invite": "Invite user",
+    "viewAccess": "View project access",
+    "resendInvite": "Resend invite",
+    "changeRole": "Change workspace role",
+    "resetTwoFactor": "Reset two-factor",
+    "deactivate": "Deactivate",
+    "reactivate": "Reactivate"
+  },
+  "invite": {
+    "title": "Invite a user",
+    "email": "Email",
+    "name": "Name",
+    "role": "Workspace role",
+    "submit": "Send invite",
+    "adminOwnerOnly": "Only the owner can invite workspace admins.",
+    "success": "Invite sent to {{email}}"
+  },
+  "changeRole": {
+    "title": "Change the role of {{name}}",
+    "submit": "Save role",
+    "success": "{{name}} is now {{role}}"
+  },
+  "confirm": {
+    "deactivate": {
+      "title": "Deactivate {{name}}?",
+      "action": "Deactivate",
+      "message": "They are signed out everywhere and their API tokens stop working. Their history is kept."
+    },
+    "reactivate": {
+      "title": "Reactivate {{name}}?",
+      "action": "Reactivate",
+      "message": "They can sign in again. If they never accepted their invite, a new one is sent."
+    },
+    "resetTwoFactor": {
+      "title": "Reset two-factor for {{name}}?",
+      "action": "Reset",
+      "message": "They are signed out and must set up an authenticator app at their next sign-in."
+    }
+  },
+  "toasts": {
+    "inviteResent": "Invite sent again to {{email}}",
+    "deactivated": "{{name}} is deactivated",
+    "reactivated": "{{name}} is active again",
+    "reactivatedInvited": "{{name}} is reactivated and a new invite was sent",
+    "twoFactorReset": "Two-factor reset for {{name}}"
+  },
+  "errors": {
+    "emailInvalid": "Enter a valid email address",
+    "emailUsed": "A user with this email already exists",
+    "nameRequired": "Enter a name of at most 100 characters",
+    "cannotChange": "You cannot change your own account or the owner's account.",
+    "ownerOnly": "Only the workspace owner can do this.",
+    "notInvited": "This user has already accepted the invite."
+  },
+  "access": {
+    "back": "All users",
+    "title": "Project access",
+    "columns": {
+      "project": "Project",
+      "key": "Key",
+      "role": "Role",
+      "state": "State"
+    },
+    "archived": "Archived",
+    "workspaceAdminNote": "Workspace admins act as Admin in every project, including projects not listed here.",
+    "empty": {
+      "title": "Not a member of any project",
+      "description": "Add them from a project's Members page."
+    },
+    "notFound": {
+      "title": "User not found"
+    },
+    "loadError": "Project access could not be loaded"
+  },
+  "projectRoles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Viewer"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "bell": {
+    "label": "Notifications",
+    "labelWithCount_one": "Notifications, {{count}} unread",
+    "labelWithCount_other": "Notifications, {{count}} unread"
+  },
+  "panel": {
+    "title": "Notifications",
+    "close": "Close notifications",
+    "filterLabel": "Show notifications",
+    "filterAll": "All",
+    "filterUnread": "Unread",
+    "markAllRead": "Mark all as read",
+    "loadMore": "Load more",
+    "loading": "Loading notifications"
+  },
+  "empty": {
+    "allTitle": "No notifications yet",
+    "allDescription": "You will be told here when a gap or a failure is assigned to you, or when a run you follow finishes.",
+    "unreadTitle": "You're all caught up",
+    "unreadDescription": "There are no unread notifications."
+  },
+  "error": {
+    "title": "Notifications could not be loaded",
+    "retry": "Try again"
+  },
+  "item": {
+    "unread": "Unread:",
+    "markRead": "Mark as read",
+    "byActor": "by {{actorName}}"
+  },
+  "kind": {
+    "gapAssigned": {
+      "title": "Gap assigned to you on {{storyKey}}",
+      "description": "{{question}}"
+    },
+    "failureAssigned": {
+      "title": "Failure assigned to you on {{storyKey}}",
+      "description": "{{testCaseCode}} · {{testCaseTitle}}"
+    },
+    "runFinished": {
+      "title": {
+        "passed": "Run passed on {{storyKey}}",
+        "failed": "Run failed on {{storyKey}}",
+        "aborted": "Run aborted on {{storyKey}}"
+      },
+      "description": "{{passedCount}} passed · {{failedCount}} failed · {{blockedCount}} blocked"
+    }
+  }
+}

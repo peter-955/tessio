@@ -1,0 +1,17 @@
+.identity {
+  min-width: 0;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  font-weight: 500;
+}
+
+.email {
+  display: block;
+}

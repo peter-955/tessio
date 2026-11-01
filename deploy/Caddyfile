@@ -1,0 +1,22 @@
+{$TESSIO_DOMAIN} {
+	handle /api/* {
+		reverse_proxy api:8000 {
+			flush_interval -1
+		}
+	}
+
+	handle /mcp* {
+		reverse_proxy api:8000 {
+			flush_interval -1
+		}
+	}
+
+	handle {
+		encode zstd gzip
+		reverse_proxy client:3000
+	}
+}
+
+{$STORAGE_DOMAIN} {
+	reverse_proxy rustfs:9000
+}

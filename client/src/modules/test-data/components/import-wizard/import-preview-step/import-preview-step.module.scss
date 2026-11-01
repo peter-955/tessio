@@ -1,0 +1,47 @@
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: 0;
+  font-size: var(--text-sm);
+
+  dd {
+    margin: 0;
+  }
+}
+
+.summaryItem {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.summaryLabel {
+  color: var(--color-text-muted);
+}
+
+.key {
+  font-family: var(--mantine-font-family-monospace);
+}
+
+.value {
+  display: inline-block;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+  font-family: var(--mantine-font-family-monospace);
+}
+
+.mask {
+  color: var(--color-text-muted);
+}
+
+.caption,
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,29 @@
+{
+  "type": "doc",
+  "version": 1,
+  "content": [
+    {"type": "heading", "attrs": {"level": 1}, "content": [{"type": "text", "text": "Acceptance criteria"}]},
+    {"type": "bulletList", "content": [
+      {"type": "listItem", "content": [
+        {"type": "paragraph", "content": [
+          {"type": "mention", "attrs": {"id": "abc", "text": "@Alice"}},
+          {"type": "text", "text": " approves the refund"},
+          {"type": "hardBreak"},
+          {"type": "text", "text": "within  2 days "},
+          {"type": "emoji", "attrs": {"shortName": ":tada:", "text": "🎉"}}
+        ]},
+        {"type": "bulletList", "content": [
+          {"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Email is sent"}]}]},
+          {"type": "listItem", "content": [{"type": "paragraph", "content": [
+            {"type": "text", "text": "Status becomes "},
+            {"type": "status", "attrs": {"text": "REFUNDED", "color": "green"}}
+          ]}]}
+        ]}
+      ]},
+      {"type": "listItem", "content": [{"type": "paragraph", "content": [
+        {"type": "text", "text": "See "},
+        {"type": "inlineCard", "attrs": {"url": "https://docs.shop.test/refunds"}}
+      ]}]}
+    ]}
+  ]
+}

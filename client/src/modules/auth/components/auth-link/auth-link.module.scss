@@ -1,0 +1,10 @@
+.link {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}

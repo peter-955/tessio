@@ -1,0 +1,35 @@
+{
+  "title": "Sprints",
+  "description": "Sprints synchronisés depuis le tableau Jira.",
+  "columns": {
+    "name": "Sprint",
+    "state": "État",
+    "dates": "Dates",
+    "stories": "Stories"
+  },
+  "states": {
+    "active": "Actif",
+    "future": "À venir",
+    "closed": "Terminé"
+  },
+  "dates": {
+    "range": "{{start}} – {{end}}",
+    "notSet": "Sans dates",
+    "completed": "Terminé le {{date}}"
+  },
+  "empty": {
+    "title": "Aucun sprint pour l'instant",
+    "description": "Un Admin, PM ou BA peut synchroniser avec Jira pour importer les sprints du tableau."
+  },
+  "loadError": "Impossible de charger les sprints",
+  "retry": "Réessayer",
+  "detail": {
+    "back": "Tous les sprints",
+    "storiesTitle": "Stories de ce sprint",
+    "loadError": "Impossible de charger ce sprint",
+    "notFound": {
+      "title": "Sprint introuvable",
+      "description": "Il est peut-être sorti du périmètre synchronisé."
+    }
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "title": "Tableau de bord",
+  "description": "Où en est le sprint en cours et ce qui demande votre attention.",
+  "retry": "Réessayer",
+  "home": {
+    "loadError": "Impossible de charger vos projets."
+  },
+  "sprint": {
+    "title": "Sprint en cours",
+    "pickerLabel": "Sprint",
+    "pickerPlaceholder": "Sprint en cours",
+    "option": "{{name}} · {{state}}",
+    "dates": "{{start}} – {{end}}",
+    "states": {
+      "active": "Actif",
+      "future": "À venir",
+      "closed": "Clôturé"
+    },
+    "loadError": "Impossible de charger le résumé du sprint.",
+    "notFound": {
+      "title": "Sprint introuvable",
+      "description": "Ce sprint ne fait pas partie du projet.",
+      "reset": "Afficher le sprint en cours"
+    },
+    "empty": {
+      "title": "Aucun sprint actif",
+      "description": "Choisissez un sprint, ou synchronisez avec Jira quand un sprint démarre."
+    }
+  },
+  "stats": {
+    "stories": "Stories",
+    "openGaps": "Écarts ouverts",
+    "activeFailures": "Échecs actifs",
+    "coverage": "Critères couverts",
+    "percent": "{{percent}}%",
+    "noValue": "—"
+  },
+  "testStatus": {
+    "title": "Stories par statut de test",
+    "not_started": "Non commencée",
+    "ready_for_test": "Prête pour le test",
+    "in_test": "En test",
+    "passed": "Validée",
+    "failed": "Échouée"
+  },
+  "coverage": {
+    "title": "Couverture des critères",
+    "summary": "{{covered}} critères couverts sur {{total}}",
+    "empty": "Aucun critère d'acceptation dans ce sprint pour l'instant.",
+    "segments": {
+      "passed": "Réussi",
+      "failed": "Échoué",
+      "blocked": "Bloqué",
+      "notRun": "Non exécuté",
+      "uncovered": "Non couvert"
+    },
+    "barLabel": "{{passed}} réussis, {{failed}} échoués, {{blocked}} bloqués, {{notRun}} non exécutés, {{uncovered}} non couverts"
+  },
+  "myWork": {
+    "title": "Mon travail",
+    "role": "En tant que {{role}}",
+    "roles": {
+      "admin": "Admin",
+      "pm": "PM",
+      "ba": "BA",
+      "qc": "QC",
+      "dev": "Dev",
+      "viewer": "Lecteur"
+    },
+    "nothingForRole": "Rien n'est attribué à votre rôle.",
+    "loadError": "Impossible de charger votre travail.",
+    "showing": "{{count}} affichés sur {{total}}",
+    "viewAll": "Tout voir",
+    "unassigned": "{{count}} échecs non attribués",
+    "noUnassigned": "Aucun échec non attribué",
+    "uncovered": {
+      "title": "Critères sans cas de test",
+      "empty": "Chaque critère a un cas.",
+      "write": "Écrire un cas"
+    },
+    "drafts": {
+      "title": "Mes cas en brouillon",
+      "empty": "Aucun cas en brouillon."
+    },
+    "failures": {
+      "title": "Échecs à corriger",
+      "empty": "Aucun échec à corriger.",
+      "opened": "Ouvert le {{date}}"
+    },
+    "gaps": {
+      "title": "Écarts à traiter",
+      "empty": "Aucun écart à traiter."
+    }
+  },
+  "statuses": {
+    "case": {
+      "draft": "Brouillon",
+      "in_review": "En revue",
+      "ready": "Prêt",
+      "deprecated": "Obsolète"
+    },
+    "failure": {
+      "open": "Ouvert",
+      "reopened": "Rouvert",
+      "fixed": "Corrigé",
+      "verified": "Vérifié"
+    },
+    "severity": {
+      "high": "Haute",
+      "medium": "Moyenne",
+      "low": "Basse"
+    },
+    "gapType": {
+      "missing_ac": "Critère manquant",
+      "unclear_goal": "Objectif flou",
+      "missing_step": "Étape manquante",
+      "missing_test_data": "Données de test manquantes",
+      "other": "Autre"
+    }
+  },
+  "recentRuns": {
+    "title": "Exécutions récentes",
+    "viewAll": "Voir toutes les exécutions",
+    "loadError": "Impossible de charger les exécutions récentes.",
+    "empty": {
+      "title": "Aucune exécution",
+      "description": "Les exécutions lancées par Claude ou à la main apparaissent ici."
+    },
+    "columns": {
+      "status": "Statut",
+      "story": "Story",
+      "executor": "Exécutant",
+      "environment": "Environnement",
+      "startedBy": "Lancée par",
+      "startedAt": "Démarrée",
+      "results": "Résultats"
+    },
+    "status": {
+      "running": "En cours",
+      "passed": "Réussie",
+      "failed": "Échouée",
+      "aborted": "Interrompue"
+    },
+    "abortReason": {
+      "no_results": "aucun résultat",
+      "inactive": "inactive"
+    },
+    "executor": {
+      "claude": "Claude",
+      "manual": "Manuelle"
+    },
+    "results": "{{passed}} réussis · {{failed}} échoués sur {{total}}"
+  }
+}

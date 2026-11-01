@@ -1,0 +1,62 @@
+{
+  "actions": {
+    "cancel": "Hủy",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "close": "Đóng"
+  },
+  "colorScheme": {
+    "label": "Giao diện màu",
+    "light": "Sáng",
+    "dark": "Tối",
+    "auto": "Theo hệ thống"
+  },
+  "language": {
+    "label": "Ngôn ngữ"
+  },
+  "duration": {
+    "seconds": "{{seconds}} giây",
+    "minutesSeconds": "{{minutes}} phút {{seconds}} giây"
+  },
+  "pinInput": {
+    "digitLabel": "{{label}}, chữ số {{position}} trên {{total}}"
+  },
+  "passwordInput": {
+    "toggleVisibility": "Hiện hoặc ẩn mật khẩu"
+  },
+  "appShell": {
+    "skipToContent": "Chuyển đến nội dung chính",
+    "openNavigation": "Mở điều hướng",
+    "closeNavigation": "Đóng điều hướng",
+    "navigationLabel": "Điều hướng",
+    "projectNavigation": "Điều hướng dự án",
+    "workspaceNavigation": "Điều hướng không gian làm việc",
+    "projectLoading": "Đang tải dự án",
+    "projectSwitcher": {
+      "currentPrefix": "Chuyển dự án, dự án hiện tại:",
+      "placeholder": "Chọn dự án",
+      "listLabel": "Dự án của bạn",
+      "loading": "Đang tải dự án…",
+      "empty": "Chưa có dự án nào",
+      "loadError": "Không tải được danh sách dự án",
+      "allProjects": "Tất cả dự án",
+      "archived": "Đã lưu trữ"
+    },
+    "search": {
+      "label": "Tìm kiếm",
+      "comingSoon": "Tìm kiếm sẽ có ở phiên bản sau"
+    },
+    "userMenu": {
+      "label": "Menu tài khoản",
+      "signOut": "Đăng xuất",
+      "signOutAll": "Đăng xuất khỏi mọi thiết bị"
+    },
+    "noProject": {
+      "description": "Chọn một dự án để xem sprint, story và lượt chạy."
+    },
+    "archivedBanner": {
+      "title": "Dự án này đã được lưu trữ",
+      "message": "Bạn vẫn xem được mọi thứ nhưng không thể thay đổi gì."
+    }
+  }
+}

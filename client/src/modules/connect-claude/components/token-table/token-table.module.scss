@@ -1,0 +1,17 @@
+.muted {
+  color: var(--color-text-muted);
+}
+
+.actions {
+  width: 1%;
+  text-align: right;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

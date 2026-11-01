@@ -1,0 +1,64 @@
+{
+  "title": "Profil",
+  "description": "Votre compte, vos préférences et votre sécurité.",
+  "details": {
+    "title": "Informations personnelles",
+    "email": "E-mail",
+    "name": "Nom",
+    "nameRequired": "Saisissez votre nom.",
+    "nameTooLong": "Utilisez 100 caractères au maximum.",
+    "save": "Enregistrer",
+    "saved": "Nom enregistré"
+  },
+  "avatar": {
+    "change": "Changer la photo",
+    "remove": "Supprimer la photo",
+    "removed": "Photo supprimée",
+    "dialogTitle": "Changer votre photo",
+    "dropTitle": "Déposez une image ici ou cliquez pour en choisir une",
+    "dropDescription": "PNG, JPEG ou WebP. Elle est recadrée en carré.",
+    "save": "Enregistrer la photo",
+    "saved": "Photo enregistrée",
+    "cropFailed": "Cette image n'a pas pu être lue. Essayez un autre fichier."
+  },
+  "preferences": {
+    "title": "Préférences",
+    "theme": "Thème",
+    "language": "Langue",
+    "description": "Enregistrées dans votre compte et appliquées sur tous vos appareils."
+  },
+  "password": {
+    "title": "Mot de passe",
+    "current": "Mot de passe actuel",
+    "currentRequired": "Saisissez votre mot de passe actuel.",
+    "new": "Nouveau mot de passe",
+    "confirm": "Confirmer le nouveau mot de passe",
+    "rule": "Au moins 12 caractères.",
+    "tooShort": "Utilisez au moins 12 caractères.",
+    "mismatch": "Les mots de passe ne correspondent pas.",
+    "submit": "Changer le mot de passe",
+    "changed": "Mot de passe changé",
+    "otherDevicesSignedOut": "Vos autres appareils ont été déconnectés."
+  },
+  "twoFactor": {
+    "title": "Authentification à deux facteurs",
+    "regenerate": "Générer de nouveaux codes de récupération",
+    "regenerateDescription": "Vos anciens codes ne fonctionneront plus.",
+    "reset": "Réinitialiser l'authentificateur",
+    "resetDescription": "Vous configurerez à nouveau votre application d'authentification tout de suite.",
+    "resetWarning": "Vos autres appareils sont déconnectés et vos codes de récupération ne fonctionnent plus.",
+    "passwordLabel": "Confirmez avec votre mot de passe",
+    "passwordRequired": "Saisissez votre mot de passe.",
+    "confirm": "Continuer"
+  },
+  "sessions": {
+    "title": "Sessions",
+    "description": "Déconnectez-vous partout, y compris dans ce navigateur.",
+    "action": "Se déconnecter de tous les appareils"
+  },
+  "signOutAll": {
+    "title": "Se déconnecter de tous les appareils ?",
+    "description": "Toutes les sessions prennent fin, y compris celle-ci. Il vous faudra votre mot de passe et votre authentificateur pour vous reconnecter.",
+    "confirm": "Se déconnecter partout"
+  }
+}

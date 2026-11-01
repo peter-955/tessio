@@ -1,0 +1,23 @@
+@use "shared/styles/mixins" as *;
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: var(--space-3);
+  align-items: end;
+  margin-bottom: var(--space-5);
+}
+
+.search {
+  grid-column: span 2;
+
+  @include tablet-down {
+    grid-column: auto;
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+}

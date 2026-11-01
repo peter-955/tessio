@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Tessio">
+  <!-- Single-color mark: inherits the text color, for use on any background -->
+  <circle cx="30" cy="34" r="15" fill="none" stroke="currentColor" stroke-width="6"
+          stroke-linecap="round" stroke-dasharray="74 20.25"/>
+  <path d="M22 34 L29 41 L50 17" fill="none" stroke="currentColor" stroke-width="6"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

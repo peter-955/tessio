@@ -1,0 +1,129 @@
+{
+  "title": "Échecs",
+  "pageDescription": "Cas de test en échec à corriger et à vérifier.",
+  "loadError": "Impossible de charger les échecs.",
+  "retry": "Réessayer",
+  "status": {
+    "open": "Ouvert",
+    "fixed": "Corrigé",
+    "verified": "Vérifié",
+    "reopened": "Rouvert"
+  },
+  "result": {
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "blocked": "Bloqué",
+    "skipped": "Ignoré"
+  },
+  "executor": {
+    "claude": "Claude",
+    "manual": "Manuel"
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Lecteur"
+  },
+  "filters": {
+    "status": "Statut",
+    "active": "Actifs",
+    "all": "Tous les statuts",
+    "assignee": "Assigné à",
+    "anyone": "Tout le monde",
+    "unassigned": "Non assigné",
+    "me": "Assignés à moi",
+    "story": "Story",
+    "allStories": "Toutes les stories",
+    "deactivatedMember": "{{name}} (Désactivé)"
+  },
+  "columns": {
+    "testCase": "Cas de test",
+    "story": "Story",
+    "status": "Statut",
+    "assignee": "Assigné à",
+    "lastFailed": "Dernier échec",
+    "run": "Exécution",
+    "result": "Résultat",
+    "executor": "Exécutant",
+    "duration": "Durée",
+    "startedBy": "Lancée par"
+  },
+  "empty": {
+    "title": "Aucun échec",
+    "description": "Les résultats en échec des exécutions apparaissent ici.",
+    "noMatch": "Aucun échec ne correspond à ces filtres",
+    "noMatchDescription": "Essayez d'autres filtres.",
+    "clearFilters": "Effacer les filtres"
+  },
+  "assignee": {
+    "unassigned": "Non assigné",
+    "deactivated": "Désactivé",
+    "deactivatedHint": "La personne assignée est désactivée. Réassignez cet échec."
+  },
+  "detail": {
+    "back": "Retour aux échecs",
+    "notFoundTitle": "Échec introuvable",
+    "notFoundDescription": "Il appartient peut-être à un autre projet.",
+    "loadError": "Impossible de charger cet échec.",
+    "opened": "Ouvert le {{date}}",
+    "lastFailed": "Dernier échec le {{date}}",
+    "statusChangedBy": "Statut modifié par {{name}} le {{date}}"
+  },
+  "step": {
+    "title": "Étape en échec",
+    "none": "Aucune étape en échec n'a été signalée.",
+    "openRun": "Ouvrir l'exécution",
+    "order": "Étape {{order}}",
+    "action": "Action",
+    "expected": "Résultat attendu",
+    "actual": "Résultat obtenu",
+    "error": "Erreur"
+  },
+  "screenshot": {
+    "none": "Aucune capture",
+    "uploading": "Capture en cours d'envoi…",
+    "missing": "Capture manquante",
+    "unavailable": "Capture indisponible",
+    "alt": "Capture de l'étape {{order}}",
+    "close": "Fermer"
+  },
+  "history": {
+    "title": "Historique",
+    "empty": "Aucun résultat pour l'instant."
+  },
+  "timeline": {
+    "title": "Chronologie",
+    "opened": "Échec ouvert",
+    "failedAgain": "Nouvel échec",
+    "statusChanged": "{{from}} → {{to}}",
+    "assigned": "Assigné à {{name}}",
+    "unassigned": "Non assigné",
+    "by": "par {{name}}",
+    "automatic": "Automatique"
+  },
+  "actions": {
+    "markFixed": "Marquer corrigé",
+    "verify": "Vérifier",
+    "reopen": "Rouvrir",
+    "assign": "Assigner",
+    "reassign": "Réassigner"
+  },
+  "assign": {
+    "title": "Assigner l'échec",
+    "label": "Assigné à",
+    "submit": "Enregistrer",
+    "unassigned": "Non assigné"
+  },
+  "toasts": {
+    "statusChanged": "{{code}} est maintenant {{status}}.",
+    "assigned": "{{code}} assigné à {{name}}.",
+    "unassigned": "{{code}} n'est plus assigné."
+  },
+  "errors": {
+    "changedMeanwhile": "Cet échec a été modifié entre-temps. Il a été rechargé.",
+    "assigneeNotActive": "Choisissez un membre actif du projet."
+  }
+}

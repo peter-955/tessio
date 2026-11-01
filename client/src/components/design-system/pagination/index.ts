@@ -1,0 +1,1 @@
+export { DSPagination } from "./pagination";
