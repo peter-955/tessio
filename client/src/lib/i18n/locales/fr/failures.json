@@ -17,7 +17,8 @@
   },
   "executor": {
     "claude": "Claude",
-    "manual": "Manuel"
+    "manual": "Manuel",
+    "ci": "CI"
   },
   "roles": {
     "admin": "Admin",
@@ -47,6 +48,7 @@
     "lastFailed": "Dernier échec",
     "run": "Exécution",
     "result": "Résultat",
+    "iteration": "Itération",
     "executor": "Exécutant",
     "duration": "Durée",
     "startedBy": "Lancée par"
@@ -102,7 +104,8 @@
     "assigned": "Assigné à {{name}}",
     "unassigned": "Non assigné",
     "by": "par {{name}}",
-    "automatic": "Automatique"
+    "automatic": "Automatique",
+    "causeChanged": "Cause probable : {{from}} → {{to}}"
   },
   "actions": {
     "markFixed": "Marquer corrigé",
@@ -120,10 +123,19 @@
   "toasts": {
     "statusChanged": "{{code}} est maintenant {{status}}.",
     "assigned": "{{code}} assigné à {{name}}.",
-    "unassigned": "{{code}} n'est plus assigné."
+    "unassigned": "{{code}} n'est plus assigné.",
+    "causeChanged": "Cause probable de {{code}} modifiée"
   },
   "errors": {
     "changedMeanwhile": "Cet échec a été modifié entre-temps. Il a été rechargé.",
     "assigneeNotActive": "Choisissez un membre actif du projet."
+  },
+  "cause": {
+    "title": "Cause probable",
+    "none": "Pas encore de cause probable.",
+    "change": "Modifier",
+    "modalTitle": "Modifier la cause probable",
+    "reason": "Pourquoi (facultatif)",
+    "save": "Enregistrer la cause"
   }
 }

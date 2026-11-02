@@ -6,3 +6,9 @@
   font-family: var(--mantine-font-family-monospace);
   font-size: var(--text-sm);
 }
+
+.optionDescription {
+  display: block;
+  font-family: var(--mantine-font-family);
+  color: var(--color-text-muted);
+}

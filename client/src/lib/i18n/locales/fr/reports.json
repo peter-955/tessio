@@ -1,0 +1,27 @@
+{
+  "button": "Exporter",
+  "modal": {
+    "title": {
+      "run": "Exporter le rapport d'exécution",
+      "plan": "Exporter le plan de test",
+      "story": "Exporter le rapport de la story"
+    },
+    "description": "Le rapport est généré en arrière-plan, avec les valeurs secrètes masquées. Vous pouvez fermer cette fenêtre : une notification avec le lien de téléchargement vous prévient quand il est prêt.",
+    "formatLabel": "Format",
+    "export": "Exporter",
+    "close": "Fermer"
+  },
+  "format": {
+    "md": "Markdown (.md)",
+    "pdf": "PDF (.pdf)"
+  },
+  "status": {
+    "preparing": "Préparation de {{fileName}}…",
+    "ready": "{{fileName}} est prêt.",
+    "download": "Télécharger",
+    "notifyLater": "{{fileName}} est encore en préparation. Vous recevrez une notification quand il sera prêt. Si elle n'arrive pas, relancez l'export."
+  },
+  "download": {
+    "notFound": "Ce rapport n'est pas encore prêt, ou il a été supprimé."
+  }
+}

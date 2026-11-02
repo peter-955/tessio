@@ -2,6 +2,7 @@
 
 import { DSCard, DSText } from "@/components/design-system";
 import { StatusBadge } from "@/components/status-badge/status-badge";
+import { SuspectedCause } from "@/components/suspected-cause/suspected-cause";
 import Link from "next/link";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,9 +15,15 @@ interface Props {
   projectKey: string;
   runId: string;
   failedCases: FailedCaseReport[];
+  isStoryShown?: boolean;
 }
 
-export const ReportFailedCases: FC<Props> = ({ projectKey, runId, failedCases }) => {
+export const ReportFailedCases: FC<Props> = ({
+  projectKey,
+  runId,
+  failedCases,
+  isStoryShown = false,
+}) => {
   const { t } = useTranslation("runs");
   const resultsPath = buildRunPath(projectKey, runId, RunDetailTab.RESULTS);
 
@@ -36,8 +43,19 @@ export const ReportFailedCases: FC<Props> = ({ projectKey, runId, failedCases })
                   <DSText weight="medium" component="span" className={styles.wrapping}>
                     {failedCase.title}
                   </DSText>
+                  {isStoryShown && (failedCase.storyJiraKey ?? null) !== null && (
+                    <DSText size="sm" color="muted" component="span">
+                      {failedCase.storyJiraKey}
+                    </DSText>
+                  )}
                   <StatusBadge status={failedCase.status} />
                 </div>
+                {failedCase.suspectedCause !== null && failedCase.suspectedCause !== undefined && (
+                  <SuspectedCause
+                    cause={failedCase.suspectedCause}
+                    reason={failedCase.causeReason ?? null}
+                  />
+                )}
                 {failedCase.stepOrder !== null && (
                   <DSText size="sm" className={styles.wrapping}>
                     {t("report.failedStep", {

@@ -1,0 +1,5 @@
+from app.shared.permissions import Capability
+
+GET_STORY_CONTEXT_CAPABILITY = Capability.STORY_VIEW
+RESOLVE_DATA_CAPABILITY = Capability.SECRET_USE_IN_RUN
+GET_TEST_FILE_CAPABILITY = Capability.RUN_START

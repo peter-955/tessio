@@ -46,7 +46,7 @@ export const ProjectsTable: FC<Props> = ({ projects, isWorkspaceAdmin, onArchive
                 </div>
               </td>
               <td className={styles.mono}>{project.key}</td>
-              <td className={styles.mono}>{project.jiraProjectKey}</td>
+              <td className={styles.mono}>{project.jiraProjectKey ?? t("table.withoutJira")}</td>
               <td>
                 {project.myRole ? (
                   <DSBadge color="tessio">{t(`roles.${project.myRole}`)}</DSBadge>

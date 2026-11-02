@@ -1,0 +1,27 @@
+{
+  "button": "Export",
+  "modal": {
+    "title": {
+      "run": "Export the run report",
+      "plan": "Export the test plan",
+      "story": "Export the story report"
+    },
+    "description": "The report is built in the background, with secret values masked. You can close this window: a notification with the download link tells you when it is ready.",
+    "formatLabel": "Format",
+    "export": "Export",
+    "close": "Close"
+  },
+  "format": {
+    "md": "Markdown (.md)",
+    "pdf": "PDF (.pdf)"
+  },
+  "status": {
+    "preparing": "Preparing {{fileName}}…",
+    "ready": "{{fileName}} is ready.",
+    "download": "Download",
+    "notifyLater": "{{fileName}} is still being prepared. You will get a notification when it is ready. If none arrives, export the report again."
+  },
+  "download": {
+    "notFound": "This report is not ready yet, or it was removed."
+  }
+}

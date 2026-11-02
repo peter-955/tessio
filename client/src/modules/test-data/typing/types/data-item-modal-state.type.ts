@@ -4,6 +4,7 @@ export interface DataItemCreatePreset {
   key: string;
   kind: DataItemKind;
   scopeId: string;
+  description: string | null;
 }
 
 export type DataItemModalState =

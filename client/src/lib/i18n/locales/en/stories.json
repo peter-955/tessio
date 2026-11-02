@@ -26,7 +26,8 @@
   "list": {
     "openInJira": "Open in Jira",
     "notInScope": "Not in Jira scope",
-    "noSprint": "No sprint"
+    "noSprint": "No sprint",
+    "writtenInTessio": "Written in Tessio"
   },
   "empty": {
     "title": "No stories yet",
@@ -51,7 +52,9 @@
     "notFound": {
       "title": "Story not found",
       "description": "Check the key or sync from Jira."
-    }
+    },
+    "writtenInTessio": "Written in Tessio",
+    "lastEdited": "Last edited {{date}}"
   },
   "tabs": {
     "ariaLabel": "Story sections",
@@ -110,5 +113,33 @@
     "lastSucceeded": "Last successful sync {{date}}",
     "stale": "The last sync stopped responding.",
     "unavailable": "Sync status unavailable"
+  },
+  "editor": {
+    "newStory": "New story",
+    "createTitle": "New story",
+    "editTitle": "Edit {{key}}",
+    "title": "Title",
+    "titleRequired": "Enter a title.",
+    "tooLong": "Use at most {{max}} characters.",
+    "description": "Description",
+    "descriptionHint": "What the user wants and why. Plain text.",
+    "criteria": "Acceptance criteria",
+    "criteriaHint": "Codes follow the order: the first is AC1. Changing or removing a criterion flags its linked test cases for review.",
+    "criterionCode": "AC{{number}}",
+    "criterionActions": "Actions for {{code}}",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "remove": "Remove",
+    "addCriterion": "Add acceptance criterion",
+    "create": "Create story",
+    "save": "Save",
+    "created": "Story {{key}} created",
+    "updated": "Story saved",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete {{key}}?",
+    "deleteMessage": "The story and its acceptance criteria are deleted. Its key is not used again.",
+    "deleted": "Story {{key}} deleted",
+    "inUse": "This story has test cases, runs or gaps, so it can't be deleted."
   }
 }

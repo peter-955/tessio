@@ -1,22 +1,27 @@
 "use client";
 
-import { DSAlert, DSButton, DSText, DSTitle } from "@/components/design-system";
+import { CaseSheet } from "@/components/case-sheet/case-sheet";
+import type {
+  CaseReferences,
+  CaseSecretReveal,
+} from "@/components/case-sheet/typing/types/case-sheet.type";
+import { DSText, DSTitle } from "@/components/design-system";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import type { CaseDraft } from "../../typing/types/case-draft.type";
 import type { ManualRunCase, ResultStatus } from "../../typing/types/manual-run.type";
 import type { StepDraft } from "../../typing/types/step-draft.type";
-import { checkIsCaseDraftUploading, listDraftStatuses } from "../../utils/case-result-request.util";
-import { readStepDraft } from "../../utils/step-draft.util";
-import { StepRecorder } from "../step-recorder/step-recorder";
-import { SuggestedStatusField } from "../suggested-status-field/suggested-status-field";
+import { CaseResultForm } from "../case-result-form/case-result-form";
 import styles from "./case-recorder.module.scss";
 
 interface Props {
   runCase: ManualRunCase;
   draft: CaseDraft;
+  references: CaseReferences;
+  secretReveal: CaseSecretReveal;
   onStepChange: (order: number, changes: Partial<StepDraft>) => void;
   onStatusOverrideChange: (statusOverride: ResultStatus | null) => void;
+  onCauseChange: (changes: Partial<Pick<CaseDraft, "suspectedCause" | "causeReason">>) => void;
   onSave: () => void;
   isSaving: boolean;
   errorMessage: string | null;
@@ -25,14 +30,16 @@ interface Props {
 export const CaseRecorder: FC<Props> = ({
   runCase,
   draft,
+  references,
+  secretReveal,
   onStepChange,
   onStatusOverrideChange,
+  onCauseChange,
   onSave,
   isSaving,
   errorMessage,
 }) => {
   const { t } = useTranslation("manualRun");
-  const isUploading = checkIsCaseDraftUploading(draft);
 
   return (
     <section className={styles.recorder} aria-label={`${runCase.code} · ${runCase.title}`}>
@@ -44,42 +51,28 @@ export const CaseRecorder: FC<Props> = ({
           {t("record.notRecorded")}
         </DSText>
       </div>
-      {runCase.steps.length === 0 ? (
-        <DSText color="muted">{t("record.noSteps")}</DSText>
-      ) : (
-        <ol className={styles.steps}>
-          {runCase.steps.map((step) => {
-            return (
-              <StepRecorder
-                key={step.order}
-                step={step}
-                stepDraft={readStepDraft(draft, step.order)}
-                onChange={(changes) => {
-                  onStepChange(step.order, changes);
-                }}
-              />
-            );
-          })}
-        </ol>
-      )}
-      <SuggestedStatusField
-        statuses={listDraftStatuses(draft, runCase.steps)}
-        statusOverride={draft.statusOverride}
-        onChange={onStatusOverrideChange}
-        isDisabled={isSaving}
+      <CaseSheet
+        criteria={runCase.criteria}
+        businessValue={runCase.businessValue}
+        preconditions={runCase.preconditions}
+        steps={runCase.steps}
+        references={references}
+        isStepListShown={false}
+        headingOrder={3}
+        secretReveal={secretReveal}
       />
-      {errorMessage !== null && <DSAlert color="danger">{errorMessage}</DSAlert>}
-      <div className={styles.actions}>
-        <DSButton
-          type="primary"
-          icon="check"
-          isDisabled={isUploading}
-          isLoading={isSaving}
-          onClick={onSave}
-        >
-          {t("record.save")}
-        </DSButton>
-      </div>
+      <CaseResultForm
+        steps={runCase.steps}
+        draft={draft}
+        references={references}
+        ariaLabel={t("record.stepsOf", { code: runCase.code })}
+        onStepChange={onStepChange}
+        onStatusOverrideChange={onStatusOverrideChange}
+        onCauseChange={onCauseChange}
+        onSave={onSave}
+        isSaving={isSaving}
+        errorMessage={errorMessage}
+      />
     </section>
   );
 };

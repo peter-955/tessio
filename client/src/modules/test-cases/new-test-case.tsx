@@ -113,6 +113,7 @@ export const NewTestCasePage: FC<Props> = ({ initialStoryKey }) => {
         errors={errors}
         linkedCriteria={[]}
         suggestions={dataSuggestions}
+        files={NO_FILES}
         isStoryShown
         isStoryLocked={initialStoryKey !== null}
         isReadOnly={false}

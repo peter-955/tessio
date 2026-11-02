@@ -19,6 +19,13 @@ Tessio ships as one MVP, after a pilot sprint. There is no public beta and no st
 | M9 Production ready | First commit and CI green, images rebuilt, VPS + DNS + TLS, SMTP, bucket CORS, daily dump, real Jira check, real import sheet, manual browser pass (the blockers that gate go-live, see below) | 1.7.4, 3.6.7, 3.9.5, 4.6, 4.6b, 7.1, 7.2, 7.3, 7.3b, 7.4 | Not started | TBD |
 | M10 Pilot | One sprint side by side with the sheet ([pilot.md](../guides/pilot.md)) | 8.4 | Not started | TBD |
 | M11 MVP go-live | Pilot exit criteria met, sheet retired | 8.4 | Not started | TBD |
+| M12 W9 Gaps and case quality | Answer gaps with Claude, labels, flaky cases, version compare and review comments ([build plan](../discussions/competitive-features-plan.md)) | 9.18, 9.1, 9.13, 9.3 | Built 2026-11-02, uncommitted; plugin 0.4.0. Open: the `/tessio:answer-gaps` dry run in a real Claude session (9.18); suites and plans come in M13 (9.1) and quarantine in script runs in M16 (9.13) | TBD |
+| M13 W10 Suites, plans and shared steps | Regression suites and suite runs, test plans with sign-off, shared steps, data-driven cases | 9.1, 9.2 | Built 2026-11-02, uncommitted; plugin 0.5.0. Open: `/tessio:run-suite` and the per-iteration recording not yet tried in a real Claude session; the reviewers' should-fix items are parked in the WBS open issues | TBD |
+| M14 W11 Jira, integrations and insights | Two-way Jira, email and chat notifications, webhooks, API token scope, JUnit import, insights, report export | 9.4, 9.6, 9.5, 3.10.7, 3.12.2, 3.13.3 | Not started | TBD |
+| M15 W12 Scripts | Playwright scripts written by Claude, script runs from Claude Code, traces, videos and steps to reproduce | 9.8, 9.17, 9.14 | Not started | TBD |
+| M16 W13 Matrix, checks and API steps | Browsers and screen sizes, accessibility and speed checks, API steps, quarantine in script runs | 9.15, 9.11, 9.16, 9.13 | Not started | TBD |
+| M17 W14 Exploration, picking and visual | Exploratory sessions, picking regression cases, screenshot comparison | 9.10, 9.12, 9.9 | Not started | TBD |
+| M18 W15 Company basics | Google and Microsoft sign-in, full audit log, failure comments | 9.7, 4.10, 3.11.4 | Not started; can run beside W10 to W14 | TBD |
 | Later | Every `Later` row of the WBS | 3.1.3, 3.2.8, 3.4.4, 3.6.8, 3.9.6, 3.10.7, 3.11.4, 3.12.2, 3.13.3, 4.10, 7.5 | Not planned | TBD |
 
 ## Go-live gates
@@ -33,7 +40,7 @@ M9 is done when every box below is ticked. Each item points to its blocker in th
 - [ ] B-6: `python -m app.commands.jira_probe` run on a real Jira Cloud site, and the AC format confirmed.
 - [ ] B-7 and B-9: the case import tried on a real sample sheet, and the column format confirmed.
 - [ ] B-8: the data import tried on the real shared data file.
-- [ ] B-11: the plugin marketplace host chosen, and `NEXT_PUBLIC_TESSIO_PLUGIN_MARKETPLACE` set at client build time.
+- [x] B-11: closed by [ADR 0010](../decisions/0010-tessio-serves-its-claude-plugin.md): the API serves the plugin itself; it needs the production HTTPS address (B-3).
 - [ ] B-13: one manual pass in a real browser against the running stack.
 - [ ] B-15: a daily Postgres dump running, and one restore tried.
 - [ ] Every item under [Go-live gates in the pilot checklist](../guides/pilot.md#go-live-gates) is ticked.
@@ -46,6 +53,8 @@ These blockers do not gate go-live: B-10 is the pilot itself (M10), B-12 (the or
 - **M9:** every go-live gate above is ticked.
 - **M10:** the pilot sprint ends and the team decides with the [pilot exit criteria](../guides/pilot.md#exit-criteria).
 - **M11:** the [pilot exit criteria](../guides/pilot.md#exit-criteria) are all true, and the sheet and the data file are [retired](../guides/pilot.md#retire-the-sheet).
+- **M12:** the W9 checks and the e2e suite (with `12-answer-gaps`) are green, and one `/tessio:answer-gaps` dry run against a local server answers two gaps, reassigns one and skips one.
+- **M13:** the W10 checks and the e2e suite (with `13-suite-run`) are green, and one `/tessio:run-suite` dry run against a local server runs a suite with a data-driven case and records one result per iteration.
 
 ## Risks
 

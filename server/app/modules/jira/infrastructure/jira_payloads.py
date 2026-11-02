@@ -79,3 +79,40 @@ class JiraIssueSearchPagePayload(JiraPayload):
     issues: list[JiraIssuePayload]
     next_page_token: str | None = None
     is_last: bool | None = None
+
+
+class JiraCreatedIssuePayload(JiraPayload):
+    id: str
+    key: str
+
+
+class JiraStatusCategoryPayload(JiraPayload):
+    key: str
+
+
+class JiraStatusPayload(JiraPayload):
+    name: str
+    status_category: JiraStatusCategoryPayload
+
+
+class JiraStatusFieldsPayload(JiraPayload):
+    status: JiraStatusPayload
+
+
+class JiraIssueStatusPayload(JiraPayload):
+    key: str
+    fields: JiraStatusFieldsPayload
+
+
+class JiraIssueStatusPagePayload(JiraPayload):
+    issues: list[JiraIssueStatusPayload]
+    next_page_token: str | None = None
+    is_last: bool | None = None
+
+
+class JiraPermissionPayload(JiraPayload):
+    have_permission: bool = False
+
+
+class JiraMyPermissionsPayload(JiraPayload):
+    permissions: dict[str, JiraPermissionPayload]

@@ -46,14 +46,14 @@ As a PM, I want each AC's pass or fail status from its cases' latest results, so
   4. else any `blocked`: `blocked`;
   5. else any case with no result or a `skipped` result: `not_run`;
   6. else: `passed`.
-- AC2: A case's latest result is its newest result in any run, except that a `skipped` result is used only when the case has no other result. A run that does not report a case leaves its previous result in place.
+- AC2: A case's latest result is its newest result in any run, except that a `skipped` result is used only when the case has no other result. A run that does not report a case leaves its previous result in place. "Any run" includes suite runs: a suite run's result counts for the case's own story ([SUITE-7](suites-and-plans.md#suite-7-read-models-with-suite-runs-wbs-91)). For a data-driven case, a run's result is its worst iteration ([RUN-14 AC6](runs.md#run-14-shared-steps-and-iterations-in-a-run-wbs-92)).
 - AC3: The same rule gives the AC impact in each run report ([runs.md](runs.md)) and the dashboard coverage bar.
 
 ### TRACE-4 Story progress columns (WBS 3.7.1)
 
 As a PM, I want coverage, open gaps, failures and the last run in the story list, so that I can compare stories.
 
-- AC1: `GET /api/projects/{project_key}/story-progress?sprintId=` returns, per story: AC coverage ("{covered}/{total}", with failing, blocked or uncovered counts, or "All passing"), open gaps, active failures and the last run.
+- AC1: `GET /api/projects/{project_key}/story-progress?sprintId=` returns, per story: AC coverage ("{covered}/{total}", with failing, blocked or uncovered counts, or "All passing"), open gaps, active failures and the last run. The last run is the newest run that ran a case of the story, a story run or a suite run ([SUITE-7 AC4](suites-and-plans.md#suite-7-read-models-with-suite-runs-wbs-91)).
 - AC2: The story list shows these columns; a missing value shows "Not available".
 
 ### TRACE-5 Latest result per case (WBS 3.7.3)

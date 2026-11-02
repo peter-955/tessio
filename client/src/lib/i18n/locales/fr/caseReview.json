@@ -1,0 +1,91 @@
+{
+  "retry": "Réessayer",
+  "tabs": {
+    "review": "Relecture",
+    "compare": "Comparer"
+  },
+  "compare": {
+    "title": "Comparer deux versions côte à côte",
+    "description": "Choisissez deux versions pour voir leurs champs et leurs étapes l'un à côté de l'autre. Les lignes modifiées sont signalées et les mots modifiés sont surlignés.",
+    "from": "Version de départ",
+    "to": "Version d'arrivée",
+    "versionOption": "Version {{number}}",
+    "currentOption": "Version {{number}} (actuelle)",
+    "heading": "Version {{number}} · {{name}}, {{date}}",
+    "formerMember": "Ancien membre",
+    "onlyChanges": "Afficher seulement les modifications",
+    "changeCount_one": "{{count}} modification entre ces versions.",
+    "changeCount_other": "{{count}} modifications entre ces versions.",
+    "identical": "Ces versions ont les mêmes champs, les mêmes étapes et les mêmes lignes de données.",
+    "single": "Une seule version pour l'instant. Vous pourrez comparer deux versions après le prochain enregistrement.",
+    "loadError": "Les versions n'ont pas pu être chargées.",
+    "tableLabel": "Version {{from}} et version {{to}} côte à côte",
+    "itemColumn": "Partie du cas",
+    "fields": {
+      "title": "Titre",
+      "priority": "Priorité",
+      "businessValue": "Valeur métier",
+      "preconditions": "Préconditions",
+      "dataTable": "Paramètres et lignes de données"
+    },
+    "stepsLabel": "Étapes",
+    "noSteps": "Aucune des deux versions n'a d'étapes.",
+    "step": "Étape {{order}}",
+    "stepMoved": "Étape {{from}} → {{to}}",
+    "noStep": "Absente de cette version",
+    "action": "Action",
+    "expected": "Résultat attendu",
+    "empty": "Vide",
+    "added": "Ajouté",
+    "removed": "Supprimé",
+    "kind": {
+      "unchanged": "Identique",
+      "changed": "Modifiée",
+      "added": "Ajoutée",
+      "removed": "Supprimée"
+    }
+  },
+  "comments": {
+    "formLabel": "Ajouter un commentaire de relecture",
+    "target": "Commentaire sur",
+    "targetDescription": "Le commentaire est enregistré sur la version {{number}}.",
+    "wholeCase": "Le cas entier",
+    "step": "Étape {{order}}",
+    "stepOption": "Étape {{order}} · {{action}}",
+    "body": "Commentaire",
+    "bodyPlaceholder": "Que doit changer l'auteur ?",
+    "bodyRequired": "Écrivez d'abord un commentaire.",
+    "add": "Ajouter le commentaire",
+    "added": "Commentaire ajouté.",
+    "resolve": "Résoudre",
+    "resolveLabel": "Résoudre le commentaire de {{name}} sur {{target}}",
+    "resolved": "Commentaire résolu.",
+    "resolvedBy": "Résolu par {{name}}, {{date}}",
+    "formerMember": "un ancien membre",
+    "version": "Version {{number}}",
+    "olderVersion": "Sur la version {{number}}",
+    "openTitle": "Commentaires ouverts ({{count}})",
+    "resolvedTitle": "Résolus ({{count}})",
+    "emptyTitle": "Aucun commentaire ouvert",
+    "emptyDescription": "Un commentaire ouvert empêche de marquer le cas Prêt tant que personne ne l'a résolu.",
+    "deprecated": "Ce cas est obsolète. Remettez-le en brouillon pour ajouter des commentaires.",
+    "loadError": "Les commentaires de relecture n'ont pas pu être chargés.",
+    "errors": {
+      "stepMissing": "Cette étape n'existe pas dans la version actuelle. Rechargez le cas et choisissez de nouveau l'étape.",
+      "deprecated": "Remettez le cas de test en brouillon avant de le commenter."
+    }
+  },
+  "notice": {
+    "openComments_one": "{{count}} commentaire de relecture est ouvert. Résolvez-le avant de marquer le cas Prêt.",
+    "openComments_other": "{{count}} commentaires de relecture sont ouverts. Résolvez-les avant de marquer le cas Prêt.",
+    "showComments": "Voir les commentaires",
+    "separateReviewer": "Vous avez enregistré la version {{number}}, et ce projet demande un autre relecteur. Un autre QC ou Admin doit marquer le cas Prêt ou revu.",
+    "resolveFirst": "Résolvez d'abord les commentaires de relecture ouverts."
+  },
+  "settings": {
+    "title": "Relecture",
+    "separateReviewer": "Le relecteur ne doit pas être l'auteur",
+    "separateReviewerDescription": "Activé, la personne qui a enregistré la version actuelle d'un cas ne peut pas le marquer Prêt ou revu. Un autre QC ou Admin doit le faire.",
+    "saved": "Réglages de relecture enregistrés."
+  }
+}

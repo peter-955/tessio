@@ -6,10 +6,12 @@ import {
   DSCard,
   DSGroup,
   DSInput,
+  DSSegmentedControl,
   DSSelect,
   DSStack,
   DSTextarea,
   useDSForm,
+  type DSSegmentedOption,
   type DSSelectOption,
 } from "@/components/design-system";
 import type { ApiError } from "@/lib/api/api-error";
@@ -25,7 +27,10 @@ import {
   PROJECT_DESCRIPTION_MAX_LENGTH,
   PROJECT_NAME_MAX_LENGTH,
 } from "../../typing/constants/project-key.constant";
-import type { CreateProjectValues } from "../../typing/types/create-project-values.type";
+import type {
+  CreateProjectValues,
+  StorySourceChoice,
+} from "../../typing/types/create-project-values.type";
 import type { JiraProject } from "../../typing/types/jira.type";
 import { toFormErrorText } from "../../utils/form-error.util";
 import {
@@ -38,7 +43,7 @@ import { JiraLoadError } from "../jira-load-error/jira-load-error";
 import styles from "./create-project-form.module.scss";
 
 interface Props {
-  jiraProjects: JiraProject[];
+  jiraProjects: JiraProject[] | null;
   onJiraProjectLinked: () => void;
   onJiraNotConfigured: () => void;
 }
@@ -57,13 +62,24 @@ export const CreateProjectForm: FC<Props> = ({
   const { mutate: createProject, isPending: isCreating } = usePostProject();
   const form = useDSForm<CreateProjectValues>({
     mode: "controlled",
-    initialValues: { jiraProjectKey: null, jiraBoardId: null, name: "", key: "", description: "" },
+    initialValues: {
+      storySource: jiraProjects === null ? "tessio" : "jira",
+      jiraProjectKey: null,
+      jiraBoardId: null,
+      name: "",
+      key: "",
+      description: "",
+    },
     validate: {
-      jiraProjectKey: (value) => {
-        return value === null ? t("errors.jiraProjectRequired") : null;
+      jiraProjectKey: (value, values) => {
+        return values.storySource === "jira" && value === null
+          ? t("errors.jiraProjectRequired")
+          : null;
       },
-      jiraBoardId: (value) => {
-        return value === null ? t("errors.jiraBoardRequired") : null;
+      jiraBoardId: (value, values) => {
+        return values.storySource === "jira" && value === null
+          ? t("errors.jiraBoardRequired")
+          : null;
       },
       name: (value) => {
         const trimmedName = value.trim();
@@ -85,7 +101,12 @@ export const CreateProjectForm: FC<Props> = ({
       },
     },
   });
-  const { jiraProjectKey, jiraBoardId } = form.values;
+  const { jiraProjectKey, jiraBoardId, storySource } = form.values;
+  const isLinkingJira = storySource === "jira";
+  const storySourceOptions: DSSegmentedOption<StorySourceChoice>[] = [
+    ...(jiraProjects === null ? [] : [{ value: "jira" as const, label: t("create.sourceJira") }]),
+    { value: "tessio", label: t("create.sourceTessio") },
+  ];
   const { setFieldValue } = form;
   const {
     data: jiraBoards,
@@ -102,7 +123,7 @@ export const CreateProjectForm: FC<Props> = ({
     }
   }, [jiraBoardId, setFieldValue, singleBoardId]);
 
-  const jiraProjectOptions: DSSelectOption<string>[] = jiraProjects.map((jiraProject) => {
+  const jiraProjectOptions: DSSelectOption<string>[] = (jiraProjects ?? []).map((jiraProject) => {
     return { value: jiraProject.key, label: `${jiraProject.key} · ${jiraProject.name}` };
   });
   const boardOptions: DSSelectOption<string>[] = (jiraBoards ?? []).map((jiraBoard) => {
@@ -114,7 +135,7 @@ export const CreateProjectForm: FC<Props> = ({
   const handleJiraProjectChange = (selectedKey: string | null): void => {
     setFieldValue("jiraProjectKey", selectedKey);
     setFieldValue("jiraBoardId", null);
-    const jiraProject = jiraProjects.find((candidate) => {
+    const jiraProject = (jiraProjects ?? []).find((candidate) => {
       return candidate.key === selectedKey;
     });
     if (jiraProject === undefined) {
@@ -152,7 +173,8 @@ export const CreateProjectForm: FC<Props> = ({
   };
 
   const handleValidSubmit = (values: CreateProjectValues): void => {
-    if (values.jiraProjectKey === null || values.jiraBoardId === null) {
+    const isJiraProject = values.storySource === "jira";
+    if (isJiraProject && (values.jiraProjectKey === null || values.jiraBoardId === null)) {
       return;
     }
 
@@ -163,8 +185,9 @@ export const CreateProjectForm: FC<Props> = ({
         key: values.key,
         name: values.name.trim(),
         description: trimmedDescription === "" ? null : trimmedDescription,
-        jiraProjectKey: values.jiraProjectKey,
-        jiraBoardId: Number(values.jiraBoardId),
+        jiraProjectKey: isJiraProject ? values.jiraProjectKey : null,
+        jiraBoardId:
+          isJiraProject && values.jiraBoardId !== null ? Number(values.jiraBoardId) : null,
       },
       {
         onSuccess: (project) => {
@@ -181,21 +204,33 @@ export const CreateProjectForm: FC<Props> = ({
       <form onSubmit={form.onSubmit(handleValidSubmit)} noValidate className={styles.form}>
         <DSStack gap={4}>
           {submitError && <DSAlert color="danger">{resolveMessage(submitError)}</DSAlert>}
-          <DSSelect
-            label={t("fields.jiraProject")}
-            value={jiraProjectKey}
-            options={jiraProjectOptions}
-            onChange={handleJiraProjectChange}
-            description={
-              jiraProjectOptions.length === 0 ? t("hints.allJiraProjectsLinked") : undefined
-            }
-            error={form.errors.jiraProjectKey}
-            nothingFoundLabel={t("hints.noMatch")}
-            isDisabled={jiraProjectOptions.length === 0}
-            isSearchable
-            isRequired
+          <DSSegmentedControl
+            value={storySource}
+            options={storySourceOptions}
+            onChange={(value) => {
+              setFieldValue("storySource", value);
+            }}
+            ariaLabel={t("create.storySource")}
           />
-          {jiraBoardsError ? (
+          {jiraProjects === null && <DSAlert color="info">{t("create.jiraNotConnected")}</DSAlert>}
+          {!isLinkingJira && <DSAlert color="info">{t("create.tessioHint")}</DSAlert>}
+          {isLinkingJira && (
+            <DSSelect
+              label={t("fields.jiraProject")}
+              value={jiraProjectKey}
+              options={jiraProjectOptions}
+              onChange={handleJiraProjectChange}
+              description={
+                jiraProjectOptions.length === 0 ? t("hints.allJiraProjectsLinked") : undefined
+              }
+              error={form.errors.jiraProjectKey}
+              nothingFoundLabel={t("hints.noMatch")}
+              isDisabled={jiraProjectOptions.length === 0}
+              isSearchable
+              isRequired
+            />
+          )}
+          {!isLinkingJira ? null : jiraBoardsError ? (
             <JiraLoadError
               error={jiraBoardsError}
               isRetrying={isFetchingBoards}

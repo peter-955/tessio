@@ -6,6 +6,7 @@ from app.modules.api_tokens.typing.constants.api_token import (
     MAXIMUM_ACTIVE_API_TOKENS,
     MAXIMUM_API_TOKEN_LIFETIME_DAYS,
     MAXIMUM_API_TOKEN_NAME_LENGTH,
+    MAXIMUM_PLUGIN_VERSION_LENGTH,
 )
 from app.modules.api_tokens.typing.constants.authorization import BEARER_SCHEME
 
@@ -18,4 +19,5 @@ __all__ = [
     "MAXIMUM_ACTIVE_API_TOKENS",
     "MAXIMUM_API_TOKEN_LIFETIME_DAYS",
     "MAXIMUM_API_TOKEN_NAME_LENGTH",
+    "MAXIMUM_PLUGIN_VERSION_LENGTH",
 ]

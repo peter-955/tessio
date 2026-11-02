@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 from uuid import UUID, uuid7
 
 from app.modules.test_data.domains.data_item.repository import DataItemRepository
+from app.modules.test_data.domains.data_key_description.repository import DataKeyDescriptionRepository
 from app.modules.test_data.domains.environment.repository import EnvironmentRepository
 from app.modules.test_data.domains.import_choice.entity import ImportChoice
 from app.modules.test_data.domains.import_result.entity import ImportResult
@@ -11,6 +12,7 @@ from app.modules.test_data.ports.import_file_reader import ImportFileReader
 from app.modules.test_data.typing.enums import ImportAction
 from app.modules.test_data.utils.data_item_capability import require_data_item_edit
 from app.modules.test_data.utils.data_item_value import apply_data_item_value, build_data_item
+from app.modules.test_data.utils.data_key_description import apply_key_description
 from app.modules.test_data.utils.environment_scope import require_writable_scope
 from app.modules.test_data.utils.import_action import resolve_import_action
 from app.modules.test_data.utils.import_file_loader import load_parsed_import
@@ -26,6 +28,7 @@ class CommitImportUseCase:
         project_access_resolver: ProjectAccessResolver,
         environment_repository: EnvironmentRepository,
         data_item_repository: DataItemRepository,
+        data_key_description_repository: DataKeyDescriptionRepository,
         import_file_reader: ImportFileReader,
         secret_cipher: SecretCipher,
     ) -> None:
@@ -33,6 +36,7 @@ class CommitImportUseCase:
         self._project_access_resolver = project_access_resolver
         self._environment_repository = environment_repository
         self._data_item_repository = data_item_repository
+        self._data_key_description_repository = data_key_description_repository
         self._import_file_reader = import_file_reader
         self._secret_cipher = secret_cipher
 
@@ -52,6 +56,9 @@ class CommitImportUseCase:
                 self._import_file_reader, access.project_id, file_id, actor.user_id
             )
             value_by_key = {entry.key: entry.value for entry in parsed_import.entries}
+            description_by_key = {
+                entry.key: entry.description for entry in parsed_import.entries if entry.description is not None
+            }
             kind_by_key = {choice.key: choice.kind for choice in choices}
             if any(key not in value_by_key for key in kind_by_key):
                 raise ImportKeyNotInFileError
@@ -68,6 +75,10 @@ class CommitImportUseCase:
             now = datetime.now(UTC)
             for key, kind in kind_by_key.items():
                 value = value_by_key[key]
+                if key in description_by_key:
+                    await apply_key_description(
+                        self._data_key_description_repository, access.project_id, key, description_by_key[key]
+                    )
                 existing_item = scope_items.get(key)
                 action = resolve_import_action(existing_item, kind, value, self._secret_cipher)
                 action_counts[action] += 1

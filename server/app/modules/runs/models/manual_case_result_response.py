@@ -12,4 +12,5 @@ class ManualCaseResultResponse(WireModel):
     status: ResultStatus
     suggested_status: ResultStatus
     duration_ms: int | None
+    iteration: int
     steps: list[ManualStepResultResponse]

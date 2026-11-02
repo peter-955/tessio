@@ -1,0 +1,164 @@
+{
+  "page": {
+    "title": "Phân tích",
+    "description": "Tỷ lệ đạt, lỗi, ca không ổn định, độ bao phủ theo nhãn và lượng token theo thời gian."
+  },
+  "noValue": "—",
+  "loading": "Đang tải {{title}}",
+  "loadError": "Không tải được {{title}}.",
+  "retry": "Thử lại",
+  "axis": {
+    "day": "Ngày",
+    "sprint": "Sprint"
+  },
+  "executor": {
+    "claude": "Claude",
+    "manual": "Thủ công",
+    "script": "Script",
+    "ci": "CI"
+  },
+  "filters": {
+    "from": "Từ ngày",
+    "to": "Đến ngày",
+    "sprint": "Sprint",
+    "sprintPlaceholder": "Mọi sprint",
+    "sprintOption": "{{name}} · {{state}}",
+    "sprintStates": {
+      "active": "Đang chạy",
+      "future": "Sắp tới",
+      "closed": "Đã đóng"
+    },
+    "groupByLabel": "Nhóm theo",
+    "groupBy": {
+      "day": "Ngày",
+      "sprint": "Sprint"
+    }
+  },
+  "rangeProblem": {
+    "title": "Kiểm tra lại ngày",
+    "order": "Ngày bắt đầu sau ngày kết thúc.",
+    "tooLong": "Hãy chọn khoảng thời gian tối đa {{maxDays}} ngày."
+  },
+  "summary": {
+    "title": "Tóm tắt",
+    "range": "{{from}} – {{to}} (ngày UTC)",
+    "emptyTitle": "Không có hoạt động trong khoảng này",
+    "emptySprintTitle": "Không có sprint nào trong khoảng này",
+    "emptyDescription": "Các lượt chạy, lỗi và câu hỏi trong khoảng thời gian sẽ hiển thị ở đây. Hãy chọn khoảng dài hơn hoặc sprint khác.",
+    "passRate": "Tỷ lệ đạt",
+    "runs": "Lượt chạy",
+    "results": "Kết quả",
+    "resultsValue": "{{passed}} / {{failed}} / {{blocked}}",
+    "failuresOpened": "Lỗi mới",
+    "failuresFixed": "Lỗi đã sửa",
+    "meanTimeToFix": "Thời gian sửa trung bình",
+    "openGaps": "Câu hỏi đang mở",
+    "medianOpenGapAge": "Tuổi trung vị của câu hỏi đang mở"
+  },
+  "passRate": {
+    "title": "Tỷ lệ đạt theo thời gian",
+    "series": "Tỷ lệ đạt"
+  },
+  "executors": {
+    "title": "Lượt chạy theo người thực thi",
+    "empty": "Không có lượt chạy nào bắt đầu trong khoảng này."
+  },
+  "failures": {
+    "title": "Lỗi mới và lỗi đã sửa",
+    "meanTimeToFix": "Thời gian sửa trung bình: {{duration}}",
+    "opened": "Mới",
+    "fixed": "Đã sửa"
+  },
+  "gaps": {
+    "title": "Câu hỏi mở trong bao lâu",
+    "summary": "{{opened}} đã nêu · {{answered}} đã trả lời · thời gian trả lời trung bình: {{duration}}",
+    "medianOpenAge": "Tuổi trung vị của câu hỏi đang mở (ngày)",
+    "meanAnswer": "Thời gian trả lời trung bình (ngày)"
+  },
+  "labels": {
+    "title": "Độ bao phủ theo nhãn",
+    "description": "Số ca hiện tại theo nhãn, tỷ lệ ca Sẵn sàng và tỷ lệ ca có kết quả gần nhất là đạt.",
+    "chart": "Tỷ lệ sẵn sàng và tỷ lệ đạt theo nhãn",
+    "table": "Số ca theo nhãn",
+    "unlabelled": "Không có nhãn",
+    "readyShare": "Sẵn sàng",
+    "passedShare": "Đạt",
+    "countWithShare": "{{count}} ({{share}})",
+    "columns": {
+      "label": "Nhãn",
+      "cases": "Số ca",
+      "ready": "Sẵn sàng",
+      "passed": "Đạt"
+    },
+    "emptyTitle": "Chưa có ca kiểm thử",
+    "emptyDescription": "Độ bao phủ theo nhãn sẽ hiển thị khi dự án có ca kiểm thử."
+  },
+  "sprintCoverage": {
+    "title": "Độ bao phủ AC theo sprint",
+    "description": "Độ bao phủ hiện tại của tiêu chí chấp nhận trong các story của từng sprint.",
+    "passed": "Đạt",
+    "failed": "Không đạt",
+    "blocked": "Bị chặn",
+    "notRun": "Chưa chạy",
+    "uncovered": "Chưa bao phủ",
+    "emptyTitle": "Không có dữ liệu bao phủ sprint",
+    "emptyDescription": "Không có sprint nào có tiêu chí chấp nhận trong khoảng thời gian này."
+  },
+  "cases": {
+    "columns": {
+      "case": "Ca",
+      "story": "Story"
+    }
+  },
+  "topFailing": {
+    "title": "Các ca lỗi nhiều nhất",
+    "description": "Kết quả không đạt hoặc bị chặn trong khoảng thời gian, gồm cả lượt chạy story và suite. Ca theo dữ liệu được tính một lần mỗi lượt chạy, theo lần lặp tệ nhất.",
+    "columns": {
+      "failures": "Không đạt / bị chặn",
+      "failRate": "Tỷ lệ lỗi",
+      "lastFailed": "Lỗi gần nhất"
+    },
+    "failuresValue": "{{failed}} / {{blocked}} trên {{total}}",
+    "emptyTitle": "Không có ca lỗi",
+    "emptyDescription": "Không có ca nào không đạt hoặc bị chặn trong khoảng này."
+  },
+  "flaky": {
+    "title": "Ca không ổn định",
+    "description": "Các ca có kết quả gần đây đổi qua lại giữa đạt và không đạt, hoặc người thực thi không thống nhất.",
+    "columns": {
+      "flips": "Số lần đổi",
+      "since": "Từ"
+    },
+    "flipsValue_one": "{{count}} lần đổi trong 10 kết quả",
+    "flipsValue_other": "{{count}} lần đổi trong 10 kết quả",
+    "emptyTitle": "Không có ca không ổn định",
+    "emptyDescription": "Hiện không có ca nào không ổn định hoặc không thống nhất."
+  },
+  "tokens": {
+    "title": "Token mỗi lượt chạy Claude",
+    "description": "Số token do nhật ký thực thi báo cáo cho mỗi lượt chạy bắt đầu trong khoảng thời gian. Lượt chạy có nhật ký không báo cáo token nào không được tính.",
+    "total": "Tổng token",
+    "meanPerRun": "Trung bình mỗi lượt chạy",
+    "meanPerCase": "Trung bình mỗi ca",
+    "runCount": "Lượt chạy có số token",
+    "chart_one": "Token của lượt chạy gần nhất",
+    "chart_other": "Token của {{count}} lượt chạy gần nhất",
+    "runLabel": "{{date}} · {{source}}",
+    "input": "Đầu vào",
+    "cacheWrite": "Ghi cache",
+    "cacheRead": "Đọc cache",
+    "output": "Đầu ra",
+    "table": "Các lượt chạy gần nhất và token",
+    "columns": {
+      "run": "Lượt chạy",
+      "executor": "Người thực thi",
+      "cases": "Số ca",
+      "total": "Token",
+      "perCase": "Mỗi ca"
+    },
+    "cut": "Nhật ký bị cắt",
+    "tableLimit": "Hiển thị {{shown}} lượt chạy gần nhất trên {{total}}.",
+    "emptyTitle": "Không có dữ liệu token",
+    "emptyDescription": "Không có lượt chạy nào trong khoảng này gửi nhật ký kèm số token."
+  }
+}

@@ -2,8 +2,10 @@ import logging
 import sys
 
 import sentry_sdk
+from sentry_sdk.integrations.httpx import HttpxIntegration
 
 from app.shared.logging.json_log_formatter import JsonLogFormatter
+from app.shared.logging.typing.constants.http_client import HTTP_CLIENT_LOGGER_LEVEL, HTTP_CLIENT_LOGGER_NAMES
 from app.shared.logging.typing.constants.uvicorn import UVICORN_LOGGER_NAMES
 
 
@@ -18,6 +20,8 @@ def configure_logging(level: str, sentry_dsn: str | None, environment: str) -> N
         uvicorn_logger = logging.getLogger(logger_name)
         uvicorn_logger.handlers.clear()
         uvicorn_logger.propagate = True
+    for logger_name in HTTP_CLIENT_LOGGER_NAMES:
+        logging.getLogger(logger_name).setLevel(HTTP_CLIENT_LOGGER_LEVEL)
     if sentry_dsn:
         sentry_sdk.init(
             dsn=sentry_dsn,
@@ -26,4 +30,5 @@ def configure_logging(level: str, sentry_dsn: str | None, environment: str) -> N
             traces_sample_rate=0.0,
             max_request_body_size="never",
             include_local_variables=False,
+            disabled_integrations=[HttpxIntegration()],
         )

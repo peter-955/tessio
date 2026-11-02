@@ -8,3 +8,4 @@ class MissingScreenshot(Entity):
     test_case_id: UUID
     code: str
     step_order: int
+    iteration: int | None = None

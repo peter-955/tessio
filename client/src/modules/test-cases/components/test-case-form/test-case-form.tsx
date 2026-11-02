@@ -11,7 +11,10 @@ import {
   type DSSelectOption,
   type DSStepEditorLabels,
 } from "@/components/design-system";
-import { useId, type FC, type FormEvent } from "react";
+import { useCurrentProject } from "@/components/project-context/hooks/use-current-project";
+import { DataTableEditor } from "@/modules/data-rows/components/data-table-editor/data-table-editor";
+import { SharedStepPickerModal } from "@/modules/shared-steps/components/shared-step-picker-modal/shared-step-picker-modal";
+import { useId, useState, type FC, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import {
   DATA_REFERENCE_PREFIX,
@@ -27,7 +30,13 @@ import type {
   TestCaseFormErrors,
 } from "../../typing/types/test-case-form-errors.type";
 import type { TestCaseFormValues } from "../../typing/types/test-case-form-values.type";
-import type { LinkedCriterion, TestCasePriority } from "../../typing/types/test-case.type";
+import type {
+  LinkedCriterion,
+  TestCasePriority,
+  TestFile,
+} from "../../typing/types/test-case.type";
+import { createFormStep } from "../../utils/form-step.util";
+import { CaseEditorSharedStep } from "../case-editor-shared-step/case-editor-shared-step";
 import { CriteriaField } from "../criteria-field/criteria-field";
 import { StorySelect } from "../story-select/story-select";
 import styles from "./test-case-form.module.scss";
@@ -38,6 +47,7 @@ interface Props {
   errors: TestCaseFormErrors | null;
   linkedCriteria: readonly LinkedCriterion[];
   suggestions: readonly DSReferenceSuggestion[];
+  files: readonly TestFile[];
   isStoryShown: boolean;
   isStoryLocked: boolean;
   isReadOnly: boolean;
@@ -45,6 +55,8 @@ interface Props {
   isSubmitDisabled: boolean;
   submitLabel: string;
   onSubmit: () => void;
+  cancelLabel?: string;
+  onCancel?: () => void;
 }
 
 export const TestCaseForm: FC<Props> = ({
@@ -53,6 +65,7 @@ export const TestCaseForm: FC<Props> = ({
   errors,
   linkedCriteria,
   suggestions,
+  files,
   isStoryShown,
   isStoryLocked,
   isReadOnly,
@@ -60,9 +73,16 @@ export const TestCaseForm: FC<Props> = ({
   isSubmitDisabled,
   submitLabel,
   onSubmit,
+  cancelLabel,
+  onCancel,
 }) => {
   const { t } = useTranslation("testCases");
+  const { t: tSharedSteps } = useTranslation("sharedSteps");
+  const { t: tDataRows } = useTranslation("dataRows");
+  const project = useCurrentProject();
   const stepsTitleId = useId();
+  const dataTitleId = useId();
+  const [isPickerOpened, setIsPickerOpened] = useState(false);
 
   const translateError = (
     errorKey: TestCaseFormErrorKey | undefined,
@@ -213,10 +233,56 @@ export const TestCaseForm: FC<Props> = ({
           maxTextLength={MAX_TEXT_LENGTH}
           errors={stepErrors}
           isDisabled={isReadOnly}
+          renderSharedStep={(step) => {
+            return <CaseEditorSharedStep sharedStepKey={step.sharedStepKey ?? ""} files={files} />;
+          }}
+          footerActions={
+            <DSButton
+              type="default"
+              icon="sharedSteps"
+              isDisabled={values.steps.length >= MAX_STEPS}
+              ariaHasPopup="dialog"
+              onClick={() => {
+                setIsPickerOpened(true);
+              }}
+            >
+              {tSharedSteps("picker.open")}
+            </DSButton>
+          }
         />
       </section>
+      <section className={styles.section} aria-labelledby={dataTitleId}>
+        <h2 id={dataTitleId} className={styles.sectionTitle}>
+          {tDataRows("editor.title")}
+        </h2>
+        <DataTableEditor
+          value={values.dataTable}
+          onChange={(dataTable) => {
+            changeValue("dataTable", dataTable);
+          }}
+          errors={errors?.dataTable ?? null}
+          isDisabled={isReadOnly}
+        />
+      </section>
+      {isPickerOpened && (
+        <SharedStepPickerModal
+          projectKey={project.key}
+          onClose={() => {
+            setIsPickerOpened(false);
+          }}
+          onInsert={(sharedStepKey) => {
+            changeValue("steps", [...values.steps, createFormStep("", "", sharedStepKey)]);
+            setIsPickerOpened(false);
+          }}
+        />
+      )}
       {!isReadOnly && (
         <div className={styles.footer}>
+          {onCancel !== undefined && (
+            <DSButton type="default" isDisabled={isSubmitting} onClick={onCancel}>
+              {cancelLabel}
+            </DSButton>
+          )}
           <DSButton
             type="primary"
             nativeType="submit"

@@ -1,12 +1,13 @@
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from app.modules.failures.domains.case_result_history_item.entity import CaseResultHistoryItem
 from app.modules.failures.domains.failed_step.entity import FailedStep
 from app.modules.failures.ports.case_result_reader import CaseResultReader
-from app.modules.runs import ResultStatus
+from app.modules.runs import ResultStatus, StepDiagnosis
 from app.modules.runs.infrastructure import CaseResultTable, RunTable, StepResultTable
+from app.modules.test_cases.infrastructure import TestCaseVersionTable
 from app.modules.users.infrastructure import UserTable
 from app.shared.postgres import Database
 
@@ -29,6 +30,7 @@ class PostgresCaseResultReader(CaseResultReader):
             actual_result=row.actual_result or "",
             error=row.error,
             screenshot_file_id=row.screenshot_file_id,
+            diagnosis=None if row.diagnosis is None else StepDiagnosis.model_validate(row.diagnosis),
         )
 
     async def list_history(
@@ -47,9 +49,12 @@ class PostgresCaseResultReader(CaseResultReader):
                 CaseResultTable.duration_ms,
                 CaseResultTable.created_at,
                 UserTable.name,
+                CaseResultTable.iteration,
+                func.jsonb_array_length(TestCaseVersionTable.data_rows) > 0,
             )
             .join(RunTable, RunTable.id == CaseResultTable.run_id)
             .join(UserTable, UserTable.id == RunTable.started_by)
+            .join(TestCaseVersionTable, TestCaseVersionTable.id == CaseResultTable.test_case_version_id)
             .where(CaseResultTable.test_case_id == test_case_id, CaseResultTable.created_at >= opened_at)
             .order_by(CaseResultTable.created_at.desc(), CaseResultTable.id.desc())
             .limit(limit)
@@ -64,6 +69,7 @@ class PostgresCaseResultReader(CaseResultReader):
                 duration_ms=duration_ms,
                 recorded_at=recorded_at,
                 started_by_name=started_by_name,
+                iteration=iteration if is_data_driven else None,
             )
             for (
                 case_result_id,
@@ -74,5 +80,7 @@ class PostgresCaseResultReader(CaseResultReader):
                 duration_ms,
                 recorded_at,
                 started_by_name,
+                iteration,
+                is_data_driven,
             ) in result
         ]

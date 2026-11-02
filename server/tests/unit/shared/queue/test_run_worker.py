@@ -7,6 +7,7 @@ import pytest
 from bullmq import Queue
 
 from app.config import Settings
+from app.shared.events import LiveEventListener, RedisLiveEventHub
 from app.shared.queue import BullmqJobQueue, BullmqJobWorker, JobSchedule
 from app.shared.typing.enums import JobName, QueueName
 from app.workers import worker
@@ -40,6 +41,7 @@ class WorkerTestContainer:
         self.job_workers = [
             RecordingJobWorker(redis_url, queue_name, self.started_events[queue_name]) for queue_name in QueueName
         ]
+        self.live_event_listener = LiveEventListener(RedisLiveEventHub(redis_url), ())
         self.is_closed = False
 
     async def close(self) -> None:

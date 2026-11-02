@@ -10,7 +10,7 @@ from app.modules.insights.domains.traced_criterion.entity import TracedCriterion
 from app.modules.insights.ports.coverage_reader import CoverageReader
 from app.modules.insights.utils.case_code import format_case_code
 from app.modules.runs import ResultStatus
-from app.modules.runs.infrastructure import CaseResultTable, RunCaseTable, RunTable
+from app.modules.runs.infrastructure import CaseResultTable, RunCaseTable, RunTable, is_worst_iteration
 from app.modules.stories.infrastructure import AcceptanceCriterionTable, StoryTable
 from app.modules.test_cases import TestCaseStatus
 from app.modules.test_cases.infrastructure import TestCaseCriterionTable, TestCaseTable
@@ -99,6 +99,9 @@ class PostgresCoverageReader(CoverageReader):
                     created_by=row.created_by,
                     criterion_ids=frozenset(linked_ids or ()),
                     latest_result=latest_result,
+                    is_flaky=row.flaky_since is not None,
+                    is_disagreeing=row.disagreed_at is not None,
+                    is_quarantined=row.quarantined_at is not None,
                 )
             )
         return cases
@@ -109,6 +112,19 @@ class PostgresCoverageReader(CoverageReader):
         )
         return story_id
 
+    async def list_run_case_story_keys(self, project_id: UUID, run_id: UUID) -> dict[UUID, str]:
+        result = await self._database.get_current_session().execute(
+            select(StoryTable.id, StoryTable.jira_key, func.min(RunCaseTable.position).label("first_position"))
+            .select_from(RunCaseTable)
+            .join(RunTable, RunTable.id == RunCaseTable.run_id)
+            .join(TestCaseTable, TestCaseTable.id == RunCaseTable.test_case_id)
+            .join(StoryTable, StoryTable.id == TestCaseTable.story_id)
+            .where(RunTable.project_id == project_id, RunCaseTable.run_id == run_id)
+            .group_by(StoryTable.id, StoryTable.jira_key)
+            .order_by("first_position")
+        )
+        return {story_id: jira_key for story_id, jira_key, _ in result}
+
     async def list_run_outcomes(self, project_id: UUID, run_id: UUID) -> dict[UUID, ResultStatus | None]:
         result = await self._database.get_current_session().execute(
             select(RunCaseTable.test_case_id, CaseResultTable.status)
@@ -116,7 +132,8 @@ class PostgresCoverageReader(CoverageReader):
             .outerjoin(
                 CaseResultTable,
                 (CaseResultTable.run_id == RunCaseTable.run_id)
-                & (CaseResultTable.test_case_id == RunCaseTable.test_case_id),
+                & (CaseResultTable.test_case_id == RunCaseTable.test_case_id)
+                & is_worst_iteration(),
             )
             .where(RunTable.project_id == project_id, RunCaseTable.run_id == run_id)
         )
@@ -135,7 +152,7 @@ class PostgresCoverageReader(CoverageReader):
             )
             .ext(distinct_on(CaseResultTable.test_case_id))
             .join(TestCaseTable, TestCaseTable.id == CaseResultTable.test_case_id)
-            .where(TestCaseTable.project_id == project_id)
+            .where(TestCaseTable.project_id == project_id, is_worst_iteration())
             .order_by(
                 CaseResultTable.test_case_id,
                 (CaseResultTable.status == ResultStatus.SKIPPED).asc(),

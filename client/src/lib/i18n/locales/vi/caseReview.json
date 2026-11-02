@@ -1,0 +1,91 @@
+{
+  "retry": "Thử lại",
+  "tabs": {
+    "review": "Duyệt",
+    "compare": "So sánh"
+  },
+  "compare": {
+    "title": "So sánh hai phiên bản song song",
+    "description": "Chọn hai phiên bản để xem các trường và các bước của chúng cạnh nhau. Các dòng thay đổi được đánh dấu và các từ thay đổi được tô sáng.",
+    "from": "Từ phiên bản",
+    "to": "Đến phiên bản",
+    "versionOption": "Phiên bản {{number}}",
+    "currentOption": "Phiên bản {{number}} (hiện tại)",
+    "heading": "Phiên bản {{number}} · {{name}}, {{date}}",
+    "formerMember": "Thành viên cũ",
+    "onlyChanges": "Chỉ hiện các thay đổi",
+    "changeCount_one": "{{count}} thay đổi giữa hai phiên bản này.",
+    "changeCount_other": "{{count}} thay đổi giữa hai phiên bản này.",
+    "identical": "Hai phiên bản này có cùng các trường, các bước và các dòng dữ liệu.",
+    "single": "Hiện mới có một phiên bản. Bạn có thể so sánh sau lần lưu tiếp theo.",
+    "loadError": "Không tải được các phiên bản.",
+    "tableLabel": "Phiên bản {{from}} và phiên bản {{to}} song song",
+    "itemColumn": "Phần của ca kiểm thử",
+    "fields": {
+      "title": "Tiêu đề",
+      "priority": "Độ ưu tiên",
+      "businessValue": "Giá trị nghiệp vụ",
+      "preconditions": "Điều kiện tiên quyết",
+      "dataTable": "Tham số và dòng dữ liệu"
+    },
+    "stepsLabel": "Các bước",
+    "noSteps": "Cả hai phiên bản đều không có bước nào.",
+    "step": "Bước {{order}}",
+    "stepMoved": "Bước {{from}} → {{to}}",
+    "noStep": "Không có trong phiên bản này",
+    "action": "Thao tác",
+    "expected": "Kết quả mong đợi",
+    "empty": "Trống",
+    "added": "Đã thêm",
+    "removed": "Đã xóa",
+    "kind": {
+      "unchanged": "Giống nhau",
+      "changed": "Đã sửa",
+      "added": "Đã thêm",
+      "removed": "Đã xóa"
+    }
+  },
+  "comments": {
+    "formLabel": "Thêm nhận xét duyệt",
+    "target": "Nhận xét về",
+    "targetDescription": "Nhận xét được lưu trên phiên bản {{number}}.",
+    "wholeCase": "Toàn bộ ca kiểm thử",
+    "step": "Bước {{order}}",
+    "stepOption": "Bước {{order}} · {{action}}",
+    "body": "Nhận xét",
+    "bodyPlaceholder": "Tác giả cần sửa gì?",
+    "bodyRequired": "Hãy viết nhận xét trước.",
+    "add": "Thêm nhận xét",
+    "added": "Đã thêm nhận xét.",
+    "resolve": "Giải quyết",
+    "resolveLabel": "Giải quyết nhận xét của {{name}} về {{target}}",
+    "resolved": "Đã giải quyết nhận xét.",
+    "resolvedBy": "{{name}} đã giải quyết, {{date}}",
+    "formerMember": "Một thành viên cũ",
+    "version": "Phiên bản {{number}}",
+    "olderVersion": "Trên phiên bản {{number}}",
+    "openTitle": "Nhận xét đang mở ({{count}})",
+    "resolvedTitle": "Đã giải quyết ({{count}})",
+    "emptyTitle": "Không có nhận xét đang mở",
+    "emptyDescription": "Nhận xét đang mở sẽ chặn việc đánh dấu ca kiểm thử Sẵn sàng cho đến khi có người giải quyết.",
+    "deprecated": "Ca kiểm thử này đã ngừng dùng. Hãy khôi phục về Nháp để thêm nhận xét.",
+    "loadError": "Không tải được các nhận xét duyệt.",
+    "errors": {
+      "stepMissing": "Bước đó không có trong phiên bản hiện tại. Hãy tải lại ca kiểm thử và chọn lại bước.",
+      "deprecated": "Hãy khôi phục ca kiểm thử về Nháp trước khi nhận xét."
+    }
+  },
+  "notice": {
+    "openComments_one": "Có {{count}} nhận xét duyệt đang mở. Hãy giải quyết trước khi đánh dấu ca kiểm thử Sẵn sàng.",
+    "openComments_other": "Có {{count}} nhận xét duyệt đang mở. Hãy giải quyết chúng trước khi đánh dấu ca kiểm thử Sẵn sàng.",
+    "showComments": "Xem nhận xét",
+    "separateReviewer": "Bạn đã lưu phiên bản {{number}}, và dự án này cần một người duyệt khác. Một QC hoặc Admin khác phải đánh dấu ca kiểm thử Sẵn sàng hoặc đã duyệt.",
+    "resolveFirst": "Hãy giải quyết các nhận xét duyệt đang mở trước."
+  },
+  "settings": {
+    "title": "Duyệt",
+    "separateReviewer": "Người duyệt không được là tác giả",
+    "separateReviewerDescription": "Khi bật, người đã lưu phiên bản hiện tại của một ca kiểm thử không thể đánh dấu nó Sẵn sàng hoặc đã duyệt. Một QC hoặc Admin khác phải làm việc đó.",
+    "saved": "Đã lưu cài đặt duyệt."
+  }
+}

@@ -1,6 +1,7 @@
+from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import Select, func, select
+from sqlalchemy import Select, func, or_, select
 
 from app.modules.insights.domains.sprint_reference.entity import SprintReference
 from app.modules.insights.domains.traced_story.entity import TracedStory
@@ -58,6 +59,22 @@ class PostgresStoryScopeReader(StoryScopeReader):
             .limit(1)
         )
         return None if row is None else self._build_sprint(row)
+
+    async def list_sprints_overlapping(
+        self, project_id: UUID, start_at: datetime, end_at: datetime, limit: int
+    ) -> list[SprintReference]:
+        rows = await self._database.get_current_session().scalars(
+            select(SprintTable)
+            .where(
+                SprintTable.project_id == project_id,
+                SprintTable.start_at.is_not(None),
+                SprintTable.start_at < end_at,
+                or_(SprintTable.end_at.is_(None), SprintTable.end_at >= start_at),
+            )
+            .order_by(SprintTable.start_at.desc(), SprintTable.jira_sprint_id.desc())
+            .limit(limit)
+        )
+        return sorted((self._build_sprint(row) for row in rows), key=lambda sprint: sprint.start_at or start_at)
 
     @staticmethod
     def _select_stories() -> Select[UUID, str, str, TestStatus]:

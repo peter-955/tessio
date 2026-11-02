@@ -1,6 +1,8 @@
 GET_STORY_CONTEXT_DESCRIPTION = (
     "Story, active acceptance criteria, Ready test cases at their current version, the test data they use, "
-    "their file keys and the environments. Secrets appear only as {{data.key}}: use resolve_data during a run."
+    "their file keys and labels, and the environments. "
+    "Shared steps are already expanded; a data-driven case lists its parameters and data_rows. "
+    "Secrets appear only as {{data.key}}: use resolve_data during a run."
 )
 RESOLVE_DATA_DESCRIPTION = (
     "Secret values for keys used by your own running run, for that run's environment. "

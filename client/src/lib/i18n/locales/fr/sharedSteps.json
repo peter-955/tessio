@@ -1,0 +1,131 @@
+{
+  "page": {
+    "title": "Étapes partagées",
+    "description": "Des étapes comme la connexion, écrites une fois et réutilisées dans plusieurs cas."
+  },
+  "list": {
+    "newSharedStep": "Nouvelle étape partagée",
+    "loading": "Chargement des étapes partagées",
+    "loadError": "Les étapes partagées n'ont pas pu être chargées.",
+    "retry": "Réessayer",
+    "emptyTitle": "Aucune étape partagée pour l'instant",
+    "emptyDescription": "Écrivez une fois une séquence courante, comme se connecter en tant qu'admin, et insérez-la dans n'importe quel cas.",
+    "emptyReadOnlyDescription": "Les étapes partagées écrites par votre équipe QC apparaissent ici.",
+    "showArchived": "Afficher les archivées",
+    "tableLabel": "Étapes partagées",
+    "columns": {
+      "title": "Titre",
+      "key": "Clé",
+      "steps": "Étapes",
+      "usage": "Utilisée par",
+      "version": "Version actuelle"
+    },
+    "archived": "Archivée",
+    "stepCount_one": "{{count}} étape",
+    "stepCount_other": "{{count}} étapes",
+    "versionOn": "v{{number}} · {{date}}"
+  },
+  "usage": {
+    "count_one": "Utilisée par {{count}} cas",
+    "count_other": "Utilisée par {{count}} cas",
+    "description": "Cas dont la version actuelle insère cette étape partagée. Les cas obsolètes ne sont pas comptés.",
+    "loading": "Chargement des cas qui utilisent cette étape partagée",
+    "loadError": "Les cas qui utilisent cette étape partagée n'ont pas pu être chargés.",
+    "retry": "Réessayer",
+    "emptyTitle": "Aucun cas n'utilise encore cette étape partagée",
+    "emptyDescription": "Insérez-la depuis les étapes d'un cas de test.",
+    "tableLabel": "Cas qui utilisent cette étape partagée",
+    "columns": {
+      "case": "Cas",
+      "story": "Story",
+      "status": "Statut"
+    }
+  },
+  "steps": {
+    "step": "Étape {{order}}",
+    "expected": "Résultat attendu"
+  },
+  "reference": {
+    "loading": "Chargement de l'étape partagée",
+    "badge": "Étape partagée",
+    "missing": "Cette étape partagée n'existe plus dans le projet.",
+    "loadError": "L'étape partagée n'a pas pu être chargée.",
+    "archived": "Archivée",
+    "stepCount_one": "{{count}} étape",
+    "stepCount_other": "{{count}} étapes",
+    "showSteps": "Afficher les étapes",
+    "hideSteps": "Masquer les étapes",
+    "stepsOf": "Étapes de {{title}}",
+    "textLabel": "Étape partagée : {{key}}"
+  },
+  "picker": {
+    "open": "Insérer une étape partagée",
+    "title": "Insérer une étape partagée",
+    "loading": "Chargement des étapes partagées",
+    "loadError": "Les étapes partagées n'ont pas pu être chargées.",
+    "retry": "Réessayer",
+    "emptyTitle": "Aucune étape partagée à insérer",
+    "emptyDescription": "Créez d'abord une étape partagée dans la bibliothèque.",
+    "openLibrary": "Ouvrir la bibliothèque",
+    "select": "Étape partagée",
+    "selectPlaceholder": "Rechercher par titre ou clé",
+    "nothingFound": "Aucune étape partagée ne correspond",
+    "preview_one": "Elle ajoute {{count}} étape. Le cas exécute toujours la dernière version de l'étape partagée.",
+    "preview_other": "Elle ajoute {{count}} étapes. Le cas exécute toujours la dernière version de l'étape partagée.",
+    "insert": "Insérer"
+  },
+  "form": {
+    "createTitle": "Nouvelle étape partagée",
+    "editTitle": "Modifier l'étape partagée",
+    "create": "Créer",
+    "save": "Enregistrer",
+    "title": "Titre",
+    "titlePlaceholder": "Se connecter en tant qu'admin",
+    "key": "Clé",
+    "keyPlaceholder": "login_as_admin",
+    "keyDescription": "Lettres, chiffres et _, en commençant par une lettre. La clé ne pourra plus changer.",
+    "steps": "Étapes",
+    "step": "Étape {{position}}",
+    "action": "Action",
+    "expected": "Résultat attendu",
+    "addStep": "Ajouter une étape",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "removeStep": "Supprimer l'étape",
+    "stepActions": "Actions de l'étape {{position}}",
+    "suggestions": "Clés de données de test",
+    "noSuggestions": "Aucune clé ne correspond",
+    "errors": {
+      "required": "Ce champ est obligatoire.",
+      "tooLong": "Utilisez au plus {{max}} caractères.",
+      "tooMany": "Une étape partagée peut avoir au plus {{max}} étapes.",
+      "invalidKey": "Utilisez des lettres, des chiffres et _, en commençant par une lettre."
+    }
+  },
+  "errors": {
+    "keyAlreadyUsed": "Une autre étape partagée de ce projet a déjà cette clé.",
+    "invalidStepShape": "Chaque étape a besoin d'une action. Une étape partagée ne peut pas contenir une autre étape partagée.",
+    "conflict": "Quelqu'un d'autre a enregistré cette étape partagée. Rechargez la page et réessayez."
+  },
+  "toasts": {
+    "created": "Étape partagée « {{title}} » créée.",
+    "saved": "Étape partagée « {{title}} » enregistrée.",
+    "archived": "Étape partagée « {{title}} » archivée.",
+    "restored": "Étape partagée « {{title}} » restaurée."
+  },
+  "detail": {
+    "back": "Retour aux étapes partagées",
+    "edit": "Modifier",
+    "archive": "Archiver",
+    "restore": "Restaurer",
+    "version": "Version {{number}} · {{date}}",
+    "archivedNotice": "Cette étape partagée est archivée. Les cas qui l'utilisent déjà continuent de l'exécuter, mais elle ne peut plus être insérée dans d'autres cas.",
+    "stepsTitle": "Étapes",
+    "dataKeys": "Données de test utilisées : {{keys}}",
+    "notFoundTitle": "Étape partagée introuvable",
+    "notFoundDescription": "Elle a peut-être une autre clé, ou appartient à un autre projet.",
+    "loading": "Chargement de l'étape partagée",
+    "loadError": "L'étape partagée n'a pas pu être chargée.",
+    "retry": "Réessayer"
+  }
+}

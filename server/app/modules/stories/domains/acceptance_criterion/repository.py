@@ -10,3 +10,6 @@ class AcceptanceCriterionRepository(ABC):
 
     @abstractmethod
     async def save(self, criterion: AcceptanceCriterion) -> None: ...
+
+    @abstractmethod
+    async def delete_for_story(self, story_id: UUID) -> None: ...

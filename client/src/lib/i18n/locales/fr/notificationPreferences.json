@@ -1,0 +1,40 @@
+{
+  "card": {
+    "title": "Notifications",
+    "description": "Choisissez ce qui vous parvient dans Tessio et par e-mail. Les e-mails sont envoyés à {{email}}. Ces réglages s'appliquent à tous les projets.",
+    "inAppOffNote": "Si « Dans Tessio » est désactivé, la cloche reste silencieuse pour cette notification. L'e-mail suit son propre réglage.",
+    "tableLabel": "Réglages des notifications",
+    "notification": "Notification",
+    "inApp": "Dans Tessio",
+    "email": "E-mail",
+    "inAppFor": "Dans Tessio : {{kind}}",
+    "emailFor": "E-mail : {{kind}}",
+    "loading": "Chargement des réglages des notifications",
+    "loadError": "Les réglages des notifications n'ont pas pu être chargés",
+    "retry": "Réessayer",
+    "save": "Enregistrer les notifications",
+    "saved": "Réglages des notifications enregistrés."
+  },
+  "kinds": {
+    "gapAssigned": {
+      "title": "Écart qui m'est attribué",
+      "description": "Un écart vous est attribué, à vous ou à votre rôle."
+    },
+    "failureAssigned": {
+      "title": "Échec qui m'est attribué",
+      "description": "Quelqu'un vous attribue un échec."
+    },
+    "runFinished": {
+      "title": "Exécution terminée",
+      "description": "Une exécution de story que vous avez lancée se termine. Les membres QC sont prévenus de chaque exécution."
+    },
+    "suiteRunFinished": {
+      "title": "Exécution de suite terminée",
+      "description": "Une exécution de suite que vous avez lancée se termine. Les membres QC sont prévenus de chaque exécution de suite."
+    },
+    "reportReady": {
+      "title": "Rapport prêt",
+      "description": "Un rapport que vous avez exporté est prêt à être téléchargé."
+    }
+  }
+}

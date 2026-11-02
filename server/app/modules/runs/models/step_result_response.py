@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from app.modules.files import StoredFileStatus
+from app.modules.runs.models.step_diagnosis_response import StepDiagnosisResponse
 from app.modules.runs.typing.enums import ResultStatus
 from app.shared.common import WireModel
 
@@ -15,3 +16,4 @@ class StepResultResponse(WireModel):
     screenshot_file_id: UUID | None
     screenshot_status: StoredFileStatus | None
     evidence_file_id: UUID | None
+    diagnosis: StepDiagnosisResponse | None

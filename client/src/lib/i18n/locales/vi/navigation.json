@@ -14,5 +14,10 @@
   "profile": "Hồ sơ",
   "connectClaude": "Kết nối Claude",
   "gapInbox": "Khoảng trống của tôi",
-  "environments": "Môi trường"
+  "environments": "Môi trường",
+  "aiHarness": "AI Harness",
+  "suites": "Bộ kiểm thử",
+  "plans": "Kế hoạch",
+  "sharedSteps": "Bước dùng chung",
+  "insights": "Phân tích"
 }

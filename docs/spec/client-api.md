@@ -91,30 +91,44 @@ HTTP status per code (from `STATUS_BY_ERROR_CODE`):
 | --- | --- |
 | 400 | `INVALID_ONE_TIME_LINK`, `INVALID_TWO_FACTOR_CODE`, `INVALID_CURRENT_PASSWORD` |
 | 401 | `INVALID_CREDENTIALS`, `NOT_SIGNED_IN`, `INVALID_API_TOKEN` |
-| 403 | `ORIGIN_NOT_ALLOWED`, `PERMISSION_DENIED`, `OWNER_ONLY`, `RUN_NOT_OWNED` |
+| 403 | `ORIGIN_NOT_ALLOWED`, `PERMISSION_DENIED`, `OWNER_ONLY`, `RUN_NOT_OWNED`, `REVIEWER_IS_AUTHOR`, `TOKEN_SCOPE_NOT_ALLOWED` |
 | 404 | `NOT_FOUND` |
 | 413 | `FILE_TOO_LARGE` |
-| 422 | `WEAK_PASSWORD`, `PASSWORD_BREACHED`, `INVALID_REQUEST`, `JIRA_INVALID_CREDENTIALS`, `FILE_TYPE_NOT_ALLOWED`, `IMPORT_INVALID_FILE`, `UNKNOWN_REFERENCE` |
+| 422 | `WEAK_PASSWORD`, `PASSWORD_BREACHED`, `INVALID_REQUEST`, `JIRA_INVALID_CREDENTIALS`, `FILE_TYPE_NOT_ALLOWED`, `IMPORT_INVALID_FILE`, `UNKNOWN_REFERENCE`, `UNKNOWN_SHARED_STEP`, `INVALID_STEP_SHAPE`, `SECRET_IN_DATA_ROW`, `ITERATION_OUT_OF_RANGE`, `WEBHOOK_URL_INVALID`, `JUNIT_INVALID`, `JUNIT_NO_MAPPED_TESTS` |
 | 429 | `SIGN_IN_LOCKED`, `RATE_LIMITED` (with `Retry-After`) |
-| 502 | `JIRA_UNREACHABLE` |
+| 502 | `JIRA_UNREACHABLE`, `CHAT_DELIVERY_FAILED` |
 | 409 | every other code |
 
 Event types and what they refresh:
 
 | Event | Sent when | Refreshes |
 | --- | --- | --- |
-| `run.started` | a run starts | runs, run detail, story progress, recent runs |
-| `run.case_recorded` | a case result is saved | runs, run detail, failures, traceability, story progress, latest results, recent runs, manual run |
-| `run.finished` | a run finishes or is aborted | the same, plus dashboard and my work |
+| `run.started` | a run starts | runs, run detail, story progress, recent runs, Insights trends |
+| `run.case_recorded` | a case result is saved | runs, run detail, failures, traceability, story progress, latest results, recent runs, manual run, Insights trends, top failing, flaky, coverage by label, sprint coverage |
+| `run.finished` | a run finishes or is aborted | the same, plus dashboard, my work and Insights tokens |
 | `jira.sync_started` | a sync is queued | sync status |
-| `jira.sync_finished` | a sync succeeded | sync status, sprints, stories, traceability, story progress, dashboard, my work, manual-run story picker |
+| `jira.sync_finished` | a sync succeeded | sync status, sprints, stories, traceability, story progress, dashboard, my work, manual-run story picker, Insights sprint coverage |
 | `jira.sync_failed` | a sync failed | sync status |
 | `notification.created` | a notification is created (to its user) | notification list and unread count |
 | `project.members_changed` | a member is added, changed or removed | members, project, projects, member candidates |
-| `gap.changed` | a gap is raised, answered, reopened or reassigned | story gaps, gap inbox, story progress, dashboard, my work |
-| `failure.changed` | a failure status or assignee changes | failures, failure detail, story progress, dashboard, my work |
-| `test_case.changed` | a case is created, saved, reviewed, attached or changes status | test cases, case detail, versions, file versions, traceability, story progress, latest results, dashboard, my work, Ready cases for manual runs |
-| `story.changed` | a story's test status changes (by hand or by a run) | stories, story, traceability, story progress, dashboard, manual-run story picker |
+| `gap.changed` | a gap is raised, answered, reopened or reassigned | story gaps, gap inbox, story progress, dashboard, my work, Insights trends |
+| `failure.changed` | a failure status, assignee or cause changes, or its Jira bug is requested, created, refused or refreshed by a sync | failures, failure detail, story progress, dashboard, my work, Insights trends |
+| `test_case.changed` | a case is created, saved, reviewed, attached, changes status or gets new labels | test cases, case detail, versions, file versions, traceability, story progress, latest results, dashboard, my work, Ready cases for manual runs, shared steps, suites, suite detail, plans, plan detail, Insights top failing, flaky, coverage by label, sprint coverage |
+| `story.changed` | a story's test status changes (by hand or by a run) | stories, story, traceability, story progress, dashboard, manual-run story picker, plans, plan detail, Insights sprint coverage |
+| `review_comment.changed` | a review comment is added to a case or resolved | test cases, case detail, review comments |
+| `label.changed` | a label is created, renamed, recoloured or deleted (`ids.labelId`) | test cases, case detail, labels, Insights coverage by label |
+| `suite.changed` | a suite is created, renamed, has its description changed, is archived, or its cases change (`ids.suiteId`) | suites, suite detail, plans, plan detail |
+| `shared_step.changed` | a shared step is created, saved with new steps (a new version), renamed, archived or restored (`ids.sharedStepKey`, `ids.sharedStepId`) | shared steps library, shared step detail and usage (keys added by W10.T6) |
+| `plan.changed` | a test plan is created, edited, has its items changed, is signed off or is closed (`ids.planId`) | plans, plan detail |
+| `plan.signed_off` | a test plan is signed off (`ids.planId`), sent right after its `plan.changed` | nothing on screen (the `plan.changed` sent with it refreshes); for webhooks (W11) |
+| `failure.opened` | a case result opens a new failure (`ids.failureId`, `ids.runId`, `ids.storyId`, `ids.testCaseId`), sent right after its `run.case_recorded` (MCP, manual and JUnit import results) | nothing on screen (the `run.case_recorded` sent with it refreshes); for webhooks and chat ([integrations.md](integrations.md)) |
+| `failure.status_changed` | a failure moves to another status, by hand (sent after its `failure.changed`) or reopened by a new failed result (`ids.failureId`, `ids.status`, `ids.storyId`, `ids.testCaseId`) | nothing on screen; for webhooks and chat |
+| `gap.raised` | a gap is raised, by REST or MCP (`ids.gapId`, `ids.storyId`), sent after its `gap.changed` | nothing on screen; for webhooks and chat |
+| `story.signed_off` | a story's test status becomes `passed` (`ids.storyId`, `ids.jiraKey`), sent after its `story.changed` | nothing on screen; for webhooks and chat |
+| `webhook.changed` | a webhook is added, edited or removed, or one of its deliveries is queued, tried or redelivered (`ids.webhookId`) | the webhooks card and its delivery log in project settings ([integrations.md](integrations.md)) |
+| `chat_channel.changed` | a Slack or Teams channel is added, edited or removed, or a message to it (test or event) was delivered or failed (`ids.chatChannelId`) | chat channels card in project settings ([NOTIF-8](notifications.md#notif-8-slack-and-teams-channels-wbs-96)) |
+| `insights.changed` | the nightly `insights.daily_snapshot` job wrote a project's daily stats (`project_id`, no ids) | the Insights page queries ([insights.md](insights.md)) |
+| `report.ready` | a report export finished (to the requester: `user_id`, `ids.fileId`, `ids.format`), sent with its `report_ready` notification | the export buttons' pending state ([INS-7](insights.md#ins-7-export-a-run-plan-or-story-report-wbs-95-3107)) |
 
 ## Screens and states
 

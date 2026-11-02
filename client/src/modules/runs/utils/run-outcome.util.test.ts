@@ -5,7 +5,10 @@ const RESULT = {
   id: "d1000000-0000-4000-8000-000000000001",
   status: "failed" as const,
   durationMs: 1200,
+  suspectedCause: null,
+  causeReason: null,
   recordedAt: "2026-10-20T10:00:00Z",
+  iteration: 0,
 };
 
 describe("resolveCaseOutcome", () => {

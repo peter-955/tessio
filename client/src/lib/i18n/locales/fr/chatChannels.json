@@ -1,0 +1,88 @@
+{
+  "card": {
+    "title": "Canaux de discussion",
+    "description": "Publiez les exécutions, échecs, écarts et validations de ce projet dans des canaux Slack ou Teams, par webhooks entrants.",
+    "add": "Ajouter un canal",
+    "limitReached": "Un projet peut avoir au plus {{max}} canaux de discussion.",
+    "loading": "Chargement des canaux de discussion",
+    "loadError": "Les canaux de discussion n'ont pas pu être chargés",
+    "retry": "Réessayer",
+    "empty": "Aucun canal de discussion pour l'instant.",
+    "tableLabel": "Canaux de discussion",
+    "channel": "Canal",
+    "events": "Événements",
+    "lastDelivery": "Dernier message",
+    "actions": "Actions",
+    "actionsFor": "Actions pour {{name}}",
+    "off": "Désactivé",
+    "sendTest": "Envoyer un message de test",
+    "edit": "Modifier",
+    "turnOff": "Désactiver",
+    "turnOn": "Activer",
+    "delete": "Supprimer"
+  },
+  "kinds": {
+    "slack": "Slack",
+    "teams": "Teams"
+  },
+  "events": {
+    "runStarted": "Exécution démarrée",
+    "runFinished": "Exécution terminée",
+    "failureOpened": "Échec ouvert",
+    "failureStatusChanged": "Statut d'échec modifié",
+    "gapRaised": "Écart signalé",
+    "storySignedOff": "Story validée",
+    "planSignedOff": "Plan validé"
+  },
+  "delivery": {
+    "none": "Pas encore envoyé",
+    "delivered": "Livré",
+    "failed": "Échec"
+  },
+  "form": {
+    "createTitle": "Ajouter un canal de discussion",
+    "editTitle": "Modifier le canal de discussion",
+    "kind": "Application de discussion",
+    "name": "Nom",
+    "namePlaceholder": "#resultats-qa",
+    "webhookUrl": "URL du webhook",
+    "newWebhookUrl": "Nouvelle URL du webhook",
+    "webhookUrlPlaceholder": "https://",
+    "slackHelp": "Dans Slack, ajoutez un webhook entrant au canal et collez son URL (https://hooks.slack.com/…).",
+    "teamsHelp": "Dans Teams, ajoutez au canal le modèle Workflows « Publier dans un canal lorsqu'une requête webhook est reçue » et collez son URL.",
+    "savedUrl": "URL enregistrée : {{url}}. Laissez vide pour la garder.",
+    "secretNote": "Tessio stocke l'URL chiffrée et n'en affiche ensuite que la fin.",
+    "events": "Événements",
+    "eventsDescription": "Tessio publie un message pour chaque événement choisi.",
+    "isActive": "Publier des messages dans ce canal",
+    "create": "Ajouter le canal",
+    "save": "Enregistrer"
+  },
+  "delete": {
+    "title": "Supprimer le canal de discussion",
+    "message": "Supprimer {{name}} ? Tessio ne publiera plus dans ce canal. Le webhook reste dans Slack ou Teams.",
+    "confirm": "Supprimer"
+  },
+  "validation": {
+    "nameRequired": "Saisissez un nom.",
+    "nameTooLong": "Utilisez au plus {{max}} caractères.",
+    "nameAlreadyUsed": "Un canal de discussion porte déjà ce nom.",
+    "urlRequired": "Collez l'URL du webhook.",
+    "urlTooLong": "Utilisez au plus {{max}} caractères.",
+    "urlNotHttps": "Saisissez une URL https, par exemple https://hooks.slack.com/….",
+    "eventsRequired": "Choisissez au moins un événement."
+  },
+  "toasts": {
+    "created": "Canal de discussion ajouté",
+    "updated": "Canal de discussion enregistré",
+    "deleted": "Canal de discussion supprimé",
+    "turnedOn": "{{name}} activé",
+    "turnedOff": "{{name}} désactivé",
+    "testSent": "Message de test envoyé à {{name}}",
+    "testFailed": "Le message de test à {{name}} n'a pas été livré. La raison est affichée sur le canal."
+  },
+  "errors": {
+    "notFound": "Ce canal de discussion n'existe plus. Rechargez pour voir les canaux actuels.",
+    "urlInvalid": "Saisissez une URL https publique de Slack ou Teams."
+  }
+}

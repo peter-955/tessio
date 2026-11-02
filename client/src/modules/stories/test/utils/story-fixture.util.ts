@@ -17,6 +17,7 @@ export const buildStorySummary = (overrides: Partial<StorySummary> = {}): StoryS
     title: "Pay by card",
     jiraStatus: "In Progress",
     jiraIssueType: "Story",
+    source: "jira",
     testStatus: "not_started",
     sprintId: ACTIVE_SPRINT_ID,
     sprintName: "Sprint 12",
@@ -49,6 +50,7 @@ export const buildStoryDetail = (overrides: Partial<StoryDetail> = {}): StoryDet
     title: "Pay by card",
     jiraStatus: "In Progress",
     jiraIssueType: "Story",
+    source: "jira",
     testStatus: "not_started",
     syncedAt: "2026-10-20T09:00:00Z",
     jiraMissingAt: null,
@@ -58,6 +60,7 @@ export const buildStoryDetail = (overrides: Partial<StoryDetail> = {}): StoryDet
     availableTestStatuses: [],
     testStatusChangedAt: null,
     jiraUpdatedAt: "2026-10-19T09:00:00Z",
+    descriptionText: null,
     ...overrides,
   };
 };

@@ -1,0 +1,200 @@
+{
+  "page": {
+    "title": "Plans",
+    "description": "Test plans track a release's suites and stories up to sign-off."
+  },
+  "list": {
+    "newPlan": "New plan",
+    "statusFilter": "Plan status",
+    "label": "Test plans",
+    "loadError": "The plans could not be loaded.",
+    "anyEnvironment": "Any environment",
+    "noTargetDate": "No target date",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "columns": {
+      "name": "Plan",
+      "status": "Status",
+      "progress": "Progress",
+      "targetDate": "Target date",
+      "environment": "Environment",
+      "items": "Covers"
+    },
+    "filters": {
+      "all": "All",
+      "open": "Open",
+      "signed_off": "Signed off",
+      "closed": "Closed"
+    },
+    "empty": {
+      "title": "No test plans yet",
+      "description": "A test plan groups suites and stories for a release and records its sign-off.",
+      "noMatch": "No plan has this status",
+      "noMatchDescription": "Choose another status or show every plan.",
+      "showAll": "Show all plans"
+    }
+  },
+  "status": {
+    "open": "Open",
+    "signed_off": "Signed off",
+    "closed": "Closed"
+  },
+  "caseStatus": {
+    "passed": "Passed",
+    "failed": "Failed",
+    "blocked": "Blocked",
+    "skipped": "Skipped",
+    "notRun": "Not run"
+  },
+  "progress": {
+    "title": "Progress",
+    "label": "Plan progress",
+    "segment": "{{status}}: {{count}}",
+    "passedPercent": "{{percent}}% passed",
+    "summary": "{{passed}} of {{total}} cases passed",
+    "noCases": "No cases yet",
+    "frozenSignedOff": "Results up to the sign-off are counted.",
+    "frozenClosed": "Results up to the close are counted.",
+    "since": "Results recorded since {{date}} are counted."
+  },
+  "detail": {
+    "back": "Back to plans",
+    "loadError": "The plan could not be loaded.",
+    "notFoundTitle": "Plan not found",
+    "notFoundDescription": "This plan doesn't exist or belongs to another project.",
+    "targetDate": "Target date",
+    "environment": "Environment",
+    "anyEnvironment": "Any environment",
+    "noTargetDate": "None",
+    "createdBy": "Created by {{name}} on {{date}}",
+    "signedOffBy": "Signed off by {{name}} on {{date}}",
+    "closedBy": "Closed by {{name}} on {{date}}",
+    "unknownUser": "a former member",
+    "readOnlyArchived": "This project is archived, so its plans are read-only."
+  },
+  "actions": {
+    "edit": "Edit",
+    "chooseItems": "Choose suites and stories",
+    "signOff": "Sign off",
+    "close": "Close plan"
+  },
+  "form": {
+    "createTitle": "New test plan",
+    "editTitle": "Edit plan",
+    "name": "Name",
+    "namePlaceholder": "Release 4.2 regression",
+    "nameRequired": "Enter a name.",
+    "nameTooLong": "Use at most {{max}} characters.",
+    "description": "Description",
+    "descriptionPlaceholder": "What this plan has to prove before the release ships",
+    "targetDate": "Target date",
+    "environment": "Environment",
+    "environmentPlaceholder": "Any environment",
+    "environmentDescription": "When set, only results of runs on this environment count.",
+    "create": "Create plan",
+    "save": "Save"
+  },
+  "items": {
+    "title": "What the plan covers",
+    "modalTitle": "Choose suites and stories",
+    "suites": "Regression suites",
+    "suitesPlaceholder": "Pick suites",
+    "stories": "Stories",
+    "storiesPlaceholder": "Pick stories",
+    "nothingFound": "Nothing matches",
+    "description": "The plan's cases are each suite's cases, then each story's cases. A case that two items bring is listed once.",
+    "tooMany": "A plan holds at most {{max}} suites and stories.",
+    "loadError": "The suites and stories could not be loaded.",
+    "none": "This plan covers no suite or story yet.",
+    "save": "Save",
+    "archived": "{{name}} (archived)",
+    "archivedBadge": "Archived",
+    "caseCount_one": "{{count}} case",
+    "caseCount_other": "{{count}} cases",
+    "kind": {
+      "suite": "Suite",
+      "story": "Story"
+    }
+  },
+  "cases": {
+    "title": "Cases by status",
+    "filterLabel": "Filter cases by status",
+    "tableLabel": "Plan cases",
+    "noCases": "Add suites or stories to see their cases here.",
+    "noMatch": "No case of this plan has this status.",
+    "needsReview": "Needs review",
+    "notRun": "Not run yet",
+    "filters": {
+      "all": "All",
+      "passed": "Passed",
+      "failed": "Failed",
+      "blocked": "Blocked",
+      "skipped": "Skipped",
+      "notRun": "Not run"
+    },
+    "columns": {
+      "case": "Case",
+      "story": "Story",
+      "result": "Latest result",
+      "recordedAt": "Recorded",
+      "failure": "Failure"
+    },
+    "caseStatus": {
+      "draft": "Draft",
+      "in_review": "In review",
+      "ready": "Ready",
+      "deprecated": "Deprecated"
+    }
+  },
+  "blockers": {
+    "title": "Blockers",
+    "failures": "Active failures",
+    "gaps": "Open gaps",
+    "noFailures": "No active failure on this plan's cases.",
+    "noGaps": "No open gap on this plan's stories.",
+    "unassigned": "Unassigned",
+    "assignedToRole": "{{role}} role",
+    "severity": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "roles": {
+      "admin": "Admin",
+      "pm": "PM",
+      "ba": "BA",
+      "qc": "QC",
+      "dev": "Dev",
+      "viewer": "Viewer"
+    }
+  },
+  "signOff": {
+    "title": "Sign off {{name}}?",
+    "message": "Signing off records your go for this release. The plan's numbers then stop moving, and its suites and stories can no longer change.",
+    "blocked_one": "Resolve the {{count}} active failure on this plan's cases before signing it off.",
+    "blocked_other": "Resolve the {{count}} active failures on this plan's cases before signing it off.",
+    "notRun_one": "{{count}} case has not run yet.",
+    "notRun_other": "{{count}} cases have not run yet.",
+    "openGaps_one": "{{count}} gap is still open.",
+    "openGaps_other": "{{count}} gaps are still open."
+  },
+  "close": {
+    "title": "Close {{name}}?",
+    "message": "Closing is final: the plan stays readable, but nothing can reopen or change it.",
+    "messageSignedOff": "Closing is final. The plan keeps its sign-off and stays readable."
+  },
+  "toasts": {
+    "created": "Plan created.",
+    "updated": "Plan saved.",
+    "itemsSaved": "The plan's suites and stories were saved.",
+    "signedOff": "Plan signed off.",
+    "closed": "Plan closed."
+  },
+  "errors": {
+    "notOpen": "This plan is no longer open. The page now shows its current state.",
+    "failuresActive": "Resolve the active failures on this plan's cases before signing it off.",
+    "unknownReference": "A suite, story or environment you picked no longer exists in this project.",
+    "invalidRequest": "Pick each suite and story once, and at most 100 of them."
+  },
+  "retry": "Try again"
+}

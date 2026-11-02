@@ -4,6 +4,8 @@ from app.modules.jira import JiraNotConfiguredError
 from app.modules.projects import JiraConnectionChecker
 from app.modules.stories.domains.project_sync_state.entity import ProjectSyncState
 from app.modules.stories.domains.project_sync_state.repository import ProjectSyncStateRepository
+from app.modules.stories.errors import ProjectWithoutJiraError
+from app.modules.stories.ports.sync_target_reader import SyncTargetReader
 from app.modules.stories.typing.constants import JIRA_SYNC_JOB_ID_TEMPLATE, SYNC_STALE_AFTER
 from app.modules.stories.typing.enums import ProjectSyncStatus
 from app.shared.common import Transaction
@@ -20,6 +22,7 @@ class RequestJiraSyncUseCase:
         project_access_resolver: ProjectAccessResolver,
         project_sync_state_repository: ProjectSyncStateRepository,
         jira_connection_checker: JiraConnectionChecker,
+        sync_target_reader: SyncTargetReader,
         job_queue: JobQueue,
         live_event_publisher: LiveEventPublisher,
     ) -> None:
@@ -27,6 +30,7 @@ class RequestJiraSyncUseCase:
         self._project_access_resolver = project_access_resolver
         self._project_sync_state_repository = project_sync_state_repository
         self._jira_connection_checker = jira_connection_checker
+        self._sync_target_reader = sync_target_reader
         self._job_queue = job_queue
         self._live_event_publisher = live_event_publisher
 
@@ -35,6 +39,9 @@ class RequestJiraSyncUseCase:
         async with self._transaction.begin():
             access = await self._project_access_resolver.resolve(actor, project_key)
             require(access, Capability.JIRA_SYNC)
+            target = await self._sync_target_reader.find(access.project_id)
+            if target is None or target.jira_project_key is None:
+                raise ProjectWithoutJiraError
             if not await self._jira_connection_checker.is_configured():
                 raise JiraNotConfiguredError
             state = await self._project_sync_state_repository.lock(access.project_id, now)

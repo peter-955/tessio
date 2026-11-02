@@ -1,0 +1,14 @@
+{
+  "whyItFailed": "Pourquoi ça a échoué",
+  "suspectedCause": "Cause probable",
+  "page": "Page",
+  "consoleErrors": "Erreurs de console",
+  "failedRequests": "Requêtes en échec",
+  "cause": {
+    "app_bug": "Bug de l'application",
+    "test_data": "Données de test",
+    "environment": "Environnement",
+    "test_case": "Cas de test obsolète",
+    "unknown": "Inconnue"
+  }
+}

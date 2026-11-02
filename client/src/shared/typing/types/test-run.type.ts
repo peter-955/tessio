@@ -21,3 +21,7 @@ export type RunReport = components["schemas"]["RunReportResponse"];
 export type RunCounts = components["schemas"]["RunCountsResponse"];
 
 export type TestOutcome = RunStatus | ResultStatus | "pending" | "not_reported";
+
+export type SuspectedCause = components["schemas"]["SuspectedCause"];
+
+export type StepDiagnosis = components["schemas"]["StepDiagnosisResponse"];

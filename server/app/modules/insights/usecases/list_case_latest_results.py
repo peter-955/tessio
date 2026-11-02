@@ -30,6 +30,14 @@ class ListCaseLatestResultsUseCase:
                     return []
                 cases = await self._coverage_reader.list_cases(access.project_id, [story.id], True)
         return [
-            CaseLatestResult(case_id=case.id, code=case.code, story_id=case.story_id, latest_result=case.latest_result)
+            CaseLatestResult(
+                case_id=case.id,
+                code=case.code,
+                story_id=case.story_id,
+                latest_result=case.latest_result,
+                is_flaky=case.is_flaky,
+                is_disagreeing=case.is_disagreeing,
+                is_quarantined=case.is_quarantined,
+            )
             for case in cases
         ]

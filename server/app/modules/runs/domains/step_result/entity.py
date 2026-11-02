@@ -1,6 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
+from app.modules.runs.domains.step_diagnosis.entity import StepDiagnosis
 from app.modules.runs.typing.enums import ResultStatus
 from app.shared.common import Entity
 
@@ -14,4 +15,5 @@ class StepResult(Entity):
     error: str | None
     screenshot_file_id: UUID | None
     evidence_file_id: UUID | None
+    diagnosis: StepDiagnosis | None
     created_at: datetime

@@ -76,6 +76,8 @@ export const NOT_FOUND_STATUS = 404;
 
 export const TEST_CASE_DETAIL_TAB_PARAMETER = "tab";
 
+export const VERSION_PARAMETER = "version";
+
 export const STORY_PARAMETER = "story";
 
 export const ALL_OPTION = "all";

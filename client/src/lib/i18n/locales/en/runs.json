@@ -20,7 +20,8 @@
   },
   "executor": {
     "claude": "Claude",
-    "manual": "Manual"
+    "manual": "Manual",
+    "ci": "CI"
   },
   "abortReason": {
     "no_results": "No results were reported",
@@ -70,14 +71,17 @@
   "tabs": {
     "label": "Run sections",
     "results": "Results",
-    "report": "Report"
+    "report": "Report",
+    "log": "Log"
   },
   "case": {
     "listLabel": "Test case results",
     "version": "v{{number}}",
     "showSteps": "Show steps",
     "hideSteps": "Hide steps",
-    "stepsLabel": "Steps of {{code}}"
+    "stepsLabel": "Steps of {{code}}",
+    "showDetails": "Case details",
+    "hideDetails": "Hide case details"
   },
   "step": {
     "label": "Step {{order}}",
@@ -128,5 +132,37 @@
   "limitNotice": "Showing the {{count}} most recent runs.",
   "loading": "Loading runs",
   "loadError": "Runs could not be loaded",
-  "retry": "Try again"
+  "retry": "Try again",
+  "log": {
+    "loading": "Loading Claude's log",
+    "loadError": "The log could not be loaded.",
+    "pending": "Claude's log arrives when the run finishes.",
+    "missing": "No log was received for this run.",
+    "tokens": "{{total}} tokens",
+    "tokensPerCase": "{{total}} tokens · about {{perCase}} per case",
+    "cut": "The log was cut at 3,000 entries.",
+    "setup": "Setup",
+    "wrapUp": "Wrap-up",
+    "unknownCase": "Other case",
+    "duration": "{{seconds}} s",
+    "error": "Error",
+    "tool": "Tool",
+    "input": "Input",
+    "output": "Output",
+    "labels": {
+      "opened": "Opened {{url}}",
+      "filled": "Filled a field with {{value}}",
+      "lookedFor": "Looked for {{query}}",
+      "readPage": "Read the page",
+      "attachedFile": "Attached a file",
+      "screenshot": "Took a screenshot",
+      "typed": "Typed {{text}}",
+      "pressed": "Pressed {{key}}",
+      "scrolled": "Scrolled",
+      "clicked": "Clicked",
+      "tessio": "Tessio: {{tool}}",
+      "ran": "Ran {{command}}",
+      "tool": "{{tool}}"
+    }
+  }
 }

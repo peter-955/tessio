@@ -27,4 +27,6 @@ export const NOTIFICATION_KIND_ICONS: Record<NotificationKind, DSIconName> = {
   gap_assigned: "infoCircle",
   failure_assigned: "failures",
   run_finished: "runs",
+  suite_run_finished: "suites",
+  report_ready: "download",
 };

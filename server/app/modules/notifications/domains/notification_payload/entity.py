@@ -3,7 +3,7 @@ from uuid import UUID
 
 from pydantic import BeforeValidator, Field
 
-from app.modules.notifications.typing.enums import NotificationKind, RunOutcome
+from app.modules.notifications.typing.enums import NotificationKind, ReportFormat, ReportSource, RunOutcome
 from app.modules.notifications.utils.shorten_text import shorten_text
 from app.shared.common import Entity
 
@@ -38,6 +38,28 @@ class RunFinishedPayload(Entity):
     blocked_count: int
 
 
+class SuiteRunFinishedPayload(Entity):
+    kind: Literal[NotificationKind.SUITE_RUN_FINISHED] = NotificationKind.SUITE_RUN_FINISHED
+    run_id: UUID
+    test_suite_id: UUID
+    test_suite_name: ShortText
+    outcome: RunOutcome
+    passed_count: int
+    failed_count: int
+    blocked_count: int
+
+
+class ReportReadyPayload(Entity):
+    kind: Literal[NotificationKind.REPORT_READY] = NotificationKind.REPORT_READY
+    file_id: UUID
+    file_name: ShortText
+    format: ReportFormat
+    source: ReportSource
+    source_id: str
+    source_label: ShortText
+
+
 NotificationPayload = Annotated[
-    GapAssignedPayload | FailureAssignedPayload | RunFinishedPayload, Field(discriminator="kind")
+    GapAssignedPayload | FailureAssignedPayload | RunFinishedPayload | SuiteRunFinishedPayload | ReportReadyPayload,
+    Field(discriminator="kind"),
 ]

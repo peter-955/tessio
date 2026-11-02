@@ -1,4 +1,5 @@
 from collections.abc import Mapping
+from datetime import timedelta
 
 from app.modules.failures.typing.enums import FailureStatus
 
@@ -12,3 +13,10 @@ MANUAL_STATUS_TRANSITIONS: Mapping[FailureStatus, frozenset[FailureStatus]] = {
 TEST_CASE_CODE_PREFIX = "TC-"
 MAX_FAILURE_LIST_SIZE = 500
 MAX_RESULT_HISTORY_SIZE = 50
+
+MAX_CAUSE_REASON_LENGTH = 500
+JIRA_ISSUE_PENDING_TIMEOUT = timedelta(minutes=15)
+JIRA_CREATE_ISSUE_JOB_ID_TEMPLATE = "jira-create-issue:{failure_id}"
+TESSIO_FAILURE_URL_TEMPLATE = "{client_url}/projects/{project_key}/failures/{failure_id}"
+JIRA_BUG_LINK_TEXT = "Open the failure in Tessio"
+PARAMETER_PLACEHOLDER_PATTERN = r"\{\{\s*param\.([A-Za-z][A-Za-z0-9_.-]{0,99})\s*\}\}"

@@ -2,6 +2,7 @@
 
 import { DSAlert, DSButton } from "@/components/design-system";
 import { useCurrentProject } from "@/components/project-context/hooks/use-current-project";
+import { useIsAuthorReviewBlocked } from "@/modules/case-review/hooks/use-is-author-review-blocked";
 import { useShowToast } from "@/shared/hooks/use-show-toast";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,6 +26,7 @@ export const TestCaseAlerts: FC<Props> = ({ detail, canEdit }) => {
       showSuccessToast(t("toasts.reviewed"));
     },
   });
+  const isAuthorReviewBlocked = useIsAuthorReviewBlocked(detail);
   const criterionCodes = new Map(
     detail.criteria.map((criterion) => [criterion.id, criterion.code]),
   );
@@ -40,7 +42,8 @@ export const TestCaseAlerts: FC<Props> = ({ detail, canEdit }) => {
         <DSAlert
           color="warning"
           action={
-            canEdit && (
+            canEdit &&
+            !isAuthorReviewBlocked && (
               <DSButton
                 type="default"
                 size="sm"

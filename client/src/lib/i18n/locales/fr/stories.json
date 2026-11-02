@@ -26,7 +26,8 @@
   "list": {
     "openInJira": "Ouvrir dans Jira",
     "notInScope": "Hors périmètre Jira",
-    "noSprint": "Sans sprint"
+    "noSprint": "Sans sprint",
+    "writtenInTessio": "Écrite dans Tessio"
   },
   "empty": {
     "title": "Aucune story pour l'instant",
@@ -51,7 +52,9 @@
     "notFound": {
       "title": "Story introuvable",
       "description": "Vérifiez la clé ou synchronisez avec Jira."
-    }
+    },
+    "writtenInTessio": "Écrite dans Tessio",
+    "lastEdited": "Modifiée le {{date}}"
   },
   "tabs": {
     "ariaLabel": "Sections de la story",
@@ -110,5 +113,33 @@
     "lastSucceeded": "Dernière réussite {{date}}",
     "stale": "La dernière synchronisation ne répond plus.",
     "unavailable": "Statut de synchronisation indisponible"
+  },
+  "editor": {
+    "newStory": "Nouvelle story",
+    "createTitle": "Nouvelle story",
+    "editTitle": "Modifier {{key}}",
+    "title": "Titre",
+    "titleRequired": "Saisissez un titre.",
+    "tooLong": "Utilisez au plus {{max}} caractères.",
+    "description": "Description",
+    "descriptionHint": "Ce que veut l'utilisateur et pourquoi. Texte simple.",
+    "criteria": "Critères d'acceptation",
+    "criteriaHint": "Les codes suivent l'ordre : le premier est AC1. Modifier ou retirer un critère signale ses cas de test liés à revoir.",
+    "criterionCode": "AC{{number}}",
+    "criterionActions": "Actions pour {{code}}",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "remove": "Retirer",
+    "addCriterion": "Ajouter un critère d'acceptation",
+    "create": "Créer la story",
+    "save": "Enregistrer",
+    "created": "Story {{key}} créée",
+    "updated": "Story enregistrée",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer {{key}} ?",
+    "deleteMessage": "La story et ses critères d'acceptation sont supprimés. Sa clé n'est pas réutilisée.",
+    "deleted": "Story {{key}} supprimée",
+    "inUse": "Cette story a des cas de test, des exécutions ou des lacunes : elle ne peut pas être supprimée."
   }
 }

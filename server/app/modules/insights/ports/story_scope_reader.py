@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import datetime
 from uuid import UUID
 
 from app.modules.insights.domains.sprint_reference.entity import SprintReference
@@ -19,3 +20,8 @@ class StoryScopeReader(ABC):
 
     @abstractmethod
     async def find_current_sprint(self, project_id: UUID) -> SprintReference | None: ...
+
+    @abstractmethod
+    async def list_sprints_overlapping(
+        self, project_id: UUID, start_at: datetime, end_at: datetime, limit: int
+    ) -> list[SprintReference]: ...

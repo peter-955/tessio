@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from app.modules.runs.typing.enums import ResultStatus
+from app.modules.runs.typing.enums import ResultStatus, SuspectedCause
 from app.shared.common import Entity
 
 
@@ -12,5 +12,7 @@ class RecordedCaseResult(Entity):
     case_result_id: UUID
     test_case_id: UUID
     status: ResultStatus
+    suspected_cause: SuspectedCause | None
+    cause_reason: str | None
     recorded_by: UUID
     recorded_at: datetime

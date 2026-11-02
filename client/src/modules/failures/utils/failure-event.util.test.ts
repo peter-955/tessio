@@ -15,6 +15,9 @@ const LABELS: FailureTimelineLabels = {
   formatAssigned: (name) => {
     return `Assigned to ${name}`;
   },
+  formatCauseChange: (fromCause, toCause) => {
+    return `cause ${fromCause ?? "none"} to ${toCause ?? "none"}`;
+  },
   formatActor: (name) => {
     return `by ${name}`;
   },
@@ -29,6 +32,8 @@ const buildEvent = (overrides: Partial<FailureEvent>): FailureEvent => {
     kind: "opened",
     fromStatus: null,
     toStatus: null,
+    fromCause: null,
+    toCause: null,
     caseResultId: null,
     runId: null,
     assigneeId: null,

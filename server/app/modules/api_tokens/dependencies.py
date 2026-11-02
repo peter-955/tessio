@@ -8,6 +8,8 @@ from app.modules.api_tokens.usecases.create_api_token import CreateApiTokenUseCa
 from app.modules.api_tokens.usecases.list_api_tokens import ListApiTokensUseCase
 from app.modules.api_tokens.usecases.revoke_api_token import RevokeApiTokenUseCase
 from app.modules.api_tokens.utils.bearer_token import read_bearer_token
+from app.modules.auth import authenticate_signed_in_request, has_session_cookie
+from app.modules.users import build_actor
 from app.shared.permissions import Actor, Capability
 
 
@@ -48,3 +50,14 @@ class ApiTokenActorDependency:
 
 def get_api_token_actor(capability: Capability) -> ApiTokenActorDependency:
     return ApiTokenActorDependency(capability)
+
+
+async def get_token_allowed_actor(
+    request: Request,
+    use_case: Annotated[AuthenticateApiTokenUseCase, Depends(get_authenticate_api_token)],
+) -> Actor:
+    token = read_bearer_token(request.headers.get("authorization", ""))
+    if token is not None and not has_session_cookie(request):
+        return await use_case.execute_for_rest(token, str(request.path_params.get("project_key", "")))
+    authenticated = await authenticate_signed_in_request(request)
+    return build_actor(authenticated.user)

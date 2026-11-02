@@ -222,6 +222,9 @@ export const DSReferenceTextarea: FC<Props> = ({
                     className={styles.option}
                   >
                     {`${suggestion.kind}.${suggestion.key}`}
+                    {suggestion.description !== undefined && (
+                      <span className={styles.optionDescription}>{suggestion.description}</span>
+                    )}
                   </Combobox.Option>
                 );
               })

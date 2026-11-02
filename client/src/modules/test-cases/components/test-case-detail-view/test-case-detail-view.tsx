@@ -4,6 +4,12 @@ import { DSAlert, DSButton, DSTabPanel, DSTabs, type DSTabItem } from "@/compone
 import { useCurrentProject } from "@/components/project-context/hooks/use-current-project";
 import type { ApiError } from "@/lib/api/api-error";
 import { useResolveApiErrorMessage } from "@/lib/api/hooks/use-resolve-api-error-message";
+import { CompareVersions } from "@/modules/case-review/components/compare-versions/compare-versions";
+import { ReviewCommentsPanel } from "@/modules/case-review/components/review-comments-panel/review-comments-panel";
+import { ReviewStatusNotice } from "@/modules/case-review/components/review-status-notice/review-status-notice";
+import { useGetReviewComments } from "@/modules/case-review/hooks/queries/use-get-review-comments";
+import { countOpenReviewComments } from "@/modules/case-review/utils/review-comment.util";
+import { CaseLabelPicker } from "@/modules/labels/components/case-label-picker/case-label-picker";
 import { useShowToast } from "@/shared/hooks/use-show-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FC } from "react";
@@ -11,7 +17,10 @@ import { useTranslation } from "react-i18next";
 import { usePatchTestCase } from "../../hooks/mutations/use-patch-test-case";
 import { useReferenceSuggestions } from "../../hooks/use-reference-suggestions";
 import { useTestCaseEditor } from "../../hooks/use-test-case-editor";
-import { TEST_CASE_DETAIL_TAB_PARAMETER } from "../../typing/constants/test-case.constant";
+import {
+  TEST_CASE_DETAIL_TAB_PARAMETER,
+  VERSION_PARAMETER,
+} from "../../typing/constants/test-case.constant";
 import { TestCaseDetailTab } from "../../typing/enums/test-case-detail-tab.enum";
 import type { TestCaseFormErrors } from "../../typing/types/test-case-form-errors.type";
 import type { TestCaseFormValues } from "../../typing/types/test-case-form-values.type";
@@ -23,6 +32,10 @@ import {
 import { checkHasTestCaseFormErrors, validateTestCaseForm } from "../../utils/test-case-form.util";
 import { findTestCaseSaveError } from "../../utils/test-case-save-error.util";
 import { parseTestCaseTab } from "../../utils/test-case-tab.util";
+import { parseVersionNumber } from "../../utils/version-parameter.util";
+import { CaseReadView } from "../case-read-view/case-read-view";
+import { FlakyCaseAlerts } from "../flaky-case-alerts/flaky-case-alerts";
+import { QuarantineHistory } from "../quarantine-history/quarantine-history";
 import { TestCaseAlerts } from "../test-case-alerts/test-case-alerts";
 import { TestCaseFiles } from "../test-case-files/test-case-files";
 import { TestCaseForm } from "../test-case-form/test-case-form";
@@ -38,6 +51,7 @@ interface Props {
 
 export const TestCaseDetailView: FC<Props> = ({ detail, initialTab, onReload }) => {
   const { t } = useTranslation("testCases");
+  const { t: tReview } = useTranslation("caseReview");
   const router = useRouter();
   const searchParams = useSearchParams();
   const project = useCurrentProject();
@@ -49,14 +63,17 @@ export const TestCaseDetailView: FC<Props> = ({ detail, initialTab, onReload }) 
   const [errors, setErrors] = useState<TestCaseFormErrors | null>(null);
   const [isConflicted, setIsConflicted] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const editor = useTestCaseEditor(detail);
   const suggestions = useReferenceSuggestions(project.key, detail.files);
   const canEdit = checkCanEditTestCases(project);
   const isReadOnly = checkIsTestCaseReadOnly(project, detail.status);
+  const { data: reviewComments } = useGetReviewComments(project.key, detail.code);
   const updateTestCase = usePatchTestCase(project.key, detail.code, {
     isGlobalErrorToastDisabled: true,
     onSuccess: (savedDetail) => {
       editor.markSaved(savedDetail);
+      setIsEditing(false);
       showSuccessToast(t("toasts.saved", { number: savedDetail.currentVersion.number }));
     },
     onError: (error: ApiError) => {
@@ -88,6 +105,13 @@ export const TestCaseDetailView: FC<Props> = ({ detail, initialTab, onReload }) 
       count: detail.files.length,
     },
     { value: TestCaseDetailTab.HISTORY, label: t("detail.tabs.history"), icon: "restore" },
+    {
+      value: TestCaseDetailTab.REVIEW,
+      label: tReview("tabs.review"),
+      icon: "comment",
+      count: countOpenReviewComments(reviewComments),
+    },
+    { value: TestCaseDetailTab.COMPARE, label: tReview("tabs.compare"), icon: "compare" },
   ];
 
   const handleTabChange = (tab: TestCaseDetailTab): void => {
@@ -110,6 +134,12 @@ export const TestCaseDetailView: FC<Props> = ({ detail, initialTab, onReload }) 
     }
 
     updateTestCase.mutate(editor.updateRequest);
+  };
+
+  const handleCancel = (): void => {
+    editor.resetTo(detail);
+    setErrors(null);
+    setIsEditing(false);
   };
 
   const handleReload = async (): Promise<void> => {
@@ -135,6 +165,14 @@ export const TestCaseDetailView: FC<Props> = ({ detail, initialTab, onReload }) 
         canEdit={canEdit}
       />
       <TestCaseAlerts detail={detail} canEdit={canEdit} />
+      <FlakyCaseAlerts detail={detail} />
+      <ReviewStatusNotice
+        detail={detail}
+        canEdit={canEdit}
+        onShowComments={() => {
+          handleTabChange(TestCaseDetailTab.REVIEW);
+        }}
+      />
       <DSTabs
         items={tabItems}
         value={activeTab}
@@ -144,7 +182,22 @@ export const TestCaseDetailView: FC<Props> = ({ detail, initialTab, onReload }) 
         <DSTabPanel value={TestCaseDetailTab.DETAILS}>
           <div className={styles.panel}>
             {!canEdit && <DSAlert color="info">{t("form.readOnly")}</DSAlert>}
-            {isConflicted && (
+            <CaseLabelPicker
+              projectKey={project.key}
+              caseCode={detail.code}
+              labels={detail.labels}
+              canEdit={canEdit}
+            />
+            {!isEditing && (
+              <CaseReadView
+                detail={detail}
+                canEdit={!isReadOnly}
+                onEdit={() => {
+                  setIsEditing(true);
+                }}
+              />
+            )}
+            {isEditing && isConflicted && (
               <DSAlert
                 color="danger"
                 action={
@@ -164,20 +217,25 @@ export const TestCaseDetailView: FC<Props> = ({ detail, initialTab, onReload }) 
                 {t("errors.versionConflict")}
               </DSAlert>
             )}
-            <TestCaseForm
-              values={editor.values}
-              onChange={handleChange}
-              errors={errors}
-              linkedCriteria={detail.criteria}
-              suggestions={suggestions}
-              isStoryShown={false}
-              isStoryLocked
-              isReadOnly={isReadOnly}
-              isSubmitting={updateTestCase.isPending}
-              isSubmitDisabled={!editor.isDirty || updateTestCase.isPending}
-              submitLabel={updateTestCase.isPending ? t("actions.saving") : t("actions.save")}
-              onSubmit={handleSubmit}
-            />
+            {isEditing && (
+              <TestCaseForm
+                values={editor.values}
+                onChange={handleChange}
+                errors={errors}
+                linkedCriteria={detail.criteria}
+                suggestions={suggestions}
+                files={detail.files}
+                isStoryShown={false}
+                isStoryLocked
+                isReadOnly={isReadOnly}
+                isSubmitting={updateTestCase.isPending}
+                isSubmitDisabled={!editor.isDirty || updateTestCase.isPending}
+                submitLabel={updateTestCase.isPending ? t("actions.saving") : t("actions.save")}
+                onSubmit={handleSubmit}
+                cancelLabel={t("read.cancel")}
+                onCancel={handleCancel}
+              />
+            )}
           </div>
         </DSTabPanel>
         <DSTabPanel value={TestCaseDetailTab.FILES}>
@@ -191,7 +249,21 @@ export const TestCaseDetailView: FC<Props> = ({ detail, initialTab, onReload }) 
         </DSTabPanel>
         <DSTabPanel value={TestCaseDetailTab.HISTORY}>
           <div className={styles.panel}>
-            <VersionHistory detail={detail} />
+            <VersionHistory
+              detail={detail}
+              initialFromVersionNumber={parseVersionNumber(searchParams.get(VERSION_PARAMETER))}
+            />
+            <QuarantineHistory caseCode={detail.code} />
+          </div>
+        </DSTabPanel>
+        <DSTabPanel value={TestCaseDetailTab.REVIEW}>
+          <div className={styles.panel}>
+            <ReviewCommentsPanel detail={detail} canComment={canEdit} />
+          </div>
+        </DSTabPanel>
+        <DSTabPanel value={TestCaseDetailTab.COMPARE}>
+          <div className={styles.panel}>
+            <CompareVersions detail={detail} />
           </div>
         </DSTabPanel>
       </DSTabs>

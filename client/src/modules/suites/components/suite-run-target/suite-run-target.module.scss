@@ -1,0 +1,12 @@
+.target {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 16rem;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

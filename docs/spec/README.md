@@ -2,7 +2,7 @@
 
 **Status:** Draft · **Updated:** 2026-11-01
 
-One spec per feature module of [WBS section 3](../wbs/wbs.md#3-client-application-feature-modules). Each spec describes what the code does today (waves W1–W6), not what the proposals planned. Where the code and the [proposals](../discussions/) differ, the code wins and the spec lists the difference.
+One spec per feature module of [WBS section 3](../wbs/wbs.md#3-client-application-feature-modules), plus the AI Harness page (WBS 5.15). Each spec describes what the code does today (waves W1–W6), not what the proposals planned. Where the code and the [proposals](../discussions/) differ, the code wins and the spec lists the difference.
 
 The non-functional requirements are in [non-functional-requirements.md](non-functional-requirements.md). The user flows and state diagrams are in [../design/user-flows.md](../design/user-flows.md). Domain words are defined in the [glossary](../product/glossary.md).
 
@@ -16,15 +16,19 @@ The non-functional requirements are in [non-functional-requirements.md](non-func
 | 3.3b | [user-management.md](user-management.md) | USER | `auth` (users router), `projects` (user access) | `/users`, `/users/[userId]` |
 | 3.4 | [dashboard.md](dashboard.md) | DASH | `insights`, `runs` | `/`, `/projects/[projectKey]` |
 | 3.5 | [sprints-and-stories.md](sprints-and-stories.md) | STORY | `stories`, `jira` | `/projects/[projectKey]/sprints`, `/sprints/[sprintId]`, `/stories`, `/stories/[jiraKey]` |
-| 3.6 | [test-cases.md](test-cases.md) | CASE | `test_cases`, `files` | `/projects/[projectKey]/test-cases`, `/test-cases/new`, `/test-cases/[caseCode]` |
+| 3.6 | [test-cases.md](test-cases.md) | CASE | `test_cases`, `files`, `shared_steps` (CASE-16, WBS 9.2) | `/projects/[projectKey]/test-cases`, `/test-cases/new`, `/test-cases/[caseCode]`, `/shared-steps`, `/shared-steps/[key]` |
 | 3.7 | [traceability.md](traceability.md) | TRACE | `insights`, `test_cases`, `stories` | Traceability tab of `/projects/[projectKey]/stories/[jiraKey]` |
 | 3.8 | [readiness-review.md](readiness-review.md) | GAP | `gaps` (REST and MCP) | Gaps tab of the story detail, `/gaps` |
 | 3.9 | [environments-and-test-data.md](environments-and-test-data.md) | DATA | `test_data`, `story_context` (`resolve_data`), `audit` | `/projects/[projectKey]/test-data` |
 | 3.10 | [runs.md](runs.md) | RUN | `runs` (REST and MCP), `story_context`, `files` | `/projects/[projectKey]/runs`, `/runs/[runId]`, `/runs/new`, `/runs/[runId]/record` |
 | 3.11 | [failures.md](failures.md) | FAIL | `failures` | `/projects/[projectKey]/failures`, `/failures/[failureId]` |
-| 3.12 | [notifications.md](notifications.md) | NOTIF | `notifications`, `live_events` | bell and panel in the top bar |
+| 9.1 | [suites-and-plans.md](suites-and-plans.md) | SUITE, PLAN | `suites` (REST and MCP), `runs` (suite runs), `plans` | `/projects/[projectKey]/suites`, `/suites/[suiteId]`, `/plans`, `/plans/[planId]` |
+| 9.5 | [insights.md](insights.md) | INS | `insights` (trends, coverage by label, top failing, flaky, tokens, sprint coverage, nightly snapshot), `reports` (export) | `/projects/[projectKey]/insights`; *Export* on the run report, plan and story |
+| 9.6 | [integrations.md](integrations.md) | INT | `integrations` (webhooks), `api_tokens` (scope), `runs` (JUnit import, RUN-17) | webhooks card in `/projects/[projectKey]/settings`, scope choice on `/connect-claude`, import dialog on `/projects/[projectKey]/runs` |
+| 3.12 | [notifications.md](notifications.md) | NOTIF | `notifications`, `live_events`, `integrations` (chat channels) | bell and panel in the top bar, Notifications card on `/profile`, Chat channels card in `/projects/[projectKey]/settings` |
 | 3.13 | [settings.md](settings.md) | SET | `jira`, `projects` | `/settings`, `/projects/[projectKey]/settings` |
 | 3.14 | [client-api.md](client-api.md) | API | every router, `live_events`, `files`; `app/commands/export_openapi.py` | the data layer behind every route |
+| 5.15 | [ai-harness.md](ai-harness.md) | HARN | `ai_harness`, `plugin`, `api_tokens` (`pluginVersion`) | `/ai-harness` |
 
 The route folders are under [client/src/app](../../client/src/app). The server modules are under [server/app/modules](../../server/app/modules).
 
@@ -52,7 +56,7 @@ The permission table lives in one file: [server/app/shared/permissions/role_capa
 | `test_data.view` | List test data (secret values stay hidden) |
 | `gap.view` | List and open gaps |
 | `run.view` | List and open runs; MCP `get_failed_cases` |
-| `report.view` | Dashboard, my work, traceability, story progress, latest results |
+| `report.view` | Dashboard, my work, traceability, story progress, latest results, Insights, report export |
 | `failure.view` | List and open failures |
 | `file.download` | Get a 5-minute download link for a stored file |
 | `project.edit` | Change the project's name, description, Jira board, default environment and allowed file types |
@@ -60,7 +64,12 @@ The permission table lives in one file: [server/app/shared/permissions/role_capa
 | `jira.sync` | Start a Jira sync |
 | `story.mark_ready_for_test` | Move a story between `not_started` and `ready_for_test` (and from `failed` back to `ready_for_test`) |
 | `story.sign_off` | Mark a story `passed` or `failed` |
+| `story.edit` | Write, edit and delete stories in a project without Jira |
 | `test_case.edit` | Create, edit, review and change the status of test cases; attach test files; import cases |
+| `test_case.quarantine` | Put a test case in quarantine and take it out again |
+| `suite.edit` | Create, edit and archive regression suites and change their cases |
+| `plan.edit` | Create and edit test plans and their items; close a plan |
+| `plan.sign_off` | Sign off a test plan |
 | `environment.manage` | Create, edit, archive, unarchive and delete environments |
 | `test_data.edit` | Create, edit, delete and import variables and endpoints |
 | `secret.edit` | Create, edit, delete and import secrets (needs `test_data.edit` too) |
@@ -75,6 +84,8 @@ The permission table lives in one file: [server/app/shared/permissions/role_capa
 | `failure.assign` | Assign, reassign or unassign a failure |
 | `failure.mark_fixed` | Move a failure to `fixed` |
 | `failure.verify` | Move a `fixed` failure to `verified` or `reopened` |
+| `failure.create_jira_issue` | Create a Jira bug from a failure (the project must have Jira and the Jira account must be able to create issues) |
+| `integration.manage` | Add, edit, test and remove the project's chat channels (Slack, Teams) and outbound webhooks, and redeliver webhook deliveries |
 | `api_token.create` | Create a personal API token for this project |
 
 ### Workspace capabilities
@@ -113,7 +124,12 @@ Built by hand from `PROJECT_ROLE_CAPABILITIES` and `WORKSPACE_ROLE_CAPABILITIES`
 | `jira.sync` | ✓ | ✓ | ✓ | – | – | – |
 | `story.mark_ready_for_test` | ✓ | – | – | – | ✓ | – |
 | `story.sign_off` | ✓ | – | – | ✓ | – | – |
+| `story.edit` | ✓ | ✓ | ✓ | ✓ | – | – |
 | `test_case.edit` | ✓ | – | – | ✓ | – | – |
+| `test_case.quarantine` | ✓ | – | – | ✓ | – | – |
+| `suite.edit` | ✓ | – | – | ✓ | – | – |
+| `plan.edit` | ✓ | ✓ | – | ✓ | – | – |
+| `plan.sign_off` | ✓ | – | – | ✓ | – | – |
 | `environment.manage` | ✓ | – | – | ✓ | ✓ | – |
 | `test_data.edit` | ✓ | – | – | ✓ | ✓ | – |
 | `secret.edit` | ✓ | – | – | ✓ | – | – |
@@ -128,6 +144,8 @@ Built by hand from `PROJECT_ROLE_CAPABILITIES` and `WORKSPACE_ROLE_CAPABILITIES`
 | `failure.assign` | ✓ | – | – | ✓ | ✓ | – |
 | `failure.mark_fixed` | ✓ | – | – | – | ✓ | – |
 | `failure.verify` | ✓ | – | – | ✓ | – | – |
+| `failure.create_jira_issue` | ✓ | – | – | ✓ | ✓ | – |
+| `integration.manage` | ✓ | – | – | – | – | – |
 
 ### Workspace roles
 

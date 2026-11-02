@@ -72,6 +72,26 @@
     "NO_FAILED_CASES_TO_RERUN": "Không có ca thất bại nào để chạy lại.",
     "CASE_RESULT_EXISTS": "Ca này đã có kết quả được ghi nhận.",
     "RUN_NOT_MANUAL": "Thao tác này chỉ dành cho lần chạy thủ công.",
-    "RATE_LIMITED": "Quá nhiều lần thử. Vui lòng thử lại sau."
+    "RATE_LIMITED": "Quá nhiều lần thử. Vui lòng thử lại sau.",
+    "REVIEW_COMMENTS_OPEN": "Hãy xử lý các bình luận review đang mở trước khi chuyển ca này sang Sẵn sàng.",
+    "REVIEWER_IS_AUTHOR": "Trong dự án này, người viết ca kiểm thử không được tự review. Hãy nhờ một QC hoặc Admin khác.",
+    "SUITE_ALREADY_RUNNING": "Bộ kiểm thử này đang có một lần chạy.",
+    "SUITE_EMPTY": "Bộ kiểm thử này không có ca kiểm thử Sẵn sàng nào để chạy.",
+    "SUITE_NAME_ALREADY_USED": "Một bộ kiểm thử khác trong dự án đã dùng tên này.",
+    "SUITE_ARCHIVED": "Bộ kiểm thử này đã được lưu trữ.",
+    "PLAN_FAILURES_ACTIVE": "Hãy đóng các lỗi đang mở trên các ca của kế hoạch này trước khi phê duyệt.",
+    "PLAN_NOT_OPEN": "Kế hoạch này không còn mở.",
+    "SHARED_STEP_KEY_ALREADY_USED": "Một bước dùng chung khác trong dự án đã dùng khóa này.",
+    "UNKNOWN_SHARED_STEP": "Bước dùng chung này không tồn tại hoặc đã được lưu trữ.",
+    "INVALID_STEP_SHAPE": "Mỗi bước cần có hành động và kết quả mong đợi, hoặc là một bước dùng chung.",
+    "SECRET_IN_DATA_ROW": "Dòng dữ liệu không được chứa giá trị bí mật. Hãy tham chiếu bí mật bằng khóa dữ liệu kiểm thử của nó.",
+    "ITERATION_OUT_OF_RANGE": "Ca này không có dòng dữ liệu cho lần lặp đó.",
+    "JIRA_WRITE_NOT_ALLOWED": "Tài khoản Jira liên kết với Tessio không thể tạo issue hoặc thêm bình luận ở đây. Hãy nhờ quản trị viên không gian làm việc cấp quyền Jira cho tài khoản này.",
+    "JIRA_ISSUE_ALREADY_LINKED": "Lỗi này đã có issue Jira.",
+    "WEBHOOK_URL_INVALID": "Hãy nhập một URL https công khai hợp lệ.",
+    "CHAT_DELIVERY_FAILED": "Không gửi được tin nhắn thử. Hãy kiểm tra URL webhook và thử lại.",
+    "JUNIT_INVALID": "Tệp này không phải là báo cáo JUnit XML hợp lệ.",
+    "JUNIT_NO_MAPPED_TESTS": "Không có bài kiểm thử nào trong báo cáo này nêu mã ca kiểm thử như TC-12.",
+    "TOKEN_SCOPE_NOT_ALLOWED": "Không thể dùng token API này cho thao tác này."
   }
 }

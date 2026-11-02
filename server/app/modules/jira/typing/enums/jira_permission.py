@@ -1,0 +1,8 @@
+from enum import StrEnum
+
+
+class JiraPermission(StrEnum):
+    CREATE_ISSUES = "CREATE_ISSUES"
+    ADD_COMMENTS = "ADD_COMMENTS"
+    CREATE_ATTACHMENTS = "CREATE_ATTACHMENTS"
+    LINK_ISSUES = "LINK_ISSUES"

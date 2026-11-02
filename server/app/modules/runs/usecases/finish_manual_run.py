@@ -1,22 +1,28 @@
 from datetime import UTC, datetime
 from uuid import UUID
 
-from app.modules.notifications import RunFinishedPayload, RunOutcome, SendNotificationUseCase
+from app.modules.jira import JiraResultCommentRequester
+from app.modules.notifications import SendNotificationUseCase
 from app.modules.runs.domains.case_result.repository import CaseResultRepository
 from app.modules.runs.domains.run.entity import Run
 from app.modules.runs.domains.run.repository import RunRepository
 from app.modules.runs.domains.run_case.repository import RunCaseRepository
 from app.modules.runs.domains.run_report.entity import RunReport
+from app.modules.runs.domains.run_target.entity import RunTarget
 from app.modules.runs.errors import RunNotFoundError, RunNotManualError, RunNotOwnedError, RunNotRunningError
 from app.modules.runs.ports.criterion_impact_calculator import CriterionImpactCalculator
 from app.modules.runs.ports.run_story_reader import RunStoryReader
 from app.modules.runs.typing.enums import RunAbortReason, RunExecutor, RunStatus
 from app.modules.runs.usecases.screenshot_verifier import ScreenshotVerifier
+from app.modules.runs.utils.run_event import build_run_finished_event
+from app.modules.runs.utils.run_finished_payload import build_run_finished_payload
 from app.modules.runs.utils.run_report import build_run_report
 from app.modules.runs.utils.run_status import decide_run_status
+from app.modules.runs.utils.run_story_ids import list_jira_comment_story_ids
+from app.modules.runs.utils.run_target import find_run_target
 from app.modules.test_data import SecretValueReader
 from app.shared.common import Transaction
-from app.shared.events import LiveEvent, LiveEventPublisher, LiveEventType
+from app.shared.events import LiveEventPublisher
 from app.shared.masking import SecretMasker
 from app.shared.permissions import (
     Actor,
@@ -43,6 +49,7 @@ class FinishManualRunUseCase:
         run_story_reader: RunStoryReader,
         send_notification: SendNotificationUseCase,
         live_event_publisher: LiveEventPublisher,
+        jira_result_comment_requester: JiraResultCommentRequester,
     ) -> None:
         self._transaction = transaction
         self._project_access_resolver = project_access_resolver
@@ -55,6 +62,7 @@ class FinishManualRunUseCase:
         self._run_story_reader = run_story_reader
         self._send_notification = send_notification
         self._live_event_publisher = live_event_publisher
+        self._jira_result_comment_requester = jira_result_comment_requester
 
     async def execute(self, actor: Actor, project_key: str, run_id: UUID, summary: str | None) -> Run:
         now = datetime.now(UTC)
@@ -78,6 +86,7 @@ class FinishManualRunUseCase:
                 missing_screenshots,
                 masked_summary,
                 now,
+                run.skipped_cases,
             )
             finished_run = run.model_copy(
                 update={
@@ -90,8 +99,8 @@ class FinishManualRunUseCase:
                 }
             )
             await self._run_repository.save(finished_run)
-            story_jira_key = await self._run_story_reader.find_jira_key(run.story_id)
-        await self._announce_finish(finished_run, report, story_jira_key, actor.user_id)
+            target = await find_run_target(run, self._run_story_reader)
+        await self._announce_finish(finished_run, report, target, actor.user_id)
         return finished_run
 
     async def _lock_manual_run(self, access: ProjectAccess, actor: Actor, run_id: UUID) -> Run:
@@ -106,25 +115,17 @@ class FinishManualRunUseCase:
             raise RunNotOwnedError
         return run
 
-    async def _announce_finish(self, run: Run, report: RunReport, story_jira_key: str, actor_id: UUID | None) -> None:
-        await self._live_event_publisher.publish(
-            LiveEvent(
-                type=LiveEventType.RUN_FINISHED,
-                project_id=run.project_id,
-                ids={"runId": str(run.id), "storyId": str(run.story_id), "status": run.status.value},
-            )
+    async def _announce_finish(self, run: Run, report: RunReport, target: RunTarget, actor_id: UUID | None) -> None:
+        await self._live_event_publisher.publish(build_run_finished_event(run))
+        await self._jira_result_comment_requester.request_after_run(
+            run.project_id, run.id, list_jira_comment_story_ids(run, report)
         )
+        payload = build_run_finished_payload(run, report, target)
+        if payload is None:
+            return
         await self._send_notification.execute(
             run.project_id,
-            RunFinishedPayload(
-                run_id=run.id,
-                story_id=run.story_id,
-                story_jira_key=story_jira_key,
-                outcome=RunOutcome(run.status.value),
-                passed_count=report.counts.passed,
-                failed_count=report.counts.failed,
-                blocked_count=report.counts.blocked,
-            ),
+            payload,
             actor_id=actor_id,
             recipient_ids={run.started_by},
             recipient_roles={ProjectRole.QC},

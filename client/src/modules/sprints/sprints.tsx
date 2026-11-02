@@ -14,6 +14,16 @@ export const SprintsPage: FC = () => {
   const { data, isPending, isError, isFetching, refetch } = useGetSprints(project.key);
 
   const renderContent = (): ReactNode => {
+    if (!project.isLinkedToJira) {
+      return (
+        <DSEmptyState
+          title={t("withoutJira.title")}
+          description={t("withoutJira.description")}
+          icon="sprints"
+        />
+      );
+    }
+
     if (isPending) {
       return (
         <div aria-busy="true">
@@ -50,7 +60,11 @@ export const SprintsPage: FC = () => {
 
   return (
     <>
-      <DSPageHeader title={t("title")} description={t("description")} actions={<SyncControl />} />
+      <DSPageHeader
+        title={t("title")}
+        description={t("description")}
+        actions={project.isLinkedToJira ? <SyncControl /> : undefined}
+      />
       {renderContent()}
     </>
   );

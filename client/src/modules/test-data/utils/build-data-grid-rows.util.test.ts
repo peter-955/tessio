@@ -1,13 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { buildDataItem, STAGING_ENVIRONMENT_ID } from "../test/utils/test-data-fixture.util";
 import { PROJECT_SCOPE_ID } from "../typing/constants/test-data.constant";
-import { buildDataGridRows, filterDataGridRows, findRowKind } from "./build-data-grid-rows.util";
+import {
+  buildDataGridRows,
+  filterDataGridRows,
+  findRowDescription,
+  findRowKind,
+} from "./build-data-grid-rows.util";
 
-const projectItem = buildDataItem({ id: "item-1", key: "API_URL", kind: "endpoint" });
+const projectItem = buildDataItem({ id: "item-1", key: "API_URL", kind: "variable" });
 const stagingItem = buildDataItem({
   id: "item-2",
   key: "API_URL",
-  kind: "endpoint",
+  kind: "variable",
   environmentId: STAGING_ENVIRONMENT_ID,
 });
 const passwordItem = buildDataItem({
@@ -61,5 +66,26 @@ describe("filterDataGridRows", () => {
 
   it("keeps every row for an empty search", () => {
     expect(filterDataGridRows(rows, "")).toHaveLength(2);
+  });
+});
+
+describe("findRowDescription", () => {
+  it("reads the key description from any value of the row", () => {
+    const [row] = buildDataGridRows([
+      buildDataItem({
+        id: "item-3",
+        key: "LOCALE",
+        environmentId: STAGING_ENVIRONMENT_ID,
+        description: "Shop language",
+      }),
+    ]);
+
+    expect(row === undefined ? null : findRowDescription(row)).toBe("Shop language");
+  });
+
+  it("is null when the key has no description", () => {
+    const [row] = buildDataGridRows([projectItem]);
+
+    expect(row === undefined ? undefined : findRowDescription(row)).toBeNull();
   });
 });

@@ -24,6 +24,14 @@ def build_gap_changed_event(gap: Gap) -> LiveEvent:
     )
 
 
+def build_gap_raised_event(gap: Gap) -> LiveEvent:
+    return LiveEvent(
+        type=LiveEventType.GAP_RAISED,
+        project_id=gap.project_id,
+        ids={"gapId": str(gap.id), "storyId": str(gap.story_id)},
+    )
+
+
 def list_recipient_ids(gap: Gap) -> frozenset[UUID]:
     return frozenset() if gap.assignee_id is None else frozenset({gap.assignee_id})
 

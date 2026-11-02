@@ -24,6 +24,7 @@ class Gap(Entity):
     answer: str | None
     answered_by: UUID | None
     answered_at: datetime | None
+    answered_via_token_id: UUID | None
     reopened_by: UUID | None
     reopened_at: datetime | None
     created_at: datetime

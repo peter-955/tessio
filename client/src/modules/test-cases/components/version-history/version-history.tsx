@@ -16,17 +16,23 @@ import { useId, useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetTestCaseVersions } from "../../hooks/queries/use-get-test-case-versions";
 import type { TestCaseDetail } from "../../typing/types/test-case.type";
+import { labelVersionSharedSteps } from "../../utils/step-text.util";
 import { buildVersionDiff } from "../../utils/version-diff.util";
 import { VersionDiff } from "../version-diff/version-diff";
 import styles from "./version-history.module.scss";
 
 interface Props {
   detail: TestCaseDetail;
+  initialFromVersionNumber: number | null;
 }
 
-export const VersionHistory: FC<Props> = ({ detail }) => {
+export const VersionHistory: FC<Props> = ({ detail, initialFromVersionNumber }) => {
   const { t } = useTranslation("testCases");
+  const { t: tSharedSteps } = useTranslation("sharedSteps");
   const project = useCurrentProject();
+  const formatSharedStep = (sharedStepKey: string): string => {
+    return tSharedSteps("reference.textLabel", { key: sharedStepKey });
+  };
   const formatDate = useFormatDate();
   const versionsTitleId = useId();
   const compareTitleId = useId();
@@ -65,7 +71,9 @@ export const VersionHistory: FC<Props> = ({ detail }) => {
   const versionOptions = data.map((version): DSSelectOption<string> => {
     return { value: version.id, label: t("detail.version", { number: version.number }) };
   });
-  const fromVersion = data.find((version) => version.id === fromId) ?? data[1] ?? data[0] ?? null;
+  const linkedVersion = data.find((version) => version.number === initialFromVersionNumber);
+  const fromVersion =
+    data.find((version) => version.id === fromId) ?? linkedVersion ?? data[1] ?? data[0] ?? null;
   const toVersion = data.find((version) => version.id === toId) ?? data[0] ?? null;
 
   return (
@@ -117,7 +125,13 @@ export const VersionHistory: FC<Props> = ({ detail }) => {
                 onChange={setToId}
               />
             </div>
-            <VersionDiff entries={buildVersionDiff(fromVersion, toVersion, criteria)} />
+            <VersionDiff
+              entries={buildVersionDiff(
+                labelVersionSharedSteps(fromVersion, formatSharedStep),
+                labelVersionSharedSteps(toVersion, formatSharedStep),
+                criteria,
+              )}
+            />
           </>
         )}
       </section>

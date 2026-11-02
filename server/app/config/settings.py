@@ -1,4 +1,6 @@
+import tomllib
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import BaseModel, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -6,6 +8,14 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from app.shared.mailer import SmtpSecurity
 
 ENVIRONMENT_FILE = SettingsConfigDict(env_file=".env", extra="ignore")
+DEFAULT_PLUGIN_DIR = Path(__file__).resolve().parents[3] / "claude"
+SERVER_PROJECT_FILE = Path(__file__).resolve().parents[2] / "pyproject.toml"
+
+
+def read_server_version() -> str:
+    project = tomllib.loads(SERVER_PROJECT_FILE.read_text())["project"]
+    version: str = project["version"]
+    return version
 
 
 class DatabaseSettings(BaseSettings):
@@ -57,6 +67,19 @@ class ClientSettings(BaseSettings):
     client_url: str = Field(default="http://localhost:3201", validation_alias="CLIENT_URL")
 
 
+class PluginSettings(BaseSettings):
+    model_config = ENVIRONMENT_FILE
+
+    plugin_dir: Path = Field(default=DEFAULT_PLUGIN_DIR, validation_alias="TESSIO_PLUGIN_DIR")
+
+
+class ReleaseSettings(BaseSettings):
+    model_config = ENVIRONMENT_FILE
+
+    server_version: str = Field(default_factory=read_server_version, validation_alias="TESSIO_SERVER_VERSION")
+    build_commit: str | None = Field(default=None, validation_alias="TESSIO_BUILD_COMMIT")
+
+
 class ObservabilitySettings(BaseSettings):
     model_config = ENVIRONMENT_FILE
 
@@ -73,6 +96,8 @@ class Settings(BaseModel):
     storage: StorageSettings
     client: ClientSettings
     observability: ObservabilitySettings = Field(default_factory=ObservabilitySettings)
+    plugin: PluginSettings = Field(default_factory=PluginSettings)
+    release: ReleaseSettings = Field(default_factory=ReleaseSettings)
 
 
 @lru_cache
@@ -85,4 +110,6 @@ def get_settings() -> Settings:
         storage=StorageSettings(),
         client=ClientSettings(),
         observability=ObservabilitySettings(),
+        plugin=PluginSettings(),
+        release=ReleaseSettings(),
     )

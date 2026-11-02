@@ -1,7 +1,7 @@
 {
   "name": "tessio",
   "displayName": "Tessio",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "Run Tessio test cases with Claude: MCP server, screenshot upload hook and skills",
   "author": {
     "name": "Tessio team"

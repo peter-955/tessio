@@ -209,3 +209,27 @@ async def test_get_story_context_refuses_unknown_and_foreign_stories(
     assert read_tool_error(unknown) == "NOT_FOUND: Story not found."
     assert read_tool_error(foreign).startswith("NOT_FOUND: ")
     assert read_tool_error(without_token).startswith("INVALID_API_TOKEN: ")
+
+
+async def test_get_story_context_gives_claude_each_key_description(
+    client: AsyncClient, container: Container, recording_mailer: RecordingMailer
+) -> None:
+    context_project = await set_up_context_project(client, container, recording_mailer)
+    await set_up_story_cases(client, container, context_project)
+    holder = await add_token_holder(client, container, recording_mailer, context_project.project, ProjectRole.QC)
+    async with container.database.begin():
+        await container.data_key_description_repository.save(
+            context_project.project.id, "user_email", "Customer account used to sign in"
+        )
+        await container.data_key_description_repository.save(
+            context_project.project.id, "user_password", "Password of that account"
+        )
+
+    response = await call_tool(client, holder.token, "get_story_context", {"story_key": context_project.story.jira_key})
+
+    data = read_tool_json(response)["data"]
+    assert isinstance(data, list)
+    assert [(item["key"], item.get("description")) for item in data if isinstance(item, dict)] == [
+        ("user_email", "Customer account used to sign in"),
+        ("user_password", "Password of that account"),
+    ]

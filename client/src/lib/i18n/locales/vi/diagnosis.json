@@ -1,0 +1,14 @@
+{
+  "whyItFailed": "Vì sao thất bại",
+  "suspectedCause": "Nguyên nhân nghi ngờ",
+  "page": "Trang",
+  "consoleErrors": "Lỗi console",
+  "failedRequests": "Yêu cầu thất bại",
+  "cause": {
+    "app_bug": "Lỗi ứng dụng",
+    "test_data": "Dữ liệu kiểm thử",
+    "environment": "Môi trường",
+    "test_case": "Ca kiểm thử đã lỗi thời",
+    "unknown": "Không rõ"
+  }
+}

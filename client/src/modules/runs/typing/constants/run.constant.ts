@@ -17,6 +17,8 @@ export const STATUS_PARAMETER = "status";
 
 export const STORY_PARAMETER = "story";
 
+export const SUITE_PARAMETER = "suite";
+
 export const TAB_PARAMETER = "tab";
 
 export const ALL_OPTION = "all";

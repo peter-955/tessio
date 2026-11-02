@@ -1,3 +1,6 @@
+from app.modules.runs.domains.blocking_gap.entity import BlockingGap
+from app.modules.runs.typing.constants.run import MAX_LISTED_BLOCKING_GAPS
+from app.modules.runs.utils.blocking_gap import describe_blocking_gap
 from app.shared.common import TessioError
 from app.shared.typing.enums import ErrorCode
 
@@ -44,7 +47,9 @@ class UnknownCaseError(TessioError):
 
 class CaseResultExistsError(TessioError):
     def __init__(self) -> None:
-        super().__init__(ErrorCode.CASE_RESULT_EXISTS, "A result is already recorded for this case in this run.")
+        super().__init__(
+            ErrorCode.CASE_RESULT_EXISTS, "A result is already recorded for this case and iteration in this run."
+        )
 
 
 class CaseResultNotFoundError(TessioError):
@@ -106,3 +111,88 @@ class EvidenceFileNotFoundError(TessioError):
 class EvidenceNotUploadedError(TessioError):
     def __init__(self) -> None:
         super().__init__(ErrorCode.UPLOAD_NOT_COMPLETED, "The evidence file has not finished uploading.")
+
+
+class RunTargetRequiredError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.INVALID_REQUEST, "Pass either a story or a suite, not both.")
+
+
+class SuiteNotFoundError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.NOT_FOUND, "Suite not found.")
+
+
+class SuiteArchivedError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.SUITE_ARCHIVED, "This suite is archived.")
+
+
+class SuiteAlreadyRunningError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.SUITE_ALREADY_RUNNING, "A run is already in progress for this suite.")
+
+
+class SuiteEmptyError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.SUITE_EMPTY, "This suite has no Ready test cases to run.")
+
+
+class UnknownSuiteCaseError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.UNKNOWN_REFERENCE, "This test case is not part of this suite.")
+
+
+class SuiteParentRunMismatchError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.INVALID_REQUEST, "The parent run belongs to another story or suite.")
+
+
+class SuiteOpenGapsBlockRunError(TessioError):
+    def __init__(self, gaps: list[BlockingGap]) -> None:
+        listed = "; ".join(describe_blocking_gap(gap) for gap in gaps[:MAX_LISTED_BLOCKING_GAPS])
+        more = len(gaps) - MAX_LISTED_BLOCKING_GAPS
+        suffix = f"; and {more} more" if more > 0 else ""
+        super().__init__(
+            ErrorCode.OPEN_GAPS_BLOCK_RUN,
+            f"{len(gaps)} open gaps block this suite run. Answer them first: {listed}{suffix}",
+        )
+        self.gaps = gaps
+
+
+class IterationOutOfRangeError(TessioError):
+    def __init__(self, iteration: int, iteration_count: int) -> None:
+        super().__init__(
+            ErrorCode.ITERATION_OUT_OF_RANGE,
+            f"Iteration {iteration} does not exist: this case has {iteration_count} "
+            f"iteration{'s' if iteration_count != 1 else ''} (0 to {iteration_count - 1}).",
+        )
+
+
+class JunitInvalidError(TessioError):
+    def __init__(self, reason: str) -> None:
+        super().__init__(ErrorCode.JUNIT_INVALID, f"This file is not valid JUnit XML: {reason}")
+
+
+class JunitNoMappedTestsError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(
+            ErrorCode.JUNIT_NO_MAPPED_TESTS,
+            "No test in this file names a test case of this project. Put TC-<number> in the test name "
+            "or in a tessio.case property.",
+        )
+
+
+class JunitFileTooLargeError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.FILE_TOO_LARGE, "JUnit files can be at most 10 MB.")
+
+
+class UnknownImportEnvironmentError(TessioError):
+    def __init__(self, reference: str) -> None:
+        super().__init__(ErrorCode.UNKNOWN_REFERENCE, f"No active environment {reference} in this project.")
+
+
+class UnknownImportSuiteError(TessioError):
+    def __init__(self, reference: str) -> None:
+        super().__init__(ErrorCode.UNKNOWN_REFERENCE, f"No suite {reference} in this project.")

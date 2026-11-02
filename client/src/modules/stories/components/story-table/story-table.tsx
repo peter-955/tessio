@@ -73,8 +73,12 @@ export const StoryTable: FC<Props> = ({
                   {story.sprintName ?? t("list.noSprint")}
                 </td>
               )}
-              <td>
-                <DSBadge color="gray">{story.jiraStatus}</DSBadge>
+              <td className={story.source === "tessio" ? styles.muted : undefined}>
+                {story.source === "tessio" ? (
+                  t("list.writtenInTessio")
+                ) : (
+                  <DSBadge color="gray">{story.jiraStatus}</DSBadge>
+                )}
               </td>
               <td>
                 <StoryTestStatusBadge status={story.testStatus} />
@@ -84,10 +88,12 @@ export const StoryTable: FC<Props> = ({
                 progress={progressByStoryId?.get(story.id)}
               />
               <td>
-                <a href={story.jiraUrl} target="_blank" rel="noopener noreferrer">
-                  {t("list.openInJira")}
-                  <span className={styles.visuallyHidden}> {story.jiraKey}</span>
-                </a>
+                {story.source === "jira" && (
+                  <a href={story.jiraUrl} target="_blank" rel="noopener noreferrer">
+                    {t("list.openInJira")}
+                    <span className={styles.visuallyHidden}> {story.jiraKey}</span>
+                  </a>
+                )}
               </td>
             </tr>
           );

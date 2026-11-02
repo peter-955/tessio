@@ -1,4 +1,5 @@
 import type { DSStepEditorStep } from "@/components/design-system";
+import type { DataTableValues } from "@/modules/data-rows/typing/types/data-table.type";
 import type { TestCasePriority } from "./test-case.type";
 
 export interface TestCaseFormValues {
@@ -9,4 +10,5 @@ export interface TestCaseFormValues {
   preconditions: string;
   criterionIds: string[];
   steps: DSStepEditorStep[];
+  dataTable: DataTableValues;
 }

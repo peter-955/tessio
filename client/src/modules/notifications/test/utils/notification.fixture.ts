@@ -63,6 +63,43 @@ export const createRunNotification = (overrides: Partial<Notification> = {}): No
   };
 };
 
+export const createSuiteRunNotification = (overrides: Partial<Notification> = {}): Notification => {
+  return {
+    ...PROJECT_FIELDS,
+    id: "6e1b3a8d-5f4c-4d9e-8b2a-3c4d5e6f7a12",
+    kind: "suite_run_finished",
+    payload: {
+      kind: "suite_run_finished",
+      runId: "7f2c4b9e-6a5d-4e0f-9c3b-4d5e6f7a8b13",
+      testSuiteId: "8a3d5c0f-7b6e-4f1a-8d4c-5e6f7a8b9c14",
+      testSuiteName: "Checkout regression",
+      outcome: "passed",
+      passedCount: 12,
+      failedCount: 0,
+      blockedCount: 0,
+    },
+    ...overrides,
+  };
+};
+
+export const createReportNotification = (overrides: Partial<Notification> = {}): Notification => {
+  return {
+    ...PROJECT_FIELDS,
+    id: "9b4e6d1a-8c7f-4a2b-9e5d-6f7a8b9c0d15",
+    kind: "report_ready",
+    payload: {
+      kind: "report_ready",
+      fileId: "0c5f7e2b-9d8a-4b3c-8f6e-7a8b9c0d1e16",
+      fileName: "story-TES-42.pdf",
+      format: "pdf",
+      source: "story",
+      sourceId: "TES-42",
+      sourceLabel: "TES-42 Refund a payment",
+    },
+    ...overrides,
+  };
+};
+
 export const createNotificationPage = (
   items: Notification[],
   nextCursor: string | null = null,

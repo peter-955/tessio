@@ -27,6 +27,7 @@ export const SuggestedStatusField: FC<Props> = ({
 }) => {
   const { t } = useTranslation("manualRun");
   const suggestedLabel = t(`status.${suggestCaseStatus(statuses)}`);
+  const unmarkedCount = statuses.filter((status) => status === null).length;
   const options: DSSelectOption<CaseResultChoice>[] = [
     { value: USE_SUGGESTED_CHOICE, label: t("record.useSuggested", { status: suggestedLabel }) },
     ...RESULT_STATUS_ORDER.map((status): DSSelectOption<CaseResultChoice> => {
@@ -42,6 +43,11 @@ export const SuggestedStatusField: FC<Props> = ({
     <div className={styles.field}>
       <div role="status">
         <DSText weight="medium">{t("record.suggested", { status: suggestedLabel })}</DSText>
+        {unmarkedCount > 0 && (
+          <DSText size="sm" color="muted">
+            {t("record.unmarkedSteps", { count: unmarkedCount })}
+          </DSText>
+        )}
       </div>
       <DSSelect<CaseResultChoice>
         label={t("record.caseResult")}

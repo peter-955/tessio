@@ -1,5 +1,7 @@
 from datetime import UTC, datetime
 
+from app.modules.labels import TestCaseLabelRepository
+from app.modules.test_cases.domains.review_comment.repository import ReviewCommentRepository
 from app.modules.test_cases.domains.test_case.repository import TestCaseRepository
 from app.modules.test_cases.domains.test_case_detail.entity import TestCaseDetail
 from app.modules.test_cases.domains.test_case_version.repository import TestCaseVersionRepository
@@ -7,11 +9,13 @@ from app.modules.test_cases.domains.test_file.repository import TestFileReposito
 from app.modules.test_cases.errors import InvalidTestCaseStatusTransitionError
 from app.modules.test_cases.ports.criterion_reader import CriterionReader
 from app.modules.test_cases.ports.data_key_reader import DataKeyReader
+from app.modules.test_cases.ports.review_policy_reader import ReviewPolicyReader
 from app.modules.test_cases.ports.story_reader import StoryReader
 from app.modules.test_cases.typing.constants import TEST_CASE_STATUS_TRANSITIONS
 from app.modules.test_cases.typing.enums import TestCaseStatus
 from app.modules.test_cases.utils.available_references import load_available_references
 from app.modules.test_cases.utils.readiness import require_ready
+from app.modules.test_cases.utils.review_rules import require_no_open_review_comments, require_separate_reviewer
 from app.modules.test_cases.utils.test_case_detail import load_test_case_detail
 from app.modules.test_cases.utils.test_case_event import build_test_case_changed_event
 from app.modules.test_cases.utils.test_case_lookup import require_current_version, require_locked_test_case
@@ -31,7 +35,10 @@ class ChangeTestCaseStatusUseCase:
         story_reader: StoryReader,
         criterion_reader: CriterionReader,
         data_key_reader: DataKeyReader,
+        test_case_label_repository: TestCaseLabelRepository,
         live_event_publisher: LiveEventPublisher,
+        review_comment_repository: ReviewCommentRepository,
+        review_policy_reader: ReviewPolicyReader,
     ) -> None:
         self._transaction = transaction
         self._project_access_resolver = project_access_resolver
@@ -41,7 +48,10 @@ class ChangeTestCaseStatusUseCase:
         self._story_reader = story_reader
         self._criterion_reader = criterion_reader
         self._data_key_reader = data_key_reader
+        self._test_case_label_repository = test_case_label_repository
         self._live_event_publisher = live_event_publisher
+        self._review_comment_repository = review_comment_repository
+        self._review_policy_reader = review_policy_reader
 
     async def execute(self, actor: Actor, project_key: str, case_code: str, status: TestCaseStatus) -> TestCaseDetail:
         now = datetime.now(UTC)
@@ -60,6 +70,8 @@ class ChangeTestCaseStatusUseCase:
                 }
                 if status is TestCaseStatus.READY:
                     version = await require_current_version(self._test_case_version_repository, test_case)
+                    await require_separate_reviewer(self._review_policy_reader, test_case, version, actor)
+                    await require_no_open_review_comments(self._review_comment_repository, test_case)
                     available = await load_available_references(
                         self._data_key_reader, self._test_file_repository, access.project_id, test_case.id
                     )
@@ -79,6 +91,7 @@ class ChangeTestCaseStatusUseCase:
                 self._story_reader,
                 self._criterion_reader,
                 self._data_key_reader,
+                self._test_case_label_repository,
             )
         if is_changing:
             await self._live_event_publisher.publish(build_test_case_changed_event(test_case))

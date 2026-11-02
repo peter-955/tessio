@@ -1,4 +1,7 @@
+import englishCaseReview from "@/lib/i18n/locales/en/caseReview.json";
 import englishTestCases from "@/lib/i18n/locales/en/testCases.json";
+import { buildReviewComment } from "@/modules/case-review/test/utils/review-comment-fixture.util";
+import type { ReviewComment } from "@/modules/case-review/typing/types/review-comment.type";
 import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent, { type UserEvent } from "@testing-library/user-event";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
@@ -60,10 +63,15 @@ const FILE_VERSIONS_PATH =
 const DOWNLOAD_PATH = "/api/projects/{project_key}/files/{file_id}";
 const STORY_PATH = "/api/projects/{project_key}/stories/{jira_key}";
 const TEST_DATA_PATH = "/api/projects/{project_key}/test-data";
+const EFFECTIVE_TEST_DATA_PATH = "/api/projects/{project_key}/test-data/effective";
+const ENVIRONMENTS_PATH = "/api/projects/{project_key}/environments";
 const MEMBERS_PATH = "/api/projects/{project_key}/members";
+const REVIEW_COMMENTS_PATH = "/api/projects/{project_key}/test-cases/{case_code}/review-comments";
+const QUARANTINE_EVENTS_PATH =
+  "/api/projects/{project_key}/test-cases/{case_code}/quarantine-events";
 const CASE_PARAMS = { params: { path: { project_key: "SHOP", case_code: "TC-1" } } };
 
-const { actions, deprecateConfirm, detail, errors, files, form, history, status, toasts } =
+const { actions, deprecateConfirm, detail, errors, files, form, history, read, status, toasts } =
   englishTestCases;
 
 const DETAIL = buildTestCaseDetail();
@@ -75,7 +83,12 @@ const OLDER_VERSION = buildTestCaseVersion({
   createdBy: FORMER_USER_ID,
 });
 
-const respondWithCase = (testCase: TestCaseDetail | (() => ApiResult)): void => {
+const OPEN_REVIEW_COMMENT = buildReviewComment();
+
+const respondWithCase = (
+  testCase: TestCaseDetail | (() => ApiResult),
+  reviewComments: ReviewComment[] = [],
+): void => {
   respondWithRoutes(apiGet, {
     [CASE_PATH]: typeof testCase === "function" ? testCase : createSuccessResult(testCase),
     [VERSIONS_PATH]: createSuccessResult([DETAIL.currentVersion, OLDER_VERSION]),
@@ -89,7 +102,21 @@ const respondWithCase = (testCase: TestCaseDetail | (() => ApiResult)): void => 
     }),
     [STORY_PATH]: createSuccessResult(buildStoryDetail()),
     [TEST_DATA_PATH]: createSuccessResult([]),
+    [EFFECTIVE_TEST_DATA_PATH]: createSuccessResult([
+      {
+        id: "a9000000-0000-4000-8000-000000000001",
+        environmentId: null,
+        key: "username",
+        kind: "variable",
+        value: "anna@shop.test",
+        hasValue: true,
+        createdAt: "2026-10-20T10:00:00Z",
+      },
+    ]),
+    [ENVIRONMENTS_PATH]: createSuccessResult([]),
     [MEMBERS_PATH]: createSuccessResult([buildMember()]),
+    [REVIEW_COMMENTS_PATH]: createSuccessResult(reviewComments),
+    [QUARANTINE_EVENTS_PATH]: createSuccessResult([]),
   });
 };
 
@@ -114,7 +141,14 @@ const findTitleField = async (): Promise<HTMLElement> => {
   return screen.findByRole("textbox", { name: new RegExp(`^${form.title}`) });
 };
 
+const openEditor = async (user: UserEvent): Promise<void> => {
+  await user.click(await screen.findByRole("button", { name: read.edit }));
+};
+
 const editTitle = async (user: UserEvent, title: string): Promise<void> => {
+  if (screen.queryByRole("textbox", { name: new RegExp(`^${form.title}`) }) === null) {
+    await openEditor(user);
+  }
   const titleField = await findTitleField();
   await user.clear(titleField);
   await user.type(titleField, title);
@@ -138,7 +172,8 @@ describe("TestCaseDetailPage", () => {
     respondWithCase(DETAIL);
   });
 
-  it("shows the header and the case in the form", async () => {
+  it("shows the case as a read view with data values, then in the form on Edit", async () => {
+    const user = userEvent.setup();
     const { container } = renderPage();
 
     expect(
@@ -149,6 +184,13 @@ describe("TestCaseDetailPage", () => {
       "/projects/SHOP/stories/SHOP-1",
     );
     expect(screen.getByText(interpolate(detail.version, { number: "2" }))).toBeInTheDocument();
+    const steps = await screen.findByRole("region", { name: "Steps" });
+    expect(within(steps).getByText("Open the cart")).toBeInTheDocument();
+    expect(await within(steps).findByText("anna@shop.test")).toBeInTheDocument();
+    expect(screen.queryByRole("textbox", { name: new RegExp(`^${form.title}`) })).toBeNull();
+    expect(await axe(container)).toHaveNoViolations();
+
+    await openEditor(user);
     expect(await findTitleField()).toHaveValue("Pay with a valid card");
     expect(
       screen
@@ -157,7 +199,9 @@ describe("TestCaseDetailPage", () => {
     ).toEqual(["Open the cart", "Pay as {{data.username}}"]);
     expect(screen.getByRole("button", { name: actions.save })).toBeDisabled();
     expect(screen.getByRole("button", { name: actions.submitForReview })).toBeEnabled();
-    expect(await axe(container)).toHaveNoViolations();
+
+    await user.click(screen.getByRole("button", { name: read.cancel }));
+    expect(await screen.findByRole("button", { name: read.edit })).toBeInTheDocument();
   });
 
   it("saves only the changed fields on top of the current version", async () => {
@@ -184,7 +228,8 @@ describe("TestCaseDetailPage", () => {
       });
     });
     expect(await screen.findByText(interpolate(toasts.saved, { number: "3" }))).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: actions.save })).toBeDisabled();
+    expect(await screen.findByRole("button", { name: read.edit })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: actions.save })).toBeNull();
     expect(screen.getByRole("button", { name: actions.submitForReview })).toBeEnabled();
   });
 
@@ -221,6 +266,7 @@ describe("TestCaseDetailPage", () => {
     const { queryClient } = renderPage();
     const queryKey: GetTestCaseQueryKey = [GET_TEST_CASE_KEY, "SHOP", "TC-1"];
 
+    await openEditor(user);
     await findTitleField();
     act(() => {
       queryClient.setQueryData(
@@ -348,8 +394,9 @@ describe("TestCaseDetailPage", () => {
   it("is read-only for a viewer", async () => {
     renderPage(buildProject().capabilities);
 
-    expect(await findTitleField()).toBeDisabled();
+    expect(await screen.findByRole("region", { name: "Steps" })).toBeInTheDocument();
     expect(screen.getByText(form.readOnly)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: read.edit })).toBeNull();
     expect(screen.queryByRole("button", { name: actions.save })).toBeNull();
     expect(screen.queryByRole("button", { name: actions.submitForReview })).toBeNull();
     expect(screen.queryByRole("button", { name: form.addStep })).toBeNull();
@@ -358,7 +405,8 @@ describe("TestCaseDetailPage", () => {
   it("is read-only on an archived project", async () => {
     renderPage(QC_CAPABILITIES, { isArchived: true });
 
-    expect(await findTitleField()).toBeDisabled();
+    expect(await screen.findByRole("region", { name: "Steps" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: read.edit })).toBeNull();
     expect(screen.queryByRole("button", { name: actions.save })).toBeNull();
     expect(screen.queryByRole("button", { name: actions.submitForReview })).toBeNull();
   });
@@ -367,7 +415,8 @@ describe("TestCaseDetailPage", () => {
     respondWithCase(buildTestCaseDetail({ status: "deprecated" }));
     renderPage();
 
-    expect(await findTitleField()).toBeDisabled();
+    expect(await screen.findByRole("region", { name: "Steps" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: read.edit })).toBeNull();
     expect(screen.getByText(form.deprecated)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: actions.restore })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: actions.more })).toBeNull();
@@ -410,6 +459,29 @@ describe("TestCaseDetailPage", () => {
 
     await user.click(screen.getByRole("tab", { name: detail.tabs.details }));
     expect(routerReplace).toHaveBeenLastCalledWith("?tab=details", { scroll: false });
+  });
+
+  it("opens review comments from the open-comment alert and compares versions side by side", async () => {
+    const user = userEvent.setup();
+    respondWithCase(buildTestCaseDetail({ status: "in_review" }), [OPEN_REVIEW_COMMENT]);
+    renderPage();
+
+    const showComments = await screen.findByRole("button", {
+      name: englishCaseReview.notice.showComments,
+    });
+    expect(screen.getByRole("button", { name: actions.markReady })).toBeDisabled();
+    await user.click(showComments);
+
+    expect(routerReplace).toHaveBeenLastCalledWith("?tab=review", { scroll: false });
+    expect(await screen.findByText(OPEN_REVIEW_COMMENT.body)).toBeInTheDocument();
+
+    await user.click(screen.getByRole("tab", { name: englishCaseReview.tabs.compare }));
+
+    expect(
+      await screen.findByRole("region", {
+        name: interpolate(englishCaseReview.compare.tableLabel, { from: "1", to: "2" }),
+      }),
+    ).toBeInTheDocument();
   });
 
   it("attaches a file through a signed upload", async () => {

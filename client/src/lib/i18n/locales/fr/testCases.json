@@ -165,7 +165,8 @@
       "preconditions": "Préconditions",
       "criteria": "Critères d'acceptation",
       "files": "Fichiers",
-      "steps": "Étapes"
+      "steps": "Étapes",
+      "dataTable": "Paramètres et lignes de données"
     },
     "diffAdded": "Ajouté",
     "diffRemoved": "Supprimé",
@@ -240,5 +241,10 @@
     "uploadNotCompleted": "L'envoi n'est pas allé au bout. Réessayez.",
     "fileTypeNotAllowed": "Ce type de fichier n'est pas autorisé dans ce projet.",
     "fileTooLarge": "Les fichiers font au maximum 20 Mo."
+  },
+  "read": {
+    "environment": "Valeurs de",
+    "edit": "Modifier",
+    "cancel": "Annuler"
   }
 }

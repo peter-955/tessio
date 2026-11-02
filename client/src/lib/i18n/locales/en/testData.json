@@ -41,7 +41,6 @@
   },
   "kind": {
     "variable": "Variable",
-    "endpoint": "Endpoint",
     "secret": "Secret"
   },
   "secret": {
@@ -62,14 +61,17 @@
     "key": "Key",
     "keyHint": "Starts with a letter. Letters, digits, _ . and - only.",
     "keyInvalid": "Start with a letter and use only letters, digits, _ . and - (at most 100 characters).",
-    "kind": "Kind",
     "secretLocked": "Only Admins and QC can save secrets.",
     "scope": "Scope",
     "value": "Value",
     "secretValue": "Secret value",
     "keepSecretHint": "Leave empty to keep the current value",
     "valueRequired": "Enter a value.",
-    "valueTooLong": "Use at most {{max}} characters."
+    "valueTooLong": "Use at most {{max}} characters.",
+    "secret": "Secret",
+    "secretHint": "Encrypted, hidden from lists, and masked in every result and report.",
+    "description": "Description",
+    "descriptionHint": "What this key is for. Shared by all its values, shown in the case editor and given to Claude."
   },
   "delete": {
     "title": "Delete test data",

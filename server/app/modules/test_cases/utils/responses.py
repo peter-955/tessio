@@ -1,3 +1,4 @@
+from app.modules.labels import build_case_label_response
 from app.modules.test_cases.domains.case_criterion.entity import CaseCriterion
 from app.modules.test_cases.domains.case_import_preview.entity import CaseImportPreview
 from app.modules.test_cases.domains.case_import_result.entity import CaseImportResult
@@ -24,7 +25,9 @@ from app.modules.test_cases.models.test_step_response import TestStepResponse
 
 
 def build_test_step_response(step: TestStep) -> TestStepResponse:
-    return TestStepResponse(order=step.order, action=step.action, expected=step.expected)
+    return TestStepResponse(
+        order=step.order, action=step.action, expected=step.expected, shared_step_key=step.shared_step_key
+    )
 
 
 def build_test_case_summary_response(summary: TestCaseSummary) -> TestCaseSummaryResponse:
@@ -44,6 +47,12 @@ def build_test_case_summary_response(summary: TestCaseSummary) -> TestCaseSummar
         needs_review=test_case.is_needing_review,
         needs_review_at=test_case.needs_review_at,
         last_saved_at=summary.last_saved_at,
+        labels=[build_case_label_response(label) for label in summary.labels],
+        is_flaky=test_case.is_flaky,
+        flaky_score=test_case.flaky_score,
+        is_disagreeing=test_case.is_disagreeing,
+        is_quarantined=test_case.is_quarantined,
+        quarantined_at=test_case.quarantined_at,
     )
 
 
@@ -61,6 +70,8 @@ def build_test_case_version_response(version: TestCaseVersion) -> TestCaseVersio
         file_version_ids=version.file_version_ids,
         created_by=version.created_by,
         created_at=version.created_at,
+        parameters=version.parameters,
+        data_rows=version.data_rows,
     )
 
 
@@ -111,11 +122,21 @@ def build_test_case_detail_response(detail: TestCaseDetail) -> TestCaseDetailRes
         criteria=[build_linked_criterion_response(criterion) for criterion in detail.criteria],
         files=[build_test_file_response(file) for file in detail.files],
         unknown_references=detail.unknown_references,
+        labels=[build_case_label_response(label) for label in detail.labels],
         needs_review=test_case.is_needing_review,
         needs_review_criterion_ids=test_case.needs_review_criterion_ids,
         needs_review_at=test_case.needs_review_at,
         reviewed_at=test_case.reviewed_at,
         reviewed_by=test_case.reviewed_by,
+        is_flaky=test_case.is_flaky,
+        flaky_score=test_case.flaky_score,
+        flaky_since=test_case.flaky_since,
+        is_disagreeing=test_case.is_disagreeing,
+        disagreed_at=test_case.disagreed_at,
+        is_quarantined=test_case.is_quarantined,
+        quarantined_at=test_case.quarantined_at,
+        quarantined_by=test_case.quarantined_by,
+        quarantine_reason=test_case.quarantine_reason,
         created_by=test_case.created_by,
         created_at=test_case.created_at,
     )

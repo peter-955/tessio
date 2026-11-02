@@ -25,6 +25,7 @@ class ScreenshotVerifier:
 
     async def verify(self, project_id: UUID, run_id: UUID, run_cases: list[RunCaseView]) -> list[MissingScreenshot]:
         codes_by_case_id = {run_case.test_case_id: run_case.code for run_case in run_cases}
+        data_driven_case_ids = {run_case.test_case_id for run_case in run_cases if run_case.version.data_rows}
         case_results = await self._case_result_repository.list_for_run(run_id)
         steps_by_case_result_id: defaultdict[UUID, list[StepResult]] = defaultdict(list)
         for step_result in await self._case_result_repository.list_steps_for_run(run_id):
@@ -43,7 +44,10 @@ class ScreenshotVerifier:
                     await self._mark_uploaded(stored_file, uploaded_key)
                     continue
                 missing_file_ids.append(stored_file.id)
-                missing_screenshots.append(self._build_missing(case_result, codes_by_case_id, step_result))
+                is_data_driven = case_result.test_case_id in data_driven_case_ids
+                missing_screenshots.append(
+                    self._build_missing(case_result, codes_by_case_id, step_result, is_data_driven)
+                )
         await self._stored_file_repository.mark_missing(missing_file_ids)
         return missing_screenshots
 
@@ -82,11 +86,12 @@ class ScreenshotVerifier:
 
     @staticmethod
     def _build_missing(
-        case_result: CaseResult, codes_by_case_id: dict[UUID, str], step_result: StepResult
+        case_result: CaseResult, codes_by_case_id: dict[UUID, str], step_result: StepResult, is_data_driven: bool
     ) -> MissingScreenshot:
         return MissingScreenshot(
             case_result_id=case_result.id,
             test_case_id=case_result.test_case_id,
             code=codes_by_case_id.get(case_result.test_case_id, ""),
             step_order=step_result.step_order,
+            iteration=case_result.iteration if is_data_driven else None,
         )

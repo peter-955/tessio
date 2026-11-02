@@ -1,17 +1,21 @@
 "use client";
 
-import { DSIcon, DSText, DSTitle } from "@/components/design-system";
+import type { CaseReferences } from "@/components/case-sheet/typing/types/case-sheet.type";
+import { DSText, DSTitle } from "@/components/design-system";
+import { SuspectedCause } from "@/components/suspected-cause/suspected-cause";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import type { ManualRunCase } from "../../typing/types/manual-run.type";
+import { RecordedSteps } from "../recorded-steps/recorded-steps";
 import { ResultStatusBadge } from "../result-status-badge/result-status-badge";
 import styles from "./recorded-case-view.module.scss";
 
 interface Props {
   runCase: ManualRunCase;
+  references: CaseReferences;
 }
 
-export const RecordedCaseView: FC<Props> = ({ runCase }) => {
+export const RecordedCaseView: FC<Props> = ({ runCase, references }) => {
   const { t } = useTranslation("manualRun");
 
   return (
@@ -28,54 +32,14 @@ export const RecordedCaseView: FC<Props> = ({ runCase }) => {
           <ResultStatusBadge status={runCase.result.status} />
         )}
       </div>
-      {runCase.steps.length === 0 ? (
-        <DSText color="muted">{t("record.noSteps")}</DSText>
-      ) : (
-        <ol className={styles.steps}>
-          {runCase.steps.map((step) => {
-            return (
-              <li key={step.order} className={styles.step}>
-                <div className={styles.stepHeader}>
-                  <DSText size="sm" weight="medium" component="span">
-                    {t("record.step", { order: step.order })}
-                  </DSText>
-                  {step.status === null ? (
-                    <DSText size="sm" color="muted" component="span">
-                      {t("record.notReported")}
-                    </DSText>
-                  ) : (
-                    <ResultStatusBadge status={step.status} />
-                  )}
-                </div>
-                <DSText className={styles.text}>{step.action}</DSText>
-                {step.expected !== null && (
-                  <DSText size="sm" color="muted" className={styles.text}>
-                    {t("record.expectedValue", { text: step.expected })}
-                  </DSText>
-                )}
-                {step.actualResult !== null && step.actualResult !== "" && (
-                  <DSText size="sm" className={styles.text}>
-                    {t("record.actualResult")}: {step.actualResult}
-                  </DSText>
-                )}
-                {step.error !== null && step.error !== "" && (
-                  <DSText size="sm" color="danger" className={styles.text}>
-                    {t("record.error")}: {step.error}
-                  </DSText>
-                )}
-                {step.evidenceFileId !== null && (
-                  <span className={styles.evidence}>
-                    <DSIcon name="file" size={16} />
-                    <DSText size="sm" component="span">
-                      {t("record.evidenceAttached")}
-                    </DSText>
-                  </span>
-                )}
-              </li>
-            );
-          })}
-        </ol>
+      {runCase.result !== null && runCase.result.suspectedCause !== null && (
+        <SuspectedCause cause={runCase.result.suspectedCause} reason={runCase.result.causeReason} />
       )}
+      <RecordedSteps
+        steps={runCase.steps}
+        references={references}
+        ariaLabel={t("record.stepsOf", { code: runCase.code })}
+      />
     </section>
   );
 };

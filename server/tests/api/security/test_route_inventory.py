@@ -9,12 +9,18 @@ from tests.api.security.security_steps import list_application_routes
 PUBLIC_ROUTES = {
     ("GET", "/api/health"),
     ("GET", "/api/health/ready"),
+    ("GET", "/api/plugin/marketplace.json"),
+    ("GET", "/api/plugin/{file_name}"),
     ("POST", "/api/auth/sign-in"),
     ("POST", "/api/auth/invites/{token}"),
     ("POST", "/api/auth/password/forgot"),
     ("POST", "/api/auth/password/reset"),
 }
-API_TOKEN_ROUTES = {("POST", "/api/runs/{run_id}/case-results/{case_result_id}/screenshot-upload"), ("POST", "/mcp")}
+API_TOKEN_ROUTES = {
+    ("POST", "/api/runs/{run_id}/case-results/{case_result_id}/screenshot-upload"),
+    ("POST", "/api/runs/{run_id}/log"),
+    ("POST", "/mcp"),
+}
 PROJECT_ACCESSES = {RouteAccess.PROJECT_READ, RouteAccess.PROJECT_WRITE}
 
 

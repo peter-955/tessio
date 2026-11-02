@@ -24,6 +24,7 @@ export const StepEvidenceField: FC<Props> = ({ stepDraft, onChange }) => {
   const apiErrors = useManualRunApiErrors();
   const formatMegabytes = useFormatMegabytes();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isDropzoneShown, setIsDropzoneShown] = useState(false);
   const signedUpload = useSignedUpload({
     target: {
       kind: "evidence",
@@ -103,6 +104,23 @@ export const StepEvidenceField: FC<Props> = ({ stepDraft, onChange }) => {
       />
     );
   };
+
+  if (!isDropzoneShown && !stepDraft.isUploading && stepDraft.evidenceFile === null) {
+    return (
+      <div className={styles.attach}>
+        <DSButton
+          type="ghost"
+          size="sm"
+          icon="upload"
+          onClick={() => {
+            setIsDropzoneShown(true);
+          }}
+        >
+          {t("evidence.attach")}
+        </DSButton>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.field}>

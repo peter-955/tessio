@@ -1,0 +1,131 @@
+{
+  "page": {
+    "title": "Shared steps",
+    "description": "Steps such as logging in, written once and reused in many cases."
+  },
+  "list": {
+    "newSharedStep": "New shared step",
+    "loading": "Loading the shared steps",
+    "loadError": "The shared steps could not be loaded.",
+    "retry": "Try again",
+    "emptyTitle": "No shared steps yet",
+    "emptyDescription": "Write a common sequence, such as logging in as an admin, once and insert it into any case.",
+    "emptyReadOnlyDescription": "Shared steps written by your QC team appear here.",
+    "showArchived": "Show archived",
+    "tableLabel": "Shared steps",
+    "columns": {
+      "title": "Title",
+      "key": "Key",
+      "steps": "Steps",
+      "usage": "Used by",
+      "version": "Current version"
+    },
+    "archived": "Archived",
+    "stepCount_one": "{{count}} step",
+    "stepCount_other": "{{count}} steps",
+    "versionOn": "v{{number}} · {{date}}"
+  },
+  "usage": {
+    "count_one": "Used by {{count}} case",
+    "count_other": "Used by {{count}} cases",
+    "description": "Cases whose current version inserts this shared step. Deprecated cases are left out.",
+    "loading": "Loading the cases that use this shared step",
+    "loadError": "The cases that use this shared step could not be loaded.",
+    "retry": "Try again",
+    "emptyTitle": "No case uses this shared step yet",
+    "emptyDescription": "Insert it from a test case's steps.",
+    "tableLabel": "Cases that use this shared step",
+    "columns": {
+      "case": "Case",
+      "story": "Story",
+      "status": "Status"
+    }
+  },
+  "steps": {
+    "step": "Step {{order}}",
+    "expected": "Expected result"
+  },
+  "reference": {
+    "loading": "Loading the shared step",
+    "badge": "Shared step",
+    "missing": "This shared step no longer exists in the project.",
+    "loadError": "The shared step could not be loaded.",
+    "archived": "Archived",
+    "stepCount_one": "{{count}} step",
+    "stepCount_other": "{{count}} steps",
+    "showSteps": "Show steps",
+    "hideSteps": "Hide steps",
+    "stepsOf": "Steps of {{title}}",
+    "textLabel": "Shared step: {{key}}"
+  },
+  "picker": {
+    "open": "Insert shared step",
+    "title": "Insert a shared step",
+    "loading": "Loading the shared steps",
+    "loadError": "The shared steps could not be loaded.",
+    "retry": "Try again",
+    "emptyTitle": "No shared steps to insert",
+    "emptyDescription": "Create a shared step in the library first.",
+    "openLibrary": "Open the library",
+    "select": "Shared step",
+    "selectPlaceholder": "Search by title or key",
+    "nothingFound": "No shared step matches",
+    "preview_one": "It adds {{count}} step. The case always runs the shared step's latest version.",
+    "preview_other": "It adds {{count}} steps. The case always runs the shared step's latest version.",
+    "insert": "Insert"
+  },
+  "form": {
+    "createTitle": "New shared step",
+    "editTitle": "Edit shared step",
+    "create": "Create",
+    "save": "Save",
+    "title": "Title",
+    "titlePlaceholder": "Log in as admin",
+    "key": "Key",
+    "keyPlaceholder": "login_as_admin",
+    "keyDescription": "Letters, digits and _, starting with a letter. The key can't change later.",
+    "steps": "Steps",
+    "step": "Step {{position}}",
+    "action": "Action",
+    "expected": "Expected result",
+    "addStep": "Add step",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "removeStep": "Remove step",
+    "stepActions": "Step {{position}} actions",
+    "suggestions": "Test data keys",
+    "noSuggestions": "No matching keys",
+    "errors": {
+      "required": "This field is required.",
+      "tooLong": "Use at most {{max}} characters.",
+      "tooMany": "A shared step can have at most {{max}} steps.",
+      "invalidKey": "Use letters, digits and _, starting with a letter."
+    }
+  },
+  "errors": {
+    "keyAlreadyUsed": "Another shared step in this project already has this key.",
+    "invalidStepShape": "Each step needs an action. A shared step can't contain another shared step.",
+    "conflict": "Someone else saved this shared step. Reload the page and try again."
+  },
+  "toasts": {
+    "created": "Shared step \"{{title}}\" created.",
+    "saved": "Shared step \"{{title}}\" saved.",
+    "archived": "Shared step \"{{title}}\" archived.",
+    "restored": "Shared step \"{{title}}\" restored."
+  },
+  "detail": {
+    "back": "Back to shared steps",
+    "edit": "Edit",
+    "archive": "Archive",
+    "restore": "Restore",
+    "version": "Version {{number}} · {{date}}",
+    "archivedNotice": "This shared step is archived. Cases that already use it keep running it, but it can't be inserted into other cases.",
+    "stepsTitle": "Steps",
+    "dataKeys": "Test data used: {{keys}}",
+    "notFoundTitle": "Shared step not found",
+    "notFoundDescription": "It may have a different key, or belong to another project.",
+    "loading": "Loading the shared step",
+    "loadError": "The shared step could not be loaded.",
+    "retry": "Try again"
+  }
+}

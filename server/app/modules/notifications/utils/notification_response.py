@@ -3,17 +3,27 @@ from app.modules.notifications.domains.notification_payload.entity import (
     FailureAssignedPayload,
     GapAssignedPayload,
     NotificationPayload,
+    ReportReadyPayload,
     RunFinishedPayload,
+    SuiteRunFinishedPayload,
 )
 from app.modules.notifications.models.failure_assigned_payload_response import FailureAssignedPayloadResponse
 from app.modules.notifications.models.gap_assigned_payload_response import GapAssignedPayloadResponse
 from app.modules.notifications.models.notification_response import NotificationResponse
+from app.modules.notifications.models.report_ready_payload_response import ReportReadyPayloadResponse
 from app.modules.notifications.models.run_finished_payload_response import RunFinishedPayloadResponse
+from app.modules.notifications.models.suite_run_finished_payload_response import SuiteRunFinishedPayloadResponse
 
 
 def build_payload_response(
     payload: NotificationPayload,
-) -> GapAssignedPayloadResponse | FailureAssignedPayloadResponse | RunFinishedPayloadResponse:
+) -> (
+    GapAssignedPayloadResponse
+    | FailureAssignedPayloadResponse
+    | RunFinishedPayloadResponse
+    | SuiteRunFinishedPayloadResponse
+    | ReportReadyPayloadResponse
+):
     match payload:
         case GapAssignedPayload():
             return GapAssignedPayloadResponse(
@@ -42,6 +52,27 @@ def build_payload_response(
                 passed_count=payload.passed_count,
                 failed_count=payload.failed_count,
                 blocked_count=payload.blocked_count,
+            )
+        case SuiteRunFinishedPayload():
+            return SuiteRunFinishedPayloadResponse(
+                kind=payload.kind,
+                run_id=payload.run_id,
+                test_suite_id=payload.test_suite_id,
+                test_suite_name=payload.test_suite_name,
+                outcome=payload.outcome,
+                passed_count=payload.passed_count,
+                failed_count=payload.failed_count,
+                blocked_count=payload.blocked_count,
+            )
+        case ReportReadyPayload():
+            return ReportReadyPayloadResponse(
+                kind=payload.kind,
+                file_id=payload.file_id,
+                file_name=payload.file_name,
+                format=payload.format,
+                source=payload.source,
+                source_id=payload.source_id,
+                source_label=payload.source_label,
             )
 
 

@@ -6,6 +6,7 @@ import {
   type DSSegmentedOption,
   type DSSelectOption,
 } from "@/components/design-system";
+import { SuiteSelect } from "@/modules/suites/components/suite-select/suite-select";
 import { RUN_STATUSES } from "@/shared/typing/constants/test-status.constant";
 import type { RunStatus } from "@/shared/typing/types/test-run.type";
 import type { FC } from "react";
@@ -25,6 +26,7 @@ interface Props {
 
 export const RunsFilters: FC<Props> = ({ projectKey, filters, onChange }) => {
   const { t } = useTranslation("runs");
+  const { t: tSuites } = useTranslation("suites");
   const { data: storyOptions = [] } = useGetRunStoryOptions(projectKey);
   const isStoryListed = storyOptions.some((option) => {
     return option.value === filters.storyKey;
@@ -45,7 +47,11 @@ export const RunsFilters: FC<Props> = ({ projectKey, filters, onChange }) => {
   };
 
   const handleStoryChange = (storyKey: string | null): void => {
-    onChange({ ...filters, storyKey });
+    onChange({ ...filters, storyKey, suiteId: storyKey === null ? filters.suiteId : null });
+  };
+
+  const handleSuiteChange = (suiteId: string | null): void => {
+    onChange({ ...filters, suiteId, storyKey: suiteId === null ? filters.storyKey : null });
   };
 
   return (
@@ -69,6 +75,17 @@ export const RunsFilters: FC<Props> = ({ projectKey, filters, onChange }) => {
           isClearable
         />
       </div>
+      <SuiteSelect
+        className={styles.story}
+        projectKey={projectKey}
+        value={filters.suiteId}
+        onChange={handleSuiteChange}
+        label={tSuites("runs.filterLabel")}
+        placeholder={tSuites("runs.filterPlaceholder")}
+        isArchivedIncluded
+        isHiddenWithoutSuites
+        isClearable
+      />
     </div>
   );
 };

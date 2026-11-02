@@ -1,0 +1,67 @@
+{
+  "actions": {
+    "openImport": "Importer des résultats JUnit",
+    "import": "Importer",
+    "close": "Fermer",
+    "openRun": "Ouvrir l'exécution"
+  },
+  "form": {
+    "title": "Importer des résultats JUnit",
+    "description": "Envoyez un rapport JUnit XML de Playwright, Jest, pytest ou d'un autre outil. Un test compte pour un cas quand son nom ou une propriété tessio.case contient le code du cas, par exemple TC-12.",
+    "loading": "Chargement des environnements",
+    "noEnvironment": "Ce projet n'a aucun environnement actif.",
+    "environment": "Environnement",
+    "environmentPlaceholder": "Choisissez un environnement",
+    "suite": "Suite",
+    "suitePlaceholder": "Aucune suite",
+    "suiteDescription": "Facultatif. L'exécution appartient alors à cette suite.",
+    "suiteNotFound": "Aucune suite correspondante",
+    "dropTitle": "Déposez le fichier JUnit XML ici",
+    "dropDescription": "Ou cliquez pour en choisir un. 10 Mo au maximum.",
+    "chosenFile": "Fichier : {{name}}"
+  },
+  "errors": {
+    "notXml": "Choisissez un fichier .xml.",
+    "tooLarge": "Le fichier dépasse 10 Mo.",
+    "empty": "Le fichier est vide.",
+    "fileRequired": "Choisissez un fichier JUnit XML.",
+    "environmentRequired": "Choisissez un environnement.",
+    "unknownReference": "Cet environnement ou cette suite n'existe plus. Choisissez-en un autre.",
+    "environmentsLoadFailed": "Les environnements n'ont pas pu être chargés.",
+    "suitesLoadFailed": "Les suites n'ont pas pu être chargées."
+  },
+  "result": {
+    "heading": "Résultats importés",
+    "title": {
+      "passed": "L'exécution CI a réussi",
+      "failed": "L'exécution CI a échoué"
+    },
+    "counts": "{{total}} cas : {{passed}} réussis, {{failed}} échoués, {{skipped}} ignorés.",
+    "mapped_one": "{{count}} test correspond à un cas.",
+    "mapped_other": "{{count}} tests correspondent à un cas.",
+    "unmapped_one": "{{count}} test ne correspond à aucun cas.",
+    "unmapped_other": "{{count}} tests ne correspondent à aucun cas."
+  },
+  "unmapped": {
+    "title_one": "{{count}} test non relié",
+    "title_other": "{{count}} tests non reliés",
+    "description": "Ces tests sont dans le fichier JUnit mais ne nomment aucun cas de ce projet. Ajoutez le code du cas au nom du test ou dans une propriété tessio.case.",
+    "tableLabel": "Tests non reliés",
+    "columns": {
+      "test": "Test",
+      "result": "Résultat",
+      "reason": "Pourquoi"
+    },
+    "reasons": {
+      "no_case_code": "Aucun code de cas",
+      "unknown_case": "Cas inconnu ou obsolète"
+    },
+    "notListed_one": "{{count}} autre test n'est pas listé.",
+    "notListed_other": "{{count}} autres tests ne sont pas listés."
+  },
+  "ciRun": {
+    "target": "Import CI",
+    "detailTitle": "Import CI",
+    "detailDescription": "Résultats JUnit importés depuis la CI, sur les stories du projet."
+  }
+}

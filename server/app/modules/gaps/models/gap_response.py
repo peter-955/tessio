@@ -33,6 +33,7 @@ class GapResponse(WireModel):
     answered_by: UUID | None
     answered_by_name: str | None
     answered_at: datetime | None
+    is_answered_via_claude: bool
     reopened_by_name: str | None
     reopened_at: datetime | None
     created_at: datetime

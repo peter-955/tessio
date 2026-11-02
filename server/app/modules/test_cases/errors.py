@@ -87,3 +87,60 @@ class ImportInvalidFileError(TessioError):
 class CaseImportChoiceInvalidError(TessioError):
     def __init__(self) -> None:
         super().__init__(ErrorCode.INVALID_REQUEST, "A chosen case cannot be imported.")
+
+
+class DraftCasesNotCreatableError(TessioError):
+    def __init__(self, indexes: list[int]) -> None:
+        self.indexes = indexes
+        named_indexes = ", ".join(str(index) for index in indexes)
+        super().__init__(
+            ErrorCode.INVALID_REQUEST,
+            f"Cases {named_indexes} have a problem. Nothing was created; "
+            "send only cases that check_draft_cases accepts.",
+        )
+
+
+class TestCaseVersionNotFoundError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.NOT_FOUND, "Test case version not found.")
+
+
+class ReviewCommentNotFoundError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.NOT_FOUND, "Review comment not found.")
+
+
+class ReviewCommentStepNotFoundError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.INVALID_REQUEST, "Comment on a step of this version.")
+
+
+class ReviewCommentOnDeprecatedCaseError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.CONFLICT, "Restore the test case to Draft before commenting on it.")
+
+
+class ReviewCommentsOpenError(TessioError):
+    def __init__(self, open_count: int) -> None:
+        self.open_count = open_count
+        super().__init__(
+            ErrorCode.REVIEW_COMMENTS_OPEN,
+            f"Resolve the open review comments ({open_count}) before marking the case Ready.",
+        )
+
+
+class ReviewerIsAuthorError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(
+            ErrorCode.REVIEWER_IS_AUTHOR,
+            "This project needs a reviewer who did not write the version under review.",
+        )
+
+
+class SecretInDataRowError(TessioError):
+    def __init__(self, row_number: int) -> None:
+        self.row_number = row_number
+        super().__init__(
+            ErrorCode.SECRET_IN_DATA_ROW,
+            f"Data row {row_number} holds a secret value. Use a {{{{data.key}}}} reference to a secret key instead.",
+        )

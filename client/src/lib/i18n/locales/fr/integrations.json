@@ -1,0 +1,118 @@
+{
+  "webhooks": {
+    "title": "Webhooks",
+    "description": "Tessio envoie un POST signé à ces adresses HTTPS quand les événements choisis se produisent.",
+    "add": "Ajouter un webhook",
+    "empty": "Aucun webhook pour l'instant.",
+    "loading": "Chargement des webhooks",
+    "loadError": "Les webhooks n'ont pas pu être chargés",
+    "retry": "Réessayer",
+    "tableLabel": "Webhooks",
+    "columns": {
+      "url": "URL",
+      "events": "Événements",
+      "status": "Statut",
+      "lastDelivery": "Dernier envoi",
+      "actions": "Actions"
+    },
+    "active": "Actif",
+    "inactive": "Désactivé",
+    "noDelivery": "Aucun pour l'instant",
+    "allEvents": "Tous les événements",
+    "actionsFor": "Actions pour {{url}}",
+    "secretHint": "Secret {{hint}}",
+    "menu": {
+      "deliveries": "Journal des envois",
+      "edit": "Modifier",
+      "rotate": "Changer le secret",
+      "delete": "Supprimer"
+    }
+  },
+  "events": {
+    "runStarted": "Exécution démarrée",
+    "runFinished": "Exécution terminée",
+    "failureOpened": "Échec ouvert",
+    "failureStatusChanged": "Statut d'échec modifié",
+    "gapRaised": "Écart signalé",
+    "storySignedOff": "Story validée",
+    "planSignedOff": "Plan validé"
+  },
+  "form": {
+    "createTitle": "Ajouter un webhook",
+    "editTitle": "Modifier le webhook",
+    "url": "URL de réception",
+    "urlPlaceholder": "https://ci.example.com/hooks/tessio",
+    "urlDescription": "Une adresse https publique. Les adresses privées et locales sont refusées.",
+    "description": "Description",
+    "descriptionPlaceholder": "ex. Tableau de bord des versions",
+    "events": "Événements",
+    "eventsDescription": "Envoyer un message quand l'un de ces événements se produit.",
+    "isActive": "Actif",
+    "isActiveDescription": "Désactivé, Tessio n'envoie rien à cette URL.",
+    "create": "Ajouter le webhook",
+    "save": "Enregistrer"
+  },
+  "errors": {
+    "urlRequired": "Saisissez l'URL.",
+    "urlTooLong": "Utilisez 2048 caractères au maximum.",
+    "urlNotHttps": "Utilisez une adresse https://.",
+    "urlInvalid": "Saisissez une URL https publique valide.",
+    "descriptionTooLong": "Utilisez 200 caractères au maximum.",
+    "eventsRequired": "Choisissez au moins un événement.",
+    "limitReached": "Un projet peut avoir 20 webhooks. Supprimez-en un pour en ajouter un autre.",
+    "notFound": "Ce webhook n'existe plus."
+  },
+  "secret": {
+    "title": "Secret de signature",
+    "shownOnce": "Copiez-le maintenant. Vous ne reverrez plus ce secret.",
+    "explanation": "Chaque envoi a un en-tête X-Tessio-Signature : sha256= suivi du HMAC-SHA256 de l'en-tête X-Tessio-Timestamp, d'un point et du corps brut, avec ce secret comme clé.",
+    "done": "Terminé"
+  },
+  "rotate": {
+    "title": "Changer le secret ?",
+    "description": "Tessio signe tous les envois suivants vers {{url}} avec un nouveau secret, nouvelles tentatives comprises. Mettez à jour votre récepteur juste après.",
+    "confirm": "Changer le secret"
+  },
+  "delete": {
+    "title": "Supprimer ce webhook ?",
+    "description": "{{url}} et son journal des envois sont supprimés. Les envois pas encore partis sont abandonnés.",
+    "confirm": "Supprimer"
+  },
+  "toasts": {
+    "created": "Webhook ajouté",
+    "updated": "Webhook enregistré",
+    "deleted": "Webhook supprimé",
+    "rotated": "Secret changé",
+    "redelivered": "Envoi remis en file"
+  },
+  "deliveries": {
+    "title": "Journal des envois",
+    "description": "Envois des 30 derniers jours, du plus récent au plus ancien.",
+    "close": "Fermer",
+    "loading": "Chargement des envois",
+    "loadError": "Les envois n'ont pas pu être chargés",
+    "empty": "Aucun envoi pour l'instant",
+    "tableLabel": "Envois",
+    "columns": {
+      "event": "Événement",
+      "status": "Statut",
+      "attempts": "Tentatives",
+      "response": "Réponse",
+      "time": "Envoyé",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "En attente",
+      "succeeded": "Livré",
+      "failed": "Échoué"
+    },
+    "attempts_one": "{{count}} tentative",
+    "attempts_other": "{{count}} tentatives",
+    "noResponse": "–",
+    "redelivery": "Nouvel envoi",
+    "redeliver": "Renvoyer",
+    "redeliverLabel": "Renvoyer {{event}} du {{time}}",
+    "showPayload": "Afficher le contenu de {{event}} du {{time}}",
+    "hidePayload": "Masquer le contenu de {{event}} du {{time}}"
+  }
+}

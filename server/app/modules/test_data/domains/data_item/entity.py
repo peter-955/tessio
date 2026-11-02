@@ -14,6 +14,7 @@ class DataItem(Entity):
     value: str | None
     value_encrypted: bytes | None
     created_at: datetime
+    description: str | None = None
 
     @property
     def is_secret(self) -> bool:

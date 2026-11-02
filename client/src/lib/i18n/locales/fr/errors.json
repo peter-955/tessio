@@ -72,6 +72,26 @@
     "NO_FAILED_CASES_TO_RERUN": "Aucun cas en échec à relancer.",
     "CASE_RESULT_EXISTS": "Un résultat a déjà été enregistré pour ce cas.",
     "RUN_NOT_MANUAL": "Cette action est réservée aux exécutions manuelles.",
-    "RATE_LIMITED": "Trop de tentatives. Réessayez plus tard."
+    "RATE_LIMITED": "Trop de tentatives. Réessayez plus tard.",
+    "REVIEW_COMMENTS_OPEN": "Résolvez les commentaires de revue ouverts avant de passer ce cas à Prêt.",
+    "REVIEWER_IS_AUTHOR": "Dans ce projet, l'auteur d'un cas ne peut pas le relire. Demandez à un autre QC ou Admin.",
+    "SUITE_ALREADY_RUNNING": "Une exécution est déjà en cours pour cette suite.",
+    "SUITE_EMPTY": "Cette suite n'a aucun cas de test Prêt à exécuter.",
+    "SUITE_NAME_ALREADY_USED": "Une autre suite de ce projet porte déjà ce nom.",
+    "SUITE_ARCHIVED": "Cette suite est archivée.",
+    "PLAN_FAILURES_ACTIVE": "Clôturez les échecs actifs sur les cas de ce plan avant de le valider.",
+    "PLAN_NOT_OPEN": "Ce plan n'est plus ouvert.",
+    "SHARED_STEP_KEY_ALREADY_USED": "Une autre étape partagée de ce projet utilise déjà cette clé.",
+    "UNKNOWN_SHARED_STEP": "Cette étape partagée n'existe pas ou est archivée.",
+    "INVALID_STEP_SHAPE": "Chaque étape doit avoir une action et un résultat attendu, ou être une étape partagée.",
+    "SECRET_IN_DATA_ROW": "Les lignes de données ne peuvent pas contenir de secrets. Faites plutôt référence au secret par sa clé de données de test.",
+    "ITERATION_OUT_OF_RANGE": "Ce cas n'a pas de ligne de données pour cette itération.",
+    "JIRA_WRITE_NOT_ALLOWED": "Le compte Jira relié à Tessio ne peut pas créer de tickets ni ajouter de commentaires ici. Demandez à un administrateur de l'espace de lui donner les permissions Jira.",
+    "JIRA_ISSUE_ALREADY_LINKED": "Cet échec a déjà un ticket Jira.",
+    "WEBHOOK_URL_INVALID": "Saisissez une URL https publique valide.",
+    "CHAT_DELIVERY_FAILED": "Le message de test n'a pas pu être envoyé. Vérifiez l'URL du webhook et réessayez.",
+    "JUNIT_INVALID": "Ce fichier n'est pas un rapport JUnit XML valide.",
+    "JUNIT_NO_MAPPED_TESTS": "Aucun test de ce rapport ne cite un code de cas de test comme TC-12.",
+    "TOKEN_SCOPE_NOT_ALLOWED": "Ce jeton d'API ne peut pas être utilisé pour cette action."
   }
 }

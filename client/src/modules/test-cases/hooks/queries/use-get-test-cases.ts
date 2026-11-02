@@ -23,6 +23,10 @@ export type GetTestCasesQueryKey = [
   TestCasePriority | null,
   string | null,
   boolean,
+  boolean,
+  boolean,
+  boolean,
+  string[],
   string,
 ];
 
@@ -45,6 +49,10 @@ export const useGetTestCases = (projectKey: string, filters: TestCaseFilters): R
       filters.priority,
       filters.criterionId,
       filters.isNeedingReview,
+      filters.isFlaky,
+      filters.isDisagreeing,
+      filters.isQuarantined,
+      filters.labelNames,
       trimmedQuery,
     ],
     queryFn: ({ signal }) => {

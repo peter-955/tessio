@@ -172,7 +172,9 @@ async def create_data_item(
     actor: SignedInActor,
     use_case: Annotated[CreateDataItemUseCase, Depends(get_create_data_item)],
 ) -> DataItemResponse:
-    item = await use_case.execute(actor, project_key, body.key, body.kind, body.value, body.environment_id)
+    item = await use_case.execute(
+        actor, project_key, body.key, body.kind, body.value, body.environment_id, body.description
+    )
     return build_data_item_response(item)
 
 
@@ -184,7 +186,7 @@ async def update_data_item(
     actor: SignedInActor,
     use_case: Annotated[UpdateDataItemUseCase, Depends(get_update_data_item)],
 ) -> DataItemResponse:
-    item = await use_case.execute(actor, project_key, item_id, body.key, body.kind, body.value)
+    item = await use_case.execute(actor, project_key, item_id, body.key, body.kind, body.value, body.description)
     return build_data_item_response(item)
 
 

@@ -1,10 +1,12 @@
 "use client";
 
+import { buildCaseReferences } from "@/components/case-sheet/utils/case-references.util";
 import {
   DSAlert,
   DSButton,
   DSButtonLink,
   DSCard,
+  DSCopyButton,
   DSErrorState,
   DSPageHeader,
   DSSkeleton,
@@ -21,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { CaseNavigator } from "./components/case-navigator/case-navigator";
 import { CaseRecorder } from "./components/case-recorder/case-recorder";
 import { FinishRunModal } from "./components/finish-run-modal/finish-run-modal";
+import { IterationRecorder } from "./components/iteration-recorder/iteration-recorder";
 import { RecordedCaseView } from "./components/recorded-case-view/recorded-case-view";
 import { usePutManualCaseResult } from "./hooks/mutations/use-put-manual-case-result";
 import {
@@ -29,18 +32,27 @@ import {
   type GetManualRunQueryKey,
 } from "./hooks/queries/use-get-manual-run";
 import { useManualRunApiErrors } from "./hooks/use-manual-run-api-errors";
+import { useRunSecrets } from "./hooks/use-run-secrets";
 import styles from "./record-manual-run.module.scss";
 import { NOT_FOUND_STATUS } from "./typing/constants/manual-run.constant";
 import type { CaseDraft } from "./typing/types/case-draft.type";
 import type { ManualRun, ManualRunCase, ResultStatus } from "./typing/types/manual-run.type";
 import type { StepDraft } from "./typing/types/step-draft.type";
-import { buildCaseResultRequest, createEmptyCaseDraft } from "./utils/case-result-request.util";
-import { buildRunDetailPath, buildRunsPath } from "./utils/manual-run-path.util";
-import { checkCanRecordRun } from "./utils/manual-run-permission.util";
 import {
+  buildCaseDraftKey,
+  buildCaseResultRequest,
+  createEmptyCaseDraft,
+} from "./utils/case-result-request.util";
+import { buildRunDetailPath, buildRunsPath } from "./utils/manual-run-path.util";
+import { checkCanRecordRun, checkCanRevealRunSecrets } from "./utils/manual-run-permission.util";
+import {
+  checkIsCaseRecorded,
+  checkIsDataDrivenCase,
   countRecordedCases,
   findFirstUnrecordedCase,
+  findFirstUnrecordedIteration,
   findNextUnrecordedCase,
+  findNextUnrecordedIteration,
   sortRunCases,
 } from "./utils/run-case.util";
 import { updateStepDraft } from "./utils/step-draft.util";
@@ -51,6 +63,8 @@ interface Props {
 
 export const RecordManualRunPage: FC<Props> = ({ runId }) => {
   const { t } = useTranslation("manualRun");
+  const { t: tSuites } = useTranslation("suites");
+  const { t: tDataRows } = useTranslation("dataRows");
   const project = useCurrentProject();
   const currentUser = useCurrentUser();
   const queryClient = useQueryClient();
@@ -68,8 +82,14 @@ export const RecordManualRunPage: FC<Props> = ({ runId }) => {
   const recordResult = usePutManualCaseResult(project.key, runId);
   const [drafts, setDrafts] = useState<Record<string, CaseDraft>>({});
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
+  const [selectedIteration, setSelectedIteration] = useState<number | null>(null);
   const [isAllRecordedShown, setIsAllRecordedShown] = useState(false);
   const [isFinishOpened, setIsFinishOpened] = useState(false);
+  const runSecrets = useRunSecrets(
+    project.key,
+    runId,
+    run !== undefined && checkCanRevealRunSecrets(project, run, currentUser.id),
+  );
 
   if (!isValidId || (run === undefined && error?.status === NOT_FOUND_STATUS)) {
     return (
@@ -124,57 +144,85 @@ export const RecordManualRunPage: FC<Props> = ({ runId }) => {
     </DSButtonLink>
   );
 
-  const updateDraft = (testCaseId: string, update: (draft: CaseDraft) => CaseDraft): void => {
+  const updateDraft = (draftKey: string, update: (draft: CaseDraft) => CaseDraft): void => {
     setDrafts((currentDrafts) => {
       return {
         ...currentDrafts,
-        [testCaseId]: update(currentDrafts[testCaseId] ?? createEmptyCaseDraft()),
+        [draftKey]: update(currentDrafts[draftKey] ?? createEmptyCaseDraft()),
       };
     });
   };
 
-  const handleStepChange = (
-    testCaseId: string,
-    order: number,
-    changes: Partial<StepDraft>,
-  ): void => {
-    updateDraft(testCaseId, (draft) => {
+  const readDraft = (draftKey: string): CaseDraft => {
+    return drafts[draftKey] ?? createEmptyCaseDraft();
+  };
+
+  const handleStepChange = (draftKey: string, order: number, changes: Partial<StepDraft>): void => {
+    updateDraft(draftKey, (draft) => {
       return updateStepDraft(draft, order, changes);
     });
   };
 
   const handleStatusOverrideChange = (
-    testCaseId: string,
+    draftKey: string,
     statusOverride: ResultStatus | null,
   ): void => {
-    updateDraft(testCaseId, (draft) => {
+    updateDraft(draftKey, (draft) => {
       return { ...draft, statusOverride };
     });
   };
 
   const handleSelectCase = (testCaseId: string): void => {
     setSelectedCaseId(testCaseId);
+    setSelectedIteration(null);
     setIsAllRecordedShown(false);
     recordResult.reset();
   };
 
-  const handleSave = async (runCase: ManualRunCase): Promise<void> => {
-    const draft = drafts[runCase.testCaseId] ?? createEmptyCaseDraft();
+  const handleSelectIteration = (iteration: number): void => {
+    setSelectedIteration(iteration);
+    recordResult.reset();
+  };
+
+  const handleSave = async (runCase: ManualRunCase, iteration: number | null): Promise<void> => {
+    const draft = readDraft(buildCaseDraftKey(runCase.testCaseId, iteration));
+    const steps =
+      iteration === null
+        ? runCase.steps
+        : (runCase.iterations.find((candidate) => candidate.iteration === iteration)?.steps ??
+          runCase.steps);
 
     try {
       await recordResult.mutateAsync({
         testCaseId: runCase.testCaseId,
-        body: buildCaseResultRequest(draft, runCase.steps),
+        body: buildCaseResultRequest(draft, steps, iteration ?? 0),
       });
     } catch {
       return;
     }
 
-    showSuccessToast(t("record.saved", { code: runCase.code }));
+    showSuccessToast(
+      iteration === null
+        ? t("record.saved", { code: runCase.code })
+        : tDataRows("iteration.saved", { code: runCase.code, number: iteration + 1 }),
+    );
+    runSecrets.hideAll();
     const queryKey: GetManualRunQueryKey = [GET_MANUAL_RUN_KEY, project.key, runId];
     const refreshedRun = queryClient.getQueryData<ManualRun>(queryKey) ?? run;
+    if (iteration !== null) {
+      const refreshedCase =
+        refreshedRun.cases.find((candidate) => candidate.testCaseId === runCase.testCaseId) ??
+        runCase;
+      const nextIteration = findNextUnrecordedIteration(refreshedCase, iteration);
+      if (nextIteration !== null) {
+        setSelectedIteration(nextIteration);
+        return;
+      }
+    }
+
     const nextCase = findNextUnrecordedCase(refreshedRun.cases, runCase.testCaseId);
     setSelectedCaseId(nextCase?.testCaseId ?? runCase.testCaseId);
+    setSelectedIteration(null);
     setIsAllRecordedShown(nextCase === null);
   };
 
@@ -207,28 +255,83 @@ export const RecordManualRunPage: FC<Props> = ({ runId }) => {
   };
 
   const renderCurrentCase = (runCase: ManualRunCase): ReactNode => {
-    if (!canRecord || runCase.result !== null) {
-      return <RecordedCaseView runCase={runCase} />;
+    const references = buildCaseReferences(
+      run.data,
+      runCase.files,
+      runSecrets.revealedValues,
+      run.environmentName,
+    );
+    const errorMessage =
+      recordResult.error === null ? null : resolveMessage(recordResult.error, apiErrors);
+    if (checkIsDataDrivenCase(runCase)) {
+      const activeIteration =
+        selectedIteration ??
+        findFirstUnrecordedIteration(runCase) ??
+        runCase.iterations[0]?.iteration ??
+        0;
+
+      return (
+        <IterationRecorder
+          key={runCase.testCaseId}
+          runCase={runCase}
+          activeIteration={activeIteration}
+          readDraft={(iteration) => {
+            return readDraft(buildCaseDraftKey(runCase.testCaseId, iteration));
+          }}
+          references={references}
+          secretReveal={runSecrets.secretReveal}
+          canRecord={canRecord}
+          onSelectIteration={handleSelectIteration}
+          onStepChange={(iteration, order, changes) => {
+            handleStepChange(buildCaseDraftKey(runCase.testCaseId, iteration), order, changes);
+          }}
+          onStatusOverrideChange={(iteration, statusOverride) => {
+            handleStatusOverrideChange(
+              buildCaseDraftKey(runCase.testCaseId, iteration),
+              statusOverride,
+            );
+          }}
+          onCauseChange={(iteration, changes) => {
+            updateDraft(buildCaseDraftKey(runCase.testCaseId, iteration), (draft) => {
+              return { ...draft, ...changes };
+            });
+          }}
+          onSave={(iteration) => {
+            void handleSave(runCase, iteration);
+          }}
+          isSaving={recordResult.isPending}
+          errorMessage={errorMessage}
+        />
+      );
+    }
+
+    if (!canRecord || checkIsCaseRecorded(runCase)) {
+      return <RecordedCaseView runCase={runCase} references={references} />;
     }
 
     return (
       <CaseRecorder
         key={runCase.testCaseId}
         runCase={runCase}
-        draft={drafts[runCase.testCaseId] ?? createEmptyCaseDraft()}
+        draft={readDraft(buildCaseDraftKey(runCase.testCaseId, null))}
+        references={references}
+        secretReveal={runSecrets.secretReveal}
         onStepChange={(order, changes) => {
           handleStepChange(runCase.testCaseId, order, changes);
         }}
         onStatusOverrideChange={(statusOverride) => {
           handleStatusOverrideChange(runCase.testCaseId, statusOverride);
         }}
+        onCauseChange={(changes) => {
+          updateDraft(runCase.testCaseId, (draft) => {
+            return { ...draft, ...changes };
+          });
+        }}
         onSave={() => {
-          void handleSave(runCase);
+          void handleSave(runCase, null);
         }}
         isSaving={recordResult.isPending}
-        errorMessage={
-          recordResult.error === null ? null : resolveMessage(recordResult.error, apiErrors)
-        }
+        errorMessage={errorMessage}
       />
     );
   };
@@ -243,11 +346,32 @@ export const RecordManualRunPage: FC<Props> = ({ runId }) => {
         </DSButtonLink>
       </div>
       <DSPageHeader
-        title={t("record.title", { storyKey: run.storyJiraKey })}
+        title={
+          run.storyJiraKey === null
+            ? tSuites("manualRun.recordTitle", { name: run.testSuiteName ?? run.testSuiteId ?? "" })
+            : t("record.title", { storyKey: run.storyJiraKey })
+        }
         description={
           <span className={styles.description}>
-            <span>{`${run.environmentName} · ${t("record.startedBy", { name: run.startedByName })}`}</span>
-            <span>{t("record.progress", { recorded: recordedCount, total: cases.length })}</span>
+            <span className={styles.environment}>
+              <span>{run.environmentName}</span>
+              <a
+                href={run.environmentBaseUrl}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.environmentLink}
+                aria-label={t("record.openEnvironment", { environment: run.environmentName })}
+              >
+                {run.environmentBaseUrl}
+              </a>
+              <DSCopyButton value={run.environmentBaseUrl} />
+            </span>
+            <span>
+              {`${t("record.startedBy", { name: run.startedByName })} · ${t("record.progress", {
+                recorded: recordedCount,
+                total: cases.length,
+              })}`}
+            </span>
           </span>
         }
         actions={

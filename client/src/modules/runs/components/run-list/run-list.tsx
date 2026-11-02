@@ -29,7 +29,8 @@ interface Props {
 export const RunList: FC<Props> = ({ projectKey, filters, onClearFilters }) => {
   const { t } = useTranslation("runs");
   const { data, error, isPending, isError, isFetching, refetch } = useGetRuns(projectKey, filters);
-  const isUnknownStory = error?.status === NOT_FOUND_STATUS && filters.storyKey !== null;
+  const isUnknownStory =
+    error?.status === NOT_FOUND_STATUS && (filters.storyKey !== null || filters.suiteId !== null);
 
   if (isPending) {
     return (

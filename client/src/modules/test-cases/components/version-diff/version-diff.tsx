@@ -56,6 +56,8 @@ export const VersionDiff: FC<Props> = ({ entries }) => {
         );
       case "criteria":
         return <TextDiff tokens={entry.tokens} separator={CODE_SEPARATOR} labels={diffLabels} />;
+      case "dataTable":
+        return <TextDiff tokens={entry.tokens} labels={diffLabels} />;
       case "files":
         return (
           <DSText size="sm">

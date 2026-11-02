@@ -52,7 +52,12 @@
       "title": "Connect Jira first",
       "description": "Each project is linked to one Jira project.",
       "action": "Set up the Jira connection"
-    }
+    },
+    "storySource": "Where the stories come from",
+    "sourceJira": "Link a Jira project",
+    "sourceTessio": "Write stories in Tessio",
+    "jiraNotConnected": "Jira isn't connected, so this project's stories will be written in Tessio. A workspace admin can connect Jira in Settings.",
+    "tessioHint": "Your team writes the stories and their acceptance criteria in Tessio. This project has no sprints and no Jira sync."
   },
   "fields": {
     "jiraProject": "Jira project",
@@ -60,7 +65,9 @@
     "name": "Name",
     "key": "Key",
     "keyDescription": "2–10 capital letters or digits, starting with a letter. It cannot be changed later.",
-    "description": "Description"
+    "description": "Description",
+    "stories": "Stories",
+    "writtenInTessio": "Written in Tessio"
   },
   "hints": {
     "allJiraProjectsLinked": "Every Jira project is already linked",
@@ -158,5 +165,8 @@
       "description": "Archived projects stay readable for everyone.",
       "action": "Archive project"
     }
+  },
+  "table": {
+    "withoutJira": "Written in Tessio"
   }
 }

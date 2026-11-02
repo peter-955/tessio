@@ -6,7 +6,13 @@ import {
   buildRecordedResult,
   buildRunCase,
 } from "../test/utils/run.fixture";
-import { findNextUnrecordedCase } from "./run-case.util";
+import {
+  checkIsCaseRecorded,
+  countRecordedCases,
+  findFirstUnrecordedIteration,
+  findNextUnrecordedCase,
+  findNextUnrecordedIteration,
+} from "./run-case.util";
 
 const FIRST_CASE = buildRunCase({ testCaseId: FIRST_CASE_ID, position: 1 });
 const SECOND_CASE = buildRunCase({ testCaseId: SECOND_CASE_ID, position: 2 });
@@ -31,5 +37,47 @@ describe("findNextUnrecordedCase", () => {
     const recordedSecond = { ...SECOND_CASE, result: buildRecordedResult("failed") };
 
     expect(findNextUnrecordedCase([FIRST_CASE, recordedSecond], FIRST_CASE_ID)).toBeNull();
+  });
+});
+
+describe("data-driven cases", () => {
+  const buildIterations = (recorded: readonly number[]) => {
+    return [0, 1, 2].map((iteration) => {
+      return {
+        iteration,
+        values: { email: `user${iteration}@shop.test` },
+        result: recorded.includes(iteration)
+          ? { ...buildRecordedResult("passed"), iteration }
+          : null,
+        steps: [],
+      };
+    });
+  };
+
+  it("is recorded only when every iteration has a result", () => {
+    const partly = buildRunCase({
+      result: buildRecordedResult("passed"),
+      parameters: ["email"],
+      iterations: buildIterations([0, 2]),
+    });
+    const fully = { ...partly, iterations: buildIterations([0, 1, 2]) };
+
+    expect(checkIsCaseRecorded(partly)).toBe(false);
+    expect(checkIsCaseRecorded(fully)).toBe(true);
+    expect(countRecordedCases([partly, fully])).toBe(1);
+    expect(findNextUnrecordedCase([FIRST_CASE, partly], FIRST_CASE_ID)?.testCaseId).toBe(
+      partly.testCaseId,
+    );
+  });
+
+  it("finds the next iteration to record after the current one, then wraps", () => {
+    const runCase = buildRunCase({ parameters: ["email"], iterations: buildIterations([1]) });
+
+    expect(findFirstUnrecordedIteration(runCase)).toBe(0);
+    expect(findNextUnrecordedIteration(runCase, 0)).toBe(2);
+    expect(findNextUnrecordedIteration(runCase, 2)).toBe(0);
+    expect(
+      findNextUnrecordedIteration({ ...runCase, iterations: buildIterations([0, 1]) }, 2),
+    ).toBeNull();
   });
 });

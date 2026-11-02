@@ -24,26 +24,32 @@
     "viewerHint": "You are a Viewer in this project, so Claude can read but not record results.",
     "limitReached": "You have 10 active tokens. Revoke one to create another.",
     "noProjects": "You are not a member of any project yet.",
-    "projectsLoadFailed": "Projects could not be loaded"
+    "projectsLoadFailed": "Projects could not be loaded",
+    "viewerApiHint": "You are a Viewer in this project, so this token can read runs, failures and test cases but not import results."
   },
   "created": {
     "title": "Token for {{projectKey}}",
     "shownOnce": "Copy it now. You will not see this token again.",
     "commandLabel": "Run this in your terminal:",
-    "marketplaceMissing": "The plugin source is not configured. Replace <marketplace> with the value your admin gives you.",
+    "httpsOnly": "Claude Code installs the plugin only from an HTTPS address. On a local copy of Tessio, start Claude Code with claude --plugin-dir claude from the repository instead.",
     "restart": "Then restart Claude Code.",
     "tokenLabel": "Token only",
-    "done": "Done"
+    "done": "Done",
+    "apiCommandLabel": "Import JUnit results from CI with this call:",
+    "apiHint": "Store the token as a CI secret. It works only for the JUnit import and for reading runs, failures and test cases over the REST API, not for Claude Code."
   },
   "table": {
     "title": "Your tokens",
     "activeCount": "{{count}} of {{max}} active",
     "name": "Name",
     "project": "Project",
+    "scope": "Used for",
     "token": "Token",
     "status": "Status",
     "expires": "Expires",
     "lastUsed": "Last used",
+    "plugin": "Plugin",
+    "noPlugin": "–",
     "created": "Created",
     "actions": "Actions",
     "never": "Never",
@@ -66,5 +72,20 @@
   "errors": {
     "notMember": "You can only create a token for a project you are a member of.",
     "projectNotFound": "This project no longer exists."
+  },
+  "scope": {
+    "label": "Used for",
+    "options": {
+      "mcp": "Claude Code (MCP)",
+      "api": "CI and scripts (REST API)"
+    },
+    "descriptions": {
+      "mcp": "The Tessio plugin in Claude Code.",
+      "api": "JUnit import and reading runs, failures and test cases."
+    },
+    "short": {
+      "mcp": "Claude Code",
+      "api": "REST API"
+    }
   }
 }

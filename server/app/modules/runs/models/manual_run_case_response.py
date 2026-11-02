@@ -11,3 +11,5 @@ class ManualRunCaseResponse(WireModel):
     title: str
     steps: list[ManualRunStepResponse]
     result_status: ResultStatus | None
+    parameters: list[str]
+    data_rows: list[dict[str, str]]

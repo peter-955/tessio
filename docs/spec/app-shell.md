@@ -20,10 +20,10 @@ The frame around every signed-in page: the sidebar, the top bar, the mobile draw
 
 As a project member, I want a sidebar with the project's sections, so that I reach each part of the testing work in one click.
 
-- AC1: Inside `/projects/[projectKey]`, the sidebar lists Dashboard, Sprints, Stories, Test cases, Runs, Failures, Test data, Members and Settings, in that order, each linking to `/projects/[projectKey]/<segment>`.
-- AC2: An item shows only when the project's `capabilities` contain its capability: Dashboard and Members `project.view`, Sprints `sprint.view`, Stories `story.view`, Test cases `test_case.view`, Runs `run.view`, Failures `failure.view`, Test data `test_data.view`, Settings `project.edit`.
+- AC1: Inside `/projects/[projectKey]`, the sidebar lists Dashboard, Sprints, Stories, Test cases, Shared steps, Suites, Runs, Plans, Failures, Insights, Test data, Members and Settings, in that order, each linking to `/projects/[projectKey]/<segment>`.
+- AC2: An item shows only when the project's `capabilities` contain its capability: Dashboard and Members `project.view`, Sprints `sprint.view`, Stories `story.view`, Test cases, Shared steps and Suites `test_case.view`, Runs `run.view`, Plans and Insights `report.view`, Failures `failure.view`, Test data `test_data.view`, Settings `project.edit`.
 - AC3: On an archived project the `capabilities` list holds read capabilities only, so Settings is hidden.
-- AC4: The workspace section always lists Projects (`/projects`). It lists Users (`/users`) and Workspace settings (`/settings`) only for the Owner and Workspace admins.
+- AC4: The workspace section always lists Projects (`/projects`) and AI Harness (`/ai-harness`, [HARN-1](ai-harness.md)). It lists Users (`/users`) and Workspace settings (`/settings`) only for the Owner and Workspace admins.
 - AC5: Outside a project, only the workspace section shows, with the hint "Pick a project to see its sprints, stories and runs."
 - AC6: A "Skip to main content" link is the first focusable element.
 
@@ -113,7 +113,7 @@ As a member of an archived project, I want a clear banner, so that I know why I 
 
 ## Differences from the proposals
 
-- The [workflow proposal §9](../discussions/testing-workflow-proposal.md#9-what-this-changes-in-the-current-plan) listed eight sidebar items. The code has nine: Failures was added, as in WBS 3.1.1.
+- The [workflow proposal §9](../discussions/testing-workflow-proposal.md#9-what-this-changes-in-the-current-plan) listed eight sidebar items. The code has thirteen: Failures was added, as in WBS 3.1.1, and Shared steps, Suites, Plans and Insights (WBS 9.1, 9.2 and 9.5). Their pages are built: Shared steps ([CASE-16](test-cases.md#case-16-shared-steps-and-data-driven-cases-wbs-92)), Suites and Plans ([suites-and-plans.md](suites-and-plans.md)). Insights is built too ([insights.md](insights.md#insights-page-projectsprojectkeyinsights)).
 - The gap inbox is in the account menu (My gaps), not in the sidebar.
 - Archived projects are left out of the switcher, as proposed, but they are still listed on `/projects` with "Show archived".
 

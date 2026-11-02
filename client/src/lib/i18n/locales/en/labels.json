@@ -1,0 +1,86 @@
+{
+  "colors": {
+    "gray": "Gray",
+    "red": "Red",
+    "orange": "Orange",
+    "yellow": "Yellow",
+    "green": "Green",
+    "teal": "Teal",
+    "blue": "Blue",
+    "violet": "Violet"
+  },
+  "chips": {
+    "ariaLabel": "Labels"
+  },
+  "manager": {
+    "title": "Labels",
+    "description": "Labels such as smoke or checkout group cases across stories. QC adds them to cases from the case page.",
+    "add": "New label",
+    "loading": "Loading labels",
+    "loadError": "Labels could not be loaded",
+    "retry": "Try again",
+    "empty": "No labels yet.",
+    "tableLabel": "Labels",
+    "name": "Label",
+    "usage": "Usage",
+    "actions": "Actions",
+    "actionsFor": "Actions for {{name}}",
+    "usedBy_one": "Used by {{count}} case",
+    "usedBy_other": "Used by {{count}} cases",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "form": {
+    "createTitle": "New label",
+    "editTitle": "Edit label",
+    "name": "Name",
+    "namePlaceholder": "smoke",
+    "color": "Color",
+    "preview": "Preview",
+    "create": "Create label",
+    "save": "Save"
+  },
+  "delete": {
+    "title": "Delete label",
+    "message_one": "Delete {{name}}? It is removed from {{count}} case.",
+    "message_other": "Delete {{name}}? It is removed from {{count}} cases.",
+    "confirm": "Delete"
+  },
+  "picker": {
+    "title": "Labels",
+    "none": "No labels",
+    "edit": "Edit labels",
+    "field": "Labels",
+    "placeholder": "Pick labels",
+    "noMatch": "No label matches",
+    "maxReached": "A case can have at most {{max}} labels.",
+    "newLabel": "New label",
+    "newLabelPlaceholder": "Name of a new label",
+    "create": "Create and add",
+    "save": "Save labels",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "loadError": "Labels could not be loaded."
+  },
+  "filter": {
+    "label": "Labels",
+    "placeholder": "Any label",
+    "noMatch": "No label matches"
+  },
+  "validation": {
+    "required": "Enter a name.",
+    "tooLong": "Use at most {{max}} characters.",
+    "alreadyUsed": "A label with this name already exists."
+  },
+  "toasts": {
+    "created": "Label created",
+    "updated": "Label saved",
+    "deleted": "Label deleted",
+    "caseLabelsSaved": "Labels saved"
+  },
+  "errors": {
+    "nameAlreadyUsed": "A label with this name already exists.",
+    "notFound": "This label no longer exists. Reload to see the current labels.",
+    "notProjectLabel": "Use only labels of this project."
+  }
+}

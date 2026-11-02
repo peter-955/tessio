@@ -1,6 +1,6 @@
 # Tessio end-to-end tests
 
-A Playwright (Chromium) suite that drives the real app the way a team uses it: invite, two-factor sign-in, project, Jira sync, test case, gap, manual run, failure and sign-off. It also checks the phone layout at 375 px and the focused-input border in the light and dark themes.
+A Playwright (Chromium) suite that drives the real app the way a team uses it: invite, two-factor sign-in, project, Jira sync, test case, gap, manual run, failure and sign-off. It also checks the phone layout at 375 px, the focused-input border in the light and dark themes, and a gap answered with Claude through the Tessio MCP tools (`12-answer-gaps`: a Dev API token calls `get_my_gaps` and `answer_gap` on `/mcp`, and the story is unblocked with the answer shown "via Claude"), and a regression suite run (`13-suite-run`: the QC labels the case, builds a suite by label, sees an open gap block the suite run, the Dev answers it, the QC runs the suite by hand and signs off a test plan that covers it).
 
 The suite runs against its own Docker stack (`compose.e2e.yml`, project `tessio-e2e`), built from `../server` and `../client`, with a fake Jira. Your dev stack, its data and its rate limits are not touched.
 
@@ -13,7 +13,7 @@ cd e2e
 npm install
 npx playwright install chromium
 npm run stack:up          # builds and starts the stack, waits until every service is healthy
-npm test                  # seeds the e2e database, then runs tests/01 … tests/11 in order
+npm test                  # seeds the e2e database, then runs tests/01 … tests/13 in order
 npm run report            # opens the HTML report (playwright-report/index.html)
 npm run stack:down        # stops the stack and deletes its volumes
 ```

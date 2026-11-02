@@ -167,6 +167,7 @@ async def test_uploaded_screenshots_are_verified_and_the_rest_are_missing(
             "test_case_id": str(story.case_ids[0]),
             "code": missing[0]["code"],
             "step_order": 2,
+            "iteration": None,
         }
     ]
 

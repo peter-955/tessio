@@ -33,9 +33,14 @@ describe("buildVersionDiff", () => {
       title: "Pay with a saved card",
       priority: "critical",
       steps: [
-        { order: 1, action: "Open the cart", expected: null },
-        { order: 2, action: "Pay as {{data.admin}}", expected: "The order is paid" },
-        { order: 3, action: "Open the receipt", expected: null },
+        { order: 1, action: "Open the cart", expected: null, sharedStepKey: null },
+        {
+          order: 2,
+          action: "Pay as {{data.admin}}",
+          expected: "The order is paid",
+          sharedStepKey: null,
+        },
+        { order: 3, action: "Open the receipt", expected: null, sharedStepKey: null },
       ],
       criterionIds: [SECOND_CRITERION_ID],
       fileVersionIds: ["file-2", "file-3"],
@@ -74,12 +79,48 @@ describe("buildVersionDiff", () => {
     expect(entries[4]).toEqual({ field: "files", kind: "files", added: 2, removed: 1 });
   });
 
+  it("reports a version that changes only the parameters and data rows", () => {
+    const withRows = buildTestCaseVersion({
+      ...OLDER,
+      id: "newer",
+      number: 2,
+      parameters: ["email"],
+      dataRows: [{ email: "ann@shop.test" }],
+    });
+    const withMoreRows = buildTestCaseVersion({
+      ...withRows,
+      id: "newest",
+      number: 3,
+      dataRows: [{ email: "ann@shop.test" }, { email: "bob@shop.test" }],
+    });
+
+    expect(buildVersionDiff(OLDER, withRows, STORY_CRITERIA)).toEqual([
+      {
+        field: "dataTable",
+        kind: "dataTable",
+        tokens: [{ value: "email\n1. ann@shop.test", kind: "added" }],
+      },
+    ]);
+    const entries = buildVersionDiff(withRows, withMoreRows, STORY_CRITERIA);
+    const [entry] = entries;
+
+    expect(entries.map((item) => item.field)).toEqual(["dataTable"]);
+    expect(entry?.kind === "dataTable" ? entry.tokens : []).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ kind: "added", value: expect.stringContaining("bob@shop.test") }),
+      ]),
+    );
+    expect(
+      entry?.kind === "dataTable" && entry.tokens.every((token) => token.kind !== "removed"),
+    ).toBe(true);
+  });
+
   it("reports removed steps and cleared text", () => {
     const newer = buildTestCaseVersion({
       id: "newer",
       number: 2,
       businessValue: null,
-      steps: [{ order: 1, action: "Open the cart", expected: null }],
+      steps: [{ order: 1, action: "Open the cart", expected: null, sharedStepKey: null }],
       criterionIds: [FIRST_CRITERION_ID],
       fileVersionIds: ["file-1"],
     });

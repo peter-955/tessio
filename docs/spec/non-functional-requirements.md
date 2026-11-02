@@ -152,6 +152,10 @@ Manual-run evidence, test files and imports come on top; the database itself gro
 | NFR-LIMITS-21 | Stale run / stale sync | 4 hours / 15 minutes | `STALE_RUN_INACTIVITY`, `SYNC_STALE_AFTER` |
 | NFR-LIMITS-22 | Closed sprints synced back | 30 days | `CLOSED_SPRINT_SYNC_WINDOW` |
 | NFR-LIMITS-23 | Default allowed file types | png, jpeg, webp, gif, pdf, txt, csv, json, docx, xlsx | `DEFAULT_ALLOWED_FILE_TYPES` |
+| NFR-LIMITS-24 | `get_my_gaps` gaps per reply / similar answers per gap / search words per question | 50 / 3 / 20 words of at least 3 letters | `MAX_MY_GAPS`, `MAX_SIMILAR_ANSWERS`, `MAX_SEARCH_TERMS`, `MIN_SEARCH_TERM_LENGTH` |
+| NFR-LIMITS-25 | Label name / labels per case | 40 characters / 20 | `MAX_LABEL_NAME_LENGTH`, `MAX_LABELS_PER_CASE` |
+| NFR-LIMITS-26 | Flaky window / flips that make a case flaky / passes in a row that end quarantine / disagreement window | 10 results / 3 / 10 / 24 hours | `FLAKY_RESULT_WINDOW`, `FLAKY_FLIP_THRESHOLD`, `QUARANTINE_RELEASE_PASS_COUNT`, `DISAGREEMENT_WINDOW` |
+| NFR-LIMITS-27 | Quarantine reason / review comment | 500 / 5000 characters | `MAX_QUARANTINE_REASON_LENGTH`, `MAX_REVIEW_COMMENT_LENGTH` |
 
 ## Open points
 

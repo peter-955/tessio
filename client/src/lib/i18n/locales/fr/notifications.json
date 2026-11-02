@@ -27,7 +27,8 @@
   "item": {
     "unread": "Non lue :",
     "markRead": "Marquer comme lue",
-    "byActor": "par {{actorName}}"
+    "byActor": "par {{actorName}}",
+    "download": "Télécharger le rapport"
   },
   "kind": {
     "gapAssigned": {
@@ -45,6 +46,22 @@
         "aborted": "Exécution interrompue sur {{storyKey}}"
       },
       "description": "{{passedCount}} réussis · {{failedCount}} en échec · {{blockedCount}} bloqués"
+    },
+    "suiteRunFinished": {
+      "title": {
+        "passed": "Exécution de suite réussie : {{suiteName}}",
+        "failed": "Exécution de suite en échec : {{suiteName}}",
+        "aborted": "Exécution de suite interrompue : {{suiteName}}"
+      },
+      "description": "{{passedCount}} réussis · {{failedCount}} en échec · {{blockedCount}} bloqués"
+    },
+    "reportReady": {
+      "title": {
+        "run": "Rapport prêt : exécution {{sourceLabel}}",
+        "plan": "Rapport prêt : plan {{sourceLabel}}",
+        "story": "Rapport prêt : {{sourceLabel}}"
+      },
+      "description": "{{fileName}}"
     }
   }
 }

@@ -28,6 +28,10 @@ async def test_jira_connection_is_not_configured_without_a_row(
         "accountEmail": None,
         "accountDisplayName": None,
         "configuredAt": None,
+        "canCreateIssues": None,
+        "canComment": None,
+        "missingPermissions": [],
+        "permissionsCheckedAt": None,
     }
 
 

@@ -24,7 +24,13 @@ class ListRunsUseCase:
         self._run_view_reader = run_view_reader
 
     async def execute(
-        self, actor: Actor, project_key: str, story_key: str | None, status: RunStatus | None, limit: int
+        self,
+        actor: Actor,
+        project_key: str,
+        story_key: str | None,
+        status: RunStatus | None,
+        limit: int,
+        test_suite_id: UUID | None = None,
     ) -> list[RunSummary]:
         async with self._transaction.begin():
             access = await self._project_access_resolver.resolve(actor, project_key)
@@ -36,6 +42,7 @@ class ListRunsUseCase:
                     raise StoryNotFoundError
                 story_id = story.id
             summaries = await self._run_view_reader.list_summaries(
-                access.project_id, RunFilter(story_id=story_id, status=status, limit=limit)
+                access.project_id,
+                RunFilter(story_id=story_id, status=status, limit=limit, test_suite_id=test_suite_id),
             )
         return summaries

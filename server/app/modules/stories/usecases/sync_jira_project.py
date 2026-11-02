@@ -8,6 +8,7 @@ from app.modules.jira import (
     JiraSprint,
     JiraSprintState,
     LoadJiraCredentialsUseCase,
+    RefreshJiraWriteAccessUseCase,
 )
 from app.modules.stories.domains.acceptance_criterion.repository import AcceptanceCriterionRepository
 from app.modules.stories.domains.fetched_story.entity import FetchedStory
@@ -18,6 +19,7 @@ from app.modules.stories.domains.story.entity import Story
 from app.modules.stories.domains.story.repository import StoryRepository
 from app.modules.stories.domains.sync_target.entity import SyncTarget
 from app.modules.stories.ports.criteria_changed_handler import CriteriaChangedHandler
+from app.modules.stories.ports.jira_issue_status_refresher import JiraIssueStatusRefresher
 from app.modules.stories.ports.sync_target_reader import SyncTargetReader
 from app.modules.stories.typing.constants import JIRA_BROWSE_URL_TEMPLATE
 from app.modules.stories.typing.enums import ProjectSyncStatus, SprintState, TestStatus
@@ -46,6 +48,8 @@ class SyncJiraProjectUseCase:
         jira_client: JiraClient,
         criteria_changed_handler: CriteriaChangedHandler,
         live_event_publisher: LiveEventPublisher,
+        refresh_jira_write_access: RefreshJiraWriteAccessUseCase,
+        jira_issue_status_refresher: JiraIssueStatusRefresher,
     ) -> None:
         self._transaction = transaction
         self._sync_target_reader = sync_target_reader
@@ -57,6 +61,8 @@ class SyncJiraProjectUseCase:
         self._jira_client = jira_client
         self._criteria_changed_handler = criteria_changed_handler
         self._live_event_publisher = live_event_publisher
+        self._refresh_jira_write_access = refresh_jira_write_access
+        self._jira_issue_status_refresher = jira_issue_status_refresher
 
     async def execute(self, project_id: UUID, now: datetime) -> None:
         target = await self._start(project_id, now)
@@ -65,16 +71,19 @@ class SyncJiraProjectUseCase:
         if target.is_archived:
             await self._fail(target, ErrorCode.PROJECT_ARCHIVED, now)
             return
+        if target.jira_project_key is None or target.jira_board_id is None:
+            await self._fail(target, ErrorCode.JIRA_NOT_CONFIGURED, now)
+            return
+        jira_project_key = target.jira_project_key
+        jira_board_id = target.jira_board_id
         try:
             credentials = await self._load_jira_credentials.execute()
-            jira_sprints = await self._jira_client.list_sprints(
-                credentials, target.jira_board_id, frozenset(JiraSprintState)
-            )
+            jira_sprints = await self._jira_client.list_sprints(credentials, jira_board_id, frozenset(JiraSprintState))
             in_scope_sprints = [jira_sprint for jira_sprint in jira_sprints if is_sprint_in_scope(jira_sprint, now)]
             issues_by_sprint: dict[JiraSprint, list[JiraIssue]] = {}
             for jira_sprint in in_scope_sprints:
                 issues_by_sprint[jira_sprint] = await self._jira_client.search_issues(
-                    credentials, build_sprint_issues_jql(target.jira_project_key, jira_sprint.id)
+                    credentials, build_sprint_issues_jql(jira_project_key, jira_sprint.id)
                 )
             fetched_stories = assign_stories_to_sprints(issues_by_sprint)
             await self._store(target, credentials, jira_sprints, in_scope_sprints, fetched_stories, now)
@@ -84,6 +93,7 @@ class SyncJiraProjectUseCase:
         except Exception:
             await self._fail(target, None, now)
             raise
+        await self._refresh_write_side(target.project_id, credentials, now)
         await self._live_event_publisher.publish(
             LiveEvent(
                 type=LiveEventType.JIRA_SYNC_FINISHED,
@@ -91,6 +101,16 @@ class SyncJiraProjectUseCase:
                 ids={"projectKey": target.project_key},
             )
         )
+
+    async def _refresh_write_side(self, project_id: UUID, credentials: JiraCredentials, now: datetime) -> None:
+        await self._refresh_jira_write_access.execute(now)
+        try:
+            await self._jira_issue_status_refresher.refresh(project_id, credentials, now)
+        except TessioError as error:
+            log.warning(
+                "jira_sync.issue_status_refresh_failed",
+                extra={"project_id": str(project_id), "error_code": error.code.value},
+            )
 
     async def _start(self, project_id: UUID, now: datetime) -> SyncTarget | None:
         async with self._transaction.begin():

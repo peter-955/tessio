@@ -20,6 +20,7 @@ export const buildImportRows = (
       kind: item.kind,
       suggestedKind: item.kind,
       value: item.value,
+      description: item.description,
       action: item.action,
       isIncluded: !isLocked && item.action !== "unchanged",
     };

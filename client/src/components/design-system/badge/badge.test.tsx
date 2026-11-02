@@ -19,6 +19,10 @@ describe("DSBadge", () => {
     ["red", "var(--color-red-text)"],
     ["green", "var(--color-green-text)"],
     ["yellow", "var(--color-yellow-text)"],
+    ["orange", "var(--color-orange-text)"],
+    ["teal", "var(--color-teal-text)"],
+    ["blue", "var(--color-blue-text)"],
+    ["violet", "var(--color-violet-text)"],
   ] as const)("uses the contrast-safe text token for %s", (color, token) => {
     render(<DSBadge color={color}>Failed</DSBadge>, { wrapper });
 

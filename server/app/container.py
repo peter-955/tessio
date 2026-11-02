@@ -5,6 +5,8 @@ import httpx
 from mcp.server.mcpserver import MCPServer
 
 from app.config import Settings
+from app.modules.ai_harness import GetAiHarnessUseCase
+from app.modules.ai_harness.infrastructure import McpServerToolCatalog
 from app.modules.api_tokens import (
     AuthenticateApiTokenUseCase,
     CreateApiTokenUseCase,
@@ -53,20 +55,28 @@ from app.modules.auth.infrastructure import (
     PwnedPasswordsChecker,
     PyotpTotpAuthenticator,
 )
+from app.modules.auth.ports.bearer_token_scope_gate import BearerTokenScopeGate
 from app.modules.auth.ports.breached_password_checker import BreachedPasswordChecker
 from app.modules.failures import (
     ApplyCaseResultUseCase,
     AssignFailureUseCase,
+    ChangeFailureCauseUseCase,
     ChangeFailureStatusUseCase,
     CountActiveFailuresUseCase,
+    CreateJiraIssueJobHandler,
+    CreateJiraIssueUseCase,
     GetFailureUseCase,
     ListFailuresUseCase,
+    PreviewJiraIssueUseCase,
+    RefreshFailureJiraIssuesUseCase,
+    RequestJiraIssueUseCase,
 )
 from app.modules.failures.infrastructure import (
     PostgresCaseResultReader,
     PostgresFailureAssigneeDirectory,
     PostgresFailureEventRepository,
     PostgresFailureRepository,
+    PostgresJiraBugSourceReader,
 )
 from app.modules.files import (
     CompleteUploadUseCase,
@@ -80,6 +90,7 @@ from app.modules.files.infrastructure import PostgresProjectFileTypesReader, Pos
 from app.modules.gaps import (
     AnswerGapUseCase,
     GetGapUseCase,
+    GetMyGapsUseCase,
     GetOpenGapsUseCase,
     ListGapInboxUseCase,
     ListGapsUseCase,
@@ -93,20 +104,78 @@ from app.modules.gaps.infrastructure import PostgresGapAssigneeDirectory, Postgr
 from app.modules.health import CheckReadinessUseCase
 from app.modules.health.infrastructure import PostgresReadinessProbe, RedisReadinessProbe
 from app.modules.insights import (
+    SNAPSHOT_CRON_PATTERN,
+    SNAPSHOT_SCHEDULER_ID,
+    DailySnapshotJobHandler,
     GetDashboardUseCase,
+    GetLabelCoverageUseCase,
     GetMyWorkUseCase,
+    GetTokenUsageUseCase,
     GetTraceabilityUseCase,
+    GetTrendsUseCase,
     LatestResultCriterionImpactCalculator,
     ListCaseLatestResultsUseCase,
+    ListFailingCasesUseCase,
+    ListFlakyCasesUseCase,
+    ListSprintCoverageUseCase,
     ListStoryProgressUseCase,
+    SnapshotDailyStatsUseCase,
 )
-from app.modules.insights.infrastructure import PostgresActivityReader, PostgresCoverageReader, PostgresStoryScopeReader
+from app.modules.insights.infrastructure import (
+    PostgresActivityReader,
+    PostgresCoverageReader,
+    PostgresDailyStatsCalculator,
+    PostgresDailyStatsRepository,
+    PostgresQualityReader,
+    PostgresStoryScopeReader,
+    PostgresTokenUsageReader,
+)
+from app.modules.integrations import (
+    ChatChannelLiveEventHandler,
+    ChatMessageDelivery,
+    CreateChatChannelUseCase,
+    CreateWebhookUseCase,
+    DeleteChatChannelUseCase,
+    DeleteOldWebhookDeliveriesJobHandler,
+    DeleteOldWebhookDeliveriesUseCase,
+    DeleteWebhookUseCase,
+    DeliverChatMessageJobHandler,
+    DeliverChatMessageUseCase,
+    DeliverWebhookJobHandler,
+    DeliverWebhookUseCase,
+    ListChatChannelsUseCase,
+    ListWebhookDeliveriesUseCase,
+    ListWebhooksUseCase,
+    RedeliverWebhookUseCase,
+    RequestChatDeliveriesUseCase,
+    RequestWebhookDeliveriesUseCase,
+    SendChatChannelTestUseCase,
+    UpdateChatChannelUseCase,
+    UpdateWebhookUseCase,
+)
+from app.modules.integrations.infrastructure import (
+    HttpxChatWebhookSender,
+    HttpxWebhookSender,
+    PostgresChatChannelRepository,
+    PostgresChatEventReader,
+    PostgresWebhookDeliveryRepository,
+    PostgresWebhookRepository,
+    QueuedChatDeliveryRequester,
+    QueuedWebhookDeliveryRequester,
+)
+from app.modules.integrations.ports.chat_webhook_sender import ChatWebhookSender
+from app.modules.integrations.ports.webhook_sender import WebhookSender
 from app.modules.jira import (
+    CheckJiraWriteAccessUseCase,
+    FindJiraWriteAccessUseCase,
     GetJiraConnectionUseCase,
+    GetProjectJiraWriteAccessUseCase,
     JiraClient,
+    JiraResultCommentRequester,
     ListJiraBoardsUseCase,
     ListJiraProjectsUseCase,
     LoadJiraCredentialsUseCase,
+    RefreshJiraWriteAccessUseCase,
     SaveJiraConnectionUseCase,
 )
 from app.modules.jira.infrastructure import (
@@ -114,17 +183,52 @@ from app.modules.jira.infrastructure import (
     PostgresJiraConnectionChecker,
     PostgresJiraConnectionRepository,
     PostgresLinkedProjectReader,
+    QueuedJiraResultCommentRequester,
 )
+from app.modules.labels import CreateLabelUseCase, DeleteLabelUseCase, ListLabelsUseCase, UpdateLabelUseCase
+from app.modules.labels.infrastructure import PostgresLabelRepository, PostgresTestCaseLabelRepository
 from app.modules.live_events import StreamLiveEventsUseCase
 from app.modules.live_events.typing.constants.live_events import PROJECT_ACCESS_REFRESH_INTERVAL
 from app.modules.notifications import (
     CountUnreadNotificationsUseCase,
+    ListNotificationPreferencesUseCase,
     ListNotificationsUseCase,
     MarkAllNotificationsReadUseCase,
     MarkNotificationReadUseCase,
+    SendNotificationEmailJobHandler,
+    SendNotificationEmailUseCase,
     SendNotificationUseCase,
+    UpdateNotificationPreferencesUseCase,
 )
-from app.modules.notifications.infrastructure import PostgresNotificationRepository, PostgresRecipientDirectory
+from app.modules.notifications.infrastructure import (
+    PostgresNotificationEmailRecipientReader,
+    PostgresNotificationPreferenceRepository,
+    PostgresNotificationRepository,
+    PostgresRecipientDirectory,
+    QueuedNotificationEmailRequester,
+)
+from app.modules.plans import (
+    ClosePlanUseCase,
+    CreatePlanUseCase,
+    GetPlanUseCase,
+    ListPlansUseCase,
+    SetPlanItemsUseCase,
+    SignOffPlanUseCase,
+    UpdatePlanUseCase,
+)
+from app.modules.plans.infrastructure import (
+    PostgresPlanItemRepository,
+    PostgresPlanReferenceReader,
+    PostgresPlanViewReader,
+    PostgresTestPlanRepository,
+)
+from app.modules.plugin import (
+    CheckPluginVersionUseCase,
+    GetPluginArchiveUseCase,
+    GetPluginMarketplaceUseCase,
+    PluginBundle,
+)
+from app.modules.plugin.infrastructure import DirectoryPluginBundleLoader
 from app.modules.projects import (
     ArchiveProjectUseCase,
     CreateProjectUseCase,
@@ -146,6 +250,21 @@ from app.modules.projects.infrastructure import (
     PostgresProjectRepository,
 )
 from app.modules.projects.ports.environment_checker import EnvironmentChecker
+from app.modules.reports import (
+    ExportReportJobHandler,
+    ExportReportUseCase,
+    PdfRenderer,
+    ReportDocumentLoader,
+    ReportFileWriter,
+    RequestReportExportUseCase,
+)
+from app.modules.reports.infrastructure import (
+    PostgresReportRequesterReader,
+    S3ReportFileWriter,
+    WeasyPrintPdfRenderer,
+)
+from app.modules.run_logs import GetRunLogUseCase, UploadRunLogUseCase
+from app.modules.run_logs.infrastructure import PostgresRunLogRepository
 from app.modules.runs import (
     AbortStaleRunsJobHandler,
     AbortStaleRunsUseCase,
@@ -155,9 +274,14 @@ from app.modules.runs import (
     CriterionImpactCalculator,
     FinishManualRunUseCase,
     FinishRunUseCase,
+    FlakyRecomputeRequester,
     GetFailedCasesUseCase,
     GetRunUseCase,
+    ImportJunitRunUseCase,
+    JiraCommentSourceReader,
     ListRunsUseCase,
+    PostJiraResultCommentJobHandler,
+    PostJiraResultCommentUseCase,
     RecordCaseResultUseCase,
     RecordManualCaseResultUseCase,
     RerunFailedCasesUseCase,
@@ -167,23 +291,39 @@ from app.modules.runs import (
     register_run_tools,
 )
 from app.modules.runs.infrastructure import (
+    PostgresCaseResultHistoryReader,
     PostgresCaseResultRepository,
     PostgresEnvironmentUsageChecker,
+    PostgresImportCaseReader,
+    PostgresJiraCommentSourceReader,
     PostgresRunCaseRepository,
     PostgresRunFileRepository,
+    PostgresRunGapReader,
     PostgresRunningRunChecker,
     PostgresRunRepository,
     PostgresRunStoryReader,
     PostgresRunTargetReader,
     PostgresRunViewReader,
+    QueuedFlakyRecomputeRequester,
 )
+from app.modules.shared_steps import (
+    CreateSharedStepUseCase,
+    GetSharedStepUseCase,
+    ListSharedStepsUseCase,
+    ListSharedStepUsageUseCase,
+    UpdateSharedStepUseCase,
+)
+from app.modules.shared_steps.infrastructure import PostgresSharedStepRepository, PostgresSharedStepUsageReader
 from app.modules.stories import (
     ActiveFailureCounter,
     ChangeTestStatusUseCase,
+    CreateWrittenStoryUseCase,
     CriteriaChangedHandler,
+    DeleteWrittenStoryUseCase,
     GetSprintUseCase,
     GetStoryUseCase,
     GetSyncStatusUseCase,
+    JiraIssueStatusRefresher,
     ListSprintsUseCase,
     ListStoriesUseCase,
     MarkStoryInTestUseCase,
@@ -191,12 +331,15 @@ from app.modules.stories import (
     RunningRunChecker,
     SyncJiraProjectJobHandler,
     SyncJiraProjectUseCase,
+    UpdateWrittenStoryUseCase,
 )
 from app.modules.stories.infrastructure import (
     PostgresAcceptanceCriterionRepository,
     PostgresProjectSyncStateRepository,
     PostgresSprintRepository,
+    PostgresStoryKeyCounterRepository,
     PostgresStoryRepository,
+    PostgresStoryUsageChecker,
     PostgresSyncTargetReader,
 )
 from app.modules.story_context import (
@@ -210,25 +353,61 @@ from app.modules.story_context.infrastructure import (
     PostgresRunScopeReader,
     PostgresStoryContextReader,
 )
+from app.modules.suites import (
+    AddSuiteCasesByFilterUseCase,
+    ArchiveSuiteUseCase,
+    CreateSuiteUseCase,
+    GetSuiteContextUseCase,
+    GetSuiteUseCase,
+    ListSuitesUseCase,
+    SetSuiteCasesUseCase,
+    UpdateSuiteUseCase,
+    register_suite_tools,
+)
+from app.modules.suites.infrastructure import (
+    PostgresSuiteCaseRepository,
+    PostgresSuiteRunScopeReader,
+    PostgresSuiteViewReader,
+    PostgresTestSuiteRepository,
+)
 from app.modules.test_cases import (
+    AddReviewCommentUseCase,
     AttachTestFileUseCase,
+    CaseStepExpander,
     ChangeTestCaseStatusUseCase,
+    CheckDraftCasesUseCase,
     CommitTestCaseImportUseCase,
+    CreateDraftCasesUseCase,
     CreateTestCaseUseCase,
     FlagCasesForReviewUseCase,
     GetTestCaseUseCase,
+    ListQuarantineEventsUseCase,
+    ListReviewCommentsUseCase,
     ListTestCasesUseCase,
     ListTestCaseVersionsUseCase,
     ListTestFileVersionsUseCase,
     MarkTestCaseReviewedUseCase,
     PreviewTestCaseImportUseCase,
+    QuarantineTestCaseUseCase,
+    RecomputeFlakyJobHandler,
+    RecomputeFlakyUseCase,
+    ReleaseTestCaseQuarantineUseCase,
+    ResolveReviewCommentUseCase,
+    SetTestCaseLabelsUseCase,
+    SweepFlakyJobHandler,
+    SweepFlakyUseCase,
     UpdateTestCaseUseCase,
+    register_test_case_tools,
 )
 from app.modules.test_cases.infrastructure import (
     PostgresCriterionReader,
     PostgresDataKeyReader,
+    PostgresQuarantineEventRepository,
+    PostgresReviewCommentRepository,
+    PostgresReviewPolicyReader,
     PostgresStoryReader,
     PostgresTestCaseCounterRepository,
+    PostgresTestCaseQualityRepository,
     PostgresTestCaseRepository,
     PostgresTestCaseVersionRepository,
     PostgresTestFileRepository,
@@ -249,19 +428,29 @@ from app.modules.test_data import (
     PreviewImportUseCase,
     RevealSecretUseCase,
     SecretValueReader,
+    SetTestDataUseCase,
     UnarchiveEnvironmentUseCase,
     UpdateDataItemUseCase,
     UpdateEnvironmentUseCase,
+    register_test_data_tools,
 )
 from app.modules.test_data.infrastructure import (
     PostgresDataItemRepository,
+    PostgresDataKeyDescriptionRepository,
     PostgresEnvironmentChecker,
     PostgresEnvironmentRepository,
     StorageImportFileReader,
 )
 from app.modules.users.infrastructure import PostgresUserRepository
 from app.shared.crypto import AesGcmSecretCipher, parse_key_ring
-from app.shared.events import LiveEventHub, LiveEventPublisher, RedisLiveEventHub, RedisLiveEventPublisher
+from app.shared.events import (
+    LiveEventHandler,
+    LiveEventHub,
+    LiveEventListener,
+    LiveEventPublisher,
+    RedisLiveEventHub,
+    RedisLiveEventPublisher,
+)
 from app.shared.mailer import Mailer, QueuedMailer, SendEmailJobHandler, SmtpMailer
 from app.shared.permissions import ProjectAccessResolver
 from app.shared.postgres import Database
@@ -716,7 +905,41 @@ class Container:
     @cached_property
     def authenticate_api_token(self) -> AuthenticateApiTokenUseCase:
         return AuthenticateApiTokenUseCase(
-            self.database, self.api_token_repository, self.user_repository, self.project_access_resolver
+            self.database,
+            self.api_token_repository,
+            self.user_repository,
+            self.project_access_resolver,
+            self.check_plugin_version,
+        )
+
+    @cached_property
+    def bearer_token_scope_gate(self) -> BearerTokenScopeGate:
+        return self.authenticate_api_token
+
+    @cached_property
+    def plugin_bundle(self) -> PluginBundle:
+        return DirectoryPluginBundleLoader(self._settings.plugin.plugin_dir).load()
+
+    @cached_property
+    def check_plugin_version(self) -> CheckPluginVersionUseCase:
+        return CheckPluginVersionUseCase(self.plugin_bundle.version)
+
+    @cached_property
+    def get_plugin_marketplace(self) -> GetPluginMarketplaceUseCase:
+        return GetPluginMarketplaceUseCase(self.plugin_bundle, self._settings.client.client_url)
+
+    @cached_property
+    def get_plugin_archive(self) -> GetPluginArchiveUseCase:
+        return GetPluginArchiveUseCase(self.plugin_bundle)
+
+    @cached_property
+    def get_ai_harness(self) -> GetAiHarnessUseCase:
+        return GetAiHarnessUseCase(
+            self.plugin_bundle,
+            McpServerToolCatalog(self.mcp_server),
+            self._settings.release.server_version,
+            self._settings.release.build_commit,
+            self._settings.client.client_url,
         )
 
     @cached_property
@@ -738,7 +961,104 @@ class Container:
     @cached_property
     def save_jira_connection(self) -> SaveJiraConnectionUseCase:
         return SaveJiraConnectionUseCase(
-            self.database, self.jira_connection_repository, self.jira_client, self.secret_cipher
+            self.database,
+            self.jira_connection_repository,
+            self.jira_client,
+            self.secret_cipher,
+            self.check_jira_write_access,
+        )
+
+    @cached_property
+    def check_jira_write_access(self) -> CheckJiraWriteAccessUseCase:
+        return CheckJiraWriteAccessUseCase(self.database, self.linked_project_reader, self.jira_client)
+
+    @cached_property
+    def refresh_jira_write_access(self) -> RefreshJiraWriteAccessUseCase:
+        return RefreshJiraWriteAccessUseCase(
+            self.database, self.jira_connection_repository, self.secret_cipher, self.check_jira_write_access
+        )
+
+    @cached_property
+    def find_jira_write_access(self) -> FindJiraWriteAccessUseCase:
+        return FindJiraWriteAccessUseCase(self.database, self.jira_connection_repository)
+
+    @cached_property
+    def get_project_jira_write_access(self) -> GetProjectJiraWriteAccessUseCase:
+        return GetProjectJiraWriteAccessUseCase(
+            self.database, self.project_access_resolver, self.linked_project_reader, self.jira_connection_repository
+        )
+
+    @cached_property
+    def jira_result_comment_requester(self) -> JiraResultCommentRequester:
+        return QueuedJiraResultCommentRequester(self.database, self.job_queue)
+
+    @cached_property
+    def jira_comment_source_reader(self) -> JiraCommentSourceReader:
+        return PostgresJiraCommentSourceReader(self.database)
+
+    @cached_property
+    def post_jira_result_comment(self) -> PostJiraResultCommentUseCase:
+        return PostJiraResultCommentUseCase(
+            self.database,
+            self.jira_comment_source_reader,
+            self.load_jira_credentials,
+            self.jira_client,
+            self._settings.client.client_url,
+        )
+
+    @cached_property
+    def jira_bug_source_reader(self) -> PostgresJiraBugSourceReader:
+        return PostgresJiraBugSourceReader(self.database)
+
+    @cached_property
+    def request_jira_issue(self) -> RequestJiraIssueUseCase:
+        return RequestJiraIssueUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.failure_repository,
+            self.jira_bug_source_reader,
+            self.find_jira_write_access,
+            self.job_queue,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def preview_jira_issue(self) -> PreviewJiraIssueUseCase:
+        return PreviewJiraIssueUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.failure_repository,
+            self.jira_bug_source_reader,
+            self.case_result_reader,
+            self.secret_value_reader,
+            self._settings.client.client_url,
+        )
+
+    @cached_property
+    def create_jira_issue(self) -> CreateJiraIssueUseCase:
+        return CreateJiraIssueUseCase(
+            self.database,
+            self.failure_repository,
+            self.failure_event_repository,
+            self.jira_bug_source_reader,
+            self.case_result_reader,
+            self.secret_value_reader,
+            self.load_jira_credentials,
+            self.jira_client,
+            self.stored_file_repository,
+            self.object_storage,
+            self.live_event_publisher,
+            self._settings.client.client_url,
+        )
+
+    @cached_property
+    def jira_issue_status_refresher(self) -> JiraIssueStatusRefresher:
+        return self.refresh_failure_jira_issues
+
+    @cached_property
+    def refresh_failure_jira_issues(self) -> RefreshFailureJiraIssuesUseCase:
+        return RefreshFailureJiraIssuesUseCase(
+            self.database, self.failure_repository, self.jira_client, self.live_event_publisher
         )
 
     @cached_property
@@ -773,6 +1093,10 @@ class Container:
     @cached_property
     def data_item_repository(self) -> PostgresDataItemRepository:
         return PostgresDataItemRepository(self.database)
+
+    @cached_property
+    def data_key_description_repository(self) -> PostgresDataKeyDescriptionRepository:
+        return PostgresDataKeyDescriptionRepository(self.database)
 
     @cached_property
     def environment_checker(self) -> EnvironmentChecker:
@@ -833,18 +1157,38 @@ class Container:
             self.project_access_resolver,
             self.environment_repository,
             self.data_item_repository,
+            self.data_key_description_repository,
             self.secret_cipher,
         )
 
     @cached_property
     def update_data_item(self) -> UpdateDataItemUseCase:
         return UpdateDataItemUseCase(
-            self.database, self.project_access_resolver, self.data_item_repository, self.secret_cipher
+            self.database,
+            self.project_access_resolver,
+            self.data_item_repository,
+            self.data_key_description_repository,
+            self.secret_cipher,
         )
 
     @cached_property
     def delete_data_item(self) -> DeleteDataItemUseCase:
-        return DeleteDataItemUseCase(self.database, self.project_access_resolver, self.data_item_repository)
+        return DeleteDataItemUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.data_item_repository,
+            self.data_key_description_repository,
+        )
+
+    @cached_property
+    def set_test_data(self) -> SetTestDataUseCase:
+        return SetTestDataUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.environment_repository,
+            self.data_item_repository,
+            self.secret_cipher,
+        )
 
     @cached_property
     def reveal_secret(self) -> RevealSecretUseCase:
@@ -874,6 +1218,7 @@ class Container:
             self.project_access_resolver,
             self.environment_repository,
             self.data_item_repository,
+            self.data_key_description_repository,
             self.import_file_reader,
             self.secret_cipher,
         )
@@ -943,7 +1288,50 @@ class Container:
             self.project_access_resolver,
             self.project_sync_state_repository,
             self.jira_connection_checker,
+            self.sync_target_reader,
             self.job_queue,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def story_key_counter_repository(self) -> PostgresStoryKeyCounterRepository:
+        return PostgresStoryKeyCounterRepository(self.database)
+
+    @cached_property
+    def story_usage_checker(self) -> PostgresStoryUsageChecker:
+        return PostgresStoryUsageChecker(self.database)
+
+    @cached_property
+    def create_written_story(self) -> CreateWrittenStoryUseCase:
+        return CreateWrittenStoryUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.sync_target_reader,
+            self.story_repository,
+            self.acceptance_criterion_repository,
+            self.story_key_counter_repository,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def update_written_story(self) -> UpdateWrittenStoryUseCase:
+        return UpdateWrittenStoryUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.story_repository,
+            self.acceptance_criterion_repository,
+            self.criteria_changed_handler,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def delete_written_story(self) -> DeleteWrittenStoryUseCase:
+        return DeleteWrittenStoryUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.story_repository,
+            self.acceptance_criterion_repository,
+            self.story_usage_checker,
             self.live_event_publisher,
         )
 
@@ -960,6 +1348,8 @@ class Container:
             self.jira_client,
             self.criteria_changed_handler,
             self.live_event_publisher,
+            self.refresh_jira_write_access,
+            self.jira_issue_status_refresher,
         )
 
     @cached_property
@@ -973,6 +1363,7 @@ class Container:
             self.active_failure_counter,
             self.running_run_checker,
             self.live_event_publisher,
+            self.jira_result_comment_requester,
         )
 
     @cached_property
@@ -1012,8 +1403,97 @@ class Container:
         return PostgresDataKeyReader(self.database)
 
     @cached_property
+    def label_repository(self) -> PostgresLabelRepository:
+        return PostgresLabelRepository(self.database)
+
+    @cached_property
+    def test_case_label_repository(self) -> PostgresTestCaseLabelRepository:
+        return PostgresTestCaseLabelRepository(self.database)
+
+    @cached_property
+    def shared_step_repository(self) -> PostgresSharedStepRepository:
+        return PostgresSharedStepRepository(self.database)
+
+    @cached_property
+    def shared_step_usage_reader(self) -> PostgresSharedStepUsageReader:
+        return PostgresSharedStepUsageReader(self.database)
+
+    @cached_property
+    def case_step_expander(self) -> CaseStepExpander:
+        return CaseStepExpander(self.shared_step_repository)
+
+    @cached_property
+    def list_shared_steps(self) -> ListSharedStepsUseCase:
+        return ListSharedStepsUseCase(
+            self.database, self.project_access_resolver, self.shared_step_repository, self.shared_step_usage_reader
+        )
+
+    @cached_property
+    def create_shared_step(self) -> CreateSharedStepUseCase:
+        return CreateSharedStepUseCase(
+            self.database, self.project_access_resolver, self.shared_step_repository, self.live_event_publisher
+        )
+
+    @cached_property
+    def get_shared_step(self) -> GetSharedStepUseCase:
+        return GetSharedStepUseCase(
+            self.database, self.project_access_resolver, self.shared_step_repository, self.shared_step_usage_reader
+        )
+
+    @cached_property
+    def update_shared_step(self) -> UpdateSharedStepUseCase:
+        return UpdateSharedStepUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.shared_step_repository,
+            self.shared_step_usage_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def list_shared_step_usage(self) -> ListSharedStepUsageUseCase:
+        return ListSharedStepUsageUseCase(
+            self.database, self.project_access_resolver, self.shared_step_repository, self.shared_step_usage_reader
+        )
+
+    @cached_property
+    def list_labels(self) -> ListLabelsUseCase:
+        return ListLabelsUseCase(self.database, self.project_access_resolver, self.label_repository)
+
+    @cached_property
+    def create_label(self) -> CreateLabelUseCase:
+        return CreateLabelUseCase(
+            self.database, self.project_access_resolver, self.label_repository, self.live_event_publisher
+        )
+
+    @cached_property
+    def update_label(self) -> UpdateLabelUseCase:
+        return UpdateLabelUseCase(
+            self.database, self.project_access_resolver, self.label_repository, self.live_event_publisher
+        )
+
+    @cached_property
+    def delete_label(self) -> DeleteLabelUseCase:
+        return DeleteLabelUseCase(
+            self.database, self.project_access_resolver, self.label_repository, self.live_event_publisher
+        )
+
+    @cached_property
+    def set_test_case_labels(self) -> SetTestCaseLabelsUseCase:
+        return SetTestCaseLabelsUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_case_repository,
+            self.label_repository,
+            self.test_case_label_repository,
+            self.live_event_publisher,
+        )
+
+    @cached_property
     def list_test_cases(self) -> ListTestCasesUseCase:
-        return ListTestCasesUseCase(self.database, self.project_access_resolver, self.test_case_repository)
+        return ListTestCasesUseCase(
+            self.database, self.project_access_resolver, self.test_case_repository, self.test_case_label_repository
+        )
 
     @cached_property
     def get_test_case(self) -> GetTestCaseUseCase:
@@ -1026,6 +1506,7 @@ class Container:
             self.case_story_reader,
             self.case_criterion_reader,
             self.data_key_reader,
+            self.test_case_label_repository,
         )
 
     @cached_property
@@ -1039,8 +1520,11 @@ class Container:
             self.case_story_reader,
             self.case_criterion_reader,
             self.data_key_reader,
+            self.test_case_label_repository,
             self.test_case_counter_repository,
             self.live_event_publisher,
+            self.shared_step_repository,
+            self.secret_value_reader,
         )
 
     @cached_property
@@ -1054,7 +1538,10 @@ class Container:
             self.case_story_reader,
             self.case_criterion_reader,
             self.data_key_reader,
+            self.test_case_label_repository,
             self.live_event_publisher,
+            self.shared_step_repository,
+            self.secret_value_reader,
         )
 
     @cached_property
@@ -1074,7 +1561,10 @@ class Container:
             self.case_story_reader,
             self.case_criterion_reader,
             self.data_key_reader,
+            self.test_case_label_repository,
             self.live_event_publisher,
+            self.review_comment_repository,
+            self.review_policy_reader,
         )
 
     @cached_property
@@ -1088,6 +1578,43 @@ class Container:
             self.case_story_reader,
             self.case_criterion_reader,
             self.data_key_reader,
+            self.test_case_label_repository,
+            self.live_event_publisher,
+            self.review_policy_reader,
+        )
+
+    @cached_property
+    def review_comment_repository(self) -> PostgresReviewCommentRepository:
+        return PostgresReviewCommentRepository(self.database)
+
+    @cached_property
+    def review_policy_reader(self) -> PostgresReviewPolicyReader:
+        return PostgresReviewPolicyReader(self.database)
+
+    @cached_property
+    def list_review_comments(self) -> ListReviewCommentsUseCase:
+        return ListReviewCommentsUseCase(
+            self.database, self.project_access_resolver, self.test_case_repository, self.review_comment_repository
+        )
+
+    @cached_property
+    def add_review_comment(self) -> AddReviewCommentUseCase:
+        return AddReviewCommentUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_case_repository,
+            self.test_case_version_repository,
+            self.review_comment_repository,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def resolve_review_comment(self) -> ResolveReviewCommentUseCase:
+        return ResolveReviewCommentUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_case_repository,
+            self.review_comment_repository,
             self.live_event_publisher,
         )
 
@@ -1102,6 +1629,7 @@ class Container:
             self.case_story_reader,
             self.case_criterion_reader,
             self.data_key_reader,
+            self.test_case_label_repository,
             self.test_file_version_repository,
             self.stored_file_repository,
             self.live_event_publisher,
@@ -1137,6 +1665,28 @@ class Container:
             self.case_story_reader,
             self.case_criterion_reader,
             self.import_file_reader,
+            self.test_case_counter_repository,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def check_draft_cases(self) -> CheckDraftCasesUseCase:
+        return CheckDraftCasesUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_case_repository,
+            self.case_story_reader,
+            self.case_criterion_reader,
+        )
+
+    @cached_property
+    def create_draft_cases(self) -> CreateDraftCasesUseCase:
+        return CreateDraftCasesUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_case_repository,
+            self.case_story_reader,
+            self.case_criterion_reader,
             self.test_case_counter_repository,
             self.live_event_publisher,
         )
@@ -1216,6 +1766,17 @@ class Container:
         )
 
     @cached_property
+    def get_my_gaps(self) -> GetMyGapsUseCase:
+        return GetMyGapsUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.gap_repository,
+            self.gap_target_reader,
+            self.gap_assignee_directory,
+            self._settings.client.client_url,
+        )
+
+    @cached_property
     def open_gap_checker(self) -> OpenGapChecker:
         return OpenGapChecker(self.database, self.gap_repository)
 
@@ -1230,7 +1791,123 @@ class Container:
     @cached_property
     def send_notification(self) -> SendNotificationUseCase:
         return SendNotificationUseCase(
-            self.database, self.notification_repository, self.recipient_directory, self.live_event_publisher
+            self.database,
+            self.notification_repository,
+            self.recipient_directory,
+            self.live_event_publisher,
+            self.notification_preference_repository,
+            self.notification_email_requester,
+        )
+
+    @cached_property
+    def notification_preference_repository(self) -> PostgresNotificationPreferenceRepository:
+        return PostgresNotificationPreferenceRepository(self.database)
+
+    @cached_property
+    def notification_email_requester(self) -> QueuedNotificationEmailRequester:
+        return QueuedNotificationEmailRequester(self.job_queue)
+
+    @cached_property
+    def notification_email_recipient_reader(self) -> PostgresNotificationEmailRecipientReader:
+        return PostgresNotificationEmailRecipientReader(self.database)
+
+    @cached_property
+    def send_notification_email(self) -> SendNotificationEmailUseCase:
+        return SendNotificationEmailUseCase(
+            self.database,
+            self.notification_email_recipient_reader,
+            self.notification_preference_repository,
+            self.smtp_mailer,
+            self._settings.client.client_url,
+        )
+
+    @cached_property
+    def list_notification_preferences(self) -> ListNotificationPreferencesUseCase:
+        return ListNotificationPreferencesUseCase(self.database, self.notification_preference_repository)
+
+    @cached_property
+    def update_notification_preferences(self) -> UpdateNotificationPreferencesUseCase:
+        return UpdateNotificationPreferencesUseCase(self.database, self.notification_preference_repository)
+
+    @cached_property
+    def chat_channel_repository(self) -> PostgresChatChannelRepository:
+        return PostgresChatChannelRepository(self.database)
+
+    @cached_property
+    def chat_event_reader(self) -> PostgresChatEventReader:
+        return PostgresChatEventReader(self.database)
+
+    @cached_property
+    def chat_webhook_sender(self) -> ChatWebhookSender:
+        return HttpxChatWebhookSender(self.http_client)
+
+    @cached_property
+    def chat_delivery_requester(self) -> QueuedChatDeliveryRequester:
+        return QueuedChatDeliveryRequester(self.job_queue)
+
+    @cached_property
+    def chat_message_delivery(self) -> ChatMessageDelivery:
+        return ChatMessageDelivery(
+            self.database,
+            self.chat_channel_repository,
+            self.secret_cipher,
+            self.chat_webhook_sender,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def list_chat_channels(self) -> ListChatChannelsUseCase:
+        return ListChatChannelsUseCase(self.database, self.project_access_resolver, self.chat_channel_repository)
+
+    @cached_property
+    def create_chat_channel(self) -> CreateChatChannelUseCase:
+        return CreateChatChannelUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.chat_channel_repository,
+            self.secret_cipher,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def update_chat_channel(self) -> UpdateChatChannelUseCase:
+        return UpdateChatChannelUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.chat_channel_repository,
+            self.secret_cipher,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def delete_chat_channel(self) -> DeleteChatChannelUseCase:
+        return DeleteChatChannelUseCase(
+            self.database, self.project_access_resolver, self.chat_channel_repository, self.live_event_publisher
+        )
+
+    @cached_property
+    def send_chat_channel_test(self) -> SendChatChannelTestUseCase:
+        return SendChatChannelTestUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.chat_channel_repository,
+            self.chat_event_reader,
+            self.chat_message_delivery,
+            self._settings.client.client_url,
+        )
+
+    @cached_property
+    def request_chat_deliveries(self) -> RequestChatDeliveriesUseCase:
+        return RequestChatDeliveriesUseCase(self.database, self.chat_channel_repository, self.chat_delivery_requester)
+
+    @cached_property
+    def deliver_chat_message(self) -> DeliverChatMessageUseCase:
+        return DeliverChatMessageUseCase(
+            self.database,
+            self.chat_channel_repository,
+            self.chat_event_reader,
+            self.chat_message_delivery,
+            self._settings.client.client_url,
         )
 
     @cached_property
@@ -1295,6 +1972,177 @@ class Container:
             self.run_case_repository,
             self.run_target_reader,
             self.mark_story_in_test,
+            self.suite_run_scope_reader,
+            self.run_gap_reader,
+            self.case_step_expander,
+        )
+
+    @cached_property
+    def run_gap_reader(self) -> PostgresRunGapReader:
+        return PostgresRunGapReader(self.database)
+
+    @cached_property
+    def suite_run_scope_reader(self) -> PostgresSuiteRunScopeReader:
+        return PostgresSuiteRunScopeReader(self.database)
+
+    @cached_property
+    def test_suite_repository(self) -> PostgresTestSuiteRepository:
+        return PostgresTestSuiteRepository(self.database)
+
+    @cached_property
+    def suite_case_repository(self) -> PostgresSuiteCaseRepository:
+        return PostgresSuiteCaseRepository(self.database)
+
+    @cached_property
+    def suite_view_reader(self) -> PostgresSuiteViewReader:
+        return PostgresSuiteViewReader(self.database)
+
+    @cached_property
+    def list_suites(self) -> ListSuitesUseCase:
+        return ListSuitesUseCase(self.database, self.project_access_resolver, self.suite_view_reader)
+
+    @cached_property
+    def get_suite(self) -> GetSuiteUseCase:
+        return GetSuiteUseCase(
+            self.database, self.project_access_resolver, self.test_suite_repository, self.suite_view_reader
+        )
+
+    @cached_property
+    def create_suite(self) -> CreateSuiteUseCase:
+        return CreateSuiteUseCase(
+            self.database, self.project_access_resolver, self.test_suite_repository, self.live_event_publisher
+        )
+
+    @cached_property
+    def update_suite(self) -> UpdateSuiteUseCase:
+        return UpdateSuiteUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_suite_repository,
+            self.suite_view_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def archive_suite(self) -> ArchiveSuiteUseCase:
+        return ArchiveSuiteUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_suite_repository,
+            self.suite_view_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def set_suite_cases(self) -> SetSuiteCasesUseCase:
+        return SetSuiteCasesUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_suite_repository,
+            self.suite_case_repository,
+            self.suite_view_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def add_suite_cases_by_filter(self) -> AddSuiteCasesByFilterUseCase:
+        return AddSuiteCasesByFilterUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_suite_repository,
+            self.suite_case_repository,
+            self.suite_view_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def get_suite_context(self) -> GetSuiteContextUseCase:
+        return GetSuiteContextUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.suite_run_scope_reader,
+            self.test_suite_repository,
+            self.story_context_reader,
+        )
+
+    @cached_property
+    def test_plan_repository(self) -> PostgresTestPlanRepository:
+        return PostgresTestPlanRepository(self.database)
+
+    @cached_property
+    def plan_item_repository(self) -> PostgresPlanItemRepository:
+        return PostgresPlanItemRepository(self.database)
+
+    @cached_property
+    def plan_view_reader(self) -> PostgresPlanViewReader:
+        return PostgresPlanViewReader(self.database)
+
+    @cached_property
+    def plan_reference_reader(self) -> PostgresPlanReferenceReader:
+        return PostgresPlanReferenceReader(self.database)
+
+    @cached_property
+    def list_plans(self) -> ListPlansUseCase:
+        return ListPlansUseCase(self.database, self.project_access_resolver, self.plan_view_reader)
+
+    @cached_property
+    def get_plan(self) -> GetPlanUseCase:
+        return GetPlanUseCase(
+            self.database, self.project_access_resolver, self.test_plan_repository, self.plan_view_reader
+        )
+
+    @cached_property
+    def create_plan(self) -> CreatePlanUseCase:
+        return CreatePlanUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_plan_repository,
+            self.plan_reference_reader,
+            self.plan_view_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def update_plan(self) -> UpdatePlanUseCase:
+        return UpdatePlanUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_plan_repository,
+            self.plan_reference_reader,
+            self.plan_view_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def set_plan_items(self) -> SetPlanItemsUseCase:
+        return SetPlanItemsUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_plan_repository,
+            self.plan_item_repository,
+            self.plan_reference_reader,
+            self.plan_view_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def sign_off_plan(self) -> SignOffPlanUseCase:
+        return SignOffPlanUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_plan_repository,
+            self.plan_view_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def close_plan(self) -> ClosePlanUseCase:
+        return ClosePlanUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_plan_repository,
+            self.plan_view_reader,
+            self.live_event_publisher,
         )
 
     @cached_property
@@ -1325,6 +2173,7 @@ class Container:
             self.stored_file_repository,
             self.secret_value_reader,
             self.case_result_recorded_handler,
+            self.flaky_recompute_requester,
             self.live_event_publisher,
         )
 
@@ -1336,12 +2185,13 @@ class Container:
             self.run_repository,
             self.run_case_repository,
             self.case_result_repository,
-            self.run_target_reader,
+            self.run_story_reader,
             self.screenshot_verifier,
             self.criterion_impact_calculator,
             self.secret_value_reader,
             self.send_notification,
             self.live_event_publisher,
+            self.jira_result_comment_requester,
         )
 
     @cached_property
@@ -1353,6 +2203,7 @@ class Container:
             self.run_case_repository,
             self.case_result_repository,
             self.run_target_reader,
+            self.run_story_reader,
         )
 
     @cached_property
@@ -1380,6 +2231,7 @@ class Container:
             self.run_case_repository,
             self.case_result_repository,
             self.run_view_reader,
+            self.data_item_repository,
         )
 
     @cached_property
@@ -1400,6 +2252,7 @@ class Container:
             self.stored_file_repository,
             self.secret_value_reader,
             self.case_result_recorded_handler,
+            self.flaky_recompute_requester,
             self.live_event_publisher,
         )
 
@@ -1417,6 +2270,7 @@ class Container:
             self.run_story_reader,
             self.send_notification,
             self.live_event_publisher,
+            self.jira_result_comment_requester,
         )
 
     @cached_property
@@ -1429,6 +2283,31 @@ class Container:
             self.case_result_repository,
             self.run_start_gate,
             self.live_event_publisher,
+        )
+
+    @cached_property
+    def import_case_reader(self) -> PostgresImportCaseReader:
+        return PostgresImportCaseReader(self.database)
+
+    @cached_property
+    def import_junit_run(self) -> ImportJunitRunUseCase:
+        return ImportJunitRunUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.run_repository,
+            self.run_case_repository,
+            self.case_result_repository,
+            self.run_target_reader,
+            self.run_start_gate,
+            self.import_case_reader,
+            self.criterion_impact_calculator,
+            self.secret_value_reader,
+            self.run_story_reader,
+            self.case_result_recorded_handler,
+            self.flaky_recompute_requester,
+            self.send_notification,
+            self.live_event_publisher,
+            self.jira_result_comment_requester,
         )
 
     @cached_property
@@ -1506,8 +2385,18 @@ class Container:
         )
 
     @cached_property
+    def change_failure_cause(self) -> ChangeFailureCauseUseCase:
+        return ChangeFailureCauseUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.failure_repository,
+            self.failure_event_repository,
+            self.live_event_publisher,
+        )
+
+    @cached_property
     def story_context_reader(self) -> PostgresStoryContextReader:
-        return PostgresStoryContextReader(self.database)
+        return PostgresStoryContextReader(self.database, self.case_step_expander)
 
     @cached_property
     def story_context_run_reader(self) -> PostgresRunScopeReader:
@@ -1597,6 +2486,202 @@ class Container:
         )
 
     @cached_property
+    def daily_stats_repository(self) -> PostgresDailyStatsRepository:
+        return PostgresDailyStatsRepository(self.database)
+
+    @cached_property
+    def daily_stats_calculator(self) -> PostgresDailyStatsCalculator:
+        return PostgresDailyStatsCalculator(self.database)
+
+    @cached_property
+    def quality_reader(self) -> PostgresQualityReader:
+        return PostgresQualityReader(self.database)
+
+    @cached_property
+    def token_usage_reader(self) -> PostgresTokenUsageReader:
+        return PostgresTokenUsageReader(self.database)
+
+    @cached_property
+    def get_insight_trends(self) -> GetTrendsUseCase:
+        return GetTrendsUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.daily_stats_repository,
+            self.daily_stats_calculator,
+            self.story_scope_reader,
+        )
+
+    @cached_property
+    def get_label_coverage(self) -> GetLabelCoverageUseCase:
+        return GetLabelCoverageUseCase(self.database, self.project_access_resolver, self.quality_reader)
+
+    @cached_property
+    def list_failing_cases(self) -> ListFailingCasesUseCase:
+        return ListFailingCasesUseCase(self.database, self.project_access_resolver, self.quality_reader)
+
+    @cached_property
+    def list_flaky_cases(self) -> ListFlakyCasesUseCase:
+        return ListFlakyCasesUseCase(self.database, self.project_access_resolver, self.quality_reader)
+
+    @cached_property
+    def get_token_usage(self) -> GetTokenUsageUseCase:
+        return GetTokenUsageUseCase(self.database, self.project_access_resolver, self.token_usage_reader)
+
+    @cached_property
+    def list_sprint_coverage(self) -> ListSprintCoverageUseCase:
+        return ListSprintCoverageUseCase(
+            self.database, self.project_access_resolver, self.story_scope_reader, self.coverage_reader
+        )
+
+    @cached_property
+    def snapshot_daily_stats(self) -> SnapshotDailyStatsUseCase:
+        return SnapshotDailyStatsUseCase(
+            self.database, self.daily_stats_calculator, self.daily_stats_repository, self.live_event_publisher
+        )
+
+    @cached_property
+    def report_document_loader(self) -> ReportDocumentLoader:
+        return ReportDocumentLoader(self.get_run, self.get_plan, self.get_traceability, self.list_runs)
+
+    @cached_property
+    def report_requester_reader(self) -> PostgresReportRequesterReader:
+        return PostgresReportRequesterReader(self.database)
+
+    @cached_property
+    def report_file_writer(self) -> ReportFileWriter:
+        storage = self._settings.storage
+        access_key_id = None if storage.s3_access_key_id is None else storage.s3_access_key_id.get_secret_value()
+        secret_access_key = (
+            None if storage.s3_secret_access_key is None else storage.s3_secret_access_key.get_secret_value()
+        )
+        client = build_s3_client(storage.s3_endpoint_url, storage.s3_region, access_key_id, secret_access_key)
+        return S3ReportFileWriter(client, storage.s3_bucket)
+
+    @cached_property
+    def pdf_renderer(self) -> PdfRenderer:
+        return WeasyPrintPdfRenderer()
+
+    @cached_property
+    def request_report_export(self) -> RequestReportExportUseCase:
+        return RequestReportExportUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.report_document_loader,
+            self.stored_file_repository,
+            self.job_queue,
+        )
+
+    @cached_property
+    def export_report(self) -> ExportReportUseCase:
+        return ExportReportUseCase(
+            self.database,
+            self.stored_file_repository,
+            self.report_requester_reader,
+            self.report_document_loader,
+            self.secret_value_reader,
+            self.pdf_renderer,
+            self.report_file_writer,
+            self.send_notification,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def webhook_repository(self) -> PostgresWebhookRepository:
+        return PostgresWebhookRepository(self.database)
+
+    @cached_property
+    def webhook_delivery_repository(self) -> PostgresWebhookDeliveryRepository:
+        return PostgresWebhookDeliveryRepository(self.database)
+
+    @cached_property
+    def webhook_sender(self) -> WebhookSender:
+        return HttpxWebhookSender(self.http_client)
+
+    @cached_property
+    def webhook_delivery_requester(self) -> QueuedWebhookDeliveryRequester:
+        return QueuedWebhookDeliveryRequester(self.job_queue)
+
+    @cached_property
+    def list_webhooks(self) -> ListWebhooksUseCase:
+        return ListWebhooksUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.webhook_repository,
+            self.webhook_delivery_repository,
+            self.secret_cipher,
+        )
+
+    @cached_property
+    def create_webhook(self) -> CreateWebhookUseCase:
+        return CreateWebhookUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.webhook_repository,
+            self.secret_cipher,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def update_webhook(self) -> UpdateWebhookUseCase:
+        return UpdateWebhookUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.webhook_repository,
+            self.webhook_delivery_repository,
+            self.secret_cipher,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def delete_webhook(self) -> DeleteWebhookUseCase:
+        return DeleteWebhookUseCase(
+            self.database, self.project_access_resolver, self.webhook_repository, self.live_event_publisher
+        )
+
+    @cached_property
+    def list_webhook_deliveries(self) -> ListWebhookDeliveriesUseCase:
+        return ListWebhookDeliveriesUseCase(
+            self.database, self.project_access_resolver, self.webhook_repository, self.webhook_delivery_repository
+        )
+
+    @cached_property
+    def redeliver_webhook(self) -> RedeliverWebhookUseCase:
+        return RedeliverWebhookUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.webhook_repository,
+            self.webhook_delivery_repository,
+            self.webhook_delivery_requester,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def request_webhook_deliveries(self) -> RequestWebhookDeliveriesUseCase:
+        return RequestWebhookDeliveriesUseCase(
+            self.database,
+            self.project_repository,
+            self.webhook_repository,
+            self.webhook_delivery_repository,
+            self.webhook_delivery_requester,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def deliver_webhook(self) -> DeliverWebhookUseCase:
+        return DeliverWebhookUseCase(
+            self.database,
+            self.webhook_repository,
+            self.webhook_delivery_repository,
+            self.webhook_sender,
+            self.secret_cipher,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def delete_old_webhook_deliveries(self) -> DeleteOldWebhookDeliveriesUseCase:
+        return DeleteOldWebhookDeliveriesUseCase(self.database, self.webhook_delivery_repository)
+
+    @cached_property
     def stream_live_events(self) -> StreamLiveEventsUseCase:
         return StreamLiveEventsUseCase(
             self.database, self.live_event_hub, self.project_access_resolver, PROJECT_ACCESS_REFRESH_INTERVAL
@@ -1614,18 +2699,42 @@ class Container:
     @cached_property
     def job_handlers(self) -> Mapping[QueueName, Mapping[JobName, JobHandler]]:
         return {
-            QueueName.EMAIL: {JobName.SEND_EMAIL: SendEmailJobHandler(self.smtp_mailer)},
-            QueueName.JIRA: {JobName.JIRA_SYNC_PROJECT: SyncJiraProjectJobHandler(self.sync_jira_project)},
+            QueueName.EMAIL: {
+                JobName.SEND_EMAIL: SendEmailJobHandler(self.smtp_mailer),
+                JobName.NOTIFICATION_EMAIL: SendNotificationEmailJobHandler(self.send_notification_email),
+            },
+            QueueName.INTEGRATIONS: {
+                JobName.CHAT_DELIVER: DeliverChatMessageJobHandler(self.deliver_chat_message),
+                JobName.WEBHOOK_DELIVER: DeliverWebhookJobHandler(self.deliver_webhook),
+            },
+            QueueName.JIRA: {
+                JobName.JIRA_SYNC_PROJECT: SyncJiraProjectJobHandler(self.sync_jira_project),
+                JobName.JIRA_CREATE_ISSUE: CreateJiraIssueJobHandler(self.create_jira_issue),
+                JobName.JIRA_POST_COMMENT: PostJiraResultCommentJobHandler(self.post_jira_result_comment),
+            },
             QueueName.MAINTENANCE: {
                 JobName.FILES_DELETE_ORPHANS: DeleteOrphanFilesJobHandler(self.delete_orphan_files),
                 JobName.SESSIONS_DELETE_EXPIRED: DeleteExpiredSessionsJobHandler(self.delete_expired_sessions),
                 JobName.RUNS_ABORT_STALE: AbortStaleRunsJobHandler(self.abort_stale_runs),
+                JobName.TEST_CASES_RECOMPUTE_FLAKY: RecomputeFlakyJobHandler(self.recompute_flaky),
+                JobName.TEST_CASES_SWEEP_FLAKY: SweepFlakyJobHandler(self.sweep_flaky),
+                JobName.WEBHOOK_DELETE_OLD_DELIVERIES: DeleteOldWebhookDeliveriesJobHandler(
+                    self.delete_old_webhook_deliveries
+                ),
+                JobName.INSIGHTS_DAILY_SNAPSHOT: DailySnapshotJobHandler(self.snapshot_daily_stats),
             },
+            QueueName.REPORTS: {JobName.REPORT_EXPORT: ExportReportJobHandler(self.export_report)},
         }
 
     @cached_property
     def job_schedules(self) -> tuple[JobSchedule, ...]:
         return (
+            JobSchedule(
+                scheduler_id=SNAPSHOT_SCHEDULER_ID,
+                queue_name=QueueName.MAINTENANCE,
+                job_name=JobName.INSIGHTS_DAILY_SNAPSHOT,
+                cron_pattern=SNAPSHOT_CRON_PATTERN,
+            ),
             JobSchedule(
                 scheduler_id="files.delete_orphans",
                 queue_name=QueueName.MAINTENANCE,
@@ -1644,11 +2753,122 @@ class Container:
                 job_name=JobName.RUNS_ABORT_STALE,
                 cron_pattern="*/15 * * * *",
             ),
+            JobSchedule(
+                scheduler_id="test_cases.sweep_flaky",
+                queue_name=QueueName.MAINTENANCE,
+                job_name=JobName.TEST_CASES_SWEEP_FLAKY,
+                cron_pattern="45 3 * * *",
+            ),
+            JobSchedule(
+                scheduler_id="webhook.delete_old_deliveries",
+                queue_name=QueueName.MAINTENANCE,
+                job_name=JobName.WEBHOOK_DELETE_OLD_DELIVERIES,
+                cron_pattern="15 4 * * *",
+            ),
+        )
+
+    @cached_property
+    def test_case_quality_repository(self) -> PostgresTestCaseQualityRepository:
+        return PostgresTestCaseQualityRepository(self.database)
+
+    @cached_property
+    def quarantine_event_repository(self) -> PostgresQuarantineEventRepository:
+        return PostgresQuarantineEventRepository(self.database)
+
+    @cached_property
+    def case_result_history_reader(self) -> PostgresCaseResultHistoryReader:
+        return PostgresCaseResultHistoryReader(self.database)
+
+    @cached_property
+    def flaky_recompute_requester(self) -> FlakyRecomputeRequester:
+        return QueuedFlakyRecomputeRequester(self.job_queue)
+
+    @cached_property
+    def recompute_flaky(self) -> RecomputeFlakyUseCase:
+        return RecomputeFlakyUseCase(
+            self.database,
+            self.test_case_quality_repository,
+            self.case_result_history_reader,
+            self.quarantine_event_repository,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def sweep_flaky(self) -> SweepFlakyUseCase:
+        return SweepFlakyUseCase(self.database, self.test_case_quality_repository, self.recompute_flaky)
+
+    @cached_property
+    def quarantine_test_case(self) -> QuarantineTestCaseUseCase:
+        return QuarantineTestCaseUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_case_repository,
+            self.test_case_quality_repository,
+            self.quarantine_event_repository,
+            self.test_case_version_repository,
+            self.test_file_repository,
+            self.case_story_reader,
+            self.case_criterion_reader,
+            self.data_key_reader,
+            self.test_case_label_repository,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def release_test_case_quarantine(self) -> ReleaseTestCaseQuarantineUseCase:
+        return ReleaseTestCaseQuarantineUseCase(
+            self.database,
+            self.project_access_resolver,
+            self.test_case_repository,
+            self.test_case_quality_repository,
+            self.quarantine_event_repository,
+            self.test_case_version_repository,
+            self.test_file_repository,
+            self.case_story_reader,
+            self.case_criterion_reader,
+            self.data_key_reader,
+            self.test_case_label_repository,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def list_quarantine_events(self) -> ListQuarantineEventsUseCase:
+        return ListQuarantineEventsUseCase(
+            self.database, self.project_access_resolver, self.test_case_repository, self.quarantine_event_repository
         )
 
     @cached_property
     def job_workers(self) -> list[BullmqJobWorker]:
         return build_job_workers(self._settings.queue.redis_url, self.job_handlers)
+
+    @cached_property
+    def live_event_handlers(self) -> tuple[LiveEventHandler, ...]:
+        return (ChatChannelLiveEventHandler(self.request_chat_deliveries), self.request_webhook_deliveries)
+
+    @cached_property
+    def live_event_listener(self) -> LiveEventListener:
+        return LiveEventListener(self.live_event_hub, self.live_event_handlers)
+
+    @cached_property
+    def run_log_repository(self) -> PostgresRunLogRepository:
+        return PostgresRunLogRepository(self.database)
+
+    @cached_property
+    def upload_run_log(self) -> UploadRunLogUseCase:
+        return UploadRunLogUseCase(
+            self.database,
+            self.run_repository,
+            self.run_case_repository,
+            self.run_log_repository,
+            self.secret_value_reader,
+            self.live_event_publisher,
+        )
+
+    @cached_property
+    def get_run_log(self) -> GetRunLogUseCase:
+        return GetRunLogUseCase(
+            self.database, self.project_access_resolver, self.run_repository, self.run_log_repository
+        )
 
     @cached_property
     def mcp_server(self) -> MCPServer:
@@ -1661,10 +2881,21 @@ class Container:
             self.finish_run,
             self.get_failed_cases,
         )
-        register_gap_tools(server, self.authenticate_api_token, self.raise_gaps, self.get_open_gaps)
+        register_gap_tools(
+            server,
+            self.authenticate_api_token,
+            self.raise_gaps,
+            self.get_open_gaps,
+            self.get_my_gaps,
+            self.answer_gap,
+            self.reassign_gap,
+        )
+        register_test_data_tools(server, self.authenticate_api_token, self.set_test_data)
+        register_test_case_tools(server, self.authenticate_api_token, self.check_draft_cases, self.create_draft_cases)
         register_story_context_tools(
             server, self.authenticate_api_token, self.get_story_context, self.resolve_data, self.get_test_file
         )
+        register_suite_tools(server, self.authenticate_api_token, self.get_suite_context)
         return server
 
     async def close(self) -> None:

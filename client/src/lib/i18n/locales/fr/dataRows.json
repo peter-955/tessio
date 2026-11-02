@@ -1,0 +1,49 @@
+{
+  "editor": {
+    "title": "Paramètres et lignes de données",
+    "hint": "Utilisez {{prefix}}nom}} dans les préconditions et les étapes. Chaque ligne de données exécute le cas une fois, comme une itération. Une valeur peut être une référence de données de test comme {{dataExample}} ; ne saisissez jamais de secret ici.",
+    "tableLabel": "Lignes de données",
+    "row": "Ligne",
+    "rowActions": "Actions de la ligne",
+    "parameterName": "Nom du paramètre {{position}}",
+    "parameterPlaceholder": "nom",
+    "parameterFallback": "paramètre {{position}}",
+    "cellLabel": "Ligne {{row}}, {{parameter}}",
+    "removeParameter": "Supprimer le paramètre {{name}}",
+    "removeRow": "Supprimer la ligne {{row}}",
+    "noParameters": "Aucun paramètre. Le cas s'exécute une fois.",
+    "noRows": "Aucune ligne de données. Ajoutez une ligne par jeu de valeurs.",
+    "addParameter": "Ajouter un paramètre",
+    "addRow": "Ajouter une ligne de données",
+    "errors": {
+      "required": "Nommez le paramètre.",
+      "invalidName": "Utilisez des lettres, des chiffres et _, en commençant par une lettre.",
+      "duplicateName": "Chaque paramètre doit avoir son propre nom.",
+      "tooLong": "Utilisez au plus {{max}} caractères.",
+      "tooManyParameters": "Un cas peut avoir au plus {{max}} paramètres.",
+      "tooManyRows": "Un cas peut avoir au plus {{max}} lignes de données.",
+      "rowsWithoutParameters": "Ajoutez les paramètres avant les lignes de données.",
+      "parametersWithoutRows": "Ajoutez au moins une ligne de données pour les paramètres, ou retirez les paramètres."
+    }
+  },
+  "table": {
+    "title_one": "Lignes de données ({{count}} itération)",
+    "title_other": "Lignes de données ({{count}} itérations)",
+    "label": "Lignes de données",
+    "iteration": "Itération"
+  },
+  "iteration": {
+    "title": "Itération {{number}}",
+    "values": "Valeurs de cette itération",
+    "emptyValue": "vide",
+    "listLabel": "Itérations de {{code}}",
+    "stepsLabel": "Étapes de {{code}}, itération {{number}}",
+    "summary_one": "{{recorded}} itération enregistrée sur {{count}}",
+    "summary_other": "{{recorded}} itérations enregistrées sur {{count}}",
+    "recordHint": "Exécutez le cas une fois par ligne de données et enregistrez chaque itération séparément.",
+    "record": "Enregistrer l'itération {{number}}",
+    "showSteps": "Afficher l'itération {{number}}",
+    "save": "Enregistrer l'itération {{number}}",
+    "saved": "{{code}}, itération {{number}} enregistrée."
+  }
+}

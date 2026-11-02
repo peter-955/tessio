@@ -30,3 +30,6 @@ class FailureRepository(ABC):
 
     @abstractmethod
     async def list_views(self, project_id: UUID, failure_filter: FailureFilter, limit: int) -> list[FailureView]: ...
+
+    @abstractmethod
+    async def list_active_with_jira_issue(self, project_id: UUID) -> list[Failure]: ...

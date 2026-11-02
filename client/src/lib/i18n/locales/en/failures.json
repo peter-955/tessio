@@ -17,7 +17,8 @@
   },
   "executor": {
     "claude": "Claude",
-    "manual": "Manual"
+    "manual": "Manual",
+    "ci": "CI"
   },
   "roles": {
     "admin": "Admin",
@@ -47,6 +48,7 @@
     "lastFailed": "Last failed",
     "run": "Run",
     "result": "Result",
+    "iteration": "Iteration",
     "executor": "Executor",
     "duration": "Duration",
     "startedBy": "Started by"
@@ -102,7 +104,8 @@
     "assigned": "Assigned to {{name}}",
     "unassigned": "Unassigned",
     "by": "by {{name}}",
-    "automatic": "Automatic"
+    "automatic": "Automatic",
+    "causeChanged": "Suspected cause: {{from}} → {{to}}"
   },
   "actions": {
     "markFixed": "Mark fixed",
@@ -120,10 +123,19 @@
   "toasts": {
     "statusChanged": "{{code}} is now {{status}}.",
     "assigned": "{{code}} assigned to {{name}}.",
-    "unassigned": "{{code}} is now unassigned."
+    "unassigned": "{{code}} is now unassigned.",
+    "causeChanged": "Suspected cause of {{code}} changed"
   },
   "errors": {
     "changedMeanwhile": "This failure changed meanwhile. It has been reloaded.",
     "assigneeNotActive": "Pick an active project member."
+  },
+  "cause": {
+    "title": "Suspected cause",
+    "none": "No suspected cause yet.",
+    "change": "Change",
+    "modalTitle": "Change the suspected cause",
+    "reason": "Why (optional)",
+    "save": "Save cause"
   }
 }

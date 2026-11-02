@@ -7,9 +7,10 @@ import {
   respondWithRoutes,
 } from "@/modules/auth/test/utils/api-result.util";
 import { renderWithProviders } from "@/modules/auth/test/utils/render-with-providers.util";
+import { stubBrowserApis } from "@/modules/projects/test/utils/stub-browser-apis.util";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
 import { ConnectClaudePage } from "./connect-claude";
 import { apiDelete, apiGet, apiPost } from "./test/mocks/api-client.mock";
@@ -70,6 +71,10 @@ const submitCreateForm = async (): Promise<void> => {
 };
 
 describe("ConnectClaudePage", () => {
+  beforeAll(() => {
+    stubBrowserApis();
+  });
+
   beforeEach(() => {
     apiGet.mockReset();
     apiPost.mockReset();
@@ -104,16 +109,14 @@ describe("ConnectClaudePage", () => {
     await submitCreateForm();
 
     expect(apiPost).toHaveBeenCalledWith(TOKENS_PATH, {
-      body: { name: "My laptop", projectKey: "TES", expiresInDays: 30 },
+      body: { name: "My laptop", projectKey: "TES", expiresInDays: 30, scope: "mcp" },
     });
     const dialog = await screen.findByRole("dialog", { name: "Token for TES" });
-    const command = `claude plugin install tessio --marketplace <marketplace> --config tessio_url=${window.location.origin} --config tessio_token=${SECRET_TOKEN}`;
+    const command = `claude plugin install tessio --marketplace ${window.location.origin}/api/plugin/marketplace.json --config tessio_url=${window.location.origin} --config tessio_token=${SECRET_TOKEN}`;
     expect(within(dialog).getByText(command)).toBeInTheDocument();
     expect(within(dialog).getByText(SECRET_TOKEN)).toBeInTheDocument();
     expect(within(dialog).getAllByRole("button", { name: "Copy" })).toHaveLength(2);
-    expect(
-      within(dialog).getByText(englishConnectClaude.created.marketplaceMissing),
-    ).toBeInTheDocument();
+    expect(within(dialog).getByText(englishConnectClaude.created.httpsOnly)).toBeInTheDocument();
     expect(await axe(dialog)).toHaveNoViolations();
     await waitFor(() => {
       expect(countTokenListCalls()).toBe(2);
@@ -215,6 +218,82 @@ describe("ConnectClaudePage", () => {
     await fillCreateForm("VIE · Viewing");
 
     expect(screen.getByText(englishConnectClaude.create.viewerHint)).toBeInTheDocument();
+  });
+
+  it("creates a REST API token for CI and shows the JUnit import call instead of the plugin", async () => {
+    const user = userEvent.setup();
+    const created = createCreatedApiToken(SECRET_TOKEN);
+    respondWithRoutes(apiPost, {
+      [TOKENS_PATH]: createSuccessResult({
+        ...created,
+        apiToken: { ...created.apiToken, scope: "api" },
+      }),
+    });
+    renderWithProviders(<ConnectClaudePage />);
+
+    await fillCreateForm();
+    await user.click(screen.getByRole("combobox", { name: englishConnectClaude.scope.label }));
+    await user.click(
+      await screen.findByRole("option", {
+        name: englishConnectClaude.scope.options.api,
+        hidden: true,
+      }),
+    );
+    expect(screen.getByText(englishConnectClaude.scope.descriptions.api)).toBeInTheDocument();
+    await submitCreateForm();
+
+    expect(apiPost).toHaveBeenCalledWith(TOKENS_PATH, {
+      body: { name: "My laptop", projectKey: "TES", expiresInDays: 30, scope: "api" },
+    });
+    const dialog = await screen.findByRole("dialog", { name: "Token for TES" });
+    const command = [
+      `curl -X POST ${window.location.origin}/api/projects/TES/runs/import \\`,
+      `  -H 'Authorization: Bearer ${SECRET_TOKEN}' \\`,
+      "  -F file=@results.xml \\",
+      "  -F environment=Staging",
+    ].join("\n");
+    expect(
+      within(dialog).getByText((_, element) => {
+        return element?.tagName === "PRE" && element.textContent === command;
+      }),
+    ).toBeInTheDocument();
+    expect(within(dialog).getByText(englishConnectClaude.created.apiHint)).toBeInTheDocument();
+    expect(within(dialog).queryByText(/claude plugin install/)).not.toBeInTheDocument();
+    expect(
+      within(dialog).queryByText(englishConnectClaude.created.httpsOnly),
+    ).not.toBeInTheDocument();
+    expect(await axe(dialog)).toHaveNoViolations();
+  });
+
+  it("shows what each token is used for in the list", async () => {
+    respondWithTokens([
+      createApiToken({ id: "token-mcp", name: "Laptop" }),
+      createApiToken({ id: "token-api", name: "GitHub Actions", scope: "api" }),
+    ]);
+    renderWithProviders(<ConnectClaudePage />);
+
+    const table = await screen.findByRole("table");
+    const rows = within(table).getAllByRole("row");
+    expect(within(rows[0]).getByText(englishConnectClaude.table.scope)).toBeInTheDocument();
+    expect(within(rows[1]).getByText(englishConnectClaude.scope.short.mcp)).toBeInTheDocument();
+    expect(within(rows[2]).getByText(englishConnectClaude.scope.short.api)).toBeInTheDocument();
+  });
+
+  it("explains that a Viewer REST API token can read but not import", async () => {
+    const user = userEvent.setup();
+    respondWithTokens([], [createProject({ key: "VIE", name: "Viewing", myRole: "viewer" })]);
+    renderWithProviders(<ConnectClaudePage />);
+
+    await fillCreateForm("VIE · Viewing");
+    await user.click(screen.getByRole("combobox", { name: englishConnectClaude.scope.label }));
+    await user.click(
+      await screen.findByRole("option", {
+        name: englishConnectClaude.scope.options.api,
+        hidden: true,
+      }),
+    );
+
+    expect(screen.getByText(englishConnectClaude.create.viewerApiHint)).toBeInTheDocument();
   });
 
   it("shows an empty state when the user has no projects", async () => {

@@ -11,3 +11,4 @@ class CriterionImpactResponse(WireModel):
     status: CriterionStatus
     run_case_codes: list[str]
     failed_case_codes: list[str]
+    story_jira_key: str | None = None

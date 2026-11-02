@@ -1,0 +1,164 @@
+{
+  "page": {
+    "title": "Analyses",
+    "description": "Taux de réussite, échecs, cas instables, couverture par étiquette et consommation de jetons dans le temps."
+  },
+  "noValue": "—",
+  "loading": "Chargement : {{title}}",
+  "loadError": "Impossible de charger : {{title}}.",
+  "retry": "Réessayer",
+  "axis": {
+    "day": "Jour",
+    "sprint": "Sprint"
+  },
+  "executor": {
+    "claude": "Claude",
+    "manual": "Manuel",
+    "script": "Script",
+    "ci": "CI"
+  },
+  "filters": {
+    "from": "Du",
+    "to": "Au",
+    "sprint": "Sprint",
+    "sprintPlaceholder": "Tous les sprints",
+    "sprintOption": "{{name}} · {{state}}",
+    "sprintStates": {
+      "active": "Actif",
+      "future": "À venir",
+      "closed": "Terminé"
+    },
+    "groupByLabel": "Regrouper par",
+    "groupBy": {
+      "day": "Jour",
+      "sprint": "Sprint"
+    }
+  },
+  "rangeProblem": {
+    "title": "Vérifiez les dates",
+    "order": "La date de début est après la date de fin.",
+    "tooLong": "Choisissez une période de {{maxDays}} jours au plus."
+  },
+  "summary": {
+    "title": "Résumé",
+    "range": "{{from}} – {{to}} (jours UTC)",
+    "emptyTitle": "Rien ne s'est passé sur cette période",
+    "emptySprintTitle": "Aucun sprint ne couvre cette période",
+    "emptyDescription": "Les exécutions, échecs et questions de la période s'affichent ici. Choisissez une période plus longue ou un autre sprint.",
+    "passRate": "Taux de réussite",
+    "runs": "Exécutions",
+    "results": "Résultats",
+    "resultsValue": "{{passed}} / {{failed}} / {{blocked}}",
+    "failuresOpened": "Échecs ouverts",
+    "failuresFixed": "Échecs corrigés",
+    "meanTimeToFix": "Temps moyen de correction",
+    "openGaps": "Questions ouvertes",
+    "medianOpenGapAge": "Âge médian des questions ouvertes"
+  },
+  "passRate": {
+    "title": "Taux de réussite dans le temps",
+    "series": "Taux de réussite"
+  },
+  "executors": {
+    "title": "Exécutions par exécutant",
+    "empty": "Aucune exécution lancée sur cette période."
+  },
+  "failures": {
+    "title": "Échecs ouverts et corrigés",
+    "meanTimeToFix": "Temps moyen de correction : {{duration}}",
+    "opened": "Ouverts",
+    "fixed": "Corrigés"
+  },
+  "gaps": {
+    "title": "Durée d'ouverture des questions",
+    "summary": "{{opened}} posées · {{answered}} répondues · temps moyen de réponse : {{duration}}",
+    "medianOpenAge": "Âge médian des questions ouvertes (jours)",
+    "meanAnswer": "Temps moyen de réponse (jours)"
+  },
+  "labels": {
+    "title": "Couverture par étiquette",
+    "description": "Les cas actuels par étiquette, la part Prête et la part dont le dernier résultat est réussi.",
+    "chart": "Part prête et part réussie par étiquette",
+    "table": "Cas par étiquette",
+    "unlabelled": "Sans étiquette",
+    "readyShare": "Prêts",
+    "passedShare": "Réussis",
+    "countWithShare": "{{count}} ({{share}})",
+    "columns": {
+      "label": "Étiquette",
+      "cases": "Cas",
+      "ready": "Prêts",
+      "passed": "Réussis"
+    },
+    "emptyTitle": "Aucun cas de test",
+    "emptyDescription": "La couverture par étiquette s'affiche dès que le projet a des cas de test."
+  },
+  "sprintCoverage": {
+    "title": "Couverture des critères par sprint",
+    "description": "Couverture actuelle des critères d'acceptation des stories de chaque sprint.",
+    "passed": "Réussis",
+    "failed": "Échoués",
+    "blocked": "Bloqués",
+    "notRun": "Non exécutés",
+    "uncovered": "Non couverts",
+    "emptyTitle": "Aucune couverture de sprint",
+    "emptyDescription": "Aucun sprint avec des critères d'acceptation ne chevauche cette période."
+  },
+  "cases": {
+    "columns": {
+      "case": "Cas",
+      "story": "Story"
+    }
+  },
+  "topFailing": {
+    "title": "Cas qui échouent le plus",
+    "description": "Résultats échoués ou bloqués sur la période, exécutions de story et de suite comprises. Un cas piloté par les données compte une fois par exécution, avec sa pire itération.",
+    "columns": {
+      "failures": "Échoués / bloqués",
+      "failRate": "Taux d'échec",
+      "lastFailed": "Dernier échec"
+    },
+    "failuresValue": "{{failed}} / {{blocked}} sur {{total}}",
+    "emptyTitle": "Aucun cas en échec",
+    "emptyDescription": "Aucun cas n'a échoué ni été bloqué sur cette période."
+  },
+  "flaky": {
+    "title": "Cas instables",
+    "description": "Cas dont les derniers résultats alternent entre réussi et échoué, ou dont les exécutants ne sont pas d'accord.",
+    "columns": {
+      "flips": "Alternances",
+      "since": "Depuis"
+    },
+    "flipsValue_one": "{{count}} alternance sur 10 résultats",
+    "flipsValue_other": "{{count}} alternances sur 10 résultats",
+    "emptyTitle": "Aucun cas instable",
+    "emptyDescription": "Aucun cas n'est instable ni en désaccord pour le moment."
+  },
+  "tokens": {
+    "title": "Jetons par exécution Claude",
+    "description": "Jetons indiqués par le journal d'exécution de chaque exécution lancée sur la période. Les exécutions dont le journal n'indique aucun jeton ne sont pas comptées.",
+    "total": "Total des jetons",
+    "meanPerRun": "Moyenne par exécution",
+    "meanPerCase": "Moyenne par cas",
+    "runCount": "Exécutions avec jetons",
+    "chart_one": "Jetons de la dernière exécution",
+    "chart_other": "Jetons des {{count}} dernières exécutions",
+    "runLabel": "{{date}} · {{source}}",
+    "input": "Entrée",
+    "cacheWrite": "Écriture cache",
+    "cacheRead": "Lecture cache",
+    "output": "Sortie",
+    "table": "Dernières exécutions et leurs jetons",
+    "columns": {
+      "run": "Exécution",
+      "executor": "Exécutant",
+      "cases": "Cas",
+      "total": "Jetons",
+      "perCase": "Par cas"
+    },
+    "cut": "Journal tronqué",
+    "tableLimit": "Les {{shown}} dernières exécutions sur {{total}}.",
+    "emptyTitle": "Aucune donnée de jetons",
+    "emptyDescription": "Aucune exécution de la période n'a envoyé de journal avec le nombre de jetons."
+  }
+}

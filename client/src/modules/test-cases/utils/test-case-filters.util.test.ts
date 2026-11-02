@@ -18,6 +18,10 @@ const FULL_FILTERS: TestCaseFilters = {
   priority: "high",
   criterionId: CRITERION_ID,
   isNeedingReview: true,
+  isFlaky: true,
+  isDisagreeing: true,
+  isQuarantined: true,
+  labelNames: ["smoke", "checkout"],
   query: "card",
 };
 
@@ -26,7 +30,7 @@ describe("test case filters", () => {
     const search = buildTestCaseFiltersSearch(FULL_FILTERS);
 
     expect(search).toBe(
-      `?story=SHOP-1&status=in_review&priority=high&criterion=${CRITERION_ID}&needsReview=true&query=card`,
+      `?story=SHOP-1&status=in_review&priority=high&criterion=${CRITERION_ID}&needsReview=true&flaky=true&disagreeing=true&quarantined=true&label=smoke&label=checkout&query=card`,
     );
     expect(parseTestCaseFilters(readTestCaseSearchParams(new URLSearchParams(search)))).toEqual(
       FULL_FILTERS,
@@ -41,6 +45,9 @@ describe("test case filters", () => {
         priority: "urgent",
         criterion: "not-a-uuid",
         needsReview: "yes",
+        flaky: "1",
+        disagreeing: "false",
+        quarantined: ["no", "true"],
         query: ["a".repeat(120), "b"],
       }),
     ).toEqual({ ...EMPTY_TEST_CASE_FILTERS, storyKey: "SHOP-1", query: "a".repeat(100) });
@@ -61,8 +68,40 @@ describe("test case filters", () => {
       priority: "high",
       criterionId: CRITERION_ID,
       needsReview: true,
+      flaky: true,
+      disagreeing: true,
+      quarantined: true,
+      label: ["smoke", "checkout"],
       query: "card",
     });
+  });
+
+  it("counts each flaky filter as a filter", () => {
+    expect(checkHasTestCaseFilters({ ...EMPTY_TEST_CASE_FILTERS, isFlaky: true }, true)).toBe(true);
+    expect(checkHasTestCaseFilters({ ...EMPTY_TEST_CASE_FILTERS, isDisagreeing: true }, true)).toBe(
+      true,
+    );
+    expect(checkHasTestCaseFilters({ ...EMPTY_TEST_CASE_FILTERS, isQuarantined: true }, true)).toBe(
+      true,
+    );
+    expect(buildTestCaseListQuery({ ...EMPTY_TEST_CASE_FILTERS, isQuarantined: true })).toEqual({
+      quarantined: true,
+    });
+  });
+
+  it("reads repeated label filters, trims them and drops repeats", () => {
+    const filters = parseTestCaseFilters(
+      readTestCaseSearchParams(
+        new URLSearchParams("label=%20Smoke%20&label=smoke&label=&label=api"),
+      ),
+    );
+
+    expect(filters.labelNames).toEqual(["Smoke", "api"]);
+    expect(checkHasTestCaseFilters(filters, true)).toBe(true);
+    expect(buildTestCaseListQuery(filters)).toEqual({ label: ["Smoke", "api"] });
+    expect(buildTestCaseFiltersSearch(filters)).toBe("?label=Smoke&label=api");
+    expect(parseTestCaseFilters({ label: "smoke" }).labelNames).toEqual(["smoke"]);
+    expect(buildTestCaseListQuery(EMPTY_TEST_CASE_FILTERS)).toEqual({});
   });
 
   it("knows when filters are set and clears them", () => {

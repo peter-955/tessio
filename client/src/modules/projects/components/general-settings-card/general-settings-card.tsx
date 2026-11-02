@@ -118,8 +118,13 @@ export const GeneralSettingsCard: FC<Props> = ({ project }) => {
             maxLength={PROJECT_DESCRIPTION_MAX_LENGTH}
           />
           <ReadOnlyField label={t("fields.key")} value={project.key} />
-          <ReadOnlyField label={t("fields.jiraProject")} value={project.jiraProjectKey} />
-          {isBoardsError ? (
+          {!project.isLinkedToJira && (
+            <ReadOnlyField label={t("fields.stories")} value={t("fields.writtenInTessio")} />
+          )}
+          {project.isLinkedToJira && project.jiraProjectKey !== null && (
+            <ReadOnlyField label={t("fields.jiraProject")} value={project.jiraProjectKey} />
+          )}
+          {!project.isLinkedToJira ? null : isBoardsError ? (
             <>
               <ReadOnlyField label={t("fields.jiraBoard")} value={currentBoardId} />
               <DSAlert color="warning">{t("settings.general.boardLoadFailed")}</DSAlert>

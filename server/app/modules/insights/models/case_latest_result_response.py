@@ -9,3 +9,6 @@ class CaseLatestResultResponse(WireModel):
     code: str
     story_id: UUID
     latest_result: LatestResultResponse | None
+    is_flaky: bool
+    is_disagreeing: bool
+    is_quarantined: bool

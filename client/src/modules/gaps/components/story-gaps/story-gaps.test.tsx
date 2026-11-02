@@ -235,6 +235,39 @@ describe("StoryGaps", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
+  it("shows via Claude on an answer saved with Claude", async () => {
+    const user = userEvent.setup();
+    respondWithGaps([
+      createResolvedGap({ isAnsweredViaClaude: true }),
+      createResolvedGap({
+        id: "b1000000-0000-4000-8000-000000000006",
+        question: "Is PayPal accepted?",
+        answer: "No.",
+        isRaisedViaClaude: true,
+      }),
+    ]);
+    const { container } = renderTab();
+
+    await user.click(await screen.findByRole("radio", { name: "Answered (2)" }));
+
+    const claudeAnswerCard = within(await findCardByQuestion(RESOLVED_GAP.question));
+    const claudeAnswer = claudeAnswerCard.getByText(/Answered by Bao Ba/).closest("div");
+    if (claudeAnswer === null) {
+      throw new Error("The answer line is not rendered.");
+    }
+    expect(within(claudeAnswer).getByText(englishGaps.badge.viaClaude)).toBeInTheDocument();
+    expect(claudeAnswerCard.getAllByText(englishGaps.badge.viaClaude)).toHaveLength(1);
+
+    const handAnswerCard = within(await findCardByQuestion("Is PayPal accepted?"));
+    const handAnswer = handAnswerCard.getByText(/Answered by Bao Ba/).closest("div");
+    if (handAnswer === null) {
+      throw new Error("The answer line is not rendered.");
+    }
+    expect(within(handAnswer).queryByText(englishGaps.badge.viaClaude)).not.toBeInTheDocument();
+    expect(handAnswerCard.getAllByText(englishGaps.badge.viaClaude)).toHaveLength(1);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
   it("shows no action to a viewer", async () => {
     const user = userEvent.setup();
     respondWithGaps([OPEN_GAP, createResolvedGap({ raisedBy: CURRENT_USER_ID })]);

@@ -10,7 +10,9 @@ def build_import_preview_response(preview: ImportPreview) -> ImportPreviewRespon
     return ImportPreviewResponse(
         format=preview.format,
         items=[
-            ImportPreviewItemResponse(key=item.key, kind=item.kind, value=item.value, action=item.action)
+            ImportPreviewItemResponse(
+                key=item.key, kind=item.kind, value=item.value, action=item.action, description=item.description
+            )
             for item in preview.items
         ],
         skipped=[ImportSkipResponse(location=skip.location, reason=skip.reason) for skip in preview.skipped],

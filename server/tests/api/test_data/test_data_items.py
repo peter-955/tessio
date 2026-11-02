@@ -42,11 +42,11 @@ async def test_items_are_created_per_scope_and_listed_project_rows_first(
         f"/api/projects/{project.key}/test-data", json={"key": "USER", "kind": "variable", "value": "alice"}
     )
     await create_data_item(client, project, "USER", "bob", environment_id=environment_id)
-    await create_data_item(client, project, "CHECKOUT", "https://shop.test/checkout", kind="endpoint")
+    await create_data_item(client, project, "CHECKOUT", "https://shop.test/checkout", kind="variable")
 
     assert project_response.status_code == 201
     body = project_response.json()
-    assert body.keys() == {"id", "environmentId", "key", "kind", "value", "hasValue", "createdAt"}
+    assert body.keys() == {"id", "environmentId", "key", "kind", "value", "hasValue", "createdAt", "description"}
     assert body["environmentId"] is None
     assert body["value"] == "alice"
     assert body["hasValue"] is True
@@ -91,13 +91,13 @@ async def test_renaming_onto_a_used_key_is_refused(
         f"/api/projects/{project.key}/test-data/{other_id}", json={"key": "USER", "kind": "variable", "value": "x"}
     )
     kept = await client.put(
-        f"/api/projects/{project.key}/test-data/{other_id}", json={"key": "OTHER", "kind": "endpoint", "value": "y"}
+        f"/api/projects/{project.key}/test-data/{other_id}", json={"key": "OTHER", "kind": "variable", "value": "y"}
     )
 
     assert renamed.status_code == 409
     assert renamed.json()["code"] == "TEST_DATA_KEY_ALREADY_USED"
     assert kept.status_code == 200
-    assert (kept.json()["kind"], kept.json()["value"]) == ("endpoint", "y")
+    assert (kept.json()["kind"], kept.json()["value"]) == ("variable", "y")
 
 
 async def test_an_archived_or_unknown_environment_cannot_get_new_items(

@@ -1,5 +1,6 @@
 from datetime import UTC, datetime
 
+from app.modules.jira import JiraResultCommentRequester
 from app.modules.stories.domains.acceptance_criterion.repository import AcceptanceCriterionRepository
 from app.modules.stories.domains.sprint.repository import SprintRepository
 from app.modules.stories.domains.story.repository import StoryRepository
@@ -27,6 +28,7 @@ class ChangeTestStatusUseCase:
         active_failure_counter: ActiveFailureCounter,
         running_run_checker: RunningRunChecker,
         live_event_publisher: LiveEventPublisher,
+        jira_result_comment_requester: JiraResultCommentRequester,
     ) -> None:
         self._transaction = transaction
         self._project_access_resolver = project_access_resolver
@@ -36,6 +38,7 @@ class ChangeTestStatusUseCase:
         self._active_failure_counter = active_failure_counter
         self._running_run_checker = running_run_checker
         self._live_event_publisher = live_event_publisher
+        self._jira_result_comment_requester = jira_result_comment_requester
 
     async def execute(self, actor: Actor, project_key: str, jira_key: str, test_status: TestStatus) -> StoryDetail:
         now = datetime.now(UTC)
@@ -81,4 +84,13 @@ class ChangeTestStatusUseCase:
                     ids={"storyId": str(story.id), "jiraKey": story.jira_key},
                 )
             )
+            if test_status is TestStatus.PASSED:
+                await self._live_event_publisher.publish(
+                    LiveEvent(
+                        type=LiveEventType.STORY_SIGNED_OFF,
+                        project_id=access.project_id,
+                        ids={"storyId": str(story.id), "jiraKey": story.jira_key},
+                    )
+                )
+                await self._jira_result_comment_requester.request_after_sign_off(access.project_id, story.id)
         return build_story_detail(access, story, sprint, criteria)

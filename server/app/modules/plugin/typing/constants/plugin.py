@@ -1,0 +1,27 @@
+PLUGIN_VERSION_HEADER = "x-tessio-plugin-version"
+PLUGIN_MANIFEST_PATH = ".claude-plugin/plugin.json"
+PLUGIN_MARKETPLACE_NAME = "tessio"
+PLUGIN_MARKETPLACE_OWNER = "Tessio team"
+PLUGIN_MARKETPLACE_DESCRIPTION = "The Tessio Claude Code plugin, served by this Tessio server"
+PLUGIN_ROUTE_PREFIX = "/api/plugin"
+PLUGIN_MARKETPLACE_FILE_NAME = "marketplace.json"
+PLUGIN_ARCHIVE_FILE_TEMPLATE = "{name}-{version}.zip"
+PLUGIN_ARCHIVE_MEDIA_TYPE = "application/zip"
+PLUGIN_ARCHIVE_CACHE_CONTROL = "public, max-age=31536000, immutable"
+PLUGIN_MARKETPLACE_CACHE_CONTROL = "no-cache"
+PLUGIN_ARCHIVE_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
+PLUGIN_EXCLUDED_PARTS = frozenset({"__pycache__", ".DS_Store", "tests"})
+PLUGIN_EXCLUDED_SUFFIXES = frozenset({".pyc"})
+PLUGIN_EXECUTABLE_MODE = 0o755
+PLUGIN_FILE_MODE = 0o644
+PLUGIN_UPDATE_COMMAND = "claude plugin marketplace update tessio && claude plugin update tessio@tessio"
+PLUGIN_SKILLS_DIR = "skills"
+PLUGIN_SKILL_FILE_NAME = "SKILL.md"
+PLUGIN_COMMANDS_DIR = "commands"
+PLUGIN_COMMAND_SUFFIX = ".md"
+PLUGIN_HOOKS_PATH = "hooks/hooks.json"
+PLUGIN_MCP_SERVERS_PATH = ".mcp.json"
+PLUGIN_HOOK_COMMAND_TYPE = "command"
+PLUGIN_DEFAULT_MCP_TRANSPORT = "stdio"
+PLUGIN_FRONTMATTER_DELIMITER = "---"
+MCP_TOOL_CAPABILITY_META_KEY = "tessio/capability"

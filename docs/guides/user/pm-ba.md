@@ -2,7 +2,7 @@
 
 **Status:** Draft, written 2026-11-01 for the build after W6. Screenshots to add.
 
-This page is for *PM* and *BA*. Both roles have the same rights in Tessio. You keep stories and AC in Jira, bring them into Tessio, follow testing progress and answer the gaps routed to you.
+This page is for *PM* and *BA*. Both roles have the same rights in Tessio, except test plans: a PM creates and edits them, a BA reads them. You keep stories and AC in Jira, bring them into Tessio, follow testing progress and answer the gaps routed to you.
 
 ## Rules
 
@@ -60,6 +60,17 @@ AC status on the **Traceability** tab:
 
 > Screenshot to add: run-report.png: the Report tab of a run with Acceptance criteria impact.
 
+## Test plans
+
+A test plan tracks a release up to sign-off: the regression suites and stories it covers, and how far their cases have got. PM and QC create and edit plans; only QC or an Admin signs one off. BA can read plans but not change them.
+
+1. Open **Plans** (`/projects/{KEY}/plans`) and select **New plan**. Give it a name, and optionally a target date and an environment (then only runs on that environment count).
+2. Select **Choose suites and stories**. The plan's cases are each suite's cases, then each story's cases, each listed once.
+3. Follow the plan page: the progress bar (passed, failed, blocked, skipped, not run), the cases by status, and the blockers (active failures and open gaps). Results count from when the plan was created.
+4. When the QC signs it off, the numbers stop moving. **Close plan** ends the plan; closing is final.
+
+Regression suites themselves (**Suites**, `/projects/{KEY}/suites`) are built by QC; you can open them and their runs. A suite run never changes a story's test status.
+
 ## Answer gaps
 
 A gap is a question about a story, an AC or a test case. Claude files gaps during the readiness review, and people can raise them with **Raise gap**. Gaps are routed by type:
@@ -80,6 +91,18 @@ To answer:
 4. If the answer changes the AC, edit them in Jira and select **Sync from Jira** again.
 
 If the gap is not for you, select **Reassign** and pick a person or a role. A gap whose assignee was deactivated shows a *Deactivated* badge: reassign it.
+
+### Answer gaps with Claude
+
+If you use Claude Code with the Tessio plugin ([Claude setup](../claude-setup.md)), run `/tessio:answer-gaps`, or `/tessio:answer-gaps SHOP-12` for one story.
+
+1. Claude loads the gaps assigned to you or to your role, high severity first.
+2. For each gap it says what the question means and what it blocks, and offers two or three answers, each with its source: the story, an AC, an earlier answer to a similar question, or existing test data.
+3. Pick one with a key press, write your own, choose **Not mine** to reassign it, or **Skip**.
+4. Claude shows the answers before saving. Nothing is saved until you confirm.
+5. At the end it shows which stories can run again and which cases QC should update.
+
+Answers saved this way show "via Claude". Claude never asks for a password or other secret, and never changes Jira or the test cases. PM and BA cannot save test data, so for a missing value Claude saves your answer and a QC or Dev adds the value in **Test data**.
 
 The person who raised a gap, QC and Admin can reopen an answered gap. A reopened gap blocks runs again.
 

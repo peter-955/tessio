@@ -57,6 +57,8 @@ def build_result(view: RunCaseView, status: ResultStatus) -> CaseResult:
         test_case_version_id=view.version.id,
         status=status,
         duration_ms=100,
+        suspected_cause=None,
+        cause_reason=None,
         recorded_by=USER_ID,
         created_at=NOW,
     )
@@ -72,6 +74,7 @@ def build_step(case_result_id: UUID, order: int, status: ResultStatus, error: st
         error=error,
         screenshot_file_id=None,
         evidence_file_id=None,
+        diagnosis=None,
         created_at=NOW,
     )
 

@@ -8,20 +8,23 @@ export type DSStepTimelineStatus =
 export interface DSStepTimelineStep {
   key: string;
   order: number;
-  action: string;
-  expected: string | null;
-  status: DSStepTimelineStatus;
-  statusLabel: string;
-  actualResult: string | null;
-  error: string | null;
+  action: ReactNode;
+  expected: ReactNode;
+  status?: DSStepTimelineStatus;
+  statusLabel?: string;
+  actualResult?: string | null;
+  error?: string | null;
+  titleId?: string;
+  headerAction?: ReactNode;
+  details?: ReactNode;
   media?: ReactNode;
 }
 
 export interface DSStepTimelineLabels {
   step: (order: number) => string;
   expected: string;
-  actualResult: string;
-  error: string;
+  actualResult?: string;
+  error?: string;
 }
 
 export interface DSStepTimelineStatusStyle {

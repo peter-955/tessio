@@ -4,6 +4,7 @@ from app.modules.failures.infrastructure.postgres_case_result_reader import Post
 from app.modules.failures.infrastructure.postgres_failure_assignee_directory import PostgresFailureAssigneeDirectory
 from app.modules.failures.infrastructure.postgres_failure_event_repository import PostgresFailureEventRepository
 from app.modules.failures.infrastructure.postgres_failure_repository import PostgresFailureRepository
+from app.modules.failures.infrastructure.postgres_jira_bug_source_reader import PostgresJiraBugSourceReader
 
 __all__ = [
     "FailureEventTable",
@@ -12,4 +13,5 @@ __all__ = [
     "PostgresFailureAssigneeDirectory",
     "PostgresFailureEventRepository",
     "PostgresFailureRepository",
+    "PostgresJiraBugSourceReader",
 ]

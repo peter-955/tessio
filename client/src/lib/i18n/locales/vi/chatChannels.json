@@ -1,0 +1,88 @@
+{
+  "card": {
+    "title": "Kênh trò chuyện",
+    "description": "Đăng các lượt chạy, lỗi, khoảng trống và phê duyệt của dự án này lên kênh Slack hoặc Teams qua webhook đến.",
+    "add": "Thêm kênh",
+    "limitReached": "Một dự án có tối đa {{max}} kênh trò chuyện.",
+    "loading": "Đang tải kênh trò chuyện",
+    "loadError": "Không tải được kênh trò chuyện",
+    "retry": "Thử lại",
+    "empty": "Chưa có kênh trò chuyện nào.",
+    "tableLabel": "Kênh trò chuyện",
+    "channel": "Kênh",
+    "events": "Sự kiện",
+    "lastDelivery": "Tin nhắn gần nhất",
+    "actions": "Thao tác",
+    "actionsFor": "Thao tác cho {{name}}",
+    "off": "Đã tắt",
+    "sendTest": "Gửi tin nhắn thử",
+    "edit": "Sửa",
+    "turnOff": "Tắt",
+    "turnOn": "Bật",
+    "delete": "Xóa"
+  },
+  "kinds": {
+    "slack": "Slack",
+    "teams": "Teams"
+  },
+  "events": {
+    "runStarted": "Lượt chạy bắt đầu",
+    "runFinished": "Lượt chạy kết thúc",
+    "failureOpened": "Lỗi được mở",
+    "failureStatusChanged": "Trạng thái lỗi thay đổi",
+    "gapRaised": "Khoảng trống được nêu",
+    "storySignedOff": "Story được phê duyệt",
+    "planSignedOff": "Kế hoạch được phê duyệt"
+  },
+  "delivery": {
+    "none": "Chưa gửi",
+    "delivered": "Đã gửi",
+    "failed": "Thất bại"
+  },
+  "form": {
+    "createTitle": "Thêm kênh trò chuyện",
+    "editTitle": "Sửa kênh trò chuyện",
+    "kind": "Ứng dụng trò chuyện",
+    "name": "Tên",
+    "namePlaceholder": "#ket-qua-qa",
+    "webhookUrl": "URL webhook",
+    "newWebhookUrl": "URL webhook mới",
+    "webhookUrlPlaceholder": "https://",
+    "slackHelp": "Trong Slack, thêm một incoming webhook cho kênh rồi dán URL của nó (https://hooks.slack.com/…).",
+    "teamsHelp": "Trong Teams, thêm mẫu Workflows \"Post to a channel when a webhook request is received\" cho kênh rồi dán URL của nó.",
+    "savedUrl": "URL đã lưu: {{url}}. Để trống để giữ nguyên.",
+    "secretNote": "Tessio lưu URL ở dạng mã hóa và sau đó chỉ hiển thị phần cuối.",
+    "events": "Sự kiện",
+    "eventsDescription": "Tessio đăng một tin nhắn cho mỗi sự kiện bạn chọn.",
+    "isActive": "Đăng tin nhắn lên kênh này",
+    "create": "Thêm kênh",
+    "save": "Lưu"
+  },
+  "delete": {
+    "title": "Xóa kênh trò chuyện",
+    "message": "Xóa {{name}}? Tessio sẽ ngừng đăng lên kênh này. Bản thân webhook vẫn còn trong Slack hoặc Teams.",
+    "confirm": "Xóa"
+  },
+  "validation": {
+    "nameRequired": "Nhập tên.",
+    "nameTooLong": "Dùng tối đa {{max}} ký tự.",
+    "nameAlreadyUsed": "Đã có kênh trò chuyện với tên này.",
+    "urlRequired": "Dán URL webhook.",
+    "urlTooLong": "Dùng tối đa {{max}} ký tự.",
+    "urlNotHttps": "Nhập một URL https, ví dụ https://hooks.slack.com/….",
+    "eventsRequired": "Chọn ít nhất một sự kiện."
+  },
+  "toasts": {
+    "created": "Đã thêm kênh trò chuyện",
+    "updated": "Đã lưu kênh trò chuyện",
+    "deleted": "Đã xóa kênh trò chuyện",
+    "turnedOn": "Đã bật {{name}}",
+    "turnedOff": "Đã tắt {{name}}",
+    "testSent": "Đã gửi tin nhắn thử tới {{name}}",
+    "testFailed": "Tin nhắn thử tới {{name}} không được gửi. Lý do được hiển thị trên kênh."
+  },
+  "errors": {
+    "notFound": "Kênh trò chuyện này không còn tồn tại. Tải lại để xem các kênh hiện tại.",
+    "urlInvalid": "Nhập một URL https công khai của Slack hoặc Teams."
+  }
+}

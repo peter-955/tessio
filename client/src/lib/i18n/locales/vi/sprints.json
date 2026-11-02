@@ -31,5 +31,9 @@
       "title": "Không tìm thấy sprint",
       "description": "Có thể sprint đã nằm ngoài phạm vi đồng bộ."
     }
+  },
+  "withoutJira": {
+    "title": "Dự án này không có sprint",
+    "description": "Story của dự án được viết trong Tessio. Xem chúng ở trang Story."
   }
 }

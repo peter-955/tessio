@@ -9,3 +9,6 @@ class CaseLatestResult(Entity):
     code: str
     story_id: UUID
     latest_result: LatestResult | None
+    is_flaky: bool
+    is_disagreeing: bool
+    is_quarantined: bool

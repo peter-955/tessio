@@ -7,6 +7,7 @@ from app.modules.api_tokens.domains.api_token_summary.entity import ApiTokenSumm
 from app.modules.api_tokens.domains.created_api_token.entity import CreatedApiToken
 from app.modules.api_tokens.errors import ProjectMembershipRequiredError, TokenLimitReachedError
 from app.modules.api_tokens.typing.constants import MAXIMUM_ACTIVE_API_TOKENS
+from app.modules.api_tokens.typing.enums import ApiTokenScope
 from app.modules.api_tokens.utils.api_token_secret import generate_api_token, hash_api_token
 from app.modules.projects.domains.project.repository import ProjectRepository
 from app.modules.projects.domains.project_member.repository import ProjectMemberRepository
@@ -36,7 +37,14 @@ class CreateApiTokenUseCase:
         self._project_member_repository = project_member_repository
         self._api_token_repository = api_token_repository
 
-    async def execute(self, actor: Actor, project_key: str, name: str, lifetime_days: int) -> CreatedApiToken:
+    async def execute(
+        self,
+        actor: Actor,
+        project_key: str,
+        name: str,
+        lifetime_days: int,
+        scope: ApiTokenScope = ApiTokenScope.MCP,
+    ) -> CreatedApiToken:
         if actor.api_token_id is not None:
             raise PermissionDeniedError
         now = datetime.now(UTC)
@@ -60,8 +68,10 @@ class CreateApiTokenUseCase:
                 token_hash=hash_api_token(token),
                 expires_at=now + timedelta(days=lifetime_days),
                 last_used_at=None,
+                plugin_version=None,
                 revoked_at=None,
                 created_at=now,
+                scope=scope,
             )
             await self._api_token_repository.save(api_token)
         return CreatedApiToken(

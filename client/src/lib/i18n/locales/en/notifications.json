@@ -27,7 +27,8 @@
   "item": {
     "unread": "Unread:",
     "markRead": "Mark as read",
-    "byActor": "by {{actorName}}"
+    "byActor": "by {{actorName}}",
+    "download": "Download the report"
   },
   "kind": {
     "gapAssigned": {
@@ -45,6 +46,22 @@
         "aborted": "Run aborted on {{storyKey}}"
       },
       "description": "{{passedCount}} passed · {{failedCount}} failed · {{blockedCount}} blocked"
+    },
+    "suiteRunFinished": {
+      "title": {
+        "passed": "Suite run passed: {{suiteName}}",
+        "failed": "Suite run failed: {{suiteName}}",
+        "aborted": "Suite run aborted: {{suiteName}}"
+      },
+      "description": "{{passedCount}} passed · {{failedCount}} failed · {{blockedCount}} blocked"
+    },
+    "reportReady": {
+      "title": {
+        "run": "Report ready: run {{sourceLabel}}",
+        "plan": "Report ready: plan {{sourceLabel}}",
+        "story": "Report ready: {{sourceLabel}}"
+      },
+      "description": "{{fileName}}"
     }
   }
 }

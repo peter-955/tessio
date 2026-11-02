@@ -71,7 +71,7 @@ async def test_admins_qc_and_devs_manage_environments_and_plain_items(
     )
     created_endpoint = await client.post(
         f"/api/projects/{project.key}/test-data",
-        json={"key": "CHECKOUT", "kind": "endpoint", "value": "https://shop.test/checkout"},
+        json={"key": "CHECKOUT", "kind": "variable", "value": "https://shop.test/checkout"},
     )
     updated_variable = await client.put(
         f"/api/projects/{project.key}/test-data/{variable_id}", json={"key": "USER", "kind": "variable", "value": "bo"}

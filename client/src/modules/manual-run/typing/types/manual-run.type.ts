@@ -31,3 +31,7 @@ export type RunStory = components["schemas"]["StorySummaryResponse"];
 export type ReadyTestCase = components["schemas"]["TestCaseSummaryResponse"];
 
 export type RunEnvironment = components["schemas"]["EnvironmentResponse"];
+
+export type ResolveDataRequest = components["schemas"]["ResolveDataRequest"];
+
+export type ResolvedData = components["schemas"]["ResolvedDataResponse"];

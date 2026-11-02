@@ -108,6 +108,13 @@ describe("checkCanRerunFailed", () => {
     ).toBe(false);
   });
 
+  it("hides the re-run for a CI import without a story or suite", () => {
+    const ciRun = { ...FINISHED_RUN, executor: "ci" as const };
+
+    expect(checkCanRerunFailed(buildRunProject(), { ...ciRun, isUntargeted: true })).toBe(false);
+    expect(checkCanRerunFailed(buildRunProject(), { ...ciRun, isUntargeted: false })).toBe(true);
+  });
+
   it("needs run.start on an active project", () => {
     expect(
       checkCanRerunFailed(buildRunProject({ capabilities: VIEWER_CAPABILITIES }), FINISHED_RUN),

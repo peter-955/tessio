@@ -7,6 +7,10 @@
   white-space: normal;
 }
 
+.labels {
+  margin-top: var(--space-1);
+}
+
 .status {
   display: flex;
   flex-wrap: wrap;

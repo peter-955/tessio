@@ -1,7 +1,9 @@
 from datetime import datetime
 from uuid import UUID
 
+from pydantic import JsonValue
 from sqlalchemy import ForeignKey, Text, UniqueConstraint
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.modules.runs.typing.enums import ResultStatus
@@ -20,4 +22,5 @@ class StepResultTable(TableBase):
     error: Mapped[str | None] = mapped_column(Text)
     screenshot_file_id: Mapped[UUID | None] = mapped_column(ForeignKey("stored_files.id"))
     evidence_file_id: Mapped[UUID | None] = mapped_column(ForeignKey("stored_files.id"))
+    diagnosis: Mapped[JsonValue] = mapped_column(JSONB(none_as_null=True), nullable=True)
     created_at: Mapped[datetime]

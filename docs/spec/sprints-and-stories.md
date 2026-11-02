@@ -1,6 +1,6 @@
 # Sprints and user stories
 
-**Status:** Draft · **Updated:** 2026-11-01
+**Status:** Draft · **Updated:** 2026-11-02
 
 WBS 3.5 · Story prefix STORY · Index: [README](README.md)
 
@@ -17,6 +17,7 @@ Sprints, user stories and their acceptance criteria (AC) live in Jira. Tessio co
 | Sync from Jira | `jira.sync` | Admin, PM, BA |
 | `not_started` ↔ `ready_for_test`, `failed` → `ready_for_test` | `story.mark_ready_for_test` | Admin, Dev |
 | → `passed`, → `failed` (sign-off) | `story.sign_off` | Admin, QC |
+| Write, edit and delete stories in a project without Jira | `story.edit` | Admin, PM, BA, QC |
 
 ## User stories
 
@@ -63,6 +64,7 @@ As a PM or BA, I want to pull the latest sprints and stories from Jira when I ch
 - AC7: A story no longer returned for a synced sprint gets `jira_missing_at` and stays, with its history.
 - AC8: Without a Jira connection the call answers `JIRA_NOT_CONFIGURED` ("Ask a workspace admin to connect Jira first.").
 - AC9: A sync on an archived project fails with `PROJECT_ARCHIVED`.
+- AC10 (WBS 9.4): after a sync succeeds, the worker checks the Jira account's write permissions again ([SET-1 AC6](settings.md#set-1-workspace-jira-connection-wbs-3132)) and refreshes the Jira status of the bugs linked to the project's active failures ([FAIL-7 AC10](failures.md#fail-7-jira-bug-from-a-failure-wbs-94)). Either step failing is logged and leaves the sync `succeeded`.
 
 ### STORY-5 AC parsed from the description (WBS 3.5.3, 3.7.4)
 
@@ -79,7 +81,7 @@ As a QC, I want to mark a story Passed or Failed, so that the team knows testing
 
 - AC1: "Mark passed" and "Mark failed" ask for confirmation and call `PUT /api/projects/{project_key}/stories/{jira_key}/test-status`.
 - AC2: Allowed moves: `in_test` → `passed` or `failed`; `passed` → `failed`; `failed` → `passed`. Anything else gets `INVALID_STATUS_TRANSITION`.
-- AC3: `passed` is refused with `STORY_SIGN_OFF_BLOCKED` while the story has an active failure (`open`, `fixed` or `reopened`) or a running run ("Resolve active failures and wait for running runs before marking it passed.").
+- AC3: `passed` is refused with `STORY_SIGN_OFF_BLOCKED` while the story has an active failure (`open`, `fixed` or `reopened`) or a running run: a story run of the story, or a suite run that holds one of its cases ([SUITE-7 AC7](suites-and-plans.md#suite-7-read-models-with-suite-runs-wbs-91)) ("Resolve active failures and wait for running runs before marking it passed.").
 - AC4: The change records who and when, and publishes `story.changed`.
 
 ### STORY-7 Dev marks a story Ready for test (WBS 3.5.6)
@@ -89,6 +91,29 @@ As a Dev, I want to mark a story Ready for test, so that QC knows the feature is
 - AC1: "Mark ready for test" moves `not_started` → `ready_for_test`; "Move back to not started" moves it back. From `failed`, a Dev can also move the story to `ready_for_test` after a fix.
 - AC2: Ready for test does not gate runs: a run can start in any test status.
 - AC3: Starting a run (Claude or manual) moves the story to `in_test`, whatever its status. `in_test` cannot be set by hand.
+
+### STORY-8 Stories written in Tessio (WBS 3.5.7)
+
+As a BA, PM or QC in a project without Jira, I want to write stories and their AC in Tessio, so that the team can test without Jira.
+
+Design record: [projects without Jira proposal](../discussions/projects-without-jira-proposal.md).
+
+- AC1: "New story" on the story list opens the editor: title (1 to 255 characters), description (plain text, up to 20 000) and the AC list, where each row can be added, edited, moved up or down and removed (up to 50, each up to 2000 characters). It calls `POST /api/projects/{project_key}/stories` and opens the new story.
+- AC2: The story gets the key `<PROJECT KEY>-<n>` from a per-project counter (`story_key_counters`); keys never repeat, even after a delete. It has `source: "tessio"`, no sprint, an empty Jira URL and status, and its description is stored as a document of one paragraph per line (`descriptionText` returns the plain text).
+- AC3: AC codes come from the order (`AC1`, `AC2`…). "Edit" (`PATCH …/stories/{jira_key}`) uses the same rules as a Jira sync: a changed text marks the AC changed, a removed row keeps the AC as removed, and linked test cases get the Needs review flag.
+- AC4: "Delete" (`DELETE …/stories/{jira_key}`) removes the story and its AC only when it has no test cases, runs or gaps; otherwise `CONFLICT` ("This story has test cases, runs or gaps, so it can't be deleted.").
+- AC5: The story header shows "Written in Tessio" and "Last edited …" instead of the Jira type, status and "Open in Jira"; the list shows "Written in Tessio" in the Jira status column. Everything else (cases, gaps, runs, traceability, failures, sign-off, the Claude skills) works unchanged.
+- AC6: In a project without Jira, "Sync from Jira" is hidden and `POST …/sync` answers `JIRA_NOT_CONFIGURED`; the sprints page says "This project has no sprints". In a Jira project, writing, editing or deleting a story gets `INVALID_REQUEST` ("Stories of this project come from Jira.").
+
+### STORY-9 Results on the Jira story (WBS 9.4)
+
+As a PM, I want Tessio to post the test results on the Jira story, so that people who live in Jira see them without opening Tessio.
+
+- AC1: The project setting `jiraPostResults` ([SET-2 AC6](settings.md#set-2-project-settings-wbs-3131)) decides when: `off` (default) never; `on_sign_off` when a story is signed off as `passed` (STORY-6); `every_run` when a run finishes (Claude `finish_run`, a manual run's Finish, or a JUnit import, [RUN-17](runs.md#run-17-import-junit-results-from-ci-wbs-96)). An aborted run posts nothing: a finish with no results (status `aborted`) queues no job, a stale run aborted by the server queues none either, and a queued job whose run is `aborted` is skipped.
+- AC2: The server then queues one job `jira.post_comment` per story on the `jira` queue, with `trigger` (`sign_off` or `run_finished`), `projectId`, `storyId` and `runId` (`null` for a sign-off). A story run gives one job; a suite run or a CI import gives one job per story in its report. Run jobs have the job id `jira-comment:{run_id}:{story_id}`. A project not linked to Jira queues nothing, and an enqueue that Redis refuses is logged and does not fail the sign-off or the finish.
+- AC3: The job posts a comment (Atlassian Document Format) on the story's Jira issue: "Tessio: {key} was signed off." or "Tessio: a test run finished ({status})."; then a list with "Passed: {passed} of {total}", "Failed", "Blocked", "Skipped", "Not reported" and "Environment: {name}"; then a link "Open in Tessio" to the run (`{CLIENT_URL}/projects/{key}/runs/{run_id}`) or, for a sign-off, to the story (`…/stories/{jira_key}`). A sign-off uses the counts of the story's latest finished story run whose status is `passed` or `failed`, so an aborted run is passed over ("No results recorded yet." when there is none); a run uses that run's counts for the story.
+- AC4: A story written in Tessio, a story or project that no longer exists, or a project unlinked since, is skipped. A refusal from Jira (403 `JIRA_WRITE_NOT_ALLOWED`, refused credentials, missing connection, or a 400/404 for the issue) is logged and the job is not retried. A Jira that stays unreachable after the client's rate-limit retries fails the job, and BullMQ retries it (5 attempts, exponential backoff from 30 s).
+- AC5: The client hides the setting while the stored check says the account cannot comment ([SET-1 AC8](settings.md#set-1-workspace-jira-connection-wbs-3132)), and in projects without Jira (W11.T2).
 
 ## Rules
 
@@ -115,6 +140,7 @@ Test status transitions (`TEST_STATUS_TRANSITIONS` in [test_status.py](../../ser
 
 - Sync statuses: `never`, `queued`, `running`, `succeeded`, `failed` (diagram in [user-flows.md](../design/user-flows.md#sync-status)).
 - Jira issue search uses `/rest/api/3/search/jql`; sprints and boards use the Agile API `/rest/agile/1.0/`.
+- Jira writes (WBS 9.4) use `POST /rest/api/3/issue`, `/issue/{key}/attachments`, `/issue/{key}/comment`, `/issueLink` and `GET /rest/api/3/mypermissions`, with the same rate-limit retry. On a write, 401 means `JIRA_INVALID_CREDENTIALS` and 403 means `JIRA_WRITE_NOT_ALLOWED` (on reads 403 stays `JIRA_INVALID_CREDENTIALS`).
 
 ## Screens and states
 
@@ -145,7 +171,7 @@ There is no MCP tool here; Claude reads stories through `get_story_context` ([ru
 | --- | --- |
 | `NOT_FOUND` | Unknown story or sprint |
 | `INVALID_STATUS_TRANSITION` | A move not in the table, or `in_test` asked by hand |
-| `STORY_SIGN_OFF_BLOCKED` | `passed` while an active failure or a running run exists |
+| `STORY_SIGN_OFF_BLOCKED` | `passed` while an active failure or a running run (a story run, or a suite run with a case of the story) exists |
 | `PERMISSION_DENIED` | The role lacks the capability for the target status, or `jira.sync` |
 | `PROJECT_ARCHIVED` | Any status change or sync on an archived project |
 | `JIRA_NOT_CONFIGURED` | Sync before the workspace Jira connection exists |

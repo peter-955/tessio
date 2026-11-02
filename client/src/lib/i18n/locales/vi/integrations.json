@@ -1,0 +1,118 @@
+{
+  "webhooks": {
+    "title": "Webhook",
+    "description": "Tessio gửi một yêu cầu POST có chữ ký đến các địa chỉ HTTPS này khi các sự kiện đã chọn xảy ra.",
+    "add": "Thêm webhook",
+    "empty": "Chưa có webhook nào.",
+    "loading": "Đang tải webhook",
+    "loadError": "Không tải được webhook",
+    "retry": "Thử lại",
+    "tableLabel": "Webhook",
+    "columns": {
+      "url": "URL",
+      "events": "Sự kiện",
+      "status": "Trạng thái",
+      "lastDelivery": "Lần gửi gần nhất",
+      "actions": "Thao tác"
+    },
+    "active": "Đang bật",
+    "inactive": "Đã tắt",
+    "noDelivery": "Chưa có",
+    "allEvents": "Tất cả sự kiện",
+    "actionsFor": "Thao tác cho {{url}}",
+    "secretHint": "Khóa bí mật {{hint}}",
+    "menu": {
+      "deliveries": "Nhật ký gửi",
+      "edit": "Sửa",
+      "rotate": "Đổi khóa bí mật",
+      "delete": "Xóa"
+    }
+  },
+  "events": {
+    "runStarted": "Bắt đầu lượt chạy",
+    "runFinished": "Kết thúc lượt chạy",
+    "failureOpened": "Mở lỗi kiểm thử",
+    "failureStatusChanged": "Đổi trạng thái lỗi kiểm thử",
+    "gapRaised": "Nêu khoảng trống",
+    "storySignedOff": "Story được phê duyệt",
+    "planSignedOff": "Kế hoạch được phê duyệt"
+  },
+  "form": {
+    "createTitle": "Thêm webhook",
+    "editTitle": "Sửa webhook",
+    "url": "URL nhận",
+    "urlPlaceholder": "https://ci.example.com/hooks/tessio",
+    "urlDescription": "Một địa chỉ https công khai. Địa chỉ nội bộ và cục bộ sẽ bị từ chối.",
+    "description": "Mô tả",
+    "descriptionPlaceholder": "vd. Bảng theo dõi phát hành",
+    "events": "Sự kiện",
+    "eventsDescription": "Gửi khi bất kỳ sự kiện nào trong số này xảy ra.",
+    "isActive": "Đang bật",
+    "isActiveDescription": "Khi tắt, Tessio không gửi gì đến URL này.",
+    "create": "Thêm webhook",
+    "save": "Lưu"
+  },
+  "errors": {
+    "urlRequired": "Nhập URL.",
+    "urlTooLong": "Dùng tối đa 2048 ký tự.",
+    "urlNotHttps": "Dùng địa chỉ https://.",
+    "urlInvalid": "Nhập một URL https công khai hợp lệ.",
+    "descriptionTooLong": "Dùng tối đa 200 ký tự.",
+    "eventsRequired": "Chọn ít nhất một sự kiện.",
+    "limitReached": "Mỗi dự án có tối đa 20 webhook. Hãy xóa một webhook để thêm webhook khác.",
+    "notFound": "Webhook này không còn tồn tại."
+  },
+  "secret": {
+    "title": "Khóa bí mật để ký",
+    "shownOnce": "Hãy sao chép ngay. Bạn sẽ không thấy lại khóa bí mật này.",
+    "explanation": "Mỗi lần gửi có header X-Tessio-Signature: sha256= và mã HMAC-SHA256 của header X-Tessio-Timestamp, một dấu chấm và nội dung gốc, dùng khóa bí mật này làm khóa.",
+    "done": "Xong"
+  },
+  "rotate": {
+    "title": "Đổi khóa bí mật?",
+    "description": "Tessio ký mọi lần gửi sau này đến {{url}} bằng khóa bí mật mới, kể cả các lần thử lại. Hãy cập nhật bên nhận ngay sau đó.",
+    "confirm": "Đổi khóa bí mật"
+  },
+  "delete": {
+    "title": "Xóa webhook này?",
+    "description": "{{url}} và nhật ký gửi của nó sẽ bị xóa. Các lần gửi chưa đi sẽ bị hủy.",
+    "confirm": "Xóa"
+  },
+  "toasts": {
+    "created": "Đã thêm webhook",
+    "updated": "Đã lưu webhook",
+    "deleted": "Đã xóa webhook",
+    "rotated": "Đã đổi khóa bí mật",
+    "redelivered": "Đã xếp lần gửi lại vào hàng đợi"
+  },
+  "deliveries": {
+    "title": "Nhật ký gửi",
+    "description": "Các lần gửi trong 30 ngày qua, mới nhất trước.",
+    "close": "Đóng",
+    "loading": "Đang tải các lần gửi",
+    "loadError": "Không tải được các lần gửi",
+    "empty": "Chưa có lần gửi nào",
+    "tableLabel": "Các lần gửi",
+    "columns": {
+      "event": "Sự kiện",
+      "status": "Trạng thái",
+      "attempts": "Số lần thử",
+      "response": "Phản hồi",
+      "time": "Đã gửi",
+      "actions": "Thao tác"
+    },
+    "status": {
+      "pending": "Đang chờ",
+      "succeeded": "Đã nhận",
+      "failed": "Thất bại"
+    },
+    "attempts_one": "{{count}} lần thử",
+    "attempts_other": "{{count}} lần thử",
+    "noResponse": "–",
+    "redelivery": "Gửi lại",
+    "redeliver": "Gửi lại",
+    "redeliverLabel": "Gửi lại {{event}} lúc {{time}}",
+    "showPayload": "Xem nội dung của {{event}} lúc {{time}}",
+    "hidePayload": "Ẩn nội dung của {{event}} lúc {{time}}"
+  }
+}

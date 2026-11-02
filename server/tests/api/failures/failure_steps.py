@@ -227,6 +227,8 @@ async def seed_case_result(
         case_result_id=case_result_id,
         test_case_id=case.id,
         status=status,
+        suspected_cause=None,
+        cause_reason=None,
         recorded_by=scenario.runner.user_id,
         recorded_at=now,
     )

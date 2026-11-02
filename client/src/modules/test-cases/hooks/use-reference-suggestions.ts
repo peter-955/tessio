@@ -12,11 +12,23 @@ export const useReferenceSuggestions = (
   const { data } = useGetTestData(projectKey);
 
   return useMemo((): DSReferenceSuggestion[] => {
-    const dataKeys = [...new Set((data ?? []).map((item) => item.key))].sort();
+    const descriptionByKey = new Map<string, string | undefined>();
+    (data ?? []).forEach((item) => {
+      descriptionByKey.set(
+        item.key,
+        descriptionByKey.get(item.key) ?? item.description ?? undefined,
+      );
+    });
+    const dataKeys = [...descriptionByKey.keys()].sort();
     const fileKeys = files.map((file) => file.key).sort();
 
     return [
-      ...dataKeys.map((key): DSReferenceSuggestion => ({ kind: "data", key })),
+      ...dataKeys.map((key): DSReferenceSuggestion => {
+        const description = descriptionByKey.get(key);
+        return description === undefined
+          ? { kind: "data", key }
+          : { kind: "data", key, description };
+      }),
       ...fileKeys.map((key): DSReferenceSuggestion => ({ kind: "file", key })),
     ];
   }, [data, files]);

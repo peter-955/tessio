@@ -19,3 +19,5 @@ class TestCaseVersionResponse(WireModel):
     file_version_ids: list[UUID]
     created_by: UUID
     created_at: datetime
+    parameters: list[str]
+    data_rows: list[dict[str, str]]

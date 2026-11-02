@@ -18,6 +18,9 @@ class DataItemRepository(ABC):
     async def list(self, project_id: UUID) -> list[DataItem]: ...
 
     @abstractmethod
+    async def count_by_key(self, project_id: UUID, key: str) -> int: ...
+
+    @abstractmethod
     async def save(self, item: DataItem) -> None: ...
 
     @abstractmethod

@@ -19,6 +19,8 @@ from app.modules.test_cases.typing.constants.case_import import (
     TITLE_COLUMN,
     XLSX_FILE_EXTENSIONS,
 )
+from app.modules.test_cases.typing.constants.draft_case import MAX_DRAFT_CASE_SOURCE_LENGTH, MAX_DRAFT_CASES_PER_CALL
+from app.modules.test_cases.typing.constants.review_comment import MAX_REVIEW_COMMENT_LENGTH
 from app.modules.test_cases.typing.constants.test_case import (
     CASE_CODE_PATTERN,
     CASE_CODE_PREFIX,
@@ -26,20 +28,38 @@ from app.modules.test_cases.typing.constants.test_case import (
     FILE_KEY_PATTERN,
     FILE_REFERENCE_KIND,
     MAX_CRITERION_LINKS,
+    MAX_DATA_ROWS,
+    MAX_DATA_VALUE_LENGTH,
+    MAX_PARAMETERS,
     MAX_QUERY_LENGTH,
+    MAX_SHARED_STEP_KEY_LENGTH,
     MAX_STEPS,
     MAX_STORY_KEY_LENGTH,
     MAX_TEXT_LENGTH,
     MAX_TITLE_LENGTH,
+    PARAMETER_NAME_PATTERN,
+    PARAMETER_REFERENCE_KIND,
     REFERENCE_PATTERN,
 )
 from app.modules.test_cases.typing.constants.test_case_status import TEST_CASE_STATUS_TRANSITIONS
+from app.modules.test_cases.typing.constants.tool_capability import (
+    CHECK_DRAFT_CASES_CAPABILITY,
+    CREATE_DRAFT_CASES_CAPABILITY,
+)
+from app.modules.test_cases.typing.constants.tool_description import (
+    CHECK_DRAFT_CASES_DESCRIPTION,
+    CREATE_DRAFT_CASES_DESCRIPTION,
+)
 
 __all__ = [
     "ACTION_COLUMN",
     "BUSINESS_VALUE_COLUMN",
     "CASE_CODE_PATTERN",
     "CASE_CODE_PREFIX",
+    "CHECK_DRAFT_CASES_CAPABILITY",
+    "CHECK_DRAFT_CASES_DESCRIPTION",
+    "CREATE_DRAFT_CASES_CAPABILITY",
+    "CREATE_DRAFT_CASES_DESCRIPTION",
     "CRITERIA_COLUMN",
     "CRITERION_CODE_PATTERN",
     "CSV_DELIMITERS",
@@ -53,14 +73,23 @@ __all__ = [
     "IMPORT_COLUMN_ALIASES",
     "MAX_CASE_IMPORT_BYTES",
     "MAX_CRITERION_LINKS",
+    "MAX_DATA_ROWS",
+    "MAX_DATA_VALUE_LENGTH",
+    "MAX_DRAFT_CASES_PER_CALL",
+    "MAX_DRAFT_CASE_SOURCE_LENGTH",
     "MAX_IMPORTED_CASES",
     "MAX_IMPORT_ROWS",
+    "MAX_PARAMETERS",
     "MAX_QUERY_LENGTH",
+    "MAX_REVIEW_COMMENT_LENGTH",
+    "MAX_SHARED_STEP_KEY_LENGTH",
     "MAX_STEPS",
     "MAX_STORY_KEY_LENGTH",
     "MAX_TEXT_LENGTH",
     "MAX_TITLE_LENGTH",
     "NUL_CHARACTER",
+    "PARAMETER_NAME_PATTERN",
+    "PARAMETER_REFERENCE_KIND",
     "PRECONDITIONS_COLUMN",
     "PRIORITY_COLUMN",
     "REFERENCE_PATTERN",

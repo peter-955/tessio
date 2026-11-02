@@ -2,6 +2,7 @@ export interface DSStepEditorStep {
   id: string;
   action: string;
   expected: string;
+  sharedStepKey?: string | null;
 }
 
 export type DSReferenceKind = "data" | "file";
@@ -9,6 +10,7 @@ export type DSReferenceKind = "data" | "file";
 export interface DSReferenceSuggestion {
   kind: DSReferenceKind;
   key: string;
+  description?: string;
 }
 
 export interface DSReferenceQuery {

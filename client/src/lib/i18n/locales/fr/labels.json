@@ -1,0 +1,86 @@
+{
+  "colors": {
+    "gray": "Gris",
+    "red": "Rouge",
+    "orange": "Orange",
+    "yellow": "Jaune",
+    "green": "Vert",
+    "teal": "Bleu-vert",
+    "blue": "Bleu",
+    "violet": "Violet"
+  },
+  "chips": {
+    "ariaLabel": "Étiquettes"
+  },
+  "manager": {
+    "title": "Étiquettes",
+    "description": "Des étiquettes comme smoke ou checkout regroupent des cas de plusieurs stories. Le QC les ajoute aux cas depuis la page du cas.",
+    "add": "Nouvelle étiquette",
+    "loading": "Chargement des étiquettes",
+    "loadError": "Impossible de charger les étiquettes",
+    "retry": "Réessayer",
+    "empty": "Aucune étiquette pour l'instant.",
+    "tableLabel": "Étiquettes",
+    "name": "Étiquette",
+    "usage": "Utilisation",
+    "actions": "Actions",
+    "actionsFor": "Actions pour {{name}}",
+    "usedBy_one": "Utilisée par {{count}} cas",
+    "usedBy_other": "Utilisée par {{count}} cas",
+    "edit": "Modifier",
+    "delete": "Supprimer"
+  },
+  "form": {
+    "createTitle": "Nouvelle étiquette",
+    "editTitle": "Modifier l'étiquette",
+    "name": "Nom",
+    "namePlaceholder": "smoke",
+    "color": "Couleur",
+    "preview": "Aperçu",
+    "create": "Créer l'étiquette",
+    "save": "Enregistrer"
+  },
+  "delete": {
+    "title": "Supprimer l'étiquette",
+    "message_one": "Supprimer {{name}} ? Elle est retirée de {{count}} cas.",
+    "message_other": "Supprimer {{name}} ? Elle est retirée de {{count}} cas.",
+    "confirm": "Supprimer"
+  },
+  "picker": {
+    "title": "Étiquettes",
+    "none": "Aucune étiquette",
+    "edit": "Modifier les étiquettes",
+    "field": "Étiquettes",
+    "placeholder": "Choisir des étiquettes",
+    "noMatch": "Aucune étiquette ne correspond",
+    "maxReached": "Un cas peut avoir au plus {{max}} étiquettes.",
+    "newLabel": "Nouvelle étiquette",
+    "newLabelPlaceholder": "Nom d'une nouvelle étiquette",
+    "create": "Créer et ajouter",
+    "save": "Enregistrer les étiquettes",
+    "saving": "Enregistrement…",
+    "cancel": "Annuler",
+    "loadError": "Impossible de charger les étiquettes."
+  },
+  "filter": {
+    "label": "Étiquettes",
+    "placeholder": "Toutes les étiquettes",
+    "noMatch": "Aucune étiquette ne correspond"
+  },
+  "validation": {
+    "required": "Saisissez un nom.",
+    "tooLong": "Utilisez au plus {{max}} caractères.",
+    "alreadyUsed": "Une étiquette porte déjà ce nom."
+  },
+  "toasts": {
+    "created": "Étiquette créée",
+    "updated": "Étiquette enregistrée",
+    "deleted": "Étiquette supprimée",
+    "caseLabelsSaved": "Étiquettes enregistrées"
+  },
+  "errors": {
+    "nameAlreadyUsed": "Une étiquette porte déjà ce nom.",
+    "notFound": "Cette étiquette n'existe plus. Rechargez pour voir les étiquettes actuelles.",
+    "notProjectLabel": "Utilisez uniquement des étiquettes de ce projet."
+  }
+}

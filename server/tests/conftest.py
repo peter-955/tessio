@@ -19,10 +19,12 @@ from app.modules.projects import JiraConnectionChecker
 from app.modules.projects.infrastructure import StaticJiraConnectionChecker
 from app.shared.events import LiveEventPublisher
 from app.shared.mailer import EmailMessage, Mailer
+from app.shared.queue import JobQueue
 from app.shared.rate_limit import RateLimiter
 from app.shared.storage import ObjectHead, ObjectStorage, SignedObjectUpload, SignedUpload
 from tests.fakes.fake_jira_client import FakeJiraClient
 from tests.support.in_memory_rate_limiter import InMemoryRateLimiter
+from tests.support.recording_job_queue import RecordingJobQueue
 from tests.support.recording_live_event_publisher import RecordingLiveEventPublisher
 from tests.support.test_settings import build_test_settings
 
@@ -80,6 +82,11 @@ class TestContainer(Container):
         super().__init__(settings)
         self._recording_mailer = recording_mailer
         self._recording_live_event_publisher = recording_live_event_publisher
+        self.recording_job_queue = RecordingJobQueue()
+
+    @cached_property
+    def job_queue(self) -> JobQueue:
+        return self.recording_job_queue
 
     @cached_property
     def mailer(self) -> Mailer:
@@ -146,6 +153,12 @@ async def container(
     test_container = TestContainer(settings, recording_mailer, recording_live_event_publisher)
     yield test_container
     await test_container.close()
+
+
+@pytest.fixture
+def recording_job_queue(container: Container) -> RecordingJobQueue:
+    assert isinstance(container, TestContainer)
+    return container.recording_job_queue
 
 
 @pytest.fixture

@@ -41,7 +41,6 @@
   },
   "kind": {
     "variable": "Variable",
-    "endpoint": "Endpoint",
     "secret": "Secret"
   },
   "secret": {
@@ -62,14 +61,17 @@
     "key": "Clé",
     "keyHint": "Commence par une lettre. Lettres, chiffres, _ . et - uniquement.",
     "keyInvalid": "Commencez par une lettre et utilisez uniquement des lettres, des chiffres, _ . et - (100 caractères au plus).",
-    "kind": "Type",
     "secretLocked": "Seuls les Admins et les QC peuvent enregistrer des secrets.",
     "scope": "Portée",
     "value": "Valeur",
     "secretValue": "Valeur secrète",
     "keepSecretHint": "Laissez vide pour garder la valeur actuelle",
     "valueRequired": "Saisissez une valeur.",
-    "valueTooLong": "Utilisez au plus {{max}} caractères."
+    "valueTooLong": "Utilisez au plus {{max}} caractères.",
+    "secret": "Secret",
+    "secretHint": "Chiffré, masqué dans les listes et dans chaque résultat et rapport.",
+    "description": "Description",
+    "descriptionHint": "À quoi sert cette clé. Partagée par toutes ses valeurs, affichée dans l'éditeur de cas et transmise à Claude."
   },
   "delete": {
     "title": "Supprimer la donnée de test",

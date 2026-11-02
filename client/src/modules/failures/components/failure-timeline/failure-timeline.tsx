@@ -14,6 +14,7 @@ interface Props {
 
 export const FailureTimeline: FC<Props> = ({ events }) => {
   const { t } = useTranslation("failures");
+  const { t: translateDiagnosis } = useTranslation("diagnosis");
   const formatDate = useFormatDate();
   const items = useMemo(() => {
     const formatStatus = (status: FailureStatus | null): string => {
@@ -34,12 +35,18 @@ export const FailureTimeline: FC<Props> = ({ events }) => {
       formatAssigned: (name) => {
         return t("timeline.assigned", { name });
       },
+      formatCauseChange: (fromCause, toCause) => {
+        return t("timeline.causeChanged", {
+          from: fromCause === null ? EMPTY_VALUE : translateDiagnosis(`cause.${fromCause}`),
+          to: toCause === null ? EMPTY_VALUE : translateDiagnosis(`cause.${toCause}`),
+        });
+      },
       formatActor: (name) => {
         return t("timeline.by", { name });
       },
       formatTime: formatDate,
     });
-  }, [events, formatDate, t]);
+  }, [events, formatDate, t, translateDiagnosis]);
 
   return (
     <DSCard title={t("timeline.title")}>

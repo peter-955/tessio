@@ -181,7 +181,7 @@ describe("RunsPage", () => {
   it("shows the filtered empty state and clears the filters", async () => {
     const user = userEvent.setup();
     respond(createSuccessResult([]));
-    renderPage({ status: "aborted", storyKey: "APP-1" });
+    renderPage({ status: "aborted", storyKey: "APP-1", suiteId: null });
 
     expect(await screen.findByText(empty.filteredTitle)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: filters.clear }));
@@ -194,7 +194,7 @@ describe("RunsPage", () => {
 
   it("shows the filtered empty state for an unknown story key", async () => {
     respond(createErrorResult(404, "NOT_FOUND"));
-    renderPage({ status: null, storyKey: "APP-404" });
+    renderPage({ status: null, storyKey: "APP-404", suiteId: null });
 
     expect(await screen.findByText(empty.filteredTitle)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: filters.clear })).toBeInTheDocument();

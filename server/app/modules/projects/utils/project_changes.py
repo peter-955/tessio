@@ -11,5 +11,14 @@ def apply_project_changes(project: Project, changes: ProjectChanges) -> Project:
             "allowed_file_types": project.allowed_file_types
             if changes.allowed_file_types is None
             else list(dict.fromkeys(changes.allowed_file_types)),
+            "require_separate_reviewer": project.require_separate_reviewer
+            if changes.require_separate_reviewer is None
+            else changes.require_separate_reviewer,
+            "jira_bug_issue_type": project.jira_bug_issue_type
+            if changes.jira_bug_issue_type is None
+            else changes.jira_bug_issue_type.strip(),
+            "jira_post_results": project.jira_post_results
+            if changes.jira_post_results is None
+            else changes.jira_post_results,
         }
     )

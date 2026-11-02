@@ -1,0 +1,44 @@
+.row {
+  .item,
+  .cell {
+    vertical-align: top;
+    white-space: normal;
+  }
+
+  .item {
+    min-width: 9rem;
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    background: transparent;
+  }
+
+  .cell {
+    min-width: 14rem;
+    width: 45%;
+    overflow-wrap: anywhere;
+  }
+
+  .olderChanged {
+    box-shadow: inset 3px 0 0 var(--color-danger);
+  }
+
+  .newerChanged {
+    box-shadow: inset 3px 0 0 var(--color-success);
+  }
+
+  .removed {
+    background: var(--color-danger-soft);
+    box-shadow: inset 3px 0 0 var(--color-danger);
+  }
+
+  .added {
+    background: var(--color-success-soft);
+    box-shadow: inset 3px 0 0 var(--color-success);
+  }
+}
+
+.itemName {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-weight: 500;
+}

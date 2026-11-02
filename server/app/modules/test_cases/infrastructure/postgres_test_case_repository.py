@@ -3,6 +3,7 @@ from uuid import UUID
 from sqlalchemy import ColumnElement, delete, exists, func, select, update
 from sqlalchemy.dialects.postgresql import insert
 
+from app.modules.labels.infrastructure import LabelTable, TestCaseLabelTable
 from app.modules.stories.infrastructure import StoryTable
 from app.modules.test_cases.domains.linked_test_case.entity import LinkedTestCase
 from app.modules.test_cases.domains.test_case.entity import TestCase
@@ -13,6 +14,7 @@ from app.modules.test_cases.domains.test_case_version.entity import TestCaseVers
 from app.modules.test_cases.infrastructure.test_case_criterion_table import TestCaseCriterionTable
 from app.modules.test_cases.infrastructure.test_case_table import TestCaseTable
 from app.modules.test_cases.infrastructure.test_case_version_table import TestCaseVersionTable
+from app.modules.test_cases.typing.constants.flaky_case import FLAKY_STATE_RESET
 from app.modules.test_cases.typing.enums import TestCaseStatus
 from app.modules.test_cases.utils.case_code import find_case_number
 from app.shared.postgres import Database
@@ -122,7 +124,12 @@ class PostgresTestCaseRepository(TestCaseRepository):
         await session.execute(
             update(TestCaseTable)
             .where(TestCaseTable.id == test_case.id)
-            .values(title=version.title, priority=version.priority, current_version_id=version.id)
+            .values(
+                title=version.title,
+                priority=version.priority,
+                current_version_id=version.id,
+                **FLAKY_STATE_RESET,
+            )
         )
         await session.execute(
             delete(TestCaseCriterionTable).where(
@@ -186,4 +193,22 @@ class PostgresTestCaseRepository(TestCaseRepository):
                 if number is None
                 else TestCaseTable.number == number
             )
+        conditions.extend(
+            exists().where(
+                TestCaseLabelTable.test_case_id == TestCaseTable.id,
+                TestCaseLabelTable.label_id == LabelTable.id,
+                LabelTable.project_id == TestCaseTable.project_id,
+                func.lower(LabelTable.name) == label_name.lower(),
+            )
+            for label_name in case_filter.label_names
+        )
+        conditions.extend(
+            column.is_not(None) if is_set else column.is_(None)
+            for column, is_set in (
+                (TestCaseTable.flaky_since, case_filter.is_flaky),
+                (TestCaseTable.disagreed_at, case_filter.is_disagreeing),
+                (TestCaseTable.quarantined_at, case_filter.is_quarantined),
+            )
+            if is_set is not None
+        )
         return conditions

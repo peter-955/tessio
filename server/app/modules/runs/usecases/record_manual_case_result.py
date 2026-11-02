@@ -19,6 +19,7 @@ from app.modules.runs.errors import (
     EvidenceFileNotFoundError,
     EvidenceNotUploadedError,
     InvalidStepReportError,
+    IterationOutOfRangeError,
     RunCaseNotFoundError,
     RunNotFoundError,
     RunNotManualError,
@@ -26,7 +27,12 @@ from app.modules.runs.errors import (
     RunNotRunningError,
 )
 from app.modules.runs.ports.case_result_recorded_handler import CaseResultRecordedHandler
+from app.modules.runs.ports.flaky_recompute_requester import FlakyRecomputeRequester
 from app.modules.runs.typing.enums import ResultStatus, RunExecutor
+from app.modules.runs.utils.case_story import resolve_case_story_id
+from app.modules.runs.utils.run_event import build_suite_ids
+from app.modules.runs.utils.step_diagnosis import select_suspected_cause
+from app.modules.runs.utils.worst_iteration import is_new_case_outcome
 from app.modules.test_cases import TestCaseVersion, TestCaseVersionRepository
 from app.modules.test_data import SecretValueReader
 from app.shared.common import Transaction
@@ -47,6 +53,7 @@ class RecordManualCaseResultUseCase:
         stored_file_repository: StoredFileRepository,
         secret_value_reader: SecretValueReader,
         case_result_recorded_handler: CaseResultRecordedHandler,
+        flaky_recompute_requester: FlakyRecomputeRequester,
         live_event_publisher: LiveEventPublisher,
     ) -> None:
         self._transaction = transaction
@@ -58,6 +65,7 @@ class RecordManualCaseResultUseCase:
         self._stored_file_repository = stored_file_repository
         self._secret_value_reader = secret_value_reader
         self._case_result_recorded_handler = case_result_recorded_handler
+        self._flaky_recompute_requester = flaky_recompute_requester
         self._live_event_publisher = live_event_publisher
 
     async def execute(
@@ -69,11 +77,19 @@ class RecordManualCaseResultUseCase:
             require(access, Capability.RUN_RECORD_MANUAL)
             run = await self._lock_manual_run(access, actor, run_id)
             run_case = await self._find_run_case(run.id, test_case_id)
-            if await self._case_result_repository.find_for_case(run.id, test_case_id) is not None:
-                raise CaseResultExistsError
-            version = await self._test_case_version_repository.find_by_id(run_case.test_case_version_id)
-            if version is None:
+            stored_version = await self._test_case_version_repository.find_by_id(run_case.test_case_version_id)
+            if stored_version is None:
                 raise RunCaseNotFoundError
+            version = (
+                stored_version
+                if run_case.steps is None
+                else stored_version.model_copy(update={"steps": run_case.steps})
+            )
+            if report.iteration >= version.iteration_count:
+                raise IterationOutOfRangeError(report.iteration, version.iteration_count)
+            earlier_results = await self._case_result_repository.list_for_case(run.id, test_case_id)
+            if any(earlier.iteration == report.iteration for earlier in earlier_results):
+                raise CaseResultExistsError
             self._ensure_valid_step_orders(version, report.steps)
             await self._ensure_evidence_files(run, actor, report.steps)
             masker = SecretMasker(
@@ -82,6 +98,9 @@ class RecordManualCaseResultUseCase:
             case_result_id = uuid7()
             step_results = self._build_step_results(case_result_id, version, report.steps, masker, now)
             suggested_status = self._suggest_status([step_result.status for step_result in step_results])
+            suspected_cause, cause_reason = select_suspected_cause(
+                report.status or suggested_status, report.suspected_cause, report.cause_reason, masker
+            )
             case_result = CaseResult(
                 id=case_result_id,
                 run_id=run.id,
@@ -89,36 +108,48 @@ class RecordManualCaseResultUseCase:
                 test_case_version_id=run_case.test_case_version_id,
                 status=report.status or suggested_status,
                 duration_ms=report.duration_ms,
+                suspected_cause=suspected_cause,
+                cause_reason=cause_reason,
                 recorded_by=actor.user_id,
                 created_at=now,
+                iteration=report.iteration,
             )
             await self._case_result_repository.add(case_result, step_results)
             await self._run_repository.save(run.model_copy(update={"last_activity_at": now}))
-            await self._case_result_recorded_handler.handle(
-                RecordedCaseResult(
-                    project_id=run.project_id,
-                    story_id=run.story_id,
-                    run_id=run.id,
-                    case_result_id=case_result.id,
-                    test_case_id=test_case_id,
-                    status=case_result.status,
-                    recorded_by=actor.user_id,
-                    recorded_at=now,
+            case_story_id = await self._find_case_story_id(run, test_case_id)
+            failure_events: list[LiveEvent] = []
+            if is_new_case_outcome(case_result, earlier_results):
+                failure_events = await self._case_result_recorded_handler.handle(
+                    RecordedCaseResult(
+                        project_id=run.project_id,
+                        story_id=case_story_id,
+                        run_id=run.id,
+                        case_result_id=case_result.id,
+                        test_case_id=test_case_id,
+                        status=case_result.status,
+                        suspected_cause=case_result.suspected_cause,
+                        cause_reason=case_result.cause_reason,
+                        recorded_by=actor.user_id,
+                        recorded_at=now,
+                    )
                 )
-            )
         await self._live_event_publisher.publish(
             LiveEvent(
                 type=LiveEventType.RUN_CASE_RECORDED,
                 project_id=run.project_id,
                 ids={
                     "runId": str(run.id),
-                    "storyId": str(run.story_id),
+                    "storyId": str(case_story_id),
                     "caseResultId": str(case_result.id),
                     "testCaseId": str(test_case_id),
                     "status": case_result.status.value,
+                    **build_suite_ids(run),
                 },
             )
         )
+        for failure_event in failure_events:
+            await self._live_event_publisher.publish(failure_event)
+        await self._flaky_recompute_requester.request(test_case_id)
         return RecordedManualCaseResult(
             case_result=case_result, step_results=step_results, suggested_status=suggested_status
         )
@@ -134,6 +165,14 @@ class RecordManualCaseResultUseCase:
         if run.started_by != actor.user_id and not has_capability(access, Capability.RUN_FINISH_ANY):
             raise RunNotOwnedError
         return run
+
+    async def _find_case_story_id(self, run: Run, test_case_id: UUID) -> UUID:
+        if run.story_id is not None:
+            return run.story_id
+        for run_case in await self._run_case_repository.list_views(run.id):
+            if run_case.test_case_id == test_case_id:
+                return resolve_case_story_id(run, run_case)
+        raise RunCaseNotFoundError
 
     async def _find_run_case(self, run_id: UUID, test_case_id: UUID) -> RunCase:
         run_cases = await self._run_case_repository.list_for_run(run_id)
@@ -188,6 +227,7 @@ class RecordManualCaseResultUseCase:
                     error=None if step_report is None else masker.mask_optional(step_report.error),
                     screenshot_file_id=None,
                     evidence_file_id=None if step_report is None else step_report.evidence_file_id,
+                    diagnosis=None,
                     created_at=now,
                 )
             )

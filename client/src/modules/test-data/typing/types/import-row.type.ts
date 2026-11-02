@@ -6,6 +6,7 @@ export interface ImportRow {
   kind: DataItemKind;
   suggestedKind: DataItemKind;
   value: string | null;
+  description: string | null;
   action: ImportAction;
   isIncluded: boolean;
 }

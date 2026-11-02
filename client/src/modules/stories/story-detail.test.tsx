@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
 import { StoryDetailPage } from "./story-detail";
-import { apiGet, apiPut } from "./test/mocks/api-client.mock";
+import { apiGet, apiPatch, apiPut } from "./test/mocks/api-client.mock";
 import { routerReplace, setNavigation } from "./test/mocks/next-navigation.mock";
 import { HEADING_BULLET_LIST_DOCUMENT } from "./test/utils/adf-fixture.util";
 import {
@@ -350,5 +350,50 @@ describe("StoryDetailPage", () => {
     expect(await screen.findByText("Gaps panel")).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: tabs.gaps })).toHaveAttribute("aria-selected", "true");
     expect(routerReplace).not.toHaveBeenCalled();
+  });
+
+  it("lets a QC edit a story written in Tessio", async () => {
+    const user = userEvent.setup();
+    const writtenStory = buildStoryDetail({
+      source: "tessio",
+      jiraUrl: "",
+      jiraStatus: "",
+      sprint: null,
+      descriptionText: "As a buyer",
+      criteria: [buildCriterion()],
+    });
+    respondWithStory(writtenStory);
+    respondWithRoutes(apiPatch, {
+      [STORY_PATH]: createSuccessResult({ ...writtenStory, title: "Pay by voucher" }),
+    });
+    renderWithProject(
+      <StoryDetailPage jiraKey="shop-1" initialTab={StoryDetailTab.OVERVIEW} slots={{}} />,
+      buildProject({
+        jiraProjectKey: null,
+        jiraBoardId: null,
+        isLinkedToJira: false,
+        capabilities: [...QC_CAPABILITIES, "story.edit"],
+      }),
+    );
+
+    expect(await screen.findByText(detail.writtenInTessio)).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: detail.openInJira })).toBeNull();
+    await user.click(screen.getByRole("button", { name: englishStories.editor.edit }));
+    const dialog = await screen.findByRole("dialog");
+    const titleField = within(dialog).getByRole("textbox", { name: /^Title/ });
+    await user.clear(titleField);
+    await user.type(titleField, "Pay by voucher");
+    await user.click(within(dialog).getByRole("button", { name: englishStories.editor.save }));
+
+    await waitFor(() => {
+      expect(apiPatch).toHaveBeenCalledWith(STORY_PATH, {
+        params: { path: { project_key: "SHOP", jira_key: "SHOP-1" } },
+        body: {
+          title: "Pay by voucher",
+          description: "As a buyer",
+          criteria: [writtenStory.criteria[0]?.text],
+        },
+      });
+    });
   });
 });

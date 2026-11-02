@@ -1,6 +1,9 @@
 from datetime import datetime
 from uuid import UUID
 
+from pydantic import Field
+
+from app.modules.labels import Label
 from app.modules.test_cases.domains.test_case.entity import TestCase
 from app.shared.common import Entity
 
@@ -12,3 +15,4 @@ class TestCaseSummary(Entity):
     step_count: int
     criterion_ids: list[UUID]
     last_saved_at: datetime
+    labels: list[Label] = Field(default_factory=list)

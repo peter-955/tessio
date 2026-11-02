@@ -1,3 +1,5 @@
+import type { DataTableErrors } from "@/modules/data-rows/typing/types/data-table-errors.type";
+
 export type TestCaseFormErrorKey = "required" | "tooLong" | "tooMany";
 
 export interface TestCaseFormErrors {
@@ -8,4 +10,5 @@ export interface TestCaseFormErrors {
   criterionIds?: TestCaseFormErrorKey;
   steps?: TestCaseFormErrorKey;
   stepActions: Record<string, TestCaseFormErrorKey>;
+  dataTable?: DataTableErrors;
 }

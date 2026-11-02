@@ -88,10 +88,16 @@ async def test_preview_suggests_kinds_and_actions_and_hides_secret_values(
     assert response.json() == {
         "format": "dotenv",
         "items": [
-            {"key": "BASE_URL", "kind": "endpoint", "value": "https://staging.shop.test", "action": "create"},
-            {"key": "USER", "kind": "variable", "value": "alice", "action": "unchanged"},
-            {"key": "ADMIN_PASSWORD", "kind": "secret", "value": None, "action": "update"},
-            {"key": "LOCALE", "kind": "variable", "value": "fr", "action": "update"},
+            {
+                "key": "BASE_URL",
+                "kind": "variable",
+                "value": "https://staging.shop.test",
+                "action": "create",
+                "description": "staging",
+            },
+            {"key": "USER", "kind": "variable", "value": "alice", "action": "unchanged", "description": None},
+            {"key": "ADMIN_PASSWORD", "kind": "secret", "value": None, "action": "update", "description": None},
+            {"key": "LOCALE", "kind": "variable", "value": "fr", "action": "update", "description": None},
         ],
         "skipped": [{"location": "6", "reason": "invalid_line"}],
     }
@@ -108,7 +114,7 @@ async def test_preview_compares_secrets_after_decryption(
     response = await preview(client, project, file_id)
 
     assert response.json()["items"] == [
-        {"key": "ADMIN_PASSWORD", "kind": "secret", "value": None, "action": "unchanged"}
+        {"key": "ADMIN_PASSWORD", "kind": "secret", "value": None, "action": "unchanged", "description": None}
     ]
 
 
@@ -123,7 +129,9 @@ async def test_preview_compares_against_the_target_environment_only(
     response = await preview(client, project, file_id, environment_id)
 
     assert response.json()["format"] == "yaml"
-    assert response.json()["items"] == [{"key": "USER", "kind": "variable", "value": "alice", "action": "create"}]
+    assert response.json()["items"] == [
+        {"key": "USER", "kind": "variable", "value": "alice", "action": "create", "description": None}
+    ]
 
 
 async def test_commit_counts_created_updated_and_unchanged_items(
@@ -138,7 +146,7 @@ async def test_commit_counts_created_updated_and_unchanged_items(
         client,
         project,
         file_id,
-        [("BASE_URL", "endpoint"), ("USER", "variable"), ("ADMIN_PASSWORD", "secret"), ("LOCALE", "variable")],
+        [("BASE_URL", "variable"), ("USER", "variable"), ("ADMIN_PASSWORD", "secret"), ("LOCALE", "variable")],
     )
 
     assert response.status_code == 200
@@ -146,10 +154,11 @@ async def test_commit_counts_created_updated_and_unchanged_items(
     listed = (await client.get(f"/api/projects/{project.key}/test-data")).json()
     assert [(item["key"], item["kind"], item["value"]) for item in listed] == [
         ("ADMIN_PASSWORD", "secret", None),
-        ("BASE_URL", "endpoint", "https://staging.shop.test"),
+        ("BASE_URL", "variable", "https://staging.shop.test"),
         ("LOCALE", "variable", "fr"),
         ("USER", "variable", "alice"),
     ]
+    assert {item["key"]: item["description"] for item in listed}["BASE_URL"] == "staging"
     secret_id = next(item["id"] for item in listed if item["key"] == "ADMIN_PASSWORD")
     revealed = await client.post(f"/api/projects/{project.key}/test-data/{secret_id}/reveal")
     assert revealed.json() == {"value": "s3cret"}
@@ -196,7 +205,7 @@ async def test_a_dev_cannot_commit_secrets_or_overwrite_one(
     previewed = await preview(client, project, file_id)
     with_secret = await commit(client, project, file_id, [("ADMIN_PASSWORD", "secret")])
     over_secret = await commit(client, project, file_id, [("USER", "variable")])
-    plain = await commit(client, project, file_id, [("LOCALE", "variable"), ("BASE_URL", "endpoint")])
+    plain = await commit(client, project, file_id, [("LOCALE", "variable"), ("BASE_URL", "variable")])
 
     assert previewed.status_code == 200
     assert with_secret.status_code == 403

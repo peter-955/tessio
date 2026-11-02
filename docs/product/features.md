@@ -1,8 +1,8 @@
 # Features
 
-**Status:** Draft · **Updated:** 2026-11-01
+**Status:** Draft · **Updated:** 2026-11-02
 
-The MVP features of [WBS section 3](../wbs/wbs.md#3-client-application-feature-modules), what the code does today (waves W1–W6), and where each one is specified. The test-suite prototype model was superseded on 2026-10-31 by the story and AC model below.
+The MVP features of [WBS section 3](../wbs/wbs.md#3-client-application-feature-modules), what the code does today (waves W1–W6, plus the W9 competitive features below), and where each one is specified. The test-suite prototype model was superseded on 2026-10-31 by the story and AC model below.
 
 **Status values:** **built** = server, client and tests exist · **partly** = built, but a named part is missing or unverified · **blocked** = waits on something outside the code. No screen has been checked by hand in a browser against a running stack yet; the pilot checklist covers that.
 
@@ -79,6 +79,7 @@ The MVP features of [WBS section 3](../wbs/wbs.md#3-client-application-feature-m
 | 3.6.5 | Review workflow: Draft, In review, Ready, Deprecated | case editor | built |
 | 3.6.6 | Version history with compare; each run keeps the version it ran | case editor, History tab | built |
 | 3.6.7 | Import from `.xlsx` or `.csv` | Import dialog on the case list | blocked: no sample of the team's sheet, so the columns are a guess |
+| 3.6.9 | Claude imports cases from any file as Draft | Claude Code: `/tessio:import-cases` | partly: built and tested, not tried in a real Claude session or on a real QC file ([proposal](../discussions/claude-drafts-cases-proposal.md)) |
 
 ### 3.7 Traceability · [spec](../spec/traceability.md)
 
@@ -155,6 +156,20 @@ The MVP features of [WBS section 3](../wbs/wbs.md#3-client-application-feature-m
 | 3.14.5 | `/api` and `/mcp` forwarded in local development | (dev server) | built |
 | 3.14.6 | Uploads and downloads through signed links | uploads in cases, runs, imports, avatar | partly: no end-to-end browser upload to RustFS run yet |
 
+## Competitive features (WBS 9)
+
+Built from the [competitive features proposal](../discussions/competitive-features-proposal.md) in the waves of the [build plan](../discussions/competitive-features-plan.md). Only what waves W9 and W10 built is listed; the other 9.x packages are in the [WBS](../wbs/wbs.md#9-competitive-features).
+
+| WBS | Feature | Client route | Status |
+| --- | --- | --- | --- |
+| 9.18 | Answer the gaps waiting for you with Claude: suggested answers with sources, reassign, skip, missing plain test data saved; answers marked "via Claude" ([GAP-8](../spec/readiness-review.md#gap-8-answer-gaps-with-claude-wbs-918), [DATA-7](../spec/environments-and-test-data.md#data-7-save-missing-test-data-from-claude-wbs-918)) | Claude Code: `/tessio:answer-gaps`; MCP `get_my_gaps`, `answer_gap`, `reassign_gap`, `set_test_data`; gap cards | partly: built and tested, the skill not tried in a real Claude session |
+| 9.1 | Labels on test cases: label manager, picker, chips and filter; labels in `get_story_context` ([CASE-13](../spec/test-cases.md#case-13-labels-wbs-91), [SET-5](../spec/settings.md#set-5-labels-wbs-91)) | case list, case Details tab, project settings | built |
+| 9.1 | Regression suites: add cases one by one or by filter (labels, priority, story, sprint), drag to reorder, archive; suite runs by Claude or by hand, blocked by open gaps on any of the suite's stories, one running run per suite, results grouped by story, story test status unchanged ([SUITE-1 to SUITE-8](../spec/suites-and-plans.md)) | `/projects/[projectKey]/suites`, `/suites/[suiteId]`, run list and run detail, `/runs/new?suite=`; Claude Code: `/tessio:run-suite`; MCP `get_suite_context`, `start_run(suite=…)` | built; `/tessio:run-suite` not yet tried in a real Claude session |
+| 9.1 | Test plans: suites and stories for a release, progress since the plan opened, blockers (active failures, open gaps), sign-off refused while failures are active, close ([PLAN-1 to PLAN-5](../spec/suites-and-plans.md)) | `/projects/[projectKey]/plans`, `/plans/[planId]` | built |
+| 9.2 | Shared steps (versioned, "Used by N cases", expanded into a snapshot at run start) and data-driven cases (parameters, up to 20 data rows, one iteration per row, the worst iteration counts) ([CASE-16](../spec/test-cases.md#case-16-shared-steps-and-data-driven-cases-wbs-92), [RUN-14](../spec/runs.md#run-14-shared-steps-and-iterations-in-a-run-wbs-92)) | `/projects/[projectKey]/shared-steps`, `/shared-steps/[key]`, case editor, run detail and manual recording | built; Claude's per-iteration recording not yet tried in a real Claude session |
+| 9.13 | Flaky and disagreeing cases, quarantine with history and auto-release ([CASE-14](../spec/test-cases.md#case-14-flaky-cases-and-quarantine-wbs-913)) | case list badges and filters, case header and History tab | partly: quarantine changes nothing in runs until script runs (W13) |
+| 9.3 | Side-by-side version compare, review comments that block Ready, "Reviewer must not be the author" ([CASE-15](../spec/test-cases.md#case-15-version-compare-and-review-comments-wbs-93), [SET-4](../spec/settings.md#set-4-reviewer-must-not-be-the-author-wbs-93)) | case Review and Compare tabs, project settings | built |
+
 ## Later
 
 From the Later rows of the [WBS](../wbs/wbs.md):
@@ -164,7 +179,7 @@ From the Later rows of the [WBS](../wbs/wbs.md):
 | 3.1.3 | Global search (stories, test cases, runs) |
 | 3.2.8 | SSO (Google, Microsoft, Atlassian) |
 | 3.4.4 | Trend charts across sprints |
-| 3.6.8 | Claude drafts test cases from AC for QC to review |
+| 3.6.8 | Claude drafts test cases from AC for QC to review: built ahead of plan as `/tessio:draft-cases` ([spec CASE-11](../spec/test-cases.md#case-11-claude-drafts-cases-from-the-ac-wbs-368)) |
 | 3.9.6 | "Where used" list for each data key |
 | 3.10.7 | Export the run report (PDF, Markdown) |
 | 3.11.4 | Comments on a failure |

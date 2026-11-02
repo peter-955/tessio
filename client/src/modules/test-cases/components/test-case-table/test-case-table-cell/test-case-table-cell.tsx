@@ -1,6 +1,7 @@
 "use client";
 
 import { DSBadge } from "@/components/design-system";
+import { LabelChips } from "@/modules/labels/components/label-chips/label-chips";
 import { buildStoryPath } from "@/modules/stories/utils/story-path.util";
 import { ResultStatusBadge } from "@/modules/traceability/components/result-status-badge/result-status-badge";
 import type { LatestResult } from "@/modules/traceability/typing/types/traceability.type";
@@ -11,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { TestCaseColumn } from "../../../typing/enums/test-case-column.enum";
 import type { TestCaseSummary } from "../../../typing/types/test-case.type";
 import { buildTestCasePath } from "../../../utils/test-case-path.util";
+import { FlakyCaseBadges } from "../../flaky-case-badges/flaky-case-badges";
 import { TestCasePriorityBadge } from "../../test-case-priority-badge/test-case-priority-badge";
 import { TestCaseStatusBadge } from "../../test-case-status-badge/test-case-status-badge";
 import styles from "./test-case-table-cell.module.scss";
@@ -37,7 +39,12 @@ export const TestCaseTableCell: FC<Props> = ({ column, projectKey, testCase, lat
         </th>
       );
     case TestCaseColumn.TITLE:
-      return <td className={styles.title}>{testCase.title}</td>;
+      return (
+        <td className={styles.title}>
+          {testCase.title}
+          <LabelChips labels={testCase.labels} className={styles.labels} />
+        </td>
+      );
     case TestCaseColumn.STORY:
       return (
         <td>
@@ -58,6 +65,7 @@ export const TestCaseTableCell: FC<Props> = ({ column, projectKey, testCase, lat
           <span className={styles.status}>
             <TestCaseStatusBadge status={testCase.status} />
             {testCase.needsReview && <DSBadge color="yellow">{t("table.needsReview")}</DSBadge>}
+            <FlakyCaseBadges flags={testCase} />
           </span>
         </td>
       );

@@ -1,0 +1,86 @@
+{
+  "colors": {
+    "gray": "Xám",
+    "red": "Đỏ",
+    "orange": "Cam",
+    "yellow": "Vàng",
+    "green": "Xanh lá",
+    "teal": "Xanh ngọc",
+    "blue": "Xanh dương",
+    "violet": "Tím"
+  },
+  "chips": {
+    "ariaLabel": "Nhãn"
+  },
+  "manager": {
+    "title": "Nhãn",
+    "description": "Các nhãn như smoke hoặc checkout gom các ca kiểm thử của nhiều story. QC gắn nhãn cho ca từ trang của ca kiểm thử.",
+    "add": "Nhãn mới",
+    "loading": "Đang tải nhãn",
+    "loadError": "Không tải được danh sách nhãn",
+    "retry": "Thử lại",
+    "empty": "Chưa có nhãn nào.",
+    "tableLabel": "Nhãn",
+    "name": "Nhãn",
+    "usage": "Sử dụng",
+    "actions": "Thao tác",
+    "actionsFor": "Thao tác cho {{name}}",
+    "usedBy_one": "Dùng cho {{count}} ca",
+    "usedBy_other": "Dùng cho {{count}} ca",
+    "edit": "Sửa",
+    "delete": "Xóa"
+  },
+  "form": {
+    "createTitle": "Nhãn mới",
+    "editTitle": "Sửa nhãn",
+    "name": "Tên",
+    "namePlaceholder": "smoke",
+    "color": "Màu",
+    "preview": "Xem trước",
+    "create": "Tạo nhãn",
+    "save": "Lưu"
+  },
+  "delete": {
+    "title": "Xóa nhãn",
+    "message_one": "Xóa {{name}}? Nhãn sẽ bị gỡ khỏi {{count}} ca.",
+    "message_other": "Xóa {{name}}? Nhãn sẽ bị gỡ khỏi {{count}} ca.",
+    "confirm": "Xóa"
+  },
+  "picker": {
+    "title": "Nhãn",
+    "none": "Chưa có nhãn",
+    "edit": "Sửa nhãn",
+    "field": "Nhãn",
+    "placeholder": "Chọn nhãn",
+    "noMatch": "Không có nhãn phù hợp",
+    "maxReached": "Một ca có tối đa {{max}} nhãn.",
+    "newLabel": "Nhãn mới",
+    "newLabelPlaceholder": "Tên của nhãn mới",
+    "create": "Tạo và thêm",
+    "save": "Lưu nhãn",
+    "saving": "Đang lưu…",
+    "cancel": "Hủy",
+    "loadError": "Không tải được danh sách nhãn."
+  },
+  "filter": {
+    "label": "Nhãn",
+    "placeholder": "Mọi nhãn",
+    "noMatch": "Không có nhãn phù hợp"
+  },
+  "validation": {
+    "required": "Nhập tên.",
+    "tooLong": "Dùng tối đa {{max}} ký tự.",
+    "alreadyUsed": "Đã có nhãn mang tên này."
+  },
+  "toasts": {
+    "created": "Đã tạo nhãn",
+    "updated": "Đã lưu nhãn",
+    "deleted": "Đã xóa nhãn",
+    "caseLabelsSaved": "Đã lưu nhãn"
+  },
+  "errors": {
+    "nameAlreadyUsed": "Đã có nhãn mang tên này.",
+    "notFound": "Nhãn này không còn tồn tại. Hãy tải lại để xem các nhãn hiện có.",
+    "notProjectLabel": "Chỉ dùng nhãn của dự án này."
+  }
+}

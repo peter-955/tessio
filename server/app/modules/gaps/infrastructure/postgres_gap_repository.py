@@ -1,14 +1,17 @@
+from collections.abc import Mapping, Sequence
 from uuid import UUID
 
-from sqlalchemy import Row, Select, and_, case, func, or_, select
+from sqlalchemy import Row, Select, and_, case, func, literal, or_, select
+from sqlalchemy.dialects.postgresql import REGCONFIG
 from sqlalchemy.orm import aliased
 
 from app.modules.gaps.domains.gap.entity import Gap
 from app.modules.gaps.domains.gap.repository import GapRepository
 from app.modules.gaps.domains.gap_filter.entity import GapFilter
 from app.modules.gaps.domains.gap_view.entity import GapView
+from app.modules.gaps.domains.similar_answer.entity import SimilarAnswer
 from app.modules.gaps.infrastructure.gap_table import GapTable
-from app.modules.gaps.typing.constants import TEST_CASE_CODE_PREFIX
+from app.modules.gaps.typing.constants import SEARCH_CONFIGURATION, SEARCH_TERM_SEPARATOR, TEST_CASE_CODE_PREFIX
 from app.modules.gaps.typing.enums import GapStatus, GapTargetType
 from app.modules.projects.infrastructure import ProjectMemberTable, ProjectTable
 from app.modules.stories.infrastructure import AcceptanceCriterionTable, StoryTable
@@ -44,6 +47,49 @@ class PostgresGapRepository(GapRepository):
             .where(GapTable.story_id == story_id, GapTable.status == GapStatus.OPEN)
         )
         return count or 0
+
+    async def count_open_by_story(self, story_ids: frozenset[UUID]) -> Mapping[UUID, int]:
+        counts = dict.fromkeys(story_ids, 0)
+        if not story_ids:
+            return counts
+        result = await self._database.get_current_session().execute(
+            select(GapTable.story_id, func.count())
+            .where(GapTable.story_id.in_(story_ids), GapTable.status == GapStatus.OPEN)
+            .group_by(GapTable.story_id)
+        )
+        for story_id, count in result:
+            counts[story_id] = count
+        return counts
+
+    async def list_similar_answers(
+        self, project_id: UUID, story_id: UUID, terms: Sequence[str], limit: int
+    ) -> list[SimilarAnswer]:
+        if not terms:
+            return []
+        query = func.websearch_to_tsquery(
+            literal(SEARCH_CONFIGURATION).cast(REGCONFIG), SEARCH_TERM_SEPARATOR.join(terms)
+        )
+        result = await self._database.get_current_session().execute(
+            select(GapTable.story_id, StoryTable.jira_key, GapTable.question, GapTable.answer)
+            .join(StoryTable, StoryTable.id == GapTable.story_id)
+            .where(
+                GapTable.project_id == project_id,
+                GapTable.status == GapStatus.RESOLVED,
+                GapTable.answer.is_not(None),
+                GapTable.search_vector.bool_op("@@")(query),
+            )
+            .order_by(
+                (GapTable.story_id == story_id).desc(),
+                func.ts_rank(GapTable.search_vector, query).desc(),
+                GapTable.answered_at.desc().nulls_last(),
+                GapTable.id,
+            )
+            .limit(limit)
+        )
+        return [
+            SimilarAnswer(story_id=row_story_id, story_jira_key=jira_key, question=question, answer=answer)
+            for row_story_id, jira_key, question, answer in result
+        ]
 
     async def find_view(self, project_id: UUID, gap_id: UUID) -> GapView | None:
         result = await self._database.get_current_session().execute(

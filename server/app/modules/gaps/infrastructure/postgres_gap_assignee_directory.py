@@ -3,6 +3,7 @@ from uuid import UUID
 
 from sqlalchemy import select
 
+from app.modules.gaps.domains.gap_assignee.entity import GapAssignee
 from app.modules.gaps.ports.gap_assignee_directory import GapAssigneeDirectory
 from app.modules.projects.infrastructure import ProjectMemberTable
 from app.modules.users import UserStatus
@@ -46,3 +47,16 @@ class PostgresGapAssigneeDirectory(GapAssigneeDirectory):
             )
         )
         return role
+
+    async def list_assignable_members(self, project_id: UUID) -> list[GapAssignee]:
+        result = await self._database.get_current_session().execute(
+            select(ProjectMemberTable.user_id, UserTable.name, ProjectMemberTable.role)
+            .join(UserTable, UserTable.id == ProjectMemberTable.user_id)
+            .where(
+                ProjectMemberTable.project_id == project_id,
+                ProjectMemberTable.role != ProjectRole.VIEWER,
+                UserTable.status == UserStatus.ACTIVE,
+            )
+            .order_by(UserTable.name, ProjectMemberTable.user_id)
+        )
+        return [GapAssignee(user_id=user_id, name=name, role=role) for user_id, name, role in result]

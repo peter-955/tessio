@@ -6,6 +6,11 @@ from app.modules.story_context.typing.constants.story_context import (
     REFERENCE_SUFFIX,
     TEST_FILE_LINK_LIFETIME,
 )
+from app.modules.story_context.typing.constants.tool_capability import (
+    GET_STORY_CONTEXT_CAPABILITY,
+    GET_TEST_FILE_CAPABILITY,
+    RESOLVE_DATA_CAPABILITY,
+)
 from app.modules.story_context.typing.constants.tool_description import (
     GET_STORY_CONTEXT_DESCRIPTION,
     GET_TEST_FILE_DESCRIPTION,
@@ -15,11 +20,14 @@ from app.modules.story_context.typing.constants.tool_description import (
 __all__ = [
     "CASE_CODE_PREFIX",
     "DATA_REFERENCE_PREFIX",
+    "GET_STORY_CONTEXT_CAPABILITY",
     "GET_STORY_CONTEXT_DESCRIPTION",
+    "GET_TEST_FILE_CAPABILITY",
     "GET_TEST_FILE_DESCRIPTION",
     "MAX_DATA_KEY_LENGTH",
     "MAX_RESOLVE_KEYS",
     "REFERENCE_SUFFIX",
+    "RESOLVE_DATA_CAPABILITY",
     "RESOLVE_DATA_DESCRIPTION",
     "TEST_FILE_LINK_LIFETIME",
 ]

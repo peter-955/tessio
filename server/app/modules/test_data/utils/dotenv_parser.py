@@ -9,6 +9,7 @@ from app.modules.test_data.typing.constants import (
     DOTENV_INLINE_COMMENT_MARKER,
     DOTENV_SINGLE_QUOTE,
     DOTENV_UNESCAPED_BY_CHARACTER,
+    MAX_DATA_ITEM_DESCRIPTION_LENGTH,
 )
 from app.modules.test_data.typing.enums import ImportFormat, ImportSkipReason
 from app.modules.test_data.utils.data_item_key import is_valid_data_item_key
@@ -16,11 +17,19 @@ from app.modules.test_data.utils.data_item_key import is_valid_data_item_key
 
 def parse_dotenv(text: str) -> ParsedImport:
     value_by_key: dict[str, str] = {}
+    description_by_key: dict[str, str] = {}
     skipped: list[ImportSkip] = []
+    comment_lines: list[str] = []
     for line_number, line in enumerate(text.splitlines(), start=1):
         stripped_line = line.strip()
-        if not stripped_line or stripped_line.startswith(DOTENV_COMMENT_MARKER):
+        if not stripped_line:
+            comment_lines = []
             continue
+        if stripped_line.startswith(DOTENV_COMMENT_MARKER):
+            comment_lines.append(stripped_line.lstrip(DOTENV_COMMENT_MARKER).strip())
+            continue
+        description = build_description(comment_lines)
+        comment_lines = []
         if stripped_line.startswith(DOTENV_EXPORT_PREFIX):
             stripped_line = stripped_line.removeprefix(DOTENV_EXPORT_PREFIX).lstrip()
         raw_key, separator, raw_value = stripped_line.partition("=")
@@ -37,11 +46,21 @@ def parse_dotenv(text: str) -> ParsedImport:
             skipped.append(ImportSkip(location=location, reason=ImportSkipReason.INVALID_LINE))
             continue
         value_by_key[key] = value
+        if description is not None:
+            description_by_key[key] = description
     return ParsedImport(
         format=ImportFormat.DOTENV,
-        entries=[ImportEntry(key=key, value=value) for key, value in value_by_key.items()],
+        entries=[
+            ImportEntry(key=key, value=value, description=description_by_key.get(key))
+            for key, value in value_by_key.items()
+        ],
         skipped=skipped,
     )
+
+
+def build_description(comment_lines: list[str]) -> str | None:
+    description = " ".join(line for line in comment_lines if line)
+    return description[:MAX_DATA_ITEM_DESCRIPTION_LENGTH] or None
 
 
 def parse_dotenv_value(raw_value: str) -> str | None:

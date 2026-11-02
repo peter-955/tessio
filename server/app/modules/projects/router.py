@@ -91,6 +91,9 @@ async def update_project(
         default_environment_id=body.default_environment_id,
         is_default_environment_cleared="default_environment_id" in body.model_fields_set
         and body.default_environment_id is None,
+        require_separate_reviewer=body.require_separate_reviewer,
+        jira_bug_issue_type=body.jira_bug_issue_type,
+        jira_post_results=body.jira_post_results,
     )
     return build_project_response(await use_case.execute(actor, project_key, changes))
 

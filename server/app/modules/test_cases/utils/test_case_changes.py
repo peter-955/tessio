@@ -11,6 +11,8 @@ def build_version_content(version: TestCaseVersion) -> TestCaseContent:
         preconditions=version.preconditions,
         steps=version.steps,
         criterion_ids=version.criterion_ids,
+        parameters=version.parameters,
+        data_rows=version.data_rows,
     )
 
 
@@ -28,4 +30,6 @@ def merge_changes(content: TestCaseContent, changes: TestCaseChanges) -> TestCas
         preconditions=merge_optional_text(content.preconditions, changes.preconditions),
         steps=content.steps if changes.steps is None else changes.steps,
         criterion_ids=content.criterion_ids if changes.criterion_ids is None else changes.criterion_ids,
+        parameters=content.parameters if changes.parameters is None else changes.parameters,
+        data_rows=content.data_rows if changes.data_rows is None else changes.data_rows,
     )

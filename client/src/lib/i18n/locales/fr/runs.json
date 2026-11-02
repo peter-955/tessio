@@ -20,7 +20,8 @@
   },
   "executor": {
     "claude": "Claude",
-    "manual": "Manuelle"
+    "manual": "Manuelle",
+    "ci": "CI"
   },
   "abortReason": {
     "no_results": "Aucun résultat signalé",
@@ -70,14 +71,17 @@
   "tabs": {
     "label": "Sections de l'exécution",
     "results": "Résultats",
-    "report": "Rapport"
+    "report": "Rapport",
+    "log": "Journal"
   },
   "case": {
     "listLabel": "Résultats des cas de test",
     "version": "v{{number}}",
     "showSteps": "Afficher les étapes",
     "hideSteps": "Masquer les étapes",
-    "stepsLabel": "Étapes de {{code}}"
+    "stepsLabel": "Étapes de {{code}}",
+    "showDetails": "Détails du cas",
+    "hideDetails": "Masquer les détails du cas"
   },
   "step": {
     "label": "Étape {{order}}",
@@ -128,5 +132,37 @@
   "limitNotice": "Affichage des {{count}} exécutions les plus récentes.",
   "loading": "Chargement des exécutions",
   "loadError": "Impossible de charger les exécutions",
-  "retry": "Réessayer"
+  "retry": "Réessayer",
+  "log": {
+    "loading": "Chargement du journal de Claude",
+    "loadError": "Le journal n'a pas pu être chargé.",
+    "pending": "Le journal de Claude arrive à la fin de l'exécution.",
+    "missing": "Aucun journal n'a été reçu pour cette exécution.",
+    "tokens": "{{total}} jetons",
+    "tokensPerCase": "{{total}} jetons · environ {{perCase}} par cas",
+    "cut": "Le journal a été coupé à 3 000 entrées.",
+    "setup": "Préparation",
+    "wrapUp": "Clôture",
+    "unknownCase": "Autre cas",
+    "duration": "{{seconds}} s",
+    "error": "Erreur",
+    "tool": "Outil",
+    "input": "Entrée",
+    "output": "Sortie",
+    "labels": {
+      "opened": "A ouvert {{url}}",
+      "filled": "A rempli un champ avec {{value}}",
+      "lookedFor": "A cherché {{query}}",
+      "readPage": "A lu la page",
+      "attachedFile": "A joint un fichier",
+      "screenshot": "A pris une capture",
+      "typed": "A saisi {{text}}",
+      "pressed": "A appuyé sur {{key}}",
+      "scrolled": "A fait défiler",
+      "clicked": "A cliqué",
+      "tessio": "Tessio : {{tool}}",
+      "ran": "A lancé {{command}}",
+      "tool": "{{tool}}"
+    }
+  }
 }

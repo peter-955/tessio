@@ -1,6 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
+from app.modules.labels import CaseLabelResponse
 from app.modules.test_cases.typing.enums import TestCasePriority, TestCaseStatus
 from app.shared.common import WireModel
 
@@ -20,3 +21,9 @@ class TestCaseSummaryResponse(WireModel):
     needs_review: bool
     needs_review_at: datetime | None
     last_saved_at: datetime
+    labels: list[CaseLabelResponse]
+    is_flaky: bool
+    flaky_score: int
+    is_disagreeing: bool
+    is_quarantined: bool
+    quarantined_at: datetime | None

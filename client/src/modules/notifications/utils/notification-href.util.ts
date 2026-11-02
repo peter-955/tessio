@@ -1,4 +1,5 @@
 import type { Notification } from "../typing/types/notification.type";
+import { buildReportSourceHref } from "./report-source-href.util";
 
 export const buildNotificationHref = (notification: Notification): string => {
   const { payload } = notification;
@@ -10,7 +11,10 @@ export const buildNotificationHref = (notification: Notification): string => {
     case "failure_assigned":
       return `${projectPath}/failures/${encodeURIComponent(payload.failureId)}`;
     case "run_finished":
+    case "suite_run_finished":
       return `${projectPath}/runs/${encodeURIComponent(payload.runId)}`;
+    case "report_ready":
+      return buildReportSourceHref(projectPath, payload.source, payload.sourceId);
     default:
       payload satisfies never;
       return projectPath;

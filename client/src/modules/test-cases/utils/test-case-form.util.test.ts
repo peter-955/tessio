@@ -127,3 +127,56 @@ describe("validateTestCaseForm", () => {
     expect(checkHasTestCaseFormErrors(validateTestCaseForm(buildValues()))).toBe(false);
   });
 });
+
+describe("shared steps and data rows", () => {
+  const DATA_VERSION = buildTestCaseVersion({
+    steps: [
+      { order: 1, action: "Open {{param.page}}", expected: null, sharedStepKey: null },
+      { order: 2, action: null, expected: null, sharedStepKey: "login_as_admin" },
+    ],
+    parameters: ["page"],
+    dataRows: [{ page: "/cart" }],
+  });
+
+  it("keeps a shared step as a reference and sends nothing when unchanged", () => {
+    const values = buildTestCaseFormValues(DATA_VERSION, "SHOP-1");
+
+    expect(values.steps[1]?.sharedStepKey).toBe("login_as_admin");
+    expect(buildUpdateTestCaseRequest(values, DATA_VERSION)).toEqual({ baseVersionNumber: 2 });
+    expect(checkHasTestCaseFormErrors(validateTestCaseForm(values))).toBe(false);
+  });
+
+  it("sends the parameters with the rows when a row changes", () => {
+    const values = buildTestCaseFormValues(DATA_VERSION, "SHOP-1");
+    const [row] = values.dataTable.rows;
+    const [parameter] = values.dataTable.parameters;
+    if (row === undefined || parameter === undefined) {
+      throw new Error("The fixture has a row and a parameter.");
+    }
+
+    const changed: TestCaseFormValues = {
+      ...values,
+      dataTable: {
+        ...values.dataTable,
+        rows: [{ ...row, values: { [parameter.id]: "/orders" } }],
+      },
+    };
+
+    expect(buildUpdateTestCaseRequest(changed, DATA_VERSION)).toEqual({
+      baseVersionNumber: 2,
+      parameters: ["page"],
+      dataRows: [{ page: "/orders" }],
+    });
+  });
+
+  it("sends every step when a shared step is removed", () => {
+    const values = buildTestCaseFormValues(DATA_VERSION, "SHOP-1");
+
+    expect(
+      buildUpdateTestCaseRequest({ ...values, steps: values.steps.slice(0, 1) }, DATA_VERSION),
+    ).toEqual({
+      baseVersionNumber: 2,
+      steps: [{ action: "Open {{param.page}}", expected: null }],
+    });
+  });
+});

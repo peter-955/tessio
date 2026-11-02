@@ -12,3 +12,5 @@ class TestCaseChanges(Entity):
     preconditions: str | None = None
     steps: list[TestStep] | None = None
     criterion_ids: list[UUID] | None = None
+    parameters: list[str] | None = None
+    data_rows: list[dict[str, str]] | None = None

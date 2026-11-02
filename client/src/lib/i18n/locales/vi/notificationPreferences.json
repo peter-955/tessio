@@ -1,0 +1,40 @@
+{
+  "card": {
+    "title": "Thông báo",
+    "description": "Chọn những gì bạn nhận trong Tessio và qua email. Email được gửi tới {{email}}. Các cài đặt này áp dụng cho mọi dự án.",
+    "inAppOffNote": "Khi tắt \"Trong Tessio\", chuông sẽ không báo cho loại thông báo đó. Email theo cài đặt riêng của nó.",
+    "tableLabel": "Cài đặt thông báo",
+    "notification": "Thông báo",
+    "inApp": "Trong Tessio",
+    "email": "Email",
+    "inAppFor": "Trong Tessio: {{kind}}",
+    "emailFor": "Email: {{kind}}",
+    "loading": "Đang tải cài đặt thông báo",
+    "loadError": "Không tải được cài đặt thông báo",
+    "retry": "Thử lại",
+    "save": "Lưu cài đặt thông báo",
+    "saved": "Đã lưu cài đặt thông báo."
+  },
+  "kinds": {
+    "gapAssigned": {
+      "title": "Khoảng trống được giao cho tôi",
+      "description": "Một khoảng trống được giao cho bạn hoặc cho vai trò của bạn."
+    },
+    "failureAssigned": {
+      "title": "Lỗi được giao cho tôi",
+      "description": "Có người giao một lỗi cho bạn."
+    },
+    "runFinished": {
+      "title": "Lượt chạy kết thúc",
+      "description": "Một lượt chạy story do bạn bắt đầu đã kết thúc. Thành viên QC được báo về mọi lượt chạy."
+    },
+    "suiteRunFinished": {
+      "title": "Lượt chạy bộ kiểm thử kết thúc",
+      "description": "Một lượt chạy bộ kiểm thử do bạn bắt đầu đã kết thúc. Thành viên QC được báo về mọi lượt chạy bộ kiểm thử."
+    },
+    "reportReady": {
+      "title": "Báo cáo đã sẵn sàng",
+      "description": "Một báo cáo bạn đã xuất đã sẵn sàng để tải về."
+    }
+  }
+}

@@ -25,6 +25,16 @@ export const findRowKind = (row: DataGridRow): DataItem["kind"] => {
   return firstItem?.kind ?? "variable";
 };
 
+export const findRowDescription = (row: DataGridRow): string | null => {
+  const projectItem = row.itemByScopeId[PROJECT_SCOPE_ID];
+  const items = projectItem === undefined ? Object.values(row.itemByScopeId) : [projectItem];
+  const describedItem = items.find((item) => {
+    return item.description !== null && item.description !== "";
+  });
+
+  return describedItem?.description ?? null;
+};
+
 export const filterDataGridRows = (rows: readonly DataGridRow[], search: string): DataGridRow[] => {
   const normalizedSearch = search.trim().toLowerCase();
   if (normalizedSearch === "") {

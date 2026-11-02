@@ -6,9 +6,9 @@ from sqlalchemy.exc import IntegrityError
 
 from app.modules.runs.domains.run.entity import Run
 from app.modules.runs.domains.run.repository import RunRepository
-from app.modules.runs.errors import RunAlreadyRunningError
+from app.modules.runs.errors import RunAlreadyRunningError, SuiteAlreadyRunningError
 from app.modules.runs.infrastructure.run_table import RunTable
-from app.modules.runs.typing.constants.run import RUNNING_RUN_PER_STORY_INDEX
+from app.modules.runs.typing.constants.run import RUNNING_RUN_PER_STORY_INDEX, RUNNING_RUN_PER_SUITE_INDEX
 from app.modules.runs.typing.enums import RunStatus
 from app.shared.postgres import Database, read_constraint_name
 
@@ -40,6 +40,18 @@ class PostgresRunRepository(RunRepository):
                 exists().where(
                     RunTable.project_id == project_id,
                     RunTable.story_id == story_id,
+                    RunTable.status == RunStatus.RUNNING,
+                )
+            )
+        )
+        return bool(is_running)
+
+    async def has_running_for_suite(self, project_id: UUID, suite_id: UUID) -> bool:
+        is_running = await self._database.get_current_session().scalar(
+            select(
+                exists().where(
+                    RunTable.project_id == project_id,
+                    RunTable.test_suite_id == suite_id,
                     RunTable.status == RunStatus.RUNNING,
                 )
             )
@@ -80,8 +92,11 @@ class PostgresRunRepository(RunRepository):
         try:
             await session.flush()
         except IntegrityError as error:
-            if read_constraint_name(error) == RUNNING_RUN_PER_STORY_INDEX:
+            constraint_name = read_constraint_name(error)
+            if constraint_name == RUNNING_RUN_PER_STORY_INDEX:
                 raise RunAlreadyRunningError from error
+            if constraint_name == RUNNING_RUN_PER_SUITE_INDEX:
+                raise SuiteAlreadyRunningError from error
             raise
 
     async def save(self, run: Run) -> None:
@@ -89,6 +104,11 @@ class PostgresRunRepository(RunRepository):
 
     @staticmethod
     def _build_values(run: Run) -> dict[str, object]:
-        values = run.model_dump(exclude={"report"})
+        values = run.model_dump(exclude={"report", "skipped_cases"})
         values["report"] = None if run.report is None else run.report.model_dump(mode="json")
+        values["skipped_cases"] = (
+            None
+            if run.skipped_cases is None
+            else [skipped_case.model_dump(mode="json") for skipped_case in run.skipped_cases]
+        )
         return values

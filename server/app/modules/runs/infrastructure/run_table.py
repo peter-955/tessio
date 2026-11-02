@@ -2,11 +2,15 @@ from datetime import datetime
 from uuid import UUID
 
 from pydantic import JsonValue
-from sqlalchemy import ForeignKey, Index, Text, Uuid, text
+from sqlalchemy import CheckConstraint, ForeignKey, Index, Text, Uuid, text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.modules.runs.typing.constants.run import RUNNING_RUN_PER_STORY_INDEX
+from app.modules.runs.typing.constants.run import (
+    RUNNING_RUN_PER_STORY_INDEX,
+    RUNNING_RUN_PER_SUITE_INDEX,
+    STORY_OR_SUITE_CHECK,
+)
 from app.modules.runs.typing.enums import RunAbortReason, RunExecutor, RunStatus
 from app.shared.postgres import TableBase, build_text_enum
 
@@ -15,13 +19,20 @@ class RunTable(TableBase):
     __tablename__ = "runs"
     __table_args__ = (
         Index(RUNNING_RUN_PER_STORY_INDEX, "story_id", unique=True, postgresql_where=text("status = 'running'")),
+        Index(RUNNING_RUN_PER_SUITE_INDEX, "test_suite_id", unique=True, postgresql_where=text("status = 'running'")),
+        CheckConstraint(
+            "((story_id IS NULL) <> (test_suite_id IS NULL)) "
+            "OR (executor = 'ci' AND story_id IS NULL AND test_suite_id IS NULL)",
+            name=STORY_OR_SUITE_CHECK,
+        ),
         Index("ix_runs_project_id_started_at", "project_id", "started_at"),
         Index("ix_runs_status_last_activity_at", "status", "last_activity_at"),
     )
 
     id: Mapped[UUID] = mapped_column(primary_key=True)
     project_id: Mapped[UUID] = mapped_column(ForeignKey("projects.id"), index=True)
-    story_id: Mapped[UUID] = mapped_column(ForeignKey("stories.id"), index=True)
+    story_id: Mapped[UUID | None] = mapped_column(ForeignKey("stories.id"), index=True)
+    test_suite_id: Mapped[UUID | None] = mapped_column(ForeignKey("test_suites.id"), index=True)
     environment_id: Mapped[UUID] = mapped_column(ForeignKey("environments.id"), index=True)
     executor: Mapped[RunExecutor] = mapped_column(build_text_enum(RunExecutor, "run_executor"))
     status: Mapped[RunStatus] = mapped_column(build_text_enum(RunStatus, "run_status"))
@@ -31,6 +42,7 @@ class RunTable(TableBase):
     started_via_token_id: Mapped[UUID | None] = mapped_column(Uuid)
     summary: Mapped[str | None] = mapped_column(Text)
     report: Mapped[JsonValue] = mapped_column(JSONB(none_as_null=True), nullable=True)
+    skipped_cases: Mapped[JsonValue] = mapped_column(JSONB(none_as_null=True), nullable=True)
     started_at: Mapped[datetime]
     last_activity_at: Mapped[datetime]
     finished_at: Mapped[datetime | None]

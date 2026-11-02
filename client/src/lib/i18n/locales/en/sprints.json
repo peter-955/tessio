@@ -31,5 +31,9 @@
       "title": "Sprint not found",
       "description": "It may have left the sync scope."
     }
+  },
+  "withoutJira": {
+    "title": "This project has no sprints",
+    "description": "Its stories are written in Tessio. Find them on the Stories page."
   }
 }

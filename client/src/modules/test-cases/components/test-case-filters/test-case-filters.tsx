@@ -1,6 +1,7 @@
 "use client";
 
 import { DSCheckbox, DSInput, DSSelect, type DSSelectOption } from "@/components/design-system";
+import { LabelFilter } from "@/modules/labels/components/label-filter/label-filter";
 import { useDebouncedValue } from "@/modules/stories/hooks/use-debounced-value";
 import { useEffect, useEffectEvent, useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +15,7 @@ import {
 import type { TestCaseFilters as TestCaseFilterValues } from "../../typing/types/test-case-filters.type";
 import type { TestCasePriority, TestCaseStatus } from "../../typing/types/test-case.type";
 import { CriterionFilter } from "../criterion-filter/criterion-filter";
+import { FlakyCaseFilters } from "../flaky-case-filters/flaky-case-filters";
 import { StorySelect } from "../story-select/story-select";
 import styles from "./test-case-filters.module.scss";
 
@@ -116,6 +118,12 @@ export const TestCaseFilters: FC<Props> = ({ filters, onChange, isStoryFilterSho
         options={priorityOptions}
         onChange={handlePriorityChange}
       />
+      <LabelFilter
+        value={filters.labelNames}
+        onChange={(labelNames) => {
+          onChange({ ...filters, labelNames });
+        }}
+      />
       <div className={styles.checkbox}>
         <DSCheckbox
           label={t("filters.needsReview")}
@@ -125,6 +133,7 @@ export const TestCaseFilters: FC<Props> = ({ filters, onChange, isStoryFilterSho
           }}
         />
       </div>
+      <FlakyCaseFilters filters={filters} onChange={onChange} />
     </div>
   );
 };

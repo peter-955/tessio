@@ -11,4 +11,5 @@ def build_data_item_response(item: DataItem) -> DataItemResponse:
         value=None if item.is_secret else item.value,
         has_value=item.value_encrypted is not None if item.is_secret else item.value is not None,
         created_at=item.created_at,
+        description=item.description,
     )

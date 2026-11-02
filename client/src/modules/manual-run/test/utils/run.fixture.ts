@@ -41,6 +41,7 @@ export const QC_CAPABILITIES: ProjectCapability[] = [
   "test_case.edit",
   "run.start",
   "run.record_manual",
+  "secret.use_in_run",
 ];
 
 export const ADMIN_CAPABILITIES: ProjectCapability[] = [...QC_CAPABILITIES, "run.finish_any"];
@@ -65,6 +66,7 @@ export const buildStep = (overrides: Partial<ManualRunStep> = {}): ManualRunStep
     screenshotFileId: null,
     screenshotStatus: null,
     evidenceFileId: null,
+    diagnosis: null,
     ...overrides,
   };
 };
@@ -77,7 +79,13 @@ export const buildRunCase = (overrides: Partial<ManualRunCase> = {}): ManualRunC
     versionId: "f2000000-0000-4000-8000-000000000001",
     versionNumber: 1,
     position: 1,
+    businessValue: null,
+    preconditions: null,
+    criteria: [],
+    files: [],
     result: null,
+    parameters: [],
+    iterations: [],
     steps: [
       buildStep({ order: 1, action: "Open the cart", expected: "The cart opens" }),
       buildStep({ order: 2, action: "Pay by card", expected: "The order is paid" }),
@@ -106,6 +114,8 @@ export const buildRun = (overrides: Partial<ManualRun> = {}): ManualRun => {
     summary: null,
     report: null,
     childRunIds: [],
+    environmentBaseUrl: "https://staging.shop.test",
+    data: [],
     cases: [
       buildRunCase(),
       buildRunCase({
@@ -127,7 +137,10 @@ export const buildRecordedResult = (
     id: "f3000000-0000-4000-8000-000000000001",
     status,
     durationMs: null,
+    suspectedCause: null,
+    causeReason: null,
     recordedAt: "2026-10-01T09:10:00Z",
+    iteration: 0,
   };
 };
 
@@ -157,6 +170,7 @@ export const buildStory = (overrides: Partial<RunStory> = {}): RunStory => {
     title: "Checkout",
     jiraStatus: "In Progress",
     jiraIssueType: "Story",
+    source: "jira",
     testStatus: "in_test",
     sprintId: null,
     sprintName: null,
@@ -183,6 +197,12 @@ export const buildReadyTestCase = (overrides: Partial<ReadyTestCase> = {}): Read
     needsReview: false,
     needsReviewAt: null,
     lastSavedAt: "2026-10-01T09:00:00Z",
+    labels: [],
+    isFlaky: false,
+    flakyScore: 0,
+    isDisagreeing: false,
+    isQuarantined: false,
+    quarantinedAt: null,
     ...overrides,
   };
 };

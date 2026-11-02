@@ -1,3 +1,4 @@
+from app.modules.labels import TestCaseLabelRepository
 from app.modules.test_cases.domains.test_case.repository import TestCaseRepository
 from app.modules.test_cases.domains.test_case_detail.entity import TestCaseDetail
 from app.modules.test_cases.domains.test_case_version.repository import TestCaseVersionRepository
@@ -22,6 +23,7 @@ class GetTestCaseUseCase:
         story_reader: StoryReader,
         criterion_reader: CriterionReader,
         data_key_reader: DataKeyReader,
+        test_case_label_repository: TestCaseLabelRepository,
     ) -> None:
         self._transaction = transaction
         self._project_access_resolver = project_access_resolver
@@ -31,6 +33,7 @@ class GetTestCaseUseCase:
         self._story_reader = story_reader
         self._criterion_reader = criterion_reader
         self._data_key_reader = data_key_reader
+        self._test_case_label_repository = test_case_label_repository
 
     async def execute(self, actor: Actor, project_key: str, case_code: str) -> TestCaseDetail:
         async with self._transaction.begin():
@@ -44,4 +47,5 @@ class GetTestCaseUseCase:
                 self._story_reader,
                 self._criterion_reader,
                 self._data_key_reader,
+                self._test_case_label_repository,
             )

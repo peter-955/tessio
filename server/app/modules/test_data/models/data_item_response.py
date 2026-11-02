@@ -12,4 +12,5 @@ class DataItemResponse(WireModel):
     kind: DataItemKind
     value: str | None
     has_value: bool
+    description: str | None
     created_at: datetime

@@ -71,7 +71,8 @@ describe("NewProjectPage", () => {
     expect(apiGet).not.toHaveBeenCalled();
   });
 
-  it("links to the Jira settings when Jira is not configured", async () => {
+  it("creates a project whose stories are written in Tessio when Jira is not configured", async () => {
+    const user = userEvent.setup();
     respondWithRoutes(apiGet, {
       "/api/workspace/jira": buildSuccessResponse({
         isConfigured: false,
@@ -81,13 +82,37 @@ describe("NewProjectPage", () => {
         configuredAt: null,
       }),
     });
+    respondWithRoutes(apiPost, {
+      "/api/projects": buildSuccessResponse(
+        buildProject({
+          key: "SHOP",
+          jiraProjectKey: null,
+          jiraBoardId: null,
+          isLinkedToJira: false,
+        }),
+      ),
+    });
     const { container } = renderWithContext(<NewProjectPage />, { workspaceRole: "admin" });
 
-    expect(
-      await screen.findByRole("link", { name: englishProjects.create.jiraRequired.action }),
-    ).toHaveAttribute("href", "/settings");
-    expect(apiGet).not.toHaveBeenCalledWith("/api/workspace/jira/projects");
+    expect(await screen.findByText(englishProjects.create.jiraNotConnected)).toBeInTheDocument();
+    expect(screen.queryByRole("combobox", { name: /^Jira project/ })).toBeNull();
+    await user.type(screen.getByRole("textbox", { name: /^Name/ }), "Shop");
+    await user.type(screen.getByRole("textbox", { name: /^Key/ }), "SHOP");
     expect(await axe(container)).toHaveNoViolations();
+    await submitForm(user);
+
+    await waitFor(() => {
+      expect(apiPost).toHaveBeenCalledWith("/api/projects", {
+        body: {
+          key: "SHOP",
+          name: "Shop",
+          description: null,
+          jiraProjectKey: null,
+          jiraBoardId: null,
+        },
+      });
+    });
+    expect(apiGet).not.toHaveBeenCalledWith("/api/workspace/jira/projects");
   });
 
   it("loads the boards and prefills the key, the name and the single board", async () => {

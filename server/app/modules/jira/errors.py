@@ -32,3 +32,19 @@ class InvalidJiraSiteUrlError(TessioError):
 class JiraApiTokenRequiredError(TessioError):
     def __init__(self) -> None:
         super().__init__(ErrorCode.INVALID_REQUEST, "Enter the API token.")
+
+
+class JiraWriteNotAllowedError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(
+            ErrorCode.JIRA_WRITE_NOT_ALLOWED,
+            "The Jira account cannot create issues or add comments in this Jira project. Ask a Jira admin for access.",
+        )
+
+
+class JiraIssueRejectedError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(
+            ErrorCode.INVALID_REQUEST,
+            "Jira refused the issue. Check the bug issue type in the project settings.",
+        )

@@ -147,7 +147,7 @@ sequenceDiagram
 | Step | Who | Screen route or MCP tool | Result | Spec story id |
 | --- | --- | --- | --- | --- |
 | 1 | Claude | `get_story_context(story_key)` | Story, active AC, Ready cases, data with secrets as `{{data.key}}`, files, environments | [RUN-11](../spec/runs.md#run-11-story-context-and-test-files-for-claude-wbs-3103) |
-| 2 | Claude | `get_open_gaps(story_key)` | Stops when any gap is open | [GAP-6](../spec/readiness-review.md#gap-6-open-gaps-block-runs-wbs-384) |
+| 2 | Claude | `get_open_gaps(story_key)`, `get_my_gaps(story_key)` | When any gap is open: lists the gaps by assignee, offers `/tessio:answer-gaps` for the caller's, and stops | [GAP-6](../spec/readiness-review.md#gap-6-open-gaps-block-runs-wbs-384) |
 | 3 | Claude | `start_run(story_key, environment?, case_ids?)` | Run `running`, story `in_test`, `run.started` | [RUN-2](../spec/runs.md#run-2-start-a-claude-run-wbs-3103) |
 | 4 | Claude | `curl` on the health-check URL | Down: `finish_run` with no results, run `aborted` | [RUN-3](../spec/runs.md#run-3-health-check-before-the-run-wbs-3103) |
 | 5 | Claude | `resolve_data(run_id, keys)` | Secret values for this run, each audited | [DATA-5](../spec/environments-and-test-data.md#data-5-secrets-during-a-run-wbs-394) |
@@ -179,6 +179,7 @@ flowchart TD
 | --- | --- | --- | --- | --- |
 | 1 | QC or Admin | `/projects/[projectKey]/runs/new` (`POST /api/projects/{project_key}/runs`) | Manual run `running`, story `in_test` | [RUN-8](../spec/runs.md#run-8-manual-run-wbs-3104) |
 | 2 | Same person | `/projects/[projectKey]/runs/[runId]/record`, evidence via `POST …/uploads` kind `evidence` | Evidence uploaded | [RUN-8](../spec/runs.md#run-8-manual-run-wbs-3104) |
+| 2b | Same person | Reveal on a secret in the case sheet (`POST …/runs/{run_id}/resolve-data`) | Secret value shown, one `secret.resolve` audit event per key | [RUN-8](../spec/runs.md#run-8-manual-run-wbs-3104), [RUN-12](../spec/runs.md#run-12-readable-case-sheet-wbs-3109-3610) |
 | 3 | Same person | Save result (`PUT …/runs/{run_id}/cases/{test_case_id}`) | Case result, unmarked steps `skipped`, a failure if `failed` | [RUN-8](../spec/runs.md#run-8-manual-run-wbs-3104), [FAIL-1](../spec/failures.md#fail-1-a-failed-result-opens-a-failure-wbs-3113) |
 | 4 | Same person | Finish run (`POST …/runs/{run_id}/finish`) | Run status and report; `run_finished` | [RUN-8](../spec/runs.md#run-8-manual-run-wbs-3104), [RUN-6](../spec/runs.md#run-6-finish-a-run-and-build-the-report-wbs-3106) |
 | 5 | Anyone | `/projects/[projectKey]/runs/[runId]` | Results and Report tabs | [RUN-7](../spec/runs.md#run-7-run-detail-and-live-progress-wbs-3102-3103) |

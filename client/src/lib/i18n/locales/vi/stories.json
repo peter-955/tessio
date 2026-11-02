@@ -26,7 +26,8 @@
   "list": {
     "openInJira": "Mở trong Jira",
     "notInScope": "Ngoài phạm vi Jira",
-    "noSprint": "Không có sprint"
+    "noSprint": "Không có sprint",
+    "writtenInTessio": "Viết trong Tessio"
   },
   "empty": {
     "title": "Chưa có story nào",
@@ -51,7 +52,9 @@
     "notFound": {
       "title": "Không tìm thấy story",
       "description": "Kiểm tra lại mã hoặc đồng bộ từ Jira."
-    }
+    },
+    "writtenInTessio": "Viết trong Tessio",
+    "lastEdited": "Sửa lần cuối {{date}}"
   },
   "tabs": {
     "ariaLabel": "Các phần của story",
@@ -110,5 +113,33 @@
     "lastSucceeded": "Lần thành công gần nhất {{date}}",
     "stale": "Lần đồng bộ trước không phản hồi.",
     "unavailable": "Không có trạng thái đồng bộ"
+  },
+  "editor": {
+    "newStory": "Story mới",
+    "createTitle": "Story mới",
+    "editTitle": "Sửa {{key}}",
+    "title": "Tiêu đề",
+    "titleRequired": "Nhập tiêu đề.",
+    "tooLong": "Dùng tối đa {{max}} ký tự.",
+    "description": "Mô tả",
+    "descriptionHint": "Người dùng muốn gì và vì sao. Văn bản thuần.",
+    "criteria": "Tiêu chí chấp nhận",
+    "criteriaHint": "Mã theo thứ tự: tiêu chí đầu tiên là AC1. Sửa hoặc xóa một tiêu chí sẽ đánh dấu các ca kiểm thử liên quan cần xem lại.",
+    "criterionCode": "AC{{number}}",
+    "criterionActions": "Thao tác cho {{code}}",
+    "moveUp": "Lên",
+    "moveDown": "Xuống",
+    "remove": "Xóa",
+    "addCriterion": "Thêm tiêu chí chấp nhận",
+    "create": "Tạo story",
+    "save": "Lưu",
+    "created": "Đã tạo story {{key}}",
+    "updated": "Đã lưu story",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "deleteTitle": "Xóa {{key}}?",
+    "deleteMessage": "Story và các tiêu chí chấp nhận của nó sẽ bị xóa. Mã của nó không được dùng lại.",
+    "deleted": "Đã xóa story {{key}}",
+    "inUse": "Story này có ca kiểm thử, lượt chạy hoặc khoảng trống nên không thể xóa."
   }
 }

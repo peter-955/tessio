@@ -43,6 +43,9 @@ export const buildFailure = (overrides: Partial<Failure> = {}): Failure => {
     latestFailedAt: "2026-10-21T10:30:00Z",
     statusChangedAt: null,
     statusChangedByName: null,
+    cause: null,
+    causeReason: null,
+    causeChangedAt: null,
     createdAt: "2026-10-20T09:00:00Z",
     ...overrides,
   };
@@ -56,6 +59,7 @@ export const buildFailureDetail = (overrides: Partial<FailureDetail> = {}): Fail
       actualResult: "The pay button stayed disabled",
       error: "TimeoutError: button not enabled",
       screenshotFileId: SCREENSHOT_FILE_ID,
+      diagnosis: null,
     },
     results: [
       {
@@ -67,6 +71,7 @@ export const buildFailureDetail = (overrides: Partial<FailureDetail> = {}): Fail
         durationMs: 65000,
         recordedAt: "2026-10-21T10:30:00Z",
         startedByName: "Quinn Qc",
+        iteration: null,
       },
     ],
     events: [
@@ -75,6 +80,8 @@ export const buildFailureDetail = (overrides: Partial<FailureDetail> = {}): Fail
         kind: "opened",
         fromStatus: null,
         toStatus: "open",
+        fromCause: null,
+        toCause: null,
         caseResultId: CASE_RESULT_ID,
         runId: RUN_ID,
         assigneeId: null,
@@ -88,6 +95,8 @@ export const buildFailureDetail = (overrides: Partial<FailureDetail> = {}): Fail
         kind: "assigned",
         fromStatus: null,
         toStatus: null,
+        fromCause: null,
+        toCause: null,
         caseResultId: null,
         runId: null,
         assigneeId: ASSIGNEE_ID,
@@ -124,6 +133,8 @@ export const buildFailureRun = (
     summary: null,
     report: null,
     childRunIds: [],
+    environmentBaseUrl: "https://staging.shop.test",
+    data: [],
     cases: [
       {
         testCaseId: TEST_CASE_ID,
@@ -132,12 +143,21 @@ export const buildFailureRun = (
         versionId: "a3000000-0000-4000-8000-000000000001",
         versionNumber: 1,
         position: 1,
+        businessValue: null,
+        preconditions: null,
+        criteria: [],
+        files: [],
         result: {
           id: CASE_RESULT_ID,
           status: "failed",
           durationMs: 65000,
+          suspectedCause: null,
+          causeReason: null,
           recordedAt: "2026-10-21T10:30:00Z",
+          iteration: 0,
         },
+        parameters: [],
+        iterations: [],
         steps: [
           {
             order: 1,
@@ -149,6 +169,7 @@ export const buildFailureRun = (
             screenshotFileId: null,
             screenshotStatus: null,
             evidenceFileId: null,
+            diagnosis: null,
           },
           {
             order: 2,
@@ -160,6 +181,7 @@ export const buildFailureRun = (
             screenshotFileId: SCREENSHOT_FILE_ID,
             screenshotStatus,
             evidenceFileId: null,
+            diagnosis: null,
           },
         ],
       },
@@ -212,6 +234,7 @@ export const buildStorySummary = (overrides: Partial<StorySummary> = {}): StoryS
     title: "Pay by card",
     jiraStatus: "In Progress",
     jiraIssueType: "Story",
+    source: "jira",
     testStatus: "not_started",
     sprintId: null,
     sprintName: null,

@@ -40,7 +40,7 @@ test("the QC records a manual run where the second step fails", async ({ qcPage 
   await recordStep(qcPage, 1, "Passed");
   await recordStep(qcPage, 2, "Failed", FAILED_STEP_ACTUAL_RESULT);
   await saveCaseResult(qcPage, caseCode);
-  await expect(qcPage.getByText("1 of 1 cases recorded")).toBeVisible();
+  await expect(qcPage.getByText(/1 of 1 cases recorded/)).toBeVisible();
   await finishRun(qcPage);
 
   await qcPage.goto(`/projects/${PROJECT_KEY}/runs/${firstRunId}`);

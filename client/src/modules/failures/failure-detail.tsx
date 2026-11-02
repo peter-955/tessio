@@ -12,6 +12,7 @@ import { UUID_PATTERN } from "@/modules/sprints/typing/constants/sprint.constant
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { FailedStepCard } from "./components/failed-step-card/failed-step-card";
+import { FailureCauseCard } from "./components/failure-cause-card/failure-cause-card";
 import { FailureHeader } from "./components/failure-header/failure-header";
 import { FailureResultHistory } from "./components/failure-result-history/failure-result-history";
 import { FailureTimeline } from "./components/failure-timeline/failure-timeline";
@@ -83,6 +84,7 @@ export const FailureDetailPage: FC<Props> = ({ failureId }) => {
       )}
       <div className={styles.grid}>
         <div className={styles.column}>
+          <FailureCauseCard failure={data} />
           <FailedStepCard failure={data} />
           <FailureResultHistory results={data.results} />
         </div>

@@ -1,0 +1,49 @@
+{
+  "editor": {
+    "title": "Tham số và dòng dữ liệu",
+    "hint": "Dùng {{prefix}}ten}} trong điều kiện trước và các bước. Mỗi dòng dữ liệu chạy ca một lần, gọi là một lượt. Giá trị có thể là tham chiếu dữ liệu kiểm thử như {{dataExample}}; đừng bao giờ nhập bí mật ở đây.",
+    "tableLabel": "Dòng dữ liệu",
+    "row": "Dòng",
+    "rowActions": "Thao tác dòng",
+    "parameterName": "Tên tham số {{position}}",
+    "parameterPlaceholder": "ten",
+    "parameterFallback": "tham số {{position}}",
+    "cellLabel": "Dòng {{row}}, {{parameter}}",
+    "removeParameter": "Xóa tham số {{name}}",
+    "removeRow": "Xóa dòng {{row}}",
+    "noParameters": "Chưa có tham số. Ca chạy một lần.",
+    "noRows": "Chưa có dòng dữ liệu. Thêm một dòng cho mỗi bộ giá trị.",
+    "addParameter": "Thêm tham số",
+    "addRow": "Thêm dòng dữ liệu",
+    "errors": {
+      "required": "Hãy đặt tên tham số.",
+      "invalidName": "Dùng chữ cái, chữ số và _, bắt đầu bằng chữ cái.",
+      "duplicateName": "Mỗi tham số cần một tên riêng.",
+      "tooLong": "Dùng tối đa {{max}} ký tự.",
+      "tooManyParameters": "Một ca có tối đa {{max}} tham số.",
+      "tooManyRows": "Một ca có tối đa {{max}} dòng dữ liệu.",
+      "rowsWithoutParameters": "Hãy thêm tham số trước khi thêm dòng dữ liệu.",
+      "parametersWithoutRows": "Hãy thêm ít nhất một dòng dữ liệu cho các tham số, hoặc xoá các tham số."
+    }
+  },
+  "table": {
+    "title_one": "Dòng dữ liệu ({{count}} lượt)",
+    "title_other": "Dòng dữ liệu ({{count}} lượt)",
+    "label": "Dòng dữ liệu",
+    "iteration": "Lượt"
+  },
+  "iteration": {
+    "title": "Lượt {{number}}",
+    "values": "Giá trị của lượt này",
+    "emptyValue": "trống",
+    "listLabel": "Các lượt của {{code}}",
+    "stepsLabel": "Các bước của {{code}}, lượt {{number}}",
+    "summary_one": "Đã ghi {{recorded}}/{{count}} lượt",
+    "summary_other": "Đã ghi {{recorded}}/{{count}} lượt",
+    "recordHint": "Chạy ca một lần cho mỗi dòng dữ liệu và ghi riêng từng lượt.",
+    "record": "Ghi lượt {{number}}",
+    "showSteps": "Xem lượt {{number}}",
+    "save": "Lưu lượt {{number}}",
+    "saved": "Đã lưu {{code}}, lượt {{number}}."
+  }
+}

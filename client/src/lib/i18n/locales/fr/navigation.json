@@ -14,5 +14,10 @@
   "profile": "Profil",
   "connectClaude": "Connecter Claude",
   "gapInbox": "Mes écarts",
-  "environments": "Environnements"
+  "environments": "Environnements",
+  "aiHarness": "AI Harness",
+  "suites": "Suites",
+  "plans": "Plans",
+  "sharedSteps": "Étapes partagées",
+  "insights": "Analyses"
 }

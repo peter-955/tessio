@@ -24,6 +24,8 @@ describe("buildCaseResultRequest", () => {
   it("omits steps without a status and keeps the suggestion by default", () => {
     const draft: CaseDraft = {
       statusOverride: null,
+      suspectedCause: null,
+      causeReason: "",
       steps: {
         1: { ...createEmptyStepDraft(), status: "passed", actualResult: "  Opened  " },
         2: { ...createEmptyStepDraft(), actualResult: "Typed but not marked" },
@@ -33,6 +35,7 @@ describe("buildCaseResultRequest", () => {
     expect(buildCaseResultRequest(draft, STEPS)).toEqual({
       status: null,
       durationMs: null,
+      iteration: 0,
       steps: [
         { order: 1, status: "passed", actualResult: "Opened", error: null, evidenceFileId: null },
       ],
@@ -42,6 +45,8 @@ describe("buildCaseResultRequest", () => {
   it("trims the error, turns an empty error into null and sends the evidence id", () => {
     const draft: CaseDraft = {
       statusOverride: null,
+      suspectedCause: null,
+      causeReason: "",
       steps: {
         1: { ...createEmptyStepDraft(), status: "failed", error: "  Declined  " },
         2: { ...createEmptyStepDraft(), status: "blocked", error: "   " },
@@ -65,6 +70,8 @@ describe("buildCaseResultRequest", () => {
   it("drops an error typed before the step was marked passed", () => {
     const draft: CaseDraft = {
       statusOverride: null,
+      suspectedCause: null,
+      causeReason: "",
       steps: { 1: { ...createEmptyStepDraft(), status: "passed", error: "Old error" } },
     };
 
@@ -77,6 +84,7 @@ describe("buildCaseResultRequest", () => {
     expect(buildCaseResultRequest(draft, STEPS)).toEqual({
       status: "blocked",
       durationMs: null,
+      iteration: 0,
       steps: [],
     });
   });
@@ -88,6 +96,8 @@ describe("checkIsCaseDraftUploading", () => {
     expect(
       checkIsCaseDraftUploading({
         statusOverride: null,
+        suspectedCause: null,
+        causeReason: "",
         steps: { 2: { ...createEmptyStepDraft(), isUploading: true } },
       }),
     ).toBe(true);

@@ -6,10 +6,12 @@ from pydantic import Field, StringConstraints
 from app.modules.test_cases.models.test_step_request import TestStepRequest
 from app.modules.test_cases.typing.constants import (
     MAX_CRITERION_LINKS,
+    MAX_DATA_VALUE_LENGTH,
     MAX_STEPS,
     MAX_STORY_KEY_LENGTH,
     MAX_TEXT_LENGTH,
     MAX_TITLE_LENGTH,
+    PARAMETER_NAME_PATTERN,
 )
 from app.modules.test_cases.typing.enums import TestCasePriority
 from app.shared.common import WireModel
@@ -23,3 +25,9 @@ class CreateTestCaseRequest(WireModel):
     preconditions: str | None = Field(default=None, max_length=MAX_TEXT_LENGTH)
     steps: list[TestStepRequest] = Field(default_factory=list, max_length=MAX_STEPS)
     criterion_ids: list[UUID] = Field(default_factory=list, max_length=MAX_CRITERION_LINKS)
+    parameters: list[Annotated[str, StringConstraints(strip_whitespace=True, pattern=PARAMETER_NAME_PATTERN)]] = Field(
+        default_factory=list
+    )
+    data_rows: list[dict[str, Annotated[str, StringConstraints(max_length=MAX_DATA_VALUE_LENGTH)]]] = Field(
+        default_factory=list
+    )

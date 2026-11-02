@@ -3,6 +3,10 @@
 import { DSAlert, DSButton, DSEmptyState, DSPageHeader, DSStack } from "@/components/design-system";
 import { useCurrentProject } from "@/components/project-context/hooks/use-current-project";
 import { useHasProjectCapability } from "@/components/project-context/hooks/use-has-project-capability";
+import { ReviewSettingsCard } from "@/modules/case-review/components/review-settings-card/review-settings-card";
+import { ChatChannelsCard } from "@/modules/chat-channels/components/chat-channels-card/chat-channels-card";
+import { LabelManagerCard } from "@/modules/labels/components/label-manager-card/label-manager-card";
+import { WebhooksCard } from "@/modules/webhooks/components/webhooks-card/webhooks-card";
 import { useState, type FC, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { AllowedFileTypesCard } from "./components/allowed-file-types-card/allowed-file-types-card";
@@ -16,6 +20,10 @@ export const ProjectSettingsPage: FC = () => {
   const { t } = useTranslation("projects");
   const project = useCurrentProject();
   const canEdit = useHasProjectCapability("project.edit");
+  const canEditLabels = useHasProjectCapability("test_case.edit");
+  const canManageChatChannels =
+    useHasProjectCapability("integration.manage") && !project.isArchived;
+  const canManageWebhooks = useHasProjectCapability("integration.manage") && !project.isArchived;
   const isWorkspaceAdmin = useIsWorkspaceAdmin();
   const [isUnarchiveModalOpened, setIsUnarchiveModalOpened] = useState(false);
 
@@ -26,6 +34,13 @@ export const ProjectSettingsPage: FC = () => {
           <GeneralSettingsCard project={project} />
           <DefaultEnvironmentCard project={project} />
           <AllowedFileTypesCard project={project} />
+          <LabelManagerCard
+            projectKey={project.key}
+            canManage={canEditLabels && !project.isArchived}
+          />
+          <ReviewSettingsCard project={project} />
+          {canManageChatChannels && <ChatChannelsCard projectKey={project.key} />}
+          {canManageWebhooks && <WebhooksCard projectKey={project.key} />}
           {isWorkspaceAdmin && <ArchiveProjectCard project={project} />}
         </DSStack>
       );

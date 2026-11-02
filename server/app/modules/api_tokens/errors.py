@@ -21,6 +21,15 @@ class ProjectMembershipRequiredError(TessioError):
         super().__init__(ErrorCode.PERMISSION_DENIED, "Only project members can create a token for this project.")
 
 
+class TokenScopeNotAllowedError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(
+            ErrorCode.TOKEN_SCOPE_NOT_ALLOWED,
+            "This token's scope does not allow this request. Use an mcp token for Claude Code "
+            "and an api token for the public REST routes.",
+        )
+
+
 class ApiTokenNotFoundError(TessioError):
     def __init__(self) -> None:
         super().__init__(ErrorCode.NOT_FOUND, "Token not found.")

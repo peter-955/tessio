@@ -28,6 +28,7 @@ export const buildDataItem = (overrides: Partial<DataItem> = {}): DataItem => {
     kind: "variable",
     value: "/shop",
     hasValue: true,
+    description: null,
     createdAt: "2026-10-01T09:00:00Z",
     ...overrides,
   };

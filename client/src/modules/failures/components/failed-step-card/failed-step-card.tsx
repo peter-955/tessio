@@ -2,6 +2,7 @@
 
 import { DSButtonLink, DSCard, DSCode, DSText } from "@/components/design-system";
 import { useCurrentProject } from "@/components/project-context/hooks/use-current-project";
+import { StepDiagnosis } from "@/components/step-diagnosis/step-diagnosis";
 import { useCallback, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetFailureRun } from "../../hooks/queries/use-get-failure-run";
@@ -88,6 +89,7 @@ export const FailedStepCard: FC<Props> = ({ failure }) => {
             </div>
           )}
         </dl>
+        {failedStep.diagnosis !== null && <StepDiagnosis diagnosis={failedStep.diagnosis} />}
         <FailureScreenshot
           failedStep={failedStep}
           runStep={runStep}

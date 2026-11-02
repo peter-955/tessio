@@ -6,6 +6,10 @@ export interface TestCaseFilters {
   priority: TestCasePriority | null;
   criterionId: string | null;
   isNeedingReview: boolean;
+  isFlaky: boolean;
+  isDisagreeing: boolean;
+  isQuarantined: boolean;
+  labelNames: string[];
   query: string;
 }
 
@@ -15,6 +19,10 @@ export interface TestCaseListQuery {
   priority?: TestCasePriority;
   criterionId?: string;
   needsReview?: boolean;
+  flaky?: boolean;
+  disagreeing?: boolean;
+  quarantined?: boolean;
+  label?: string[];
   query?: string;
 }
 

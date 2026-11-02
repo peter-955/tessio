@@ -2,6 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import select
 
+from app.modules.runs.infrastructure.suite_name_table import SUITE_NAME_TABLE
 from app.modules.runs.ports.run_story_reader import RunStoryReader
 from app.modules.stories.infrastructure import StoryTable
 from app.shared.postgres import Database
@@ -18,3 +19,11 @@ class PostgresRunStoryReader(RunStoryReader):
             )
         ).scalar_one()
         return jira_key
+
+    async def find_suite_name(self, suite_id: UUID) -> str:
+        suite_name: str = (
+            await self._database.get_current_session().execute(
+                select(SUITE_NAME_TABLE.c.name).where(SUITE_NAME_TABLE.c.id == suite_id)
+            )
+        ).scalar_one()
+        return suite_name

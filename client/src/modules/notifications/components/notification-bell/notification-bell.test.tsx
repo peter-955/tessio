@@ -20,6 +20,7 @@ import {
   createFailureNotification,
   createGapNotification,
   createNotificationPage,
+  createReportNotification,
   createRunNotification,
 } from "../../test/utils/notification.fixture";
 import type { NotificationPage } from "../../typing/types/notification.type";
@@ -270,6 +271,49 @@ describe("NotificationBell", () => {
     });
     expect(router.push).not.toHaveBeenCalled();
     expect(screen.getByRole("dialog", { name: PANEL_TITLE })).toBeInTheDocument();
+  });
+
+  it("downloads a ready report from its notification and marks it read", async () => {
+    const user = userEvent.setup();
+    const reportNotification = createReportNotification();
+    const filePath = "/api/projects/{project_key}/files/{file_id}";
+    const downloadUrl = "https://files.example.test/story-TES-42.pdf";
+    const openWindow = vi.spyOn(window, "open").mockReturnValue(null);
+    respondWithPages({ first: createNotificationPage([reportNotification]) });
+    const listAndCount = apiGet.getMockImplementation();
+    apiGet.mockImplementation((path, options) => {
+      if (path === filePath) {
+        return Promise.resolve(
+          createSuccessResult({ url: downloadUrl, expiresAt: "2026-11-01T11:00:00Z" }),
+        );
+      }
+
+      return listAndCount === undefined
+        ? Promise.reject(new Error(`No mocked response for ${path}`))
+        : listAndCount(path, options);
+    });
+    renderBell();
+    const dialog = await openDrawer("Notifications, 3 unread");
+    const list = await findList(dialog);
+
+    expect(
+      within(list).getByRole("link", { name: /Report ready: TES-42 Refund a payment/ }),
+    ).toHaveAttribute("href", "/projects/TES/stories/TES-42");
+    await user.click(
+      within(list).getByRole("button", { name: englishNotifications.item.download }),
+    );
+
+    await waitFor(() => {
+      expect(openWindow).toHaveBeenCalledWith(downloadUrl, "_blank", "noopener");
+    });
+    expect(apiGet).toHaveBeenCalledWith(filePath, {
+      params: {
+        path: { project_key: "TES", file_id: "0c5f7e2b-9d8a-4b3c-8f6e-7a8b9c0d1e16" },
+      },
+    });
+    expect(apiPut).toHaveBeenCalledWith(READ_PATH, {
+      params: { path: { notification_id: reportNotification.id } },
+    });
   });
 
   it("offers Mark as read only on unread items", async () => {

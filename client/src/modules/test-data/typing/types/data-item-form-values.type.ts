@@ -5,4 +5,5 @@ export interface DataItemFormValues {
   kind: DataItemKind;
   scopeId: string;
   value: string;
+  description: string;
 }

@@ -1,20 +1,24 @@
 from datetime import datetime
 from uuid import UUID
 
-from app.modules.notifications import RunFinishedPayload, RunOutcome, SendNotificationUseCase
+from app.modules.notifications import SendNotificationUseCase
 from app.modules.runs.domains.case_result.repository import CaseResultRepository
 from app.modules.runs.domains.run.entity import Run
 from app.modules.runs.domains.run.repository import RunRepository
 from app.modules.runs.domains.run_case.repository import RunCaseRepository
 from app.modules.runs.domains.run_report.entity import RunReport
+from app.modules.runs.domains.run_target.entity import RunTarget
 from app.modules.runs.ports.criterion_impact_calculator import CriterionImpactCalculator
 from app.modules.runs.ports.run_story_reader import RunStoryReader
 from app.modules.runs.typing.constants.stale_run import STALE_RUN_BATCH_SIZE, STALE_RUN_INACTIVITY
 from app.modules.runs.typing.enums import RunAbortReason, RunStatus
 from app.modules.runs.usecases.screenshot_verifier import ScreenshotVerifier
+from app.modules.runs.utils.run_event import build_run_finished_event
+from app.modules.runs.utils.run_finished_payload import build_run_finished_payload
 from app.modules.runs.utils.run_report import build_run_report
+from app.modules.runs.utils.run_target import find_run_target
 from app.shared.common import Transaction
-from app.shared.events import LiveEvent, LiveEventPublisher, LiveEventType
+from app.shared.events import LiveEventPublisher
 from app.shared.permissions import ProjectRole
 
 
@@ -70,6 +74,7 @@ class AbortStaleRunsUseCase:
                 missing_screenshots,
                 None,
                 now,
+                run.skipped_cases,
             )
             aborted_run = run.model_copy(
                 update={
@@ -81,29 +86,18 @@ class AbortStaleRunsUseCase:
                 }
             )
             await self._run_repository.save(aborted_run)
-            story_jira_key = await self._run_story_reader.find_jira_key(run.story_id)
-        await self._announce_finish(aborted_run, report, story_jira_key)
+            target = await find_run_target(run, self._run_story_reader)
+        await self._announce_finish(aborted_run, report, target)
         return True
 
-    async def _announce_finish(self, run: Run, report: RunReport, story_jira_key: str) -> None:
-        await self._live_event_publisher.publish(
-            LiveEvent(
-                type=LiveEventType.RUN_FINISHED,
-                project_id=run.project_id,
-                ids={"runId": str(run.id), "storyId": str(run.story_id), "status": run.status.value},
-            )
-        )
+    async def _announce_finish(self, run: Run, report: RunReport, target: RunTarget) -> None:
+        await self._live_event_publisher.publish(build_run_finished_event(run))
+        payload = build_run_finished_payload(run, report, target)
+        if payload is None:
+            return
         await self._send_notification.execute(
             run.project_id,
-            RunFinishedPayload(
-                run_id=run.id,
-                story_id=run.story_id,
-                story_jira_key=story_jira_key,
-                outcome=RunOutcome(run.status.value),
-                passed_count=report.counts.passed,
-                failed_count=report.counts.failed,
-                blocked_count=report.counts.blocked,
-            ),
+            payload,
             actor_id=None,
             recipient_ids={run.started_by},
             recipient_roles={ProjectRole.QC},

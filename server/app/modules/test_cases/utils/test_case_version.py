@@ -1,4 +1,4 @@
-from collections.abc import Sequence
+from collections.abc import Collection, Sequence
 from datetime import datetime
 from uuid import UUID, uuid7
 
@@ -14,8 +14,10 @@ def build_test_case_version(
     file_version_ids: Sequence[UUID],
     created_by: UUID,
     created_at: datetime,
+    shared_data_keys: Collection[str] = (),
 ) -> TestCaseVersion:
     steps = [step.model_copy(update={"order": order}) for order, step in enumerate(content.steps, start=1)]
+    references = parse_references(content.preconditions, steps, content.data_rows)
     return TestCaseVersion(
         id=uuid7(),
         test_case_id=test_case_id,
@@ -26,8 +28,10 @@ def build_test_case_version(
         preconditions=content.preconditions,
         steps=steps,
         criterion_ids=list(content.criterion_ids),
-        data_keys=sorted(parse_references(content.preconditions, steps).data_keys),
+        data_keys=sorted(references.data_keys | set(shared_data_keys)),
         file_version_ids=list(file_version_ids),
         created_by=created_by,
         created_at=created_at,
+        parameters=list(content.parameters),
+        data_rows=[dict(row) for row in content.data_rows],
     )

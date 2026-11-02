@@ -4,6 +4,8 @@ import { DSTable, DSText } from "@/components/design-system";
 import { StatusBadge } from "@/components/status-badge/status-badge";
 import { computeRunDuration } from "@/modules/runs/utils/run-duration.util";
 import { buildRunPath } from "@/modules/runs/utils/run-path.util";
+import { checkIsUntargetedRun } from "@/modules/runs/utils/run-target.util";
+import { SuiteRunTarget } from "@/modules/suites/components/suite-run-target/suite-run-target";
 import { useFormatDate } from "@/shared/hooks/use-format-date";
 import { useFormatDuration } from "@/shared/hooks/use-format-duration";
 import type { RunSummary } from "@/shared/typing/types/test-run.type";
@@ -21,6 +23,7 @@ interface Props {
 
 export const RunsTable: FC<Props> = ({ runs, projectKey, isStoryColumnShown }) => {
   const { t } = useTranslation("runs");
+  const { t: tJunitImport } = useTranslation("junitImport");
   const formatDate = useFormatDate();
   const formatDuration = useFormatDuration();
 
@@ -42,7 +45,7 @@ export const RunsTable: FC<Props> = ({ runs, projectKey, isStoryColumnShown }) =
       <tbody>
         {runs.map((run) => {
           const duration = computeRunDuration(run.startedAt, run.finishedAt);
-          const storyLabel = `${run.storyJiraKey} · ${run.storyTitle}`;
+          const storyLabel = `${run.storyJiraKey ?? ""} · ${run.storyTitle ?? ""}`;
 
           return (
             <tr key={run.id}>
@@ -61,9 +64,21 @@ export const RunsTable: FC<Props> = ({ runs, projectKey, isStoryColumnShown }) =
               </td>
               {isStoryColumnShown && (
                 <td>
-                  <span className={styles.story} title={storyLabel}>
-                    {storyLabel}
-                  </span>
+                  {run.testSuiteId !== undefined &&
+                  run.testSuiteId !== null &&
+                  run.storyId === null ? (
+                    <SuiteRunTarget
+                      projectKey={projectKey}
+                      suiteId={run.testSuiteId}
+                      suiteName={run.testSuiteName ?? run.testSuiteId}
+                    />
+                  ) : checkIsUntargetedRun(run) ? (
+                    <span className={styles.muted}>{tJunitImport("ciRun.target")}</span>
+                  ) : (
+                    <span className={styles.story} title={storyLabel}>
+                      {storyLabel}
+                    </span>
+                  )}
                 </td>
               )}
               <td>

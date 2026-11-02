@@ -5,6 +5,7 @@ import { ManualRunActions } from "@/modules/manual-run/components/manual-run-act
 import type { FC } from "react";
 import { useGetRun } from "../../hooks/queries/use-get-run";
 import { RUN_ID_PATTERN } from "../../typing/constants/run.constant";
+import { checkIsUntargetedRun } from "../../utils/run-target.util";
 
 interface Props {
   runId: string;
@@ -27,6 +28,7 @@ export const RunManualActions: FC<Props> = ({ runId }) => {
         startedBy: data.startedBy,
         failedCount: data.counts.failed,
         blockedCount: data.counts.blocked,
+        isUntargeted: checkIsUntargetedRun(data),
       }}
     />
   );

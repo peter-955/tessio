@@ -34,6 +34,10 @@ class PreviewTestCaseImportUseCase:
             require(access, Capability.TEST_CASE_EDIT)
             parsed_import = await load_case_import(self._import_file_reader, access.project_id, file_id, actor.user_id)
             plan = await load_case_import_plan(
-                parsed_import, access.project_id, self._test_case_repository, self._story_reader, self._criterion_reader
+                parsed_import.cases,
+                access.project_id,
+                self._test_case_repository,
+                self._story_reader,
+                self._criterion_reader,
             )
         return CaseImportPreview(format=parsed_import.format, items=plan.items, skipped=parsed_import.skipped)

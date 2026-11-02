@@ -1,0 +1,40 @@
+{
+  "card": {
+    "title": "Notifications",
+    "description": "Choose what reaches you in Tessio and by email. Emails go to {{email}}. These settings apply to every project.",
+    "inAppOffNote": "With In Tessio off, the bell stays quiet for that notification. Email follows its own setting.",
+    "tableLabel": "Notification settings",
+    "notification": "Notification",
+    "inApp": "In Tessio",
+    "email": "Email",
+    "inAppFor": "In Tessio: {{kind}}",
+    "emailFor": "Email: {{kind}}",
+    "loading": "Loading notification settings",
+    "loadError": "Notification settings could not be loaded",
+    "retry": "Try again",
+    "save": "Save notification settings",
+    "saved": "Notification settings saved."
+  },
+  "kinds": {
+    "gapAssigned": {
+      "title": "Gap assigned to me",
+      "description": "A gap is routed to you or to your role."
+    },
+    "failureAssigned": {
+      "title": "Failure assigned to me",
+      "description": "Someone assigns a failure to you."
+    },
+    "runFinished": {
+      "title": "Run finished",
+      "description": "A story run you started finishes. QC members hear about every run."
+    },
+    "suiteRunFinished": {
+      "title": "Suite run finished",
+      "description": "A suite run you started finishes. QC members hear about every suite run."
+    },
+    "reportReady": {
+      "title": "Report ready",
+      "description": "A report you exported is ready to download."
+    }
+  }
+}

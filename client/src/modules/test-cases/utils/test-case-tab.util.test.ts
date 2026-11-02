@@ -8,6 +8,8 @@ describe("parseTestCaseTab", () => {
     ["history", TestCaseDetailTab.HISTORY],
     [["history", "files"], TestCaseDetailTab.HISTORY],
     ["details", TestCaseDetailTab.DETAILS],
+    ["review", TestCaseDetailTab.REVIEW],
+    ["compare", TestCaseDetailTab.COMPARE],
     ["runs", TestCaseDetailTab.DETAILS],
     [undefined, TestCaseDetailTab.DETAILS],
   ])("parses %s", (value, expectedTab) => {

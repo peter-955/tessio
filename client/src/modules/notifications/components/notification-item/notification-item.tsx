@@ -1,6 +1,7 @@
 "use client";
 
 import { DSActionIcon, DSIcon, DSText } from "@/components/design-system";
+import { useDownloadReport } from "@/modules/reports/hooks/mutations/use-download-report";
 import { useFormatDate } from "@/shared/hooks/use-format-date";
 import classNames from "classnames";
 import Link from "next/link";
@@ -28,6 +29,9 @@ export const NotificationItem: FC<Props> = ({ notification, onNavigate }) => {
   const formatRelativeTime = useFormatRelativeTime();
   const formatDate = useFormatDate();
   const { mutate: markRead } = usePutNotificationRead();
+  const downloadReport = useDownloadReport();
+  const reportFileId =
+    notification.payload.kind === "report_ready" ? notification.payload.fileId : null;
   const { title, description } = describeNotification(notification);
   const isUnread = !notification.isRead;
 
@@ -83,6 +87,21 @@ export const NotificationItem: FC<Props> = ({ notification, onNavigate }) => {
         </DSText>
       </div>
       <div className={styles.action}>
+        {reportFileId !== null && (
+          <DSActionIcon
+            icon="download"
+            size="sm"
+            ariaLabel={t("item.download")}
+            hasTooltip
+            isLoading={downloadReport.isPending}
+            onClick={() => {
+              downloadReport.mutate({ projectKey: notification.projectKey, fileId: reportFileId });
+              if (isUnread) {
+                markAsRead();
+              }
+            }}
+          />
+        )}
         {isUnread && (
           <DSActionIcon
             icon="check"

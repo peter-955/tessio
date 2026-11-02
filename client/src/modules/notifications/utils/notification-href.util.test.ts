@@ -2,8 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   createFailureNotification,
   createGapNotification,
+  createReportNotification,
   createRunNotification,
+  createSuiteRunNotification,
 } from "../test/utils/notification.fixture";
+import type { Notification } from "../typing/types/notification.type";
 import { buildNotificationHref } from "./notification-href.util";
 
 describe("buildNotificationHref", () => {
@@ -22,6 +25,36 @@ describe("buildNotificationHref", () => {
   it("links a run to its run page", () => {
     expect(buildNotificationHref(createRunNotification())).toBe(
       "/projects/TES/runs/4c9f1e6b-3d2a-4b7c-8e0d-1f2a3b4c5d10",
+    );
+  });
+
+  it("links a suite run to its run page", () => {
+    expect(buildNotificationHref(createSuiteRunNotification())).toBe(
+      "/projects/TES/runs/7f2c4b9e-6a5d-4e0f-9c3b-4d5e6f7a8b13",
+    );
+  });
+
+  it("links a report to the run, plan or story it was exported from", () => {
+    const reportFor = (source: "run" | "plan", sourceId: string): Notification => {
+      return createReportNotification({
+        payload: {
+          kind: "report_ready",
+          fileId: "0c5f7e2b-9d8a-4b3c-8f6e-7a8b9c0d1e16",
+          fileName: `${source}.pdf`,
+          format: "pdf",
+          source,
+          sourceId,
+          sourceLabel: "Release 3",
+        },
+      });
+    };
+
+    expect(buildNotificationHref(createReportNotification())).toBe("/projects/TES/stories/TES-42");
+    expect(buildNotificationHref(reportFor("run", "4c9f1e6b-3d2a-4b7c-8e0d-1f2a3b4c5d10"))).toBe(
+      "/projects/TES/runs/4c9f1e6b-3d2a-4b7c-8e0d-1f2a3b4c5d10?tab=report",
+    );
+    expect(buildNotificationHref(reportFor("plan", "1d6a8f3c-0e9b-4c4d-9a7f-8b9c0d1e2f17"))).toBe(
+      "/projects/TES/plans/1d6a8f3c-0e9b-4c4d-9a7f-8b9c0d1e2f17",
     );
   });
 

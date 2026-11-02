@@ -21,6 +21,7 @@ export const E2E_PATHS = {
   serverDirectory: path.resolve(E2E_ROOT_DIRECTORY, "..", "server"),
   stateDirectory: STATE_DIRECTORY,
   runState: path.join(STATE_DIRECTORY, "run-state.json"),
+  pluginManifest: path.resolve(E2E_ROOT_DIRECTORY, "..", "claude", ".claude-plugin", "plugin.json"),
 };
 
 export const STORAGE_STATE_PATHS = {

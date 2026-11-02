@@ -6,7 +6,7 @@ from sqlalchemy import ForeignKey, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.modules.stories.typing.enums import TestStatus
+from app.modules.stories.typing.enums import StorySource, TestStatus
 from app.shared.postgres import TableBase, build_text_enum
 
 
@@ -31,3 +31,6 @@ class StoryTable(TableBase):
     synced_at: Mapped[datetime]
     jira_missing_at: Mapped[datetime | None]
     created_at: Mapped[datetime]
+    source: Mapped[StorySource] = mapped_column(
+        build_text_enum(StorySource, "story_source"), server_default=StorySource.JIRA.value
+    )

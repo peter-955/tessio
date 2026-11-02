@@ -25,3 +25,15 @@ class AssigneeNotActiveMemberError(TessioError):
 class InvalidFailureFilterError(TessioError):
     def __init__(self) -> None:
         super().__init__(ErrorCode.INVALID_REQUEST, "Use either assigneeId or unassigned, not both.")
+
+
+class JiraIssueAlreadyLinkedError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(
+            ErrorCode.JIRA_ISSUE_ALREADY_LINKED, "This failure already has a Jira issue, or one is being created."
+        )
+
+
+class FailureProjectWithoutJiraError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.JIRA_NOT_CONFIGURED, "This project is not linked to Jira.")

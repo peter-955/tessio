@@ -14,3 +14,4 @@ class FailureResultResponse(WireModel):
     duration_ms: int | None
     recorded_at: datetime
     started_by_name: str
+    iteration: int | None

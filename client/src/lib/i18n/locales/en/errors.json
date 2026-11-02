@@ -72,6 +72,26 @@
     "NO_FAILED_CASES_TO_RERUN": "There are no failed cases to re-run.",
     "CASE_RESULT_EXISTS": "A result was already recorded for this case.",
     "RUN_NOT_MANUAL": "This action is only for manual runs.",
-    "RATE_LIMITED": "Too many attempts. Try again later."
+    "RATE_LIMITED": "Too many attempts. Try again later.",
+    "REVIEW_COMMENTS_OPEN": "Resolve the open review comments before moving this case to Ready.",
+    "REVIEWER_IS_AUTHOR": "In this project, the author of a case cannot review it. Ask another QC or Admin.",
+    "SUITE_ALREADY_RUNNING": "A run is already in progress for this suite.",
+    "SUITE_EMPTY": "This suite has no Ready test cases to run.",
+    "SUITE_NAME_ALREADY_USED": "Another suite in this project already has this name.",
+    "SUITE_ARCHIVED": "This suite is archived.",
+    "PLAN_FAILURES_ACTIVE": "Close the active failures on this plan's cases before signing it off.",
+    "PLAN_NOT_OPEN": "This plan is no longer open.",
+    "SHARED_STEP_KEY_ALREADY_USED": "Another shared step in this project already has this key.",
+    "UNKNOWN_SHARED_STEP": "This refers to a shared step that does not exist or is archived.",
+    "INVALID_STEP_SHAPE": "Each step needs an action and an expected result, or a shared step.",
+    "SECRET_IN_DATA_ROW": "Data rows cannot hold secret values. Refer to the secret by its test data key instead.",
+    "ITERATION_OUT_OF_RANGE": "This case has no data row for that iteration.",
+    "JIRA_WRITE_NOT_ALLOWED": "The Jira account linked to Tessio cannot create issues or add comments here. Ask a workspace admin to give it the Jira permissions.",
+    "JIRA_ISSUE_ALREADY_LINKED": "This failure already has a Jira issue.",
+    "WEBHOOK_URL_INVALID": "Enter a valid public https URL.",
+    "CHAT_DELIVERY_FAILED": "The test message could not be delivered. Check the webhook URL and try again.",
+    "JUNIT_INVALID": "This file is not a valid JUnit XML report.",
+    "JUNIT_NO_MAPPED_TESTS": "No test in this report names a test case code such as TC-12.",
+    "TOKEN_SCOPE_NOT_ALLOWED": "This API token cannot be used for this action."
   }
 }

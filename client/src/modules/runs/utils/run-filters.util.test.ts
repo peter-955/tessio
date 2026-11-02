@@ -13,7 +13,16 @@ describe("parseRunFilters", () => {
     expect(parseRunFilters({ status: "failed", story: "app-12" })).toEqual({
       status: "failed",
       storyKey: "APP-12",
+      suiteId: null,
     });
+  });
+
+  it("keeps a valid suite id in lower case and drops an invalid one", () => {
+    expect(parseRunFilters({ suite: "5A000000-0000-4000-8000-000000000001" })).toEqual({
+      ...EMPTY_RUN_FILTERS,
+      suiteId: "5a000000-0000-4000-8000-000000000001",
+    });
+    expect(parseRunFilters({ suite: "smoke" })).toEqual(EMPTY_RUN_FILTERS);
   });
 
   it("drops an unknown status and an invalid story key", () => {
@@ -25,6 +34,7 @@ describe("parseRunFilters", () => {
     expect(parseRunFilters({ status: ["aborted", "passed"] })).toEqual({
       status: "aborted",
       storyKey: null,
+      suiteId: null,
     });
   });
 });
@@ -35,20 +45,32 @@ describe("buildRunFiltersSearch", () => {
   });
 
   it("writes the status and the story", () => {
-    expect(buildRunFiltersSearch({ status: "failed", storyKey: "APP-1" })).toBe(
+    expect(buildRunFiltersSearch({ status: "failed", storyKey: "APP-1", suiteId: null })).toBe(
       "?status=failed&story=APP-1",
     );
+  });
+
+  it("writes the suite", () => {
+    expect(
+      buildRunFiltersSearch({
+        ...EMPTY_RUN_FILTERS,
+        suiteId: "5a000000-0000-4000-8000-000000000001",
+      }),
+    ).toBe("?suite=5a000000-0000-4000-8000-000000000001");
   });
 });
 
 describe("buildRunListQuery", () => {
   it("always sends the limit", () => {
     expect(buildRunListQuery(EMPTY_RUN_FILTERS)).toEqual({ limit: 50 });
-    expect(buildRunListQuery({ status: "running", storyKey: "APP-3" })).toEqual({
+    expect(buildRunListQuery({ status: "running", storyKey: "APP-3", suiteId: null })).toEqual({
       status: "running",
       storyKey: "APP-3",
       limit: 50,
     });
+    expect(
+      buildRunListQuery({ ...EMPTY_RUN_FILTERS, suiteId: "5a000000-0000-4000-8000-000000000001" }),
+    ).toEqual({ suiteId: "5a000000-0000-4000-8000-000000000001", limit: 50 });
   });
 });
 
@@ -64,6 +86,9 @@ describe("readRunSearchParams", () => {
 describe("checkHasRunFilters", () => {
   it("is true when any filter is set", () => {
     expect(checkHasRunFilters(EMPTY_RUN_FILTERS)).toBe(false);
-    expect(checkHasRunFilters({ status: null, storyKey: "APP-1" })).toBe(true);
+    expect(checkHasRunFilters({ status: null, storyKey: "APP-1", suiteId: null })).toBe(true);
+    expect(
+      checkHasRunFilters({ ...EMPTY_RUN_FILTERS, suiteId: "5a000000-0000-4000-8000-000000000001" }),
+    ).toBe(true);
   });
 });

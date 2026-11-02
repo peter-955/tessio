@@ -8,7 +8,10 @@ from app.modules.failures.domains.failure_view.entity import FailureView
 from app.modules.failures.errors import FailureNotFoundError, InvalidFailureTransitionError
 from app.modules.failures.typing.constants import MANUAL_STATUS_TRANSITIONS
 from app.modules.failures.typing.enums import FailureEventKind, FailureStatus
-from app.modules.failures.utils.failure_event import build_failure_changed_event
+from app.modules.failures.utils.failure_event import (
+    build_failure_changed_event,
+    build_failure_status_changed_event,
+)
 from app.shared.common import Transaction
 from app.shared.events import LiveEventPublisher
 from app.shared.permissions import Actor, Capability, ProjectAccessResolver, require
@@ -62,4 +65,5 @@ class ChangeFailureStatusUseCase:
             if view is None:
                 raise FailureNotFoundError
         await self._live_event_publisher.publish(build_failure_changed_event(view.failure))
+        await self._live_event_publisher.publish(build_failure_status_changed_event(view.failure))
         return view

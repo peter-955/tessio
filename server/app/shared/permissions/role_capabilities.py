@@ -26,17 +26,22 @@ MEMBER_BASE_CAPABILITIES = VIEW_CAPABILITIES | {Capability.API_TOKEN_CREATE}
 
 GAP_CAPABILITIES = frozenset({Capability.GAP_RAISE, Capability.GAP_ANSWER, Capability.GAP_REASSIGN})
 
-ANALYST_CAPABILITIES = MEMBER_BASE_CAPABILITIES | GAP_CAPABILITIES | {Capability.JIRA_SYNC}
+ANALYST_CAPABILITIES = MEMBER_BASE_CAPABILITIES | GAP_CAPABILITIES | {Capability.JIRA_SYNC, Capability.STORY_EDIT}
 
 PROJECT_ROLE_CAPABILITIES: Mapping[ProjectRole, frozenset[Capability]] = {
     ProjectRole.ADMIN: frozenset(Capability),
-    ProjectRole.PM: ANALYST_CAPABILITIES,
+    ProjectRole.PM: ANALYST_CAPABILITIES | {Capability.PLAN_EDIT},
     ProjectRole.BA: ANALYST_CAPABILITIES,
     ProjectRole.QC: MEMBER_BASE_CAPABILITIES
     | GAP_CAPABILITIES
     | {
         Capability.STORY_SIGN_OFF,
+        Capability.STORY_EDIT,
         Capability.TEST_CASE_EDIT,
+        Capability.TEST_CASE_QUARANTINE,
+        Capability.SUITE_EDIT,
+        Capability.PLAN_EDIT,
+        Capability.PLAN_SIGN_OFF,
         Capability.ENVIRONMENT_MANAGE,
         Capability.TEST_DATA_EDIT,
         Capability.SECRET_EDIT,
@@ -46,6 +51,7 @@ PROJECT_ROLE_CAPABILITIES: Mapping[ProjectRole, frozenset[Capability]] = {
         Capability.RUN_RECORD_MANUAL,
         Capability.FAILURE_ASSIGN,
         Capability.FAILURE_VERIFY,
+        Capability.FAILURE_CREATE_JIRA_ISSUE,
     },
     ProjectRole.DEV: MEMBER_BASE_CAPABILITIES
     | GAP_CAPABILITIES
@@ -57,6 +63,7 @@ PROJECT_ROLE_CAPABILITIES: Mapping[ProjectRole, frozenset[Capability]] = {
         Capability.RUN_START,
         Capability.FAILURE_ASSIGN,
         Capability.FAILURE_MARK_FIXED,
+        Capability.FAILURE_CREATE_JIRA_ISSUE,
     },
     ProjectRole.VIEWER: MEMBER_BASE_CAPABILITIES,
 }

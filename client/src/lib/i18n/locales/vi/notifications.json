@@ -27,7 +27,8 @@
   "item": {
     "unread": "Chưa đọc:",
     "markRead": "Đánh dấu là đã đọc",
-    "byActor": "bởi {{actorName}}"
+    "byActor": "bởi {{actorName}}",
+    "download": "Tải báo cáo xuống"
   },
   "kind": {
     "gapAssigned": {
@@ -45,6 +46,22 @@
         "aborted": "Lượt chạy bị hủy ở {{storyKey}}"
       },
       "description": "{{passedCount}} đạt · {{failedCount}} không đạt · {{blockedCount}} bị chặn"
+    },
+    "suiteRunFinished": {
+      "title": {
+        "passed": "Lượt chạy bộ kiểm thử đạt: {{suiteName}}",
+        "failed": "Lượt chạy bộ kiểm thử không đạt: {{suiteName}}",
+        "aborted": "Lượt chạy bộ kiểm thử bị hủy: {{suiteName}}"
+      },
+      "description": "{{passedCount}} đạt · {{failedCount}} không đạt · {{blockedCount}} bị chặn"
+    },
+    "reportReady": {
+      "title": {
+        "run": "Báo cáo đã sẵn sàng: lượt chạy {{sourceLabel}}",
+        "plan": "Báo cáo đã sẵn sàng: kế hoạch {{sourceLabel}}",
+        "story": "Báo cáo đã sẵn sàng: {{sourceLabel}}"
+      },
+      "description": "{{fileName}}"
     }
   }
 }

@@ -18,6 +18,7 @@ export const buildDataItemFormValues = (state: DataItemModalState): DataItemForm
       kind: item.kind,
       scopeId: resolveDataItemScopeId(item),
       value: item.kind === "secret" ? "" : (item.value ?? ""),
+      description: item.description ?? "",
     };
   }
 
@@ -26,6 +27,7 @@ export const buildDataItemFormValues = (state: DataItemModalState): DataItemForm
     kind: state.preset?.kind ?? "variable",
     scopeId: state.preset?.scopeId ?? PROJECT_SCOPE_ID,
     value: "",
+    description: state.preset?.description ?? "",
   };
 };
 
@@ -39,6 +41,7 @@ export const buildCreateDataItemRequest = (values: DataItemFormValues): CreateDa
     kind: values.kind,
     value: values.value,
     environmentId: values.scopeId === PROJECT_SCOPE_ID ? null : values.scopeId,
+    description: values.description.trim() === "" ? null : values.description.trim(),
   };
 };
 
@@ -52,5 +55,6 @@ export const buildUpdateDataItemRequest = (
     key: values.key.trim(),
     kind: values.kind,
     value: isKeepingValue ? null : values.value,
+    description: values.description.trim(),
   };
 };

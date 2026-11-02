@@ -7,3 +7,4 @@ class ImportPreviewItem(Entity):
     kind: DataItemKind
     value: str | None
     action: ImportAction
+    description: str | None = None

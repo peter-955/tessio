@@ -3,7 +3,7 @@ from uuid import UUID
 
 from pydantic import JsonValue
 
-from app.modules.stories.typing.enums import TestStatus
+from app.modules.stories.typing.enums import StorySource, TestStatus
 from app.shared.common import Entity
 
 
@@ -25,6 +25,11 @@ class Story(Entity):
     synced_at: datetime
     jira_missing_at: datetime | None
     created_at: datetime
+    source: StorySource = StorySource.JIRA
+
+    @property
+    def is_written_in_tessio(self) -> bool:
+        return self.source is StorySource.TESSIO
 
     @property
     def is_missing_in_jira(self) -> bool:

@@ -11,6 +11,7 @@ class RunStatus(StrEnum):
 class RunExecutor(StrEnum):
     CLAUDE = "claude"
     MANUAL = "manual"
+    CI = "ci"
 
 
 class RunAbortReason(StrEnum):

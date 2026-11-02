@@ -1,0 +1,164 @@
+{
+  "page": {
+    "title": "Insights",
+    "description": "Pass rate, failures, flaky cases, coverage by label and token use over time."
+  },
+  "noValue": "—",
+  "loading": "Loading {{title}}",
+  "loadError": "Could not load {{title}}.",
+  "retry": "Retry",
+  "axis": {
+    "day": "Day",
+    "sprint": "Sprint"
+  },
+  "executor": {
+    "claude": "Claude",
+    "manual": "Manual",
+    "script": "Script",
+    "ci": "CI"
+  },
+  "filters": {
+    "from": "From",
+    "to": "To",
+    "sprint": "Sprint",
+    "sprintPlaceholder": "Any sprint",
+    "sprintOption": "{{name}} · {{state}}",
+    "sprintStates": {
+      "active": "Active",
+      "future": "Future",
+      "closed": "Closed"
+    },
+    "groupByLabel": "Group by",
+    "groupBy": {
+      "day": "Day",
+      "sprint": "Sprint"
+    }
+  },
+  "rangeProblem": {
+    "title": "Check the dates",
+    "order": "The start date is after the end date.",
+    "tooLong": "Pick a period of {{maxDays}} days or less."
+  },
+  "summary": {
+    "title": "Summary",
+    "range": "{{from}} – {{to}} (UTC days)",
+    "emptyTitle": "Nothing happened in this period",
+    "emptySprintTitle": "No sprint covers this period",
+    "emptyDescription": "Runs, failures and gaps in the period show here. Pick a longer period or another sprint.",
+    "passRate": "Pass rate",
+    "runs": "Runs",
+    "results": "Results",
+    "resultsValue": "{{passed}} / {{failed}} / {{blocked}}",
+    "failuresOpened": "Failures opened",
+    "failuresFixed": "Failures fixed",
+    "meanTimeToFix": "Mean time to fix",
+    "openGaps": "Open gaps",
+    "medianOpenGapAge": "Median open gap age"
+  },
+  "passRate": {
+    "title": "Pass rate over time",
+    "series": "Pass rate"
+  },
+  "executors": {
+    "title": "Runs by executor",
+    "empty": "No runs started in this period."
+  },
+  "failures": {
+    "title": "Failures opened and fixed",
+    "meanTimeToFix": "Mean time to fix: {{duration}}",
+    "opened": "Opened",
+    "fixed": "Fixed"
+  },
+  "gaps": {
+    "title": "How long gaps stay open",
+    "summary": "{{opened}} raised · {{answered}} answered · mean time to answer: {{duration}}",
+    "medianOpenAge": "Median age of open gaps (days)",
+    "meanAnswer": "Mean time to answer (days)"
+  },
+  "labels": {
+    "title": "Coverage by label",
+    "description": "Today's cases per label, the share that is Ready and the share whose latest result passed.",
+    "chart": "Share Ready and share passed by label",
+    "table": "Cases by label",
+    "unlabelled": "No label",
+    "readyShare": "Ready",
+    "passedShare": "Passed",
+    "countWithShare": "{{count}} ({{share}})",
+    "columns": {
+      "label": "Label",
+      "cases": "Cases",
+      "ready": "Ready",
+      "passed": "Passed"
+    },
+    "emptyTitle": "No test cases yet",
+    "emptyDescription": "Coverage by label shows once the project has test cases."
+  },
+  "sprintCoverage": {
+    "title": "AC coverage per sprint",
+    "description": "Today's coverage of the acceptance criteria of each sprint's stories.",
+    "passed": "Passed",
+    "failed": "Failed",
+    "blocked": "Blocked",
+    "notRun": "Not run",
+    "uncovered": "Not covered",
+    "emptyTitle": "No sprint coverage",
+    "emptyDescription": "No sprint with acceptance criteria overlaps this period."
+  },
+  "cases": {
+    "columns": {
+      "case": "Case",
+      "story": "Story"
+    }
+  },
+  "topFailing": {
+    "title": "Cases that fail most",
+    "description": "Failed or blocked results in the period, story runs and suite runs alike. A data-driven case counts once per run, with its worst iteration.",
+    "columns": {
+      "failures": "Failed / blocked",
+      "failRate": "Fail rate",
+      "lastFailed": "Last failed"
+    },
+    "failuresValue": "{{failed}} / {{blocked}} of {{total}}",
+    "emptyTitle": "No failing cases",
+    "emptyDescription": "No case failed or was blocked in this period."
+  },
+  "flaky": {
+    "title": "Flaky cases",
+    "description": "Cases whose last results flip between passed and failed, or whose executors disagree.",
+    "columns": {
+      "flips": "Flips",
+      "since": "Since"
+    },
+    "flipsValue_one": "{{count}} flip in 10 results",
+    "flipsValue_other": "{{count}} flips in 10 results",
+    "emptyTitle": "No flaky cases",
+    "emptyDescription": "No case is flaky or disagreeing right now."
+  },
+  "tokens": {
+    "title": "Tokens per Claude run",
+    "description": "Tokens reported by the execution log of each run started in the period. Runs whose log reported no tokens are not counted.",
+    "total": "Total tokens",
+    "meanPerRun": "Mean per run",
+    "meanPerCase": "Mean per case",
+    "runCount": "Runs with token counts",
+    "chart_one": "Tokens of the latest run",
+    "chart_other": "Tokens of the latest {{count}} runs",
+    "runLabel": "{{date}} · {{source}}",
+    "input": "Input",
+    "cacheWrite": "Cache write",
+    "cacheRead": "Cache read",
+    "output": "Output",
+    "table": "Latest runs and their tokens",
+    "columns": {
+      "run": "Run",
+      "executor": "Executor",
+      "cases": "Cases",
+      "total": "Tokens",
+      "perCase": "Per case"
+    },
+    "cut": "Log cut",
+    "tableLimit": "Showing the latest {{shown}} of {{total}} runs.",
+    "emptyTitle": "No token data",
+    "emptyDescription": "No run in this period sent an execution log with token counts."
+  }
+}

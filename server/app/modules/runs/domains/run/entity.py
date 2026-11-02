@@ -2,6 +2,7 @@ from datetime import datetime
 from uuid import UUID
 
 from app.modules.runs.domains.run_report.entity import RunReport
+from app.modules.runs.domains.skipped_run_case.entity import SkippedRunCase
 from app.modules.runs.typing.enums import RunAbortReason, RunExecutor, RunStatus
 from app.shared.common import Entity
 
@@ -9,7 +10,7 @@ from app.shared.common import Entity
 class Run(Entity):
     id: UUID
     project_id: UUID
-    story_id: UUID
+    story_id: UUID | None
     environment_id: UUID
     executor: RunExecutor
     status: RunStatus
@@ -23,6 +24,8 @@ class Run(Entity):
     last_activity_at: datetime
     finished_at: datetime | None
     created_at: datetime
+    test_suite_id: UUID | None = None
+    skipped_cases: list[SkippedRunCase] | None = None
 
     @property
     def is_running(self) -> bool:

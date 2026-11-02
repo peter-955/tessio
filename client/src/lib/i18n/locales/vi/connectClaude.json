@@ -24,26 +24,32 @@
     "viewerHint": "Bạn là Người xem trong dự án này, nên Claude có thể đọc nhưng không ghi được kết quả.",
     "limitReached": "Bạn đang có 10 token hoạt động. Hãy thu hồi một token để tạo token khác.",
     "noProjects": "Bạn chưa là thành viên của dự án nào.",
-    "projectsLoadFailed": "Không tải được danh sách dự án"
+    "projectsLoadFailed": "Không tải được danh sách dự án",
+    "viewerApiHint": "Bạn là Người xem trong dự án này, nên token này có thể đọc lượt chạy, lỗi kiểm thử và test case nhưng không nhập được kết quả."
   },
   "created": {
     "title": "Token cho {{projectKey}}",
     "shownOnce": "Hãy sao chép ngay. Bạn sẽ không thấy lại token này.",
     "commandLabel": "Chạy lệnh này trong terminal của bạn:",
-    "marketplaceMissing": "Nguồn plugin chưa được cấu hình. Thay <marketplace> bằng giá trị quản trị viên cung cấp.",
+    "httpsOnly": "Claude Code chỉ cài plugin từ địa chỉ HTTPS. Với bản Tessio chạy cục bộ, hãy khởi động Claude Code bằng claude --plugin-dir claude từ kho mã.",
     "restart": "Sau đó khởi động lại Claude Code.",
     "tokenLabel": "Chỉ token",
-    "done": "Xong"
+    "done": "Xong",
+    "apiCommandLabel": "Nhập kết quả JUnit từ CI bằng lệnh gọi này:",
+    "apiHint": "Lưu token dưới dạng secret của CI. Token chỉ dùng để nhập JUnit và đọc lượt chạy, lỗi kiểm thử, test case qua REST API, không dùng cho Claude Code."
   },
   "table": {
     "title": "Token của bạn",
     "activeCount": "{{count}} / {{max}} đang hoạt động",
     "name": "Tên",
     "project": "Dự án",
+    "scope": "Dùng cho",
     "token": "Token",
     "status": "Trạng thái",
     "expires": "Hết hạn",
     "lastUsed": "Dùng lần cuối",
+    "plugin": "Plugin",
+    "noPlugin": "–",
     "created": "Ngày tạo",
     "actions": "Thao tác",
     "never": "Chưa bao giờ",
@@ -66,5 +72,20 @@
   "errors": {
     "notMember": "Bạn chỉ có thể tạo token cho dự án mà bạn là thành viên.",
     "projectNotFound": "Dự án này không còn tồn tại."
+  },
+  "scope": {
+    "label": "Dùng cho",
+    "options": {
+      "mcp": "Claude Code (MCP)",
+      "api": "CI và script (REST API)"
+    },
+    "descriptions": {
+      "mcp": "Plugin Tessio trong Claude Code.",
+      "api": "Nhập JUnit và đọc lượt chạy, lỗi kiểm thử, test case."
+    },
+    "short": {
+      "mcp": "Claude Code",
+      "api": "REST API"
+    }
   }
 }

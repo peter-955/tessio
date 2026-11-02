@@ -1,6 +1,7 @@
 "use client";
 
 import { DSBadge, DSTable, DSText } from "@/components/design-system";
+import { checkIsUntargetedRun } from "@/modules/runs/utils/run-target.util";
 import { useFormatDate } from "@/shared/hooks/use-format-date";
 import Link from "next/link";
 import type { FC } from "react";
@@ -17,6 +18,8 @@ interface Props {
 
 export const RecentRunTable: FC<Props> = ({ projectKey, runs }) => {
   const { t } = useTranslation("dashboard");
+  const { t: tSuites } = useTranslation("suites");
+  const { t: tJunitImport } = useTranslation("junitImport");
   const formatDate = useFormatDate();
 
   return (
@@ -50,8 +53,13 @@ export const RecentRunTable: FC<Props> = ({ projectKey, runs }) => {
               </td>
               <td>
                 <span className={styles.story}>
-                  <Link href={buildRunHref(projectKey, run.id)}>{run.storyJiraKey}</Link>
-                  <span className={styles.storyTitle}>{run.storyTitle}</span>
+                  <Link href={buildRunHref(projectKey, run.id)}>
+                    {run.storyJiraKey ?? run.testSuiteName ?? tJunitImport("ciRun.target")}
+                  </Link>
+                  <span className={styles.storyTitle}>
+                    {run.storyTitle ??
+                      (checkIsUntargetedRun(run) ? null : tSuites("runs.suiteBadge"))}
+                  </span>
                 </span>
               </td>
               <td>{t(`recentRuns.executor.${run.executor}`)}</td>

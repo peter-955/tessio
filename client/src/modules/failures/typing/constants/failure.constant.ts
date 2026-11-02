@@ -48,3 +48,4 @@ export const SCREENSHOT_POLL_MILLISECONDS = 5000;
 export const ASSIGN_FAILURE_FORM_ID = "assign-failure-form";
 
 export const EMPTY_VALUE = "—";
+export const MAX_CAUSE_REASON_LENGTH = 500;

@@ -165,7 +165,8 @@
       "preconditions": "Điều kiện tiên quyết",
       "criteria": "Tiêu chí chấp nhận",
       "files": "Tệp",
-      "steps": "Các bước"
+      "steps": "Các bước",
+      "dataTable": "Tham số và dòng dữ liệu"
     },
     "diffAdded": "Đã thêm",
     "diffRemoved": "Đã xoá",
@@ -240,5 +241,10 @@
     "uploadNotCompleted": "Việc tải lên chưa hoàn tất. Hãy thử lại.",
     "fileTypeNotAllowed": "Loại tệp này không được phép trong dự án này.",
     "fileTooLarge": "Tệp tối đa 20 MB."
+  },
+  "read": {
+    "environment": "Giá trị của",
+    "edit": "Chỉnh sửa",
+    "cancel": "Hủy"
   }
 }

@@ -29,8 +29,8 @@
     "notRecorded": "Non consigné",
     "caseList": "Cas",
     "step": "Étape {{order}}",
+    "stepsOf": "Étapes de {{code}}",
     "stepStatus": "Statut de l’étape {{order}}",
-    "expectedValue": "Attendu : {{text}}",
     "actualResult": "Résultat obtenu",
     "error": "Ce qui n’a pas fonctionné",
     "notReported": "Non renseigné",
@@ -50,7 +50,13 @@
     "notFound": "Exécution introuvable",
     "backToRuns": "Retour aux exécutions",
     "loadError": "Impossible de charger cette page.",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "expected": "Résultat attendu",
+    "openEnvironment": "Ouvrir {{environment}} dans un nouvel onglet",
+    "unmarkedSteps_one": "{{count}} étape n'est pas marquée et sera enregistrée comme Ignorée.",
+    "unmarkedSteps_other": "{{count}} étapes ne sont pas marquées et seront enregistrées comme Ignorées.",
+    "causePlaceholder": "Choisir une cause (facultatif)",
+    "causeReason": "Pourquoi le pensez-vous ? (facultatif)"
   },
   "evidence": {
     "label": "Preuve (facultatif)",
@@ -58,7 +64,8 @@
     "dropDescription": "Jusqu’à {{size}}",
     "uploading": "Envoi {{percent}} %",
     "cancel": "Annuler l’envoi",
-    "remove": "Retirer"
+    "remove": "Retirer",
+    "attach": "Joindre une preuve"
   },
   "finish": {
     "action": "Terminer l’exécution",

@@ -1,0 +1,11 @@
+@use "shared/styles/mixins" as *;
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+
+  @include tablet-down {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

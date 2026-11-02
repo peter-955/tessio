@@ -2,11 +2,15 @@ from datetime import UTC, datetime
 from uuid import UUID
 
 from app.modules.runs.domains.case_result.repository import CaseResultRepository
+from app.modules.runs.domains.run.entity import Run
 from app.modules.runs.domains.run.repository import RunRepository
 from app.modules.runs.domains.run_case.repository import RunCaseRepository
 from app.modules.runs.domains.run_opening.entity import RunOpening
+from app.modules.runs.domains.run_sheet.entity import RunSheet
 from app.modules.runs.domains.run_story.entity import RunStory
+from app.modules.runs.domains.run_suite.entity import RunSuite
 from app.modules.runs.domains.started_run.entity import StartedRun
+from app.modules.runs.domains.suite_run_opening.entity import SuiteRunOpening
 from app.modules.runs.errors import (
     EnvironmentNotFoundError,
     InvalidRequestError,
@@ -14,6 +18,8 @@ from app.modules.runs.errors import (
     ParentRunMismatchError,
     RunNotFinishedError,
     RunNotFoundError,
+    RunTargetRequiredError,
+    SuiteParentRunMismatchError,
 )
 from app.modules.runs.ports.run_target_reader import RunTargetReader
 from app.modules.runs.typing.constants.run_report import FAILING_RESULT_STATUSES
@@ -23,7 +29,14 @@ from app.modules.runs.utils.run_event import build_run_started_event, build_stor
 from app.modules.stories import StoryNotFoundError
 from app.shared.common import Transaction
 from app.shared.events import LiveEventPublisher
-from app.shared.permissions import Actor, Capability, ProjectAccessResolver, ProjectNotFoundError, require
+from app.shared.permissions import (
+    Actor,
+    Capability,
+    ProjectAccess,
+    ProjectAccessResolver,
+    ProjectNotFoundError,
+    require,
+)
 
 
 class StartRunUseCase:
@@ -50,10 +63,11 @@ class StartRunUseCase:
     async def execute(
         self,
         actor: Actor,
-        story_key: str,
+        story_key: str | None,
         environment_name: str | None,
         case_ids: list[UUID] | None,
         parent_run_id: UUID | None,
+        suite_reference: str | None = None,
     ) -> StartedRun:
         if actor.token_project_id is None:
             raise ProjectNotFoundError
@@ -61,31 +75,16 @@ class StartRunUseCase:
         async with self._transaction.begin():
             access = await self._project_access_resolver.resolve_by_id(actor, actor.token_project_id)
             require(access, Capability.RUN_START)
-            story = await self._run_target_reader.find_story(access.project_id, story_key)
-            if story is None:
-                raise StoryNotFoundError
-            environment_id = (
-                None
-                if environment_name is None
-                else await self._find_environment_id(access.project_id, environment_name)
-            )
-            test_case_ids = (
-                case_ids
-                if parent_run_id is None
-                else await self._list_rerun_case_ids(access.project_id, story, case_ids, parent_run_id)
-            )
-            sheet = await self._run_start_gate.open_run(
-                access,
-                actor,
-                RunOpening(
-                    story_id=story.id,
-                    environment_id=environment_id,
-                    executor=RunExecutor.CLAUDE,
-                    parent_run_id=parent_run_id,
-                    test_case_ids=test_case_ids,
-                ),
-                now,
-            )
+            if (story_key is None) == (suite_reference is None):
+                raise RunTargetRequiredError
+            if suite_reference is not None:
+                sheet = await self._open_suite_run(
+                    access, actor, suite_reference, environment_name, case_ids, parent_run_id, now
+                )
+            else:
+                sheet = await self._open_story_run(
+                    access, actor, story_key or "", environment_name, case_ids, parent_run_id, now
+                )
             environment = await self._run_target_reader.find_environment_by_id(
                 access.project_id, sheet.run.environment_id
             )
@@ -93,8 +92,82 @@ class StartRunUseCase:
                 raise EnvironmentNotFoundError(str(sheet.run.environment_id))
             run_cases = await self._run_case_repository.list_views(sheet.run.id)
         await self._live_event_publisher.publish(build_run_started_event(sheet.run))
-        await self._live_event_publisher.publish(build_story_changed_event(sheet.run, sheet.story_jira_key))
-        return StartedRun(run=sheet.run, environment=environment, cases=run_cases)
+        if sheet.story_jira_key is not None:
+            await self._live_event_publisher.publish(build_story_changed_event(sheet.run, sheet.story_jira_key))
+        return StartedRun(
+            run=sheet.run,
+            environment=environment,
+            cases=run_cases,
+            suite_name=sheet.suite_name,
+            skipped_cases=sheet.skipped_cases,
+        )
+
+    async def _open_story_run(
+        self,
+        access: ProjectAccess,
+        actor: Actor,
+        story_key: str,
+        environment_name: str | None,
+        case_ids: list[UUID] | None,
+        parent_run_id: UUID | None,
+        now: datetime,
+    ) -> RunSheet:
+        story = await self._run_target_reader.find_story(access.project_id, story_key)
+        if story is None:
+            raise StoryNotFoundError
+        environment_id = await self._find_optional_environment_id(access.project_id, environment_name)
+        test_case_ids = (
+            case_ids
+            if parent_run_id is None
+            else await self._list_rerun_case_ids(access.project_id, story, case_ids, parent_run_id)
+        )
+        return await self._run_start_gate.open_run(
+            access,
+            actor,
+            RunOpening(
+                story_id=story.id,
+                environment_id=environment_id,
+                executor=RunExecutor.CLAUDE,
+                parent_run_id=parent_run_id,
+                test_case_ids=test_case_ids,
+            ),
+            now,
+        )
+
+    async def _open_suite_run(
+        self,
+        access: ProjectAccess,
+        actor: Actor,
+        suite_reference: str,
+        environment_name: str | None,
+        case_ids: list[UUID] | None,
+        parent_run_id: UUID | None,
+        now: datetime,
+    ) -> RunSheet:
+        suite = await self._run_start_gate.require_suite(access.project_id, suite_reference)
+        environment_id = await self._find_optional_environment_id(access.project_id, environment_name)
+        test_case_ids = (
+            case_ids
+            if parent_run_id is None
+            else await self._list_suite_rerun_case_ids(access.project_id, suite, case_ids, parent_run_id)
+        )
+        return await self._run_start_gate.open_suite_run(
+            access,
+            actor,
+            SuiteRunOpening(
+                suite_id=suite.id,
+                environment_id=environment_id,
+                executor=RunExecutor.CLAUDE,
+                parent_run_id=parent_run_id,
+                test_case_ids=test_case_ids,
+            ),
+            now,
+        )
+
+    async def _find_optional_environment_id(self, project_id: UUID, environment_name: str | None) -> UUID | None:
+        if environment_name is None:
+            return None
+        return await self._find_environment_id(project_id, environment_name)
 
     async def _find_environment_id(self, project_id: UUID, environment_name: str) -> UUID:
         wanted_name = environment_name.strip().casefold()
@@ -106,26 +179,47 @@ class StartRunUseCase:
     async def _list_rerun_case_ids(
         self, project_id: UUID, story: RunStory, case_ids: list[UUID] | None, parent_run_id: UUID
     ) -> list[UUID]:
+        parent_run = await self._find_finished_parent(project_id, case_ids, parent_run_id)
+        if parent_run.story_id != story.id:
+            raise ParentRunMismatchError
+        rerun_case_ids = await self._run_start_gate.list_ready_case_ids(
+            project_id, story.id, await self._list_failing_case_ids(parent_run)
+        )
+        if not rerun_case_ids:
+            raise NoFailedCasesToRerunError
+        return rerun_case_ids
+
+    async def _list_suite_rerun_case_ids(
+        self, project_id: UUID, suite: RunSuite, case_ids: list[UUID] | None, parent_run_id: UUID
+    ) -> list[UUID]:
+        parent_run = await self._find_finished_parent(project_id, case_ids, parent_run_id)
+        if parent_run.test_suite_id != suite.id:
+            raise SuiteParentRunMismatchError
+        rerun_case_ids = await self._run_start_gate.list_ready_suite_case_ids(
+            project_id, suite.id, await self._list_failing_case_ids(parent_run)
+        )
+        if not rerun_case_ids:
+            raise NoFailedCasesToRerunError
+        return rerun_case_ids
+
+    async def _find_finished_parent(self, project_id: UUID, case_ids: list[UUID] | None, parent_run_id: UUID) -> Run:
         if case_ids is not None:
             raise InvalidRequestError("Pass either case_ids or parent_run_id, not both.")
         parent_run = await self._run_repository.find_by_id(project_id, parent_run_id)
         if parent_run is None:
             raise RunNotFoundError
-        if parent_run.story_id != story.id:
-            raise ParentRunMismatchError
         if parent_run.is_running:
             raise RunNotFinishedError
+        return parent_run
+
+    async def _list_failing_case_ids(self, parent_run: Run) -> list[UUID]:
         failing_case_ids = {
             case_result.test_case_id
             for case_result in await self._case_result_repository.list_for_run(parent_run.id)
             if case_result.status in FAILING_RESULT_STATUSES
         }
-        candidate_ids = [
+        return [
             run_case.test_case_id
             for run_case in await self._run_case_repository.list_for_run(parent_run.id)
             if run_case.test_case_id in failing_case_ids
         ]
-        rerun_case_ids = await self._run_start_gate.list_ready_case_ids(project_id, story.id, candidate_ids)
-        if not rerun_case_ids:
-            raise NoFailedCasesToRerunError
-        return rerun_case_ids

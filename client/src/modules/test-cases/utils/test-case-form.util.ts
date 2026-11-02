@@ -1,4 +1,14 @@
 import {
+  buildDataRows,
+  buildDataTableValues,
+  checkAreDataRowsEqual,
+  checkAreParametersEqual,
+  checkHasDataTableErrors,
+  createEmptyDataTable,
+  listParameterNames,
+  validateDataTable,
+} from "@/modules/data-rows/utils/data-table.util";
+import {
   DEFAULT_TEST_CASE_PRIORITY,
   MAX_CRITERION_LINKS,
   MAX_STEPS,
@@ -16,7 +26,7 @@ import type {
   TestStepRequest,
   UpdateTestCaseRequest,
 } from "../typing/types/test-case.type";
-import { createFormStep } from "./form-step.util";
+import { checkIsSharedFormStep, createFormStep } from "./form-step.util";
 
 const UPDATE_REQUEST_BASE_FIELD_COUNT = 1;
 
@@ -33,7 +43,11 @@ const findTextError = (value: string, maxLength: number): TestCaseFormErrorKey |
 };
 
 const buildStepRequests = (values: TestCaseFormValues): TestStepRequest[] => {
-  return values.steps.map((step) => {
+  return values.steps.map((step): TestStepRequest => {
+    if (checkIsSharedFormStep(step)) {
+      return { sharedStepKey: step.sharedStepKey };
+    }
+
     return { action: step.action.trim(), expected: normalizeOptionalText(step.expected) };
   });
 };
@@ -49,8 +63,15 @@ const checkAreStepsEqual = (
     steps.every((step, index) => {
       const versionStep = versionSteps[index];
 
+      if (versionStep === undefined) {
+        return false;
+      }
+
+      if (step.sharedStepKey !== undefined || versionStep.sharedStepKey !== null) {
+        return step.sharedStepKey === versionStep.sharedStepKey;
+      }
+
       return (
-        versionStep !== undefined &&
         step.action === versionStep.action &&
         (step.expected ?? null) === (versionStep.expected ?? null)
       );
@@ -77,6 +98,7 @@ export const createEmptyTestCaseFormValues = (storyKey: string | null): TestCase
     preconditions: "",
     criterionIds: [],
     steps: [createFormStep()],
+    dataTable: createEmptyDataTable(),
   };
 };
 
@@ -93,7 +115,8 @@ export const buildTestCaseFormValues = (
     criterionIds: [...version.criterionIds],
     steps: [...version.steps]
       .sort((first, second) => first.order - second.order)
-      .map((step) => createFormStep(step.action, step.expected ?? "")),
+      .map((step) => createFormStep(step.action ?? "", step.expected ?? "", step.sharedStepKey)),
+    dataTable: buildDataTableValues(version.parameters, version.dataRows),
   };
 };
 
@@ -101,6 +124,10 @@ export const validateTestCaseForm = (values: TestCaseFormValues): TestCaseFormEr
   const stepActions: Record<string, TestCaseFormErrorKey> = {};
 
   for (const step of values.steps) {
+    if (checkIsSharedFormStep(step)) {
+      continue;
+    }
+
     const actionError =
       step.action.trim() === "" ? "required" : findTextError(step.action, MAX_TEXT_LENGTH);
     if (actionError !== undefined) {
@@ -119,16 +146,18 @@ export const validateTestCaseForm = (values: TestCaseFormValues): TestCaseFormEr
     steps: values.steps.length > MAX_STEPS ? "tooMany" : undefined,
     stepActions,
   };
+  const dataTable = validateDataTable(values.dataTable);
 
-  return errors;
+  return checkHasDataTableErrors(dataTable) ? { ...errors, dataTable } : errors;
 };
 
 export const checkHasTestCaseFormErrors = (errors: TestCaseFormErrors): boolean => {
-  const { stepActions, ...fieldErrors } = errors;
+  const { stepActions, dataTable, ...fieldErrors } = errors;
 
   return (
     Object.values(fieldErrors).some((error) => error !== undefined) ||
-    Object.keys(stepActions).length > 0
+    Object.keys(stepActions).length > 0 ||
+    (dataTable !== undefined && checkHasDataTableErrors(dataTable))
   );
 };
 
@@ -144,6 +173,12 @@ export const buildCreateTestCaseRequest = (
     preconditions: normalizeOptionalText(values.preconditions),
     steps: buildStepRequests(values),
     criterionIds: [...values.criterionIds],
+    ...(values.dataTable.parameters.length === 0
+      ? {}
+      : {
+          parameters: listParameterNames(values.dataTable),
+          dataRows: buildDataRows(values.dataTable),
+        }),
   };
 };
 
@@ -170,6 +205,13 @@ export const buildUpdateTestCaseRequest = (
     ...(checkAreIdsEqual(values.criterionIds, baseVersion.criterionIds)
       ? {}
       : { criterionIds: [...values.criterionIds] }),
+    ...(checkAreParametersEqual(values.dataTable, baseVersion.parameters) &&
+    checkAreDataRowsEqual(values.dataTable, baseVersion.dataRows)
+      ? {}
+      : {
+          parameters: listParameterNames(values.dataTable),
+          dataRows: buildDataRows(values.dataTable),
+        }),
   };
 };
 

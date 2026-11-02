@@ -5,6 +5,11 @@ import classNames from "classnames";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import type { ManualRunCase } from "../../typing/types/manual-run.type";
+import {
+  checkIsCaseRecorded,
+  checkIsDataDrivenCase,
+  countRecordedIterations,
+} from "../../utils/run-case.util";
 import { ResultStatusBadge } from "../result-status-badge/result-status-badge";
 import styles from "./case-navigator.module.scss";
 
@@ -16,9 +21,22 @@ interface Props {
 
 export const CaseNavigator: FC<Props> = ({ cases, currentTestCaseId, onSelect }) => {
   const { t } = useTranslation("manualRun");
+  const { t: tDataRows } = useTranslation("dataRows");
+
+  const readPendingLabel = (runCase: ManualRunCase): string => {
+    return checkIsDataDrivenCase(runCase)
+      ? tDataRows("iteration.summary", {
+          count: runCase.iterations.length,
+          recorded: countRecordedIterations(runCase),
+        })
+      : t("record.notRecorded");
+  };
+
   const options = cases.map((runCase): DSSelectOption<string> => {
     const statusLabel =
-      runCase.result === null ? t("record.notRecorded") : t(`status.${runCase.result.status}`);
+      runCase.result === null || !checkIsCaseRecorded(runCase)
+        ? readPendingLabel(runCase)
+        : t(`status.${runCase.result.status}`);
 
     return {
       value: runCase.testCaseId,
@@ -55,9 +73,9 @@ export const CaseNavigator: FC<Props> = ({ cases, currentTestCaseId, onSelect })
                   <span className={styles.code}>{runCase.code}</span>
                   <span className={styles.title}>{runCase.title}</span>
                   <span className={styles.status}>
-                    {runCase.result === null ? (
+                    {runCase.result === null || !checkIsCaseRecorded(runCase) ? (
                       <DSText size="xs" color="muted" component="span">
-                        {t("record.notRecorded")}
+                        {readPendingLabel(runCase)}
                       </DSText>
                     ) : (
                       <ResultStatusBadge status={runCase.result.status} />

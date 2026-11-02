@@ -30,7 +30,7 @@ const buildStepInput = (order: number, stepDraft: StepDraft): ManualStepResultIn
 };
 
 export const createEmptyCaseDraft = (): CaseDraft => {
-  return { steps: {}, statusOverride: null };
+  return { steps: {}, statusOverride: null, suspectedCause: null, causeReason: "" };
 };
 
 export const checkIsCaseDraftUploading = (draft: CaseDraft): boolean => {
@@ -51,6 +51,7 @@ export const listDraftStatuses = (
 export const buildCaseResultRequest = (
   draft: CaseDraft,
   steps: readonly ManualRunStep[],
+  iteration = 0,
 ): ManualCaseResultRequest => {
   const stepInputs = steps.flatMap((step): ManualStepResultInput[] => {
     const stepInput = buildStepInput(step.order, readStepDraft(draft, step.order));
@@ -58,5 +59,22 @@ export const buildCaseResultRequest = (
     return stepInput === null ? [] : [stepInput];
   });
 
-  return { status: draft.statusOverride, durationMs: null, steps: stepInputs };
+  const causeReason = draft.causeReason.trim();
+
+  return {
+    status: draft.statusOverride,
+    durationMs: null,
+    steps: stepInputs,
+    iteration,
+    ...(draft.suspectedCause === null
+      ? {}
+      : {
+          suspectedCause: draft.suspectedCause,
+          causeReason: causeReason === "" ? null : causeReason,
+        }),
+  };
+};
+
+export const buildCaseDraftKey = (testCaseId: string, iteration: number | null): string => {
+  return iteration === null ? testCaseId : `${testCaseId}#${iteration}`;
 };

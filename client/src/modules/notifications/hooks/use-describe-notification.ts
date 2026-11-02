@@ -38,6 +38,24 @@ export const useDescribeNotification = (): ((
               blockedCount: payload.blockedCount,
             }),
           };
+        case "suite_run_finished":
+          return {
+            title: t(`kind.suiteRunFinished.title.${payload.outcome}`, {
+              suiteName: payload.testSuiteName,
+            }),
+            description: t("kind.suiteRunFinished.description", {
+              passedCount: payload.passedCount,
+              failedCount: payload.failedCount,
+              blockedCount: payload.blockedCount,
+            }),
+          };
+        case "report_ready":
+          return {
+            title: t(`kind.reportReady.title.${payload.source}`, {
+              sourceLabel: payload.sourceLabel,
+            }),
+            description: t("kind.reportReady.description", { fileName: payload.fileName }),
+          };
         default:
           payload satisfies never;
           return { title: notification.projectName, description: "" };

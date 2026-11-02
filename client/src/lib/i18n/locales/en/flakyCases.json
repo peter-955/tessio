@@ -1,0 +1,49 @@
+{
+  "badges": {
+    "flaky": "Flaky",
+    "disagreeing": "Disagreeing",
+    "quarantined": "Quarantined"
+  },
+  "filters": {
+    "flaky": "Flaky only",
+    "disagreeing": "Disagreeing only",
+    "quarantined": "Quarantined only"
+  },
+  "alerts": {
+    "flakyTitle": "Flaky case",
+    "flaky_one": "{{count}} pass/fail flip in the last 10 results on this version, flaky since {{date}}. Check the steps and the test data before you trust a failure.",
+    "flaky_other": "{{count}} pass/fail flips in the last 10 results on this version, flaky since {{date}}. Check the steps and the test data before you trust a failure.",
+    "disagreeingTitle": "A person and Claude disagree",
+    "disagreeing": "A manual result and a Claude result on this version differ and were recorded within 24 hours of each other (latest {{date}}). Find out which one is right.",
+    "quarantinedTitle": "In quarantine",
+    "quarantined": "In quarantine since {{date}}, by {{name}}.",
+    "quarantinedReason": "Reason: {{reason}}",
+    "quarantineNote": "For now quarantine is a flag: the case still runs, and its failures still open failures. It leaves quarantine by itself after 10 passes in a row.",
+    "formerMember": "a former member"
+  },
+  "actions": {
+    "quarantine": "Quarantine",
+    "release": "Release quarantine"
+  },
+  "modal": {
+    "title": "Quarantine {{code}}?",
+    "message": "Mark this case as quarantined while you look into it. It leaves quarantine by itself after 10 passes in a row.",
+    "reason": "Reason",
+    "reasonDescription": "Optional, up to 500 characters.",
+    "reasonPlaceholder": "For example: fails at random on the payment step"
+  },
+  "toasts": {
+    "quarantined": "{{code}} is in quarantine.",
+    "released": "{{code}} is out of quarantine."
+  },
+  "history": {
+    "title": "Quarantine history",
+    "quarantined": "Quarantined by {{name}}",
+    "released": "Released by {{name}}",
+    "autoReleased": "Released after 10 passes in a row",
+    "reason": "Reason: {{reason}}",
+    "formerMember": "a former member",
+    "loadError": "The quarantine history could not be loaded.",
+    "retry": "Retry"
+  }
+}

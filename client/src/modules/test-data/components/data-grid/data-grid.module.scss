@@ -49,6 +49,14 @@
   font-family: var(--mantine-font-family-monospace);
 }
 
+.keyDescription {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: normal;
+  color: var(--color-text-muted);
+}
+
 .columnHeader {
   display: inline-flex;
   align-items: center;

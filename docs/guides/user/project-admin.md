@@ -48,6 +48,8 @@ Open **Settings** in the sidebar (`/projects/{KEY}/settings`). Select **Save** i
 | **General** | Name, description and the Jira board. The key cannot be changed. |
 | **Defaults** | **Default environment**: used when a run does not pick one. Create environments first under **Test data**, **Environments** tab. |
 | **Allowed file types** | The MIME types members may upload as test files and evidence. Screenshots from runs are always allowed. Use **Reset to defaults** to go back. |
+| **Labels** | The project's case labels: **New label** (name and colour), and **Edit** or **Delete** in each row's Actions menu. Deleting a label removes it from every case. QC can also create labels from a case's label picker. |
+| **Review** | **Reviewer must not be the author**: when on, the person who saved a case's current version can't mark it Ready or reviewed; another QC or Admin has to. Off by default. |
 | **Archive project** | Shown to workspace admins only. Makes the project read-only for everyone. |
 
 ### File types that features need
@@ -70,6 +72,10 @@ The defaults cover images, PDF, text, CSV, JSON, Word and Excel files. Keep at l
 4. Pick the **Default environment** in the settings.
 5. Check **Allowed file types** if your team imports spreadsheets or data files.
 6. Ask each Dev to connect Claude, as in the [Dev guide](dev.md#connect-claude).
+
+## Gaps for Admin
+
+Gaps of type *Other* come to Admin, and so do gaps whose role has no active member. Answer them in **My gaps** (`/gaps`), or with `/tessio:answer-gaps` in Claude Code, as in the [PM and BA guide](pm-ba.md#answer-gaps-with-claude). As Admin, Claude also saves a missing plain value to **Test data** for you; secrets you add on the **Test data** page yourself.
 
 ## What only Admin can do in a project
 

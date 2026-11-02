@@ -144,6 +144,41 @@ describe("DSStepEditor", () => {
     expect(readActions()).toEqual(["Pay"]);
   });
 
+  it("renders a shared step through the slot and shows the footer actions", async () => {
+    const user = userEvent.setup();
+    const onStepsChange = vi.fn<(steps: DSStepEditorStep[]) => void>();
+    render(
+      <DSStepEditor
+        steps={[
+          ...INITIAL_STEPS,
+          { id: "shared", action: "", expected: "", sharedStepKey: "login" },
+        ]}
+        onChange={onStepsChange}
+        suggestions={SUGGESTIONS}
+        labels={LABELS}
+        maxSteps={100}
+        renderSharedStep={(step, position) => (
+          <p>{`Shared ${step.sharedStepKey} at ${position}`}</p>
+        )}
+        footerActions={<button type="button">Insert shared step</button>}
+      />,
+      { wrapper },
+    );
+
+    expect(screen.getByText("Shared login at 3")).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Step 3" })).toBeInTheDocument();
+    expect(readActions()).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Insert shared step" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Step 3 actions" }));
+    await user.click(await screen.findByRole("menuitem", { name: "Move up" }));
+    expect(onStepsChange.mock.lastCall?.[0].map((step) => step.id)).toEqual([
+      "first",
+      "shared",
+      "second",
+    ]);
+  });
+
   it("disables Add step at the limit", () => {
     render(<Harness initialSteps={INITIAL_STEPS} maxSteps={2} />, { wrapper });
 

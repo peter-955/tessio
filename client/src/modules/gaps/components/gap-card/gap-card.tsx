@@ -34,6 +34,8 @@ export const GapCard: FC<Props> = ({
   const isOpen = gap.status === "open";
   const isAnswerShown = isOpen && canAnswer;
   const isReassignShown = isOpen && canReassign;
+  const { answeredByName, answeredAt } = gap;
+  const isAnsweredByShown = answeredByName !== null && answeredAt !== null;
   const targetLabel =
     gap.targetType === "story" || gap.targetRef === null
       ? t(`target.${gap.targetType}`)
@@ -126,11 +128,18 @@ export const GapCard: FC<Props> = ({
               <DSText size="sm" className={styles.question}>
                 {gap.answer}
               </DSText>
-              {gap.answeredByName !== null && gap.answeredAt !== null && (
-                <DSText size="xs" color="muted" className={styles.wrapping}>
-                  {t("card.answeredBy", { name: gap.answeredByName })}
-                  {renderTime(gap.answeredAt)}
-                </DSText>
+              {(isAnsweredByShown || gap.isAnsweredViaClaude) && (
+                <DSGroup gap={2} isWrapping>
+                  {isAnsweredByShown && (
+                    <DSText size="xs" color="muted" component="span" className={styles.wrapping}>
+                      {t("card.answeredBy", { name: answeredByName })}
+                      {renderTime(answeredAt)}
+                    </DSText>
+                  )}
+                  {gap.isAnsweredViaClaude && (
+                    <DSBadge color="tessio">{t("badge.viaClaude")}</DSBadge>
+                  )}
+                </DSGroup>
               )}
             </div>
           )}

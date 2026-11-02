@@ -1,0 +1,6 @@
+from app.shared.permissions import Capability
+
+START_RUN_CAPABILITY = Capability.RUN_START
+RECORD_CASE_RESULT_CAPABILITY = Capability.RUN_START
+FINISH_RUN_CAPABILITY = Capability.RUN_START
+GET_FAILED_CASES_CAPABILITY = Capability.RUN_VIEW

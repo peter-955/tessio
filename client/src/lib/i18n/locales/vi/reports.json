@@ -1,0 +1,27 @@
+{
+  "button": "Xuất",
+  "modal": {
+    "title": {
+      "run": "Xuất báo cáo lượt chạy",
+      "plan": "Xuất kế hoạch kiểm thử",
+      "story": "Xuất báo cáo story"
+    },
+    "description": "Báo cáo được tạo ở chế độ nền, các giá trị bí mật được che. Bạn có thể đóng cửa sổ này: một thông báo kèm liên kết tải xuống sẽ báo cho bạn khi báo cáo sẵn sàng.",
+    "formatLabel": "Định dạng",
+    "export": "Xuất",
+    "close": "Đóng"
+  },
+  "format": {
+    "md": "Markdown (.md)",
+    "pdf": "PDF (.pdf)"
+  },
+  "status": {
+    "preparing": "Đang chuẩn bị {{fileName}}…",
+    "ready": "{{fileName}} đã sẵn sàng.",
+    "download": "Tải xuống",
+    "notifyLater": "{{fileName}} vẫn đang được chuẩn bị. Bạn sẽ nhận thông báo khi báo cáo sẵn sàng. Nếu không nhận được, hãy xuất lại báo cáo."
+  },
+  "download": {
+    "notFound": "Báo cáo này chưa sẵn sàng hoặc đã bị xoá."
+  }
+}

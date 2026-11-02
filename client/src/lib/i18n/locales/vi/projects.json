@@ -52,7 +52,12 @@
       "title": "Hãy kết nối Jira trước",
       "description": "Mỗi dự án được liên kết với một dự án Jira.",
       "action": "Thiết lập kết nối Jira"
-    }
+    },
+    "storySource": "Nguồn của story",
+    "sourceJira": "Liên kết dự án Jira",
+    "sourceTessio": "Viết story trong Tessio",
+    "jiraNotConnected": "Chưa kết nối Jira, nên story của dự án này sẽ được viết trong Tessio. Quản trị viên có thể kết nối Jira trong Cài đặt.",
+    "tessioHint": "Nhóm của bạn viết story và tiêu chí chấp nhận trong Tessio. Dự án này không có sprint và không đồng bộ Jira."
   },
   "fields": {
     "jiraProject": "Dự án Jira",
@@ -60,7 +65,9 @@
     "name": "Tên",
     "key": "Mã",
     "keyDescription": "2–10 chữ in hoa hoặc chữ số, bắt đầu bằng một chữ cái. Không thể đổi về sau.",
-    "description": "Mô tả"
+    "description": "Mô tả",
+    "stories": "Story",
+    "writtenInTessio": "Viết trong Tessio"
   },
   "hints": {
     "allJiraProjectsLinked": "Mọi dự án Jira đều đã được liên kết",
@@ -158,5 +165,8 @@
       "description": "Dự án đã lưu trữ vẫn xem được với mọi người.",
       "action": "Lưu trữ dự án"
     }
+  },
+  "table": {
+    "withoutJira": "Viết trong Tessio"
   }
 }

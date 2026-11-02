@@ -24,6 +24,15 @@ class SecretValueReader:
             if item.is_secret and item.value_encrypted is not None
         ]
 
+    async def list_project_secret_values(self, project_id: UUID) -> list[str]:
+        async with self._transaction.begin():
+            items = await self._data_item_repository.list(project_id)
+        return [
+            self._secret_cipher.decrypt(item.value_encrypted).decode()
+            for item in items
+            if item.is_secret and item.value_encrypted is not None
+        ]
+
     async def resolve_secrets(
         self, project_id: UUID, environment_id: UUID | None, keys: Collection[str]
     ) -> dict[str, str]:

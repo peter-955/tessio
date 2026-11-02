@@ -22,6 +22,7 @@ describe("buildDataItemFormValues", () => {
       kind: "variable",
       scopeId: PROJECT_SCOPE_ID,
       value: "",
+      description: "",
     });
   });
 
@@ -29,9 +30,20 @@ describe("buildDataItemFormValues", () => {
     expect(
       buildDataItemFormValues({
         mode: "create",
-        preset: { key: "API_URL", kind: "endpoint", scopeId: STAGING_ENVIRONMENT_ID },
+        preset: {
+          key: "API_URL",
+          kind: "variable",
+          scopeId: STAGING_ENVIRONMENT_ID,
+          description: "Shop API",
+        },
       }),
-    ).toEqual({ key: "API_URL", kind: "endpoint", scopeId: STAGING_ENVIRONMENT_ID, value: "" });
+    ).toEqual({
+      key: "API_URL",
+      kind: "variable",
+      scopeId: STAGING_ENVIRONMENT_ID,
+      value: "",
+      description: "Shop API",
+    });
   });
 
   it("prefills a variable but never a secret", () => {
@@ -41,6 +53,7 @@ describe("buildDataItemFormValues", () => {
       kind: "secret",
       scopeId: STAGING_ENVIRONMENT_ID,
       value: "",
+      description: "",
     });
   });
 });
@@ -53,8 +66,15 @@ describe("buildCreateDataItemRequest", () => {
         kind: "variable",
         scopeId: PROJECT_SCOPE_ID,
         value: " /a ",
+        description: "  Base path  ",
       }),
-    ).toEqual({ key: "BASE", kind: "variable", value: " /a ", environmentId: null });
+    ).toEqual({
+      key: "BASE",
+      kind: "variable",
+      value: " /a ",
+      environmentId: null,
+      description: "Base path",
+    });
   });
 
   it("sends the environment id for an environment scope", () => {
@@ -64,6 +84,7 @@ describe("buildCreateDataItemRequest", () => {
         kind: "variable",
         scopeId: STAGING_ENVIRONMENT_ID,
         value: "/a",
+        description: "",
       }).environmentId,
     ).toBe(STAGING_ENVIRONMENT_ID);
   });
@@ -73,16 +94,28 @@ describe("buildUpdateDataItemRequest", () => {
   it("keeps a secret value when it stays secret and the field is empty", () => {
     expect(
       buildUpdateDataItemRequest(
-        { key: "PASSWORD", kind: "secret", scopeId: STAGING_ENVIRONMENT_ID, value: "" },
+        {
+          key: "PASSWORD",
+          kind: "secret",
+          scopeId: STAGING_ENVIRONMENT_ID,
+          value: "",
+          description: "",
+        },
         secretItem,
       ),
-    ).toEqual({ key: "PASSWORD", kind: "secret", value: null });
+    ).toEqual({ key: "PASSWORD", kind: "secret", value: null, description: "" });
   });
 
   it("sends the new value otherwise", () => {
     expect(
       buildUpdateDataItemRequest(
-        { key: "PASSWORD", kind: "variable", scopeId: STAGING_ENVIRONMENT_ID, value: "plain" },
+        {
+          key: "PASSWORD",
+          kind: "variable",
+          scopeId: STAGING_ENVIRONMENT_ID,
+          value: "plain",
+          description: "",
+        },
         secretItem,
       ).value,
     ).toBe("plain");

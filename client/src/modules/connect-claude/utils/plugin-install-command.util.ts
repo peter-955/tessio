@@ -1,5 +1,5 @@
 import {
-  MARKETPLACE_PLACEHOLDER,
+  PLUGIN_MARKETPLACE_PATH,
   PLUGIN_NAME,
   PLUGIN_TOKEN_CONFIG_KEY,
   PLUGIN_URL_CONFIG_KEY,
@@ -17,12 +17,10 @@ export const quoteShellArgument = (value: string): string => {
 };
 
 export const buildPluginInstallCommand = ({
-  marketplace,
   tessioUrl,
   token,
 }: PluginInstallCommandOptions): string => {
-  const marketplaceArgument =
-    marketplace === "" ? MARKETPLACE_PLACEHOLDER : quoteShellArgument(marketplace);
+  const marketplaceArgument = quoteShellArgument(`${tessioUrl}${PLUGIN_MARKETPLACE_PATH}`);
 
   return [
     "claude plugin install",

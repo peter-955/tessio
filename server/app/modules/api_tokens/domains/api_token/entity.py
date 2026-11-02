@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from app.modules.api_tokens.typing.enums import ApiTokenStatus
+from app.modules.api_tokens.typing.enums import ApiTokenScope, ApiTokenStatus
 from app.shared.common import Entity
 
 
@@ -14,8 +14,10 @@ class ApiToken(Entity):
     token_hash: str
     expires_at: datetime
     last_used_at: datetime | None
+    plugin_version: str | None
     revoked_at: datetime | None
     created_at: datetime
+    scope: ApiTokenScope = ApiTokenScope.MCP
 
     def is_expired(self, now: datetime) -> bool:
         return now >= self.expires_at

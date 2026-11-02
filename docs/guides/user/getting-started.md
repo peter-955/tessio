@@ -44,7 +44,7 @@ The step between the password and the code lasts 10 minutes. After that, start a
 | Part of the screen | What it does |
 | --- | --- |
 | Project switcher | Pick the project you work in. **All projects** lists every project you can open. |
-| Sidebar | **Dashboard**, **Sprints**, **Stories**, **Test cases**, **Runs**, **Failures**, **Test data**, **Members**, **Settings**. You see only the items your role can use; **Settings** is for project Admins. The workspace part of the sidebar has **Projects**, and for workspace admins also **Users** and **Workspace settings**. |
+| Sidebar | **Dashboard**, **Sprints**, **Stories**, **Test cases**, **Shared steps**, **Suites**, **Runs**, **Plans**, **Failures**, **Test data**, **Members**, **Settings**. You see only the items your role can use; **Settings** is for project Admins. The workspace part of the sidebar has **Projects**, and for workspace admins also **Users** and **Workspace settings**. |
 | Notifications bell | Tells you when a gap or a failure is assigned to you, or a run you follow finishes. Open it to read them; **Mark all as read** clears the count. |
 | User menu | **My gaps**, **Profile**, **Connect Claude**, **Sign out** and **Sign out of all devices**. |
 | Archived banner | **This project is archived**: you can view everything, but nothing can be changed. |

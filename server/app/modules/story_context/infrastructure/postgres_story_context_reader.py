@@ -1,9 +1,10 @@
 from collections.abc import Collection
 from uuid import UUID
 
-from sqlalchemy import func, select
+from sqlalchemy import and_, func, select
 
 from app.modules.files.infrastructure import StoredFileTable
+from app.modules.labels.infrastructure import LabelTable, TestCaseLabelTable
 from app.modules.projects.infrastructure import ProjectTable
 from app.modules.stories.infrastructure import AcceptanceCriterionTable, StoryTable
 from app.modules.story_context.domains.context_case.entity import ContextCase
@@ -14,7 +15,7 @@ from app.modules.story_context.domains.context_story.entity import ContextStory
 from app.modules.story_context.domains.data_entry.entity import DataEntry
 from app.modules.story_context.ports.story_context_reader import StoryContextReader
 from app.modules.story_context.typing.constants import CASE_CODE_PREFIX
-from app.modules.test_cases import TestCaseStatus, TestCaseVersion
+from app.modules.test_cases import CaseStepExpander, TestCaseStatus, TestCaseVersion
 from app.modules.test_cases.infrastructure import (
     TestCaseTable,
     TestCaseVersionTable,
@@ -22,15 +23,16 @@ from app.modules.test_cases.infrastructure import (
     TestFileVersionTable,
 )
 from app.modules.test_data import DataItemKind
-from app.modules.test_data.infrastructure import DataItemTable, EnvironmentTable
+from app.modules.test_data.infrastructure import DataItemTable, DataKeyDescriptionTable, EnvironmentTable
 from app.shared.postgres import Database
 
 OTHER_CASE_STATUSES = (TestCaseStatus.DRAFT, TestCaseStatus.IN_REVIEW)
 
 
 class PostgresStoryContextReader(StoryContextReader):
-    def __init__(self, database: Database) -> None:
+    def __init__(self, database: Database, case_step_expander: CaseStepExpander) -> None:
         self._database = database
+        self._case_step_expander = case_step_expander
 
     async def find_story(self, project_id: UUID, jira_key: str) -> ContextStory | None:
         result = await self._database.get_current_session().execute(
@@ -64,16 +66,21 @@ class PostgresStoryContextReader(StoryContextReader):
 
     async def list_ready_cases(self, story_id: UUID) -> list[ContextCase]:
         result = await self._database.get_current_session().execute(
-            select(TestCaseTable.number, TestCaseVersionTable)
+            select(TestCaseTable.number, TestCaseTable.project_id, TestCaseVersionTable)
             .join(TestCaseVersionTable, TestCaseVersionTable.id == TestCaseTable.current_version_id)
             .where(TestCaseTable.story_id == story_id, TestCaseTable.status == TestCaseStatus.READY)
             .order_by(TestCaseTable.number)
             .execution_options(populate_existing=True)
         )
-        numbered_versions = [(number, TestCaseVersion.model_validate(row)) for number, row in result]
+        rows = [(number, project_id, TestCaseVersion.model_validate(row)) for number, project_id, row in result]
+        expanded_versions = (
+            await self._case_step_expander.expand(rows[0][1], [version for _, _, version in rows]) if rows else []
+        )
+        numbered_versions = [(number, version) for (number, _, _), version in zip(rows, expanded_versions, strict=True)]
         files_by_version_id = await self._map_files(
             {file_version_id for _, version in numbered_versions for file_version_id in version.file_version_ids}
         )
+        label_names_by_case_id = await self._map_label_names({version.test_case_id for _, version in numbered_versions})
         return [
             ContextCase(
                 id=version.test_case_id,
@@ -94,6 +101,9 @@ class PostgresStoryContextReader(StoryContextReader):
                     ),
                     key=lambda file: file.key,
                 ),
+                labels=label_names_by_case_id.get(version.test_case_id, []),
+                parameters=version.parameters,
+                data_rows=version.data_rows,
             )
             for number, version in numbered_versions
         ]
@@ -114,6 +124,14 @@ class PostgresStoryContextReader(StoryContextReader):
                 DataItemTable.kind,
                 DataItemTable.value,
                 DataItemTable.environment_id,
+                DataKeyDescriptionTable.description,
+            )
+            .outerjoin(
+                DataKeyDescriptionTable,
+                and_(
+                    DataKeyDescriptionTable.project_id == DataItemTable.project_id,
+                    DataKeyDescriptionTable.key == DataItemTable.key,
+                ),
             )
             .where(DataItemTable.project_id == project_id)
             .order_by(DataItemTable.key, DataItemTable.environment_id.nulls_first())
@@ -125,8 +143,9 @@ class PostgresStoryContextReader(StoryContextReader):
                 kind=kind,
                 value=None if kind == DataItemKind.SECRET else value,
                 environment_id=environment_id,
+                description=description,
             )
-            for item_id, key, kind, value, environment_id in result
+            for item_id, key, kind, value, environment_id, description in result
         ]
 
     async def list_environments(self, project_id: UUID) -> list[ContextEnvironment]:
@@ -152,6 +171,20 @@ class PostgresStoryContextReader(StoryContextReader):
             )
             for environment_id, name, base_url, health_check_url, default_environment_id in result
         ]
+
+    async def _map_label_names(self, test_case_ids: Collection[UUID]) -> dict[UUID, list[str]]:
+        if not test_case_ids:
+            return {}
+        result = await self._database.get_current_session().execute(
+            select(TestCaseLabelTable.test_case_id, LabelTable.name)
+            .join(LabelTable, LabelTable.id == TestCaseLabelTable.label_id)
+            .where(TestCaseLabelTable.test_case_id.in_(sorted(test_case_ids)))
+            .order_by(func.lower(LabelTable.name), LabelTable.id)
+        )
+        label_names_by_case_id: dict[UUID, list[str]] = {}
+        for test_case_id, name in result:
+            label_names_by_case_id.setdefault(test_case_id, []).append(name)
+        return label_names_by_case_id
 
     async def _map_files(self, file_version_ids: Collection[UUID]) -> dict[UUID, ContextFile]:
         if not file_version_ids:

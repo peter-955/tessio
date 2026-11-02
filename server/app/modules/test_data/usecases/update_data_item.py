@@ -2,10 +2,12 @@ from uuid import UUID
 
 from app.modules.test_data.domains.data_item.entity import DataItem
 from app.modules.test_data.domains.data_item.repository import DataItemRepository
+from app.modules.test_data.domains.data_key_description.repository import DataKeyDescriptionRepository
 from app.modules.test_data.errors import DataItemKeyAlreadyUsedError, DataItemNotFoundError, DataItemValueRequiredError
 from app.modules.test_data.typing.enums import DataItemKind
 from app.modules.test_data.utils.data_item_capability import require_data_item_edit
 from app.modules.test_data.utils.data_item_value import apply_data_item_value
+from app.modules.test_data.utils.data_key_description import apply_key_description, remove_unused_key_description
 from app.shared.common import Transaction
 from app.shared.crypto import SecretCipher
 from app.shared.permissions import Actor, Capability, ProjectAccessResolver, require
@@ -17,11 +19,13 @@ class UpdateDataItemUseCase:
         transaction: Transaction,
         project_access_resolver: ProjectAccessResolver,
         data_item_repository: DataItemRepository,
+        data_key_description_repository: DataKeyDescriptionRepository,
         secret_cipher: SecretCipher,
     ) -> None:
         self._transaction = transaction
         self._project_access_resolver = project_access_resolver
         self._data_item_repository = data_item_repository
+        self._data_key_description_repository = data_key_description_repository
         self._secret_cipher = secret_cipher
 
     async def execute(
@@ -32,6 +36,7 @@ class UpdateDataItemUseCase:
         item_key: str,
         kind: DataItemKind,
         value: str | None,
+        description: str | None,
     ) -> DataItem:
         async with self._transaction.begin():
             access = await self._project_access_resolver.resolve(actor, project_key)
@@ -53,4 +58,15 @@ class UpdateDataItemUseCase:
                 renamed_item if value is None else apply_data_item_value(renamed_item, kind, value, self._secret_cipher)
             )
             await self._data_item_repository.save(updated_item)
-        return updated_item
+            kept_description = description
+            if item_key != item.key:
+                if kept_description is None and item.description is not None:
+                    new_key_description = await self._data_key_description_repository.find(access.project_id, item_key)
+                    kept_description = new_key_description or item.description
+                await remove_unused_key_description(
+                    self._data_item_repository, self._data_key_description_repository, access.project_id, item.key
+                )
+            key_description = await apply_key_description(
+                self._data_key_description_repository, access.project_id, item_key, kept_description
+            )
+        return updated_item.model_copy(update={"description": key_description})

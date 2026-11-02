@@ -16,6 +16,7 @@ from app.modules.gaps.typing.enums import GapStatus, GapTargetType, GapType
 from app.modules.gaps.utils.gap_notification import (
     build_gap_assigned_payload,
     build_gap_changed_event,
+    build_gap_raised_event,
     list_recipient_ids,
     list_recipient_roles,
 )
@@ -110,6 +111,7 @@ class RaiseGapsUseCase:
                     answer=None,
                     answered_by=None,
                     answered_at=None,
+                    answered_via_token_id=None,
                     reopened_by=None,
                     reopened_at=None,
                     created_at=now,
@@ -162,3 +164,4 @@ class RaiseGapsUseCase:
                 recipient_roles=list_recipient_roles(view.gap),
             )
             await self._live_event_publisher.publish(build_gap_changed_event(view.gap))
+            await self._live_event_publisher.publish(build_gap_raised_event(view.gap))

@@ -1,0 +1,84 @@
+{
+  "title": "AI Harness",
+  "description": "Ce que Claude Code reçoit du plugin Tessio : skills, commandes, hooks et outils MCP.",
+  "loadFailed": "Impossible de charger l'AI Harness",
+  "retry": "Réessayer",
+  "versions": {
+    "title": "Versions",
+    "server": "Serveur Tessio",
+    "plugin": "Plugin Tessio",
+    "pluginHint": "Claude Code doit utiliser cette version ou une plus récente.",
+    "commit": "commit {{commit}}",
+    "yourPlugins": "Vos plugins",
+    "yourPluginsLabel": "Version du plugin sur chacun de vos jetons actifs",
+    "token": "Jeton",
+    "project": "Projet",
+    "version": "Version",
+    "lastUsed": "Dernière utilisation",
+    "state": "État",
+    "notUsed": "Pas encore utilisé",
+    "never": "Jamais",
+    "noTokens": "Vous n'avez aucun jeton actif",
+    "noTokensHint": "Créez-en un pour connecter Claude Code à un projet.",
+    "connect": "Connecter Claude",
+    "updateTitle": "Mettez à jour votre plugin",
+    "updateHint": "Lancez ceci dans votre terminal, puis redémarrez Claude Code :",
+    "tokensLoadFailed": "Impossible de charger vos jetons"
+  },
+  "pluginState": {
+    "current": "À jour",
+    "outdated": "Obsolète",
+    "unused": "Pas encore utilisé"
+  },
+  "skills": {
+    "title": "Skills",
+    "label": "Skills du plugin",
+    "command": "Commande slash",
+    "description": "Ce qu'elle fait",
+    "copy": "Copier {{command}}",
+    "empty": "Le plugin n'a aucune skill"
+  },
+  "commands": {
+    "title": "Commandes",
+    "label": "Commandes du plugin",
+    "empty": "Le plugin n'a pas de commande séparée",
+    "emptyHint": "Lancez une skill avec sa commande slash ci-dessus."
+  },
+  "hooks": {
+    "title": "Hooks",
+    "label": "Hooks du plugin",
+    "event": "Événement",
+    "tool": "Après l'outil",
+    "script": "Script",
+    "timeout": "Délai",
+    "timeoutSeconds": "{{count}} s",
+    "anyTool": "Tout outil",
+    "noTimeout": "Par défaut",
+    "empty": "Le plugin n'a aucun hook"
+  },
+  "mcp": {
+    "title": "Serveur MCP",
+    "serversLabel": "Serveurs MCP du plugin",
+    "name": "Nom",
+    "transport": "Transport",
+    "url": "Adresse",
+    "headers": "En-têtes",
+    "toolsTitle": "Outils",
+    "toolsLabel": "Outils MCP que Claude peut appeler",
+    "tool": "Outil",
+    "description": "Ce qu'il fait",
+    "capability": "Permission",
+    "roles": "Rôles autorisés",
+    "noCapability": "Aucune",
+    "noRoles": "Aucun rôle",
+    "empty": "Le plugin n'a aucun serveur MCP"
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Lecteur"
+  }
+}

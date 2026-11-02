@@ -28,4 +28,5 @@ export type VersionDiffEntry =
   | { field: "priority"; kind: "priority"; from: TestCasePriority; to: TestCasePriority }
   | { field: "steps"; kind: "steps"; steps: StepDiff[] }
   | { field: "criteria"; kind: "criteria"; tokens: DiffToken[] }
-  | { field: "files"; kind: "files"; added: number; removed: number };
+  | { field: "files"; kind: "files"; added: number; removed: number }
+  | { field: "dataTable"; kind: "dataTable"; tokens: DiffToken[] };

@@ -1,0 +1,67 @@
+{
+  "actions": {
+    "openImport": "Import JUnit results",
+    "import": "Import",
+    "close": "Close",
+    "openRun": "Open run"
+  },
+  "form": {
+    "title": "Import JUnit results",
+    "description": "Upload a JUnit XML report from Playwright, Jest, pytest or another tool. A test counts for a case when its name or a tessio.case property holds the case code, such as TC-12.",
+    "loading": "Loading environments",
+    "noEnvironment": "This project has no active environment.",
+    "environment": "Environment",
+    "environmentPlaceholder": "Choose an environment",
+    "suite": "Suite",
+    "suitePlaceholder": "No suite",
+    "suiteDescription": "Optional. The run then belongs to this suite.",
+    "suiteNotFound": "No matching suite",
+    "dropTitle": "Drop the JUnit XML file here",
+    "dropDescription": "Or click to choose one. 10 MB at most.",
+    "chosenFile": "File: {{name}}"
+  },
+  "errors": {
+    "notXml": "Choose an .xml file.",
+    "tooLarge": "The file is over 10 MB.",
+    "empty": "The file is empty.",
+    "fileRequired": "Choose a JUnit XML file.",
+    "environmentRequired": "Choose an environment.",
+    "unknownReference": "This environment or suite no longer exists. Choose another one.",
+    "environmentsLoadFailed": "Environments could not be loaded.",
+    "suitesLoadFailed": "Suites could not be loaded."
+  },
+  "result": {
+    "heading": "Results imported",
+    "title": {
+      "passed": "The CI run passed",
+      "failed": "The CI run failed"
+    },
+    "counts": "{{total}} cases: {{passed}} passed, {{failed}} failed, {{skipped}} skipped.",
+    "mapped_one": "{{count}} test matched a case.",
+    "mapped_other": "{{count}} tests matched a case.",
+    "unmapped_one": "{{count}} test did not match any case.",
+    "unmapped_other": "{{count}} tests did not match any case."
+  },
+  "unmapped": {
+    "title_one": "{{count}} unmapped test",
+    "title_other": "{{count}} unmapped tests",
+    "description": "These tests are in the JUnit file but don't name a case of this project. Add the case code to the test name or a tessio.case property.",
+    "tableLabel": "Unmapped tests",
+    "columns": {
+      "test": "Test",
+      "result": "Result",
+      "reason": "Why"
+    },
+    "reasons": {
+      "no_case_code": "No case code",
+      "unknown_case": "Unknown or deprecated case"
+    },
+    "notListed_one": "{{count}} more test is not listed.",
+    "notListed_other": "{{count}} more tests are not listed."
+  },
+  "ciRun": {
+    "target": "CI import",
+    "detailTitle": "CI import",
+    "detailDescription": "JUnit results imported from CI, across the project's stories."
+  }
+}

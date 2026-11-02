@@ -16,10 +16,12 @@ export type FileLink = components["schemas"]["DownloadLinkResponse"];
 export interface RunFilters {
   status: RunStatus | null;
   storyKey: string | null;
+  suiteId: string | null;
 }
 
 export interface RunListQuery {
   storyKey?: string;
+  suiteId?: string;
   status?: RunStatus;
   limit: number;
 }

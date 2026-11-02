@@ -1,15 +1,25 @@
 from app.modules.jira.domains.jira_board.entity import JiraBoard
 from app.modules.jira.domains.jira_connection.entity import JiraConnection
 from app.modules.jira.domains.jira_project.entity import JiraProject
+from app.modules.jira.domains.project_jira_write_access.entity import ProjectJiraWriteAccess
 from app.modules.jira.models.jira_board_response import JiraBoardResponse
 from app.modules.jira.models.jira_connection_response import JiraConnectionResponse
 from app.modules.jira.models.jira_project_response import JiraProjectResponse
+from app.modules.jira.models.project_jira_write_access_response import ProjectJiraWriteAccessResponse
 
 
 def build_jira_connection_response(connection: JiraConnection | None) -> JiraConnectionResponse:
     if connection is None:
         return JiraConnectionResponse(
-            is_configured=False, site_url=None, account_email=None, account_display_name=None, configured_at=None
+            is_configured=False,
+            site_url=None,
+            account_email=None,
+            account_display_name=None,
+            configured_at=None,
+            can_create_issues=None,
+            can_comment=None,
+            missing_permissions=[],
+            permissions_checked_at=None,
         )
     return JiraConnectionResponse(
         is_configured=True,
@@ -17,6 +27,24 @@ def build_jira_connection_response(connection: JiraConnection | None) -> JiraCon
         account_email=connection.account_email,
         account_display_name=connection.account_display_name,
         configured_at=connection.configured_at,
+        can_create_issues=connection.can_create_issues,
+        can_comment=connection.can_comment,
+        missing_permissions=connection.missing_permissions,
+        permissions_checked_at=connection.permissions_checked_at,
+    )
+
+
+def build_project_jira_write_access_response(
+    project_write_access: ProjectJiraWriteAccess,
+) -> ProjectJiraWriteAccessResponse:
+    write_access = project_write_access.write_access
+    return ProjectJiraWriteAccessResponse(
+        is_project_linked=project_write_access.is_project_linked,
+        is_connection_configured=project_write_access.is_connection_configured,
+        can_create_issues=None if write_access is None else write_access.can_create_issues,
+        can_comment=None if write_access is None else write_access.can_comment,
+        missing_permissions=[] if write_access is None else write_access.missing_permissions,
+        checked_at=None if write_access is None else write_access.checked_at,
     )
 
 

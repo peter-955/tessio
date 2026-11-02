@@ -7,9 +7,7 @@ from app.config import Settings
 from app.container import Container
 from app.modules.stories import ActiveFailureCounter, CriteriaChangedHandler, RunningRunChecker
 from app.modules.stories.infrastructure import StaticActiveFailureCounter, StaticRunningRunChecker
-from app.shared.queue import JobQueue
 from tests.api.stories.recording_criteria_changed_handler import RecordingCriteriaChangedHandler
-from tests.api.stories.recording_job_queue import RecordingJobQueue
 from tests.conftest import RecordingMailer, TestContainer
 from tests.fakes.fake_jira_client import FakeJiraClient
 from tests.support.recording_live_event_publisher import RecordingLiveEventPublisher
@@ -24,12 +22,7 @@ class StoriesTestContainer(TestContainer):
         recording_live_event_publisher: RecordingLiveEventPublisher,
     ) -> None:
         super().__init__(settings, recording_mailer, recording_live_event_publisher)
-        self.recording_job_queue = RecordingJobQueue()
         self.recording_criteria_changed_handler = RecordingCriteriaChangedHandler()
-
-    @cached_property
-    def job_queue(self) -> JobQueue:
-        return self.recording_job_queue
 
     @cached_property
     def criteria_changed_handler(self) -> CriteriaChangedHandler:

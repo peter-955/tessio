@@ -16,6 +16,9 @@ class RunRepository(ABC):
     async def has_running_for_story(self, project_id: UUID, story_id: UUID) -> bool: ...
 
     @abstractmethod
+    async def has_running_for_suite(self, project_id: UUID, suite_id: UUID) -> bool: ...
+
+    @abstractmethod
     async def is_environment_used(self, environment_id: UUID) -> bool: ...
 
     @abstractmethod

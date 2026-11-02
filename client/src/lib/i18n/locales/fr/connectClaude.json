@@ -24,26 +24,32 @@
     "viewerHint": "Vous êtes Lecteur dans ce projet : Claude peut lire mais pas enregistrer de résultats.",
     "limitReached": "Vous avez 10 jetons actifs. Révoquez-en un pour en créer un autre.",
     "noProjects": "Vous n'êtes encore membre d'aucun projet.",
-    "projectsLoadFailed": "Les projets n'ont pas pu être chargés"
+    "projectsLoadFailed": "Les projets n'ont pas pu être chargés",
+    "viewerApiHint": "Vous êtes Lecteur dans ce projet : ce jeton peut lire les exécutions, les échecs et les cas de test, mais pas importer de résultats."
   },
   "created": {
     "title": "Jeton pour {{projectKey}}",
     "shownOnce": "Copiez-le maintenant. Vous ne reverrez plus ce jeton.",
     "commandLabel": "Exécutez ceci dans votre terminal :",
-    "marketplaceMissing": "La source du plugin n'est pas configurée. Remplacez <marketplace> par la valeur fournie par votre administrateur.",
+    "httpsOnly": "Claude Code installe le plugin uniquement depuis une adresse HTTPS. Sur une copie locale de Tessio, lancez plutôt Claude Code avec claude --plugin-dir claude depuis le dépôt.",
     "restart": "Redémarrez ensuite Claude Code.",
     "tokenLabel": "Jeton seul",
-    "done": "Terminé"
+    "done": "Terminé",
+    "apiCommandLabel": "Importez les résultats JUnit depuis la CI avec cet appel :",
+    "apiHint": "Gardez le jeton dans un secret de la CI. Il sert uniquement à l'import JUnit et à la lecture des exécutions, des échecs et des cas de test via l'API REST, pas à Claude Code."
   },
   "table": {
     "title": "Vos jetons",
     "activeCount": "{{count}} sur {{max}} actifs",
     "name": "Nom",
     "project": "Projet",
+    "scope": "Usage",
     "token": "Jeton",
     "status": "Statut",
     "expires": "Expire",
     "lastUsed": "Dernière utilisation",
+    "plugin": "Plugin",
+    "noPlugin": "–",
     "created": "Créé",
     "actions": "Actions",
     "never": "Jamais",
@@ -66,5 +72,20 @@
   "errors": {
     "notMember": "Vous ne pouvez créer un jeton que pour un projet dont vous êtes membre.",
     "projectNotFound": "Ce projet n'existe plus."
+  },
+  "scope": {
+    "label": "Usage",
+    "options": {
+      "mcp": "Claude Code (MCP)",
+      "api": "CI et scripts (API REST)"
+    },
+    "descriptions": {
+      "mcp": "Le plugin Tessio dans Claude Code.",
+      "api": "Import JUnit et lecture des exécutions, échecs et cas de test."
+    },
+    "short": {
+      "mcp": "Claude Code",
+      "api": "API REST"
+    }
   }
 }

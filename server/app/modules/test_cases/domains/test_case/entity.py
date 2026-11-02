@@ -23,6 +23,12 @@ class TestCase(Entity):
     reviewed_by: UUID | None
     created_by: UUID
     created_at: datetime
+    flaky_score: int = 0
+    flaky_since: datetime | None = None
+    disagreed_at: datetime | None = None
+    quarantined_at: datetime | None = None
+    quarantined_by: UUID | None = None
+    quarantine_reason: str | None = None
 
     @property
     def code(self) -> str:
@@ -35,3 +41,15 @@ class TestCase(Entity):
     @property
     def is_deprecated(self) -> bool:
         return self.status is TestCaseStatus.DEPRECATED
+
+    @property
+    def is_flaky(self) -> bool:
+        return self.flaky_since is not None
+
+    @property
+    def is_disagreeing(self) -> bool:
+        return self.disagreed_at is not None
+
+    @property
+    def is_quarantined(self) -> bool:
+        return self.quarantined_at is not None

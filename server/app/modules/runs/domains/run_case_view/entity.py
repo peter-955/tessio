@@ -9,3 +9,6 @@ class RunCaseView(Entity):
     code: str
     position: int
     version: TestCaseVersion
+    story_id: UUID | None = None
+    story_jira_key: str | None = None
+    story_title: str | None = None

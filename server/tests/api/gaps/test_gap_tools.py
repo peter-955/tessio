@@ -14,7 +14,7 @@ from tests.api.gaps.gap_steps import (
     seed_story,
     seed_test_case,
 )
-from tests.api.projects.user_steps import SignedUpAccount, sign_up_as, use_session
+from tests.api.projects.user_steps import SignedUpAccount, deactivate_user, sign_up_as, use_session
 from tests.api.test_data.project_steps import SeededProject, add_member, archive_project, seed_project
 from tests.conftest import RecordingMailer
 from tests.support.mcp_steps import call_tool, read_tool_json
@@ -157,8 +157,41 @@ async def test_get_open_gaps_lists_only_open_gaps_for_viewers(
                 "target_type": "criterion",
                 "target_ref": "AC1",
                 "question": "Which page?",
+                "assignee_name": "Bao Analyst",
             }
         ],
+    }
+
+
+async def test_get_open_gaps_names_the_role_queue_and_a_deactivated_assignee(
+    client: AsyncClient, container: Container, recording_mailer: RecordingMailer
+) -> None:
+    project = await seed_project(container)
+    story = await seed_story(container, project, criterion_codes=("AC1",))
+    await add_active_member(container, recording_mailer, project, ProjectRole.QC, "Quinn Checker")
+    await add_active_member(container, recording_mailer, project, ProjectRole.QC, "Quentin Checker")
+    developer_id = await add_active_member(container, recording_mailer, project, ProjectRole.DEV, "Dana Dev")
+    raiser = await sign_up_as(client, container, recording_mailer, WorkspaceRole.MEMBER)
+    await add_member(container, project, raiser.user_id, ProjectRole.ADMIN)
+    queued_id = await raise_gap_id(client, project.key, story, type="missing_step", question="Which button?")
+    assigned_id = await raise_gap_id(
+        client, project.key, story, type="missing_test_data", dataScope="environment", question="Staging user?"
+    )
+    await deactivate_user(container, developer_id)
+    token = await create_token(client, project.key)
+
+    response = await call_tool(client, token, "get_open_gaps", {"story_key": story.jira_key})
+
+    gaps = read_tool_json(response)["gaps"]
+    assert isinstance(gaps, list)
+    assignees = {
+        gap["id"]: {key: gap.get(key) for key in ("assignee_name", "assignee_role", "is_assignee_deactivated")}
+        for gap in gaps
+        if isinstance(gap, dict)
+    }
+    assert assignees == {
+        queued_id: {"assignee_name": None, "assignee_role": "qc", "is_assignee_deactivated": None},
+        assigned_id: {"assignee_name": "Dana Dev", "assignee_role": None, "is_assignee_deactivated": True},
     }
 
 

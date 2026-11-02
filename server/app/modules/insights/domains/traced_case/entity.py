@@ -17,3 +17,6 @@ class TracedCase(Entity):
     created_by: UUID
     criterion_ids: frozenset[UUID]
     latest_result: LatestResult | None
+    is_flaky: bool = False
+    is_disagreeing: bool = False
+    is_quarantined: bool = False

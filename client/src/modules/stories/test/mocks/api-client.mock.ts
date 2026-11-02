@@ -11,6 +11,8 @@ export const apiPut = vi.fn<ApiCall>();
 
 export const apiDelete = vi.fn<ApiCall>();
 
+export const apiPatch = vi.fn<ApiCall>();
+
 export const apiClientMock = {
-  apiClient: { GET: apiGet, POST: apiPost, PUT: apiPut, DELETE: apiDelete },
+  apiClient: { GET: apiGet, POST: apiPost, PUT: apiPut, DELETE: apiDelete, PATCH: apiPatch },
 };

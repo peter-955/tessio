@@ -1,0 +1,38 @@
+@use "shared/styles/mixins" as *;
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3) var(--space-4);
+}
+
+.field {
+  flex: 0 1 180px;
+  min-width: 0;
+
+  @include tablet-down {
+    flex-basis: calc(50% - var(--space-2));
+  }
+}
+
+.sprint {
+  flex: 0 1 260px;
+  min-width: 0;
+
+  @include tablet-down {
+    flex-basis: 100%;
+  }
+}
+
+.grouping {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.groupingLabel {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}

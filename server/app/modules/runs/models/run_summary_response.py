@@ -8,9 +8,9 @@ from app.shared.common import WireModel
 
 class RunSummaryResponse(WireModel):
     id: UUID
-    story_id: UUID
-    story_jira_key: str
-    story_title: str
+    story_id: UUID | None
+    story_jira_key: str | None
+    story_title: str | None
     environment_id: UUID
     environment_name: str
     executor: RunExecutor
@@ -22,3 +22,5 @@ class RunSummaryResponse(WireModel):
     started_at: datetime
     finished_at: datetime | None
     counts: RunCountsResponse
+    test_suite_id: UUID | None = None
+    test_suite_name: str | None = None

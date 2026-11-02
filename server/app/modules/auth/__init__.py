@@ -1,9 +1,11 @@
-from app.modules.auth.dependencies import get_signed_in_session
+from app.modules.auth.dependencies import authenticate_signed_in_request, get_signed_in_session, has_session_cookie
 from app.modules.auth.domains.authenticated_session.entity import AuthenticatedSession
+from app.modules.auth.errors import NotSignedInError
 from app.modules.auth.job_handlers.delete_expired_sessions_job_handler import DeleteExpiredSessionsJobHandler
 from app.modules.auth.me_router import me_router
 from app.modules.auth.ports.api_token_revoker import ApiTokenRevoker
 from app.modules.auth.ports.avatar_file_reader import AvatarFileReader
+from app.modules.auth.ports.bearer_token_scope_gate import BearerTokenScopeGate
 from app.modules.auth.router import auth_router
 from app.modules.auth.usecases.accept_invite import AcceptInviteUseCase
 from app.modules.auth.usecases.authenticate_session import AuthenticateSessionUseCase
@@ -38,6 +40,7 @@ __all__ = [
     "AuthenticateSessionUseCase",
     "AuthenticatedSession",
     "AvatarFileReader",
+    "BearerTokenScopeGate",
     "ChangePasswordUseCase",
     "ChangeWorkspaceRoleUseCase",
     "ConfirmTwoFactorSetupUseCase",
@@ -49,6 +52,7 @@ __all__ = [
     "InviteUserUseCase",
     "InviteWorkspaceUserUseCase",
     "ListWorkspaceUsersUseCase",
+    "NotSignedInError",
     "ReactivateUserUseCase",
     "RegenerateRecoveryCodesUseCase",
     "RequestPasswordResetUseCase",
@@ -63,7 +67,9 @@ __all__ = [
     "UpdateProfileUseCase",
     "VerifyTwoFactorUseCase",
     "auth_router",
+    "authenticate_signed_in_request",
     "get_signed_in_session",
+    "has_session_cookie",
     "me_router",
     "users_router",
 ]

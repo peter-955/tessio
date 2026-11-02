@@ -1,11 +1,13 @@
 "use client";
 
-import { DSPageHeader } from "@/components/design-system";
+import { DSButton, DSPageHeader } from "@/components/design-system";
 import { useCurrentProject } from "@/components/project-context/hooks/use-current-project";
+import { checkHasProjectCapability } from "@/components/project-context/utils/project-capability.util";
 import { useGetSprints } from "@/modules/sprints/hooks/queries/use-get-sprints";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
+import { StoryEditorModal } from "./components/story-editor-modal/story-editor-modal";
 import { StoryFilters } from "./components/story-filters/story-filters";
 import { StoryList } from "./components/story-list/story-list";
 import { SyncControl } from "./components/sync-control/sync-control";
@@ -15,6 +17,7 @@ import {
   parseStoryFilters,
   readStorySearchParams,
 } from "./utils/story-filters.util";
+import { buildStoryPath } from "./utils/story-path.util";
 
 interface Props {
   initialFilters: StoryFilterValues;
@@ -30,6 +33,9 @@ export const StoriesPage: FC<Props> = ({ initialFilters }) => {
   const [filters, setFilters] = useState<StoryFilterValues>(initialFilters);
   const [syncedSearch, setSyncedSearch] = useState(search);
   const sprintsQuery = useGetSprints(project.key);
+  const [isEditorOpened, setIsEditorOpened] = useState(false);
+  const canWriteStories =
+    !project.isLinkedToJira && checkHasProjectCapability(project, "story.edit");
 
   if (search !== syncedSearch) {
     setSyncedSearch(search);
@@ -49,15 +55,47 @@ export const StoriesPage: FC<Props> = ({ initialFilters }) => {
       <DSPageHeader
         title={t("title")}
         description={t("pageDescription")}
-        actions={<SyncControl />}
+        actions={
+          project.isLinkedToJira ? (
+            <SyncControl />
+          ) : (
+            canWriteStories && (
+              <DSButton
+                type="primary"
+                icon="plus"
+                onClick={() => {
+                  setIsEditorOpened(true);
+                }}
+              >
+                {t("editor.newStory")}
+              </DSButton>
+            )
+          )
+        }
       />
       <StoryFilters
         filters={filters}
         onChange={handleFiltersChange}
-        isSprintFilterShown={!sprintsQuery.isError}
+        isSprintFilterShown={project.isLinkedToJira && !sprintsQuery.isError}
         sprints={sprintsQuery.data ?? []}
       />
-      <StoryList projectKey={project.key} filters={filters} isSprintColumnShown />
+      <StoryList
+        projectKey={project.key}
+        filters={filters}
+        isSprintColumnShown={project.isLinkedToJira}
+      />
+      {isEditorOpened && (
+        <StoryEditorModal
+          projectKey={project.key}
+          story={null}
+          onClose={() => {
+            setIsEditorOpened(false);
+          }}
+          onSaved={(story) => {
+            router.push(buildStoryPath(project.key, story.jiraKey));
+          }}
+        />
+      )}
     </>
   );
 };

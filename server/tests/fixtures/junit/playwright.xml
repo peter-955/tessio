@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites id="" name="" tests="5" failures="1" skipped="1" errors="0" time="7.11">
+<testsuite name="checkout.spec.ts" timestamp="2026-11-01T10:00:00.000Z" hostname="chromium" tests="5" failures="1" skipped="1" time="7.11" errors="0">
+<testcase name="checkout › TC-1 pays by card" classname="checkout.spec.ts" time="3.21">
+</testcase>
+<testcase name="checkout › TC-2 refuses an expired card" classname="checkout.spec.ts" time="2.5">
+<failure message="checkout.spec.ts:20:5 TC-2 refuses an expired card" type="FAILURE">
+<![CDATA[  checkout.spec.ts:20:5 › checkout › TC-2 refuses an expired card ──────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Expected: "Card expired"
+    Received: "Payment accepted"
+]]>
+</failure>
+<system-out>
+<![CDATA[[[ATTACHMENT|test-results/checkout-refuses/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="checkout › keeps the basket" classname="checkout.spec.ts" time="1">
+<properties>
+<property name="tessio.case" value="TC-3">
+</property>
+</properties>
+</testcase>
+<testcase name="checkout › TC-4 applies a voucher" classname="checkout.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="checkout › shows the footer" classname="checkout.spec.ts" time="0.4">
+</testcase>
+</testsuite>
+</testsuites>

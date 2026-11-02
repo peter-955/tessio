@@ -30,3 +30,13 @@ class UnknownGapTargetError(TessioError):
 class OpenGapsBlockRunError(TessioError):
     def __init__(self, count: int) -> None:
         super().__init__(ErrorCode.OPEN_GAPS_BLOCK_RUN, f"{count} open gaps block runs on this story.")
+
+
+class GapRouteNotSingleError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.INVALID_REQUEST, "Give exactly one of assignee_user_id or assignee_role.")
+
+
+class ViewerRouteError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.INVALID_REQUEST, "Viewers cannot answer gaps.")

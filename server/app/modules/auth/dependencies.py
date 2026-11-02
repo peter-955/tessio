@@ -6,6 +6,7 @@ from fastapi import Depends, Request
 from app.modules.auth.domains.authenticated_session.entity import AuthenticatedSession
 from app.modules.auth.domains.session_client.entity import SessionClient
 from app.modules.auth.errors import NotSignedInError
+from app.modules.auth.ports.bearer_token_scope_gate import BearerTokenScopeGate
 from app.modules.auth.typing.constants.rate_limit import UNKNOWN_CLIENT_HOST
 from app.modules.auth.typing.constants.session_cookie import SESSION_COOKIE_NAME
 from app.modules.auth.usecases.accept_invite import AcceptInviteUseCase
@@ -174,12 +175,22 @@ def get_session_client(request: Request) -> SessionClient:
     )
 
 
+def get_bearer_token_scope_gate(request: Request) -> BearerTokenScopeGate:
+    gate: BearerTokenScopeGate = request.app.state.container.bearer_token_scope_gate
+    return gate
+
+
+def has_session_cookie(request: Request) -> bool:
+    return SESSION_COOKIE_NAME in request.cookies
+
+
 async def get_authenticated_session(
     request: Request,
     use_case: Annotated[AuthenticateSessionUseCase, Depends(get_authenticate_session)],
 ) -> AuthenticatedSession:
     token = request.cookies.get(SESSION_COOKIE_NAME)
     if token is None:
+        await get_bearer_token_scope_gate(request).refuse_on_session_route(request.headers.get("authorization", ""))
         raise NotSignedInError
     return await use_case.execute(token)
 
@@ -196,3 +207,7 @@ async def get_workspace_actor(
     authenticated: Annotated[AuthenticatedSession, Depends(get_signed_in_session)],
 ) -> Actor:
     return build_actor(authenticated.user)
+
+
+async def authenticate_signed_in_request(request: Request) -> AuthenticatedSession:
+    return await get_signed_in_session(await get_authenticated_session(request, get_authenticate_session(request)))

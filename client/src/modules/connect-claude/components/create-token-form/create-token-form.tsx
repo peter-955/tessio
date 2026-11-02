@@ -22,12 +22,15 @@ import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { usePostApiToken } from "../../hooks/mutations/use-post-api-token";
 import {
+  API_TOKEN_SCOPES,
+  DEFAULT_API_TOKEN_SCOPE,
   DEFAULT_TOKEN_LIFETIME,
   MAX_ACTIVE_API_TOKENS,
   MAX_API_TOKEN_NAME_LENGTH,
   TOKEN_LIFETIME_DAYS,
 } from "../../typing/constants/api-token.constant";
 import type {
+  ApiTokenScope,
   CreateApiTokenValues,
   CreatedApiToken,
   TokenLifetime,
@@ -51,7 +54,12 @@ export const CreateTokenForm: FC<Props> = ({ activeTokenCount }) => {
   const isNameShortEnough = hasLength({ max: MAX_API_TOKEN_NAME_LENGTH }, t("create.nameTooLong"));
   const form = useDSForm<CreateApiTokenValues>({
     mode: "controlled",
-    initialValues: { name: "", projectKey: null, lifetimeDays: DEFAULT_TOKEN_LIFETIME },
+    initialValues: {
+      name: "",
+      projectKey: null,
+      lifetimeDays: DEFAULT_TOKEN_LIFETIME,
+      scope: DEFAULT_API_TOKEN_SCOPE,
+    },
     validate: {
       name: (value) => {
         return isNameRequired(value) ?? isNameShortEnough(value.trim());
@@ -68,6 +76,9 @@ export const CreateTokenForm: FC<Props> = ({ activeTokenCount }) => {
   });
   const lifetimeOptions: DSSelectOption<TokenLifetime>[] = TOKEN_LIFETIME_DAYS.map((days) => {
     return { value: days, label: t("create.lifetimeOption", { count: Number(days) }) };
+  });
+  const scopeOptions: DSSelectOption<ApiTokenScope>[] = API_TOKEN_SCOPES.map((scope) => {
+    return { value: scope, label: t(`scope.options.${scope}`) };
   });
   const selectedProject = activeProjects.find((project) => {
     return project.key === form.values.projectKey;
@@ -92,6 +103,10 @@ export const CreateTokenForm: FC<Props> = ({ activeTokenCount }) => {
     form.setFieldValue("lifetimeDays", value ?? DEFAULT_TOKEN_LIFETIME);
   };
 
+  const handleScopeChange = (value: ApiTokenScope | null): void => {
+    form.setFieldValue("scope", value ?? DEFAULT_API_TOKEN_SCOPE);
+  };
+
   const handleValidSubmit = (values: CreateApiTokenValues): void => {
     if (values.projectKey === null) {
       return;
@@ -102,6 +117,7 @@ export const CreateTokenForm: FC<Props> = ({ activeTokenCount }) => {
         name: values.name.trim(),
         projectKey: values.projectKey,
         expiresInDays: Number(values.lifetimeDays),
+        scope: values.scope,
       },
       {
         onSuccess: (response) => {
@@ -153,9 +169,19 @@ export const CreateTokenForm: FC<Props> = ({ activeTokenCount }) => {
             options={lifetimeOptions}
             onChange={handleLifetimeChange}
           />
+          <DSSelect
+            label={t("scope.label")}
+            value={form.values.scope}
+            options={scopeOptions}
+            onChange={handleScopeChange}
+            description={t(`scope.descriptions.${form.values.scope}`)}
+            isRequired
+          />
         </div>
         {selectedProject?.myRole === "viewer" && (
-          <DSAlert color="info">{t("create.viewerHint")}</DSAlert>
+          <DSAlert color="info">
+            {form.values.scope === "api" ? t("create.viewerApiHint") : t("create.viewerHint")}
+          </DSAlert>
         )}
         <div>
           <DSButton

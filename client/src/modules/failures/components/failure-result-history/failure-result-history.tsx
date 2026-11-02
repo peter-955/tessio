@@ -2,6 +2,7 @@
 
 import { DSBadge, DSCard, DSTable, DSText } from "@/components/design-system";
 import { useCurrentProject } from "@/components/project-context/hooks/use-current-project";
+import { formatIterationNumber } from "@/modules/data-rows/utils/parameter-text.util";
 import { useFormatDate } from "@/shared/hooks/use-format-date";
 import { useFormatDuration } from "@/shared/hooks/use-format-duration";
 import Link from "next/link";
@@ -20,6 +21,7 @@ export const FailureResultHistory: FC<Props> = ({ results }) => {
   const project = useCurrentProject();
   const formatDate = useFormatDate();
   const formatDuration = useFormatDuration();
+  const hasIterations = results.some((result) => result.iteration !== null);
 
   return (
     <DSCard title={t("history.title")}>
@@ -33,6 +35,7 @@ export const FailureResultHistory: FC<Props> = ({ results }) => {
             <tr>
               <th scope="col">{t("columns.run")}</th>
               <th scope="col">{t("columns.result")}</th>
+              {hasIterations && <th scope="col">{t("columns.iteration")}</th>}
               <th scope="col">{t("columns.executor")}</th>
               <th scope="col">{t("columns.duration")}</th>
               <th scope="col">{t("columns.startedBy")}</th>
@@ -52,6 +55,13 @@ export const FailureResultHistory: FC<Props> = ({ results }) => {
                       {t(`result.${result.status}`)}
                     </DSBadge>
                   </td>
+                  {hasIterations && (
+                    <td>
+                      {result.iteration === null
+                        ? EMPTY_VALUE
+                        : formatIterationNumber(result.iteration)}
+                    </td>
+                  )}
                   <td>{t(`executor.${result.runExecutor}`)}</td>
                   <td>
                     {result.durationMs === null ? EMPTY_VALUE : formatDuration(result.durationMs)}

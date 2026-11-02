@@ -2,8 +2,10 @@ from datetime import datetime
 from uuid import UUID
 
 from app.modules.failures.typing.enums import FailureStatus
+from app.modules.runs import SuspectedCause
 from app.modules.users import UserStatus
 from app.shared.common import WireModel
+from app.shared.typing.enums import ErrorCode
 
 
 class FailureResponse(WireModel):
@@ -26,4 +28,14 @@ class FailureResponse(WireModel):
     latest_failed_at: datetime
     status_changed_at: datetime | None
     status_changed_by_name: str | None
+    cause: SuspectedCause | None
+    cause_reason: str | None
+    cause_changed_at: datetime | None
     created_at: datetime
+    jira_issue_key: str | None
+    jira_issue_url: str | None
+    jira_issue_status: str | None
+    jira_issue_done_at: datetime | None
+    is_done_in_jira: bool
+    is_jira_issue_pending: bool
+    jira_issue_error_code: ErrorCode | None

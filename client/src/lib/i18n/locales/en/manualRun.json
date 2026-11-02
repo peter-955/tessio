@@ -29,8 +29,8 @@
     "notRecorded": "Not recorded",
     "caseList": "Cases",
     "step": "Step {{order}}",
+    "stepsOf": "Steps of {{code}}",
     "stepStatus": "Step {{order}} status",
-    "expectedValue": "Expected: {{text}}",
     "actualResult": "Actual result",
     "error": "What went wrong",
     "notReported": "Not reported",
@@ -50,7 +50,13 @@
     "notFound": "Run not found",
     "backToRuns": "Back to runs",
     "loadError": "This page could not be loaded.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "expected": "Expected result",
+    "openEnvironment": "Open {{environment}} in a new tab",
+    "unmarkedSteps_one": "{{count}} step is not marked and will be saved as Skipped.",
+    "unmarkedSteps_other": "{{count}} steps are not marked and will be saved as Skipped.",
+    "causePlaceholder": "Pick a cause (optional)",
+    "causeReason": "Why do you think so? (optional)"
   },
   "evidence": {
     "label": "Evidence (optional)",
@@ -58,7 +64,8 @@
     "dropDescription": "Up to {{size}}",
     "uploading": "Uploading {{percent}}%",
     "cancel": "Cancel upload",
-    "remove": "Remove"
+    "remove": "Remove",
+    "attach": "Attach evidence"
   },
   "finish": {
     "action": "Finish run",

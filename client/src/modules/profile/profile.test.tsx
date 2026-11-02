@@ -1,5 +1,6 @@
 import englishAuth from "@/lib/i18n/locales/en/auth.json";
 import englishErrors from "@/lib/i18n/locales/en/errors.json";
+import englishNotificationPreferences from "@/lib/i18n/locales/en/notificationPreferences.json";
 import englishProfile from "@/lib/i18n/locales/en/profile.json";
 import type { UseSignedUploadResult } from "@/lib/uploads/hooks/use-signed-upload";
 import { UploadPhase } from "@/lib/uploads/typing/enums/upload-phase.enum";
@@ -14,13 +15,14 @@ import {
 } from "@/modules/auth/test/utils/api-result.util";
 import { stubObjectUrl } from "@/modules/auth/test/utils/stub-object-url.util";
 import type { CurrentUser } from "@/modules/auth/typing/types/current-user.type";
+import { buildDefaultNotificationPreferences } from "@/modules/notification-preferences/test/utils/notification-preference-fixture.util";
 import type { QueryClient } from "@tanstack/react-query";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
 import { ProfilePage } from "./profile";
-import { apiPatch, apiPost, apiPut } from "./test/mocks/api-client.mock";
+import { apiGet, apiPatch, apiPost, apiPut } from "./test/mocks/api-client.mock";
 import { createSignedInUser } from "./test/utils/current-user.fixture";
 import { respondToProfilePatch } from "./test/utils/profile-patch.util";
 import { renderSignedIn } from "./test/utils/render-signed-in.util";
@@ -121,6 +123,11 @@ describe("ProfilePage", () => {
     window.localStorage.clear();
     stubScrollIntoView();
     respondToProfilePatch(createSignedInUser());
+    respondWithRoutes(apiGet, {
+      "/api/me/notification-preferences": createSuccessResult(
+        buildDefaultNotificationPreferences(),
+      ),
+    });
   });
 
   it("renders every section without axe violations", async () => {
@@ -130,6 +137,12 @@ describe("ProfilePage", () => {
     expect(screen.getByText("ada@example.test")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: englishProfile.sessions.title }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: englishNotificationPreferences.card.title }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByRole("table", { name: englishNotificationPreferences.card.tableLabel }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: englishProfile.avatar.remove }),

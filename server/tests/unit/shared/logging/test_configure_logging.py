@@ -3,6 +3,7 @@ from collections.abc import Iterator
 
 import pytest
 import sentry_sdk
+from sentry_sdk.integrations.httpx import HttpxIntegration
 
 from app.shared.logging import JsonLogFormatter, configure_logging
 
@@ -12,10 +13,13 @@ def restore_root_logger() -> Iterator[None]:
     root_logger = logging.getLogger()
     handlers = list(root_logger.handlers)
     level = root_logger.level
+    http_client_levels = {name: logging.getLogger(name).level for name in ("httpx", "httpcore")}
     yield
     root_logger.handlers.clear()
     root_logger.handlers.extend(handlers)
     root_logger.setLevel(level)
+    for name, http_client_level in http_client_levels.items():
+        logging.getLogger(name).setLevel(http_client_level)
 
 
 @pytest.fixture
@@ -57,9 +61,19 @@ def test_sentry_is_not_initialised_without_a_dsn(sentry_calls: list[dict[str, ob
     assert sentry_calls == []
 
 
+def test_http_client_loggers_never_log_requests_at_info(sentry_calls: list[dict[str, object]]) -> None:
+    configure_logging("DEBUG", None, "test")
+
+    for logger_name in ("httpx", "httpcore"):
+        assert logging.getLogger(logger_name).getEffectiveLevel() == logging.WARNING
+
+
 def test_sentry_is_initialised_with_a_dsn(sentry_calls: list[dict[str, object]]) -> None:
     configure_logging("INFO", "https://key@sentry.test/1", "production")
 
+    disabled_integrations = sentry_calls[0].pop("disabled_integrations")
+    assert isinstance(disabled_integrations, list)
+    assert [type(integration) for integration in disabled_integrations] == [HttpxIntegration]
     assert sentry_calls == [
         {
             "dsn": "https://key@sentry.test/1",

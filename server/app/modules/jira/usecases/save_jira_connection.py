@@ -7,6 +7,7 @@ from app.modules.jira.domains.jira_connection.repository import JiraConnectionRe
 from app.modules.jira.domains.jira_credentials.entity import JiraCredentials
 from app.modules.jira.errors import JiraApiTokenRequiredError
 from app.modules.jira.ports.jira_client import JiraClient
+from app.modules.jira.usecases.check_jira_write_access import CheckJiraWriteAccessUseCase
 from app.modules.jira.utils.jira_credentials import build_jira_credentials
 from app.modules.jira.utils.site_url import normalize_site_url
 from app.shared.common import Transaction
@@ -21,11 +22,13 @@ class SaveJiraConnectionUseCase:
         jira_connection_repository: JiraConnectionRepository,
         jira_client: JiraClient,
         secret_cipher: SecretCipher,
+        check_jira_write_access: CheckJiraWriteAccessUseCase,
     ) -> None:
         self._transaction = transaction
         self._jira_connection_repository = jira_connection_repository
         self._jira_client = jira_client
         self._secret_cipher = secret_cipher
+        self._check_jira_write_access = check_jira_write_access
 
     async def execute(
         self, actor: Actor, site_url: str, account_email: str, api_token: SecretStr | None
@@ -41,6 +44,8 @@ class SaveJiraConnectionUseCase:
             api_token=self._resolve_api_token(api_token, existing_connection, normalized_site_url),
         )
         account = await self._jira_client.get_myself(credentials)
+        now = datetime.now(UTC)
+        write_access = await self._check_jira_write_access.execute(credentials, now)
         connection = JiraConnection(
             site_url=normalized_site_url,
             account_email=normalized_account_email,
@@ -48,7 +53,11 @@ class SaveJiraConnectionUseCase:
             account_id=account.account_id,
             account_display_name=account.display_name,
             configured_by=actor.user_id,
-            configured_at=datetime.now(UTC),
+            configured_at=now,
+            can_create_issues=write_access.can_create_issues,
+            can_comment=write_access.can_comment,
+            missing_permissions=write_access.missing_permissions,
+            permissions_checked_at=write_access.checked_at,
         )
         async with self._transaction.begin():
             await self._jira_connection_repository.save(connection)

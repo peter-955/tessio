@@ -10,6 +10,8 @@ export type RunOutcome = components["schemas"]["RunOutcome"];
 
 export type NotificationPayload = Notification["payload"];
 
+export type ReportReadyPayload = components["schemas"]["ReportReadyPayloadResponse"];
+
 export type UnreadNotificationCount = components["schemas"]["UnreadNotificationCountResponse"];
 
 export type NotificationFilter = "all" | "unread";

@@ -9,6 +9,8 @@ class SecuredRoute(Entity):
     access: RouteAccess
     capability: Capability | WorkspaceCapability | None
     body: dict[str, object] | None = None
+    form: dict[str, str] | None = None
+    token_allowed: bool = False
 
     @property
     def key(self) -> tuple[str, str]:

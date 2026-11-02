@@ -1,7 +1,7 @@
 from app.modules.projects.domains.project.repository import ProjectRepository
 from app.modules.projects.domains.project_changes.entity import ProjectChanges
 from app.modules.projects.domains.project_overview.entity import ProjectOverview
-from app.modules.projects.errors import DefaultEnvironmentNotFoundError
+from app.modules.projects.errors import DefaultEnvironmentNotFoundError, ProjectNotLinkedToJiraError
 from app.modules.projects.ports.environment_checker import EnvironmentChecker
 from app.modules.projects.utils.project_changes import apply_project_changes
 from app.shared.common import Transaction
@@ -28,6 +28,12 @@ class UpdateProjectUseCase:
             project = await self._project_repository.find_by_id(access.project_id)
             if project is None:
                 raise ProjectNotFoundError
+            if not project.is_linked_to_jira and (
+                changes.jira_board_id is not None
+                or changes.jira_bug_issue_type is not None
+                or changes.jira_post_results is not None
+            ):
+                raise ProjectNotLinkedToJiraError
             updated_project = apply_project_changes(project, changes)
             if changes.default_environment_id is not None:
                 if not await self._environment_checker.is_active_environment(

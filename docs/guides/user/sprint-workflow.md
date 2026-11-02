@@ -16,7 +16,7 @@ Routes use `{KEY}` for the project key and `{STORY-KEY}` for the Jira key of a s
 | 4 | Check coverage | QC, BA | The story **Traceability** tab, and **AC without a test case** on the **Dashboard**. | Nothing |
 | 5 | Feature ready | Dev | **Mark ready for test** on `/projects/{KEY}/stories/{STORY-KEY}`. | Nothing |
 | 6 | Readiness review | Dev starts, Claude reviews | Gaps appear on the story **Gaps** tab and in each owner's **My gaps** (`/gaps`). | `/tessio:review-readiness <STORY-KEY>` reads the story, AC, cases and data, and files the gaps. |
-| 7 | Resolve gaps | BA, QC, Dev | **Answer** then **Answer and resolve**. QC fixes cases in Tessio; BA changes AC in Jira and syncs again. Every gap must be answered before a run can start. | Can be asked to review again. |
+| 7 | Resolve gaps | BA, QC, Dev | **Answer** then **Answer and resolve**. QC fixes cases in Tessio; BA changes AC in Jira and syncs again. Every gap must be answered before a run can start. | Each owner can run `/tessio:answer-gaps` to answer their gaps with suggested, sourced answers. Can be asked to review again. |
 | 8 | Run | Dev starts, Claude runs; or QC by hand | Claude run: follow it on `/projects/{KEY}/runs/{run-id}`. Manual run: **New manual run** on `/projects/{KEY}/runs/new`. The story moves to *In test*. | `/tessio:run-story-tests <STORY-KEY> [environment]` records each step with a screenshot. |
 | 9 | Report | Claude, or the tester | The **Report** tab of the run: summary, failed cases, **Acceptance criteria impact**. | Writes the summary when it finishes the run. |
 | 10 | Fix | Dev | **Failures** (`/projects/{KEY}/failures`), filter **Assigned to me**. Fix the code, then **Mark fixed**. | Nothing |

@@ -1,6 +1,7 @@
 "use client";
 
 import { DSPageHeader, DSStack } from "@/components/design-system";
+import { NotificationPreferencesCard } from "@/modules/notification-preferences/components/notification-preferences-card/notification-preferences-card";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { ChangePasswordCard } from "./components/change-password-card/change-password-card";
@@ -19,6 +20,7 @@ export const ProfilePage: FC = () => {
       <DSStack gap={5} className={styles.cards}>
         <ProfileDetailsCard />
         <PreferencesCard />
+        <NotificationPreferencesCard />
         <ChangePasswordCard />
         <TwoFactorCard />
         <SessionsCard />

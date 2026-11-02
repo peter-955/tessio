@@ -147,7 +147,8 @@
     },
     "executor": {
       "claude": "Claude",
-      "manual": "Thủ công"
+      "manual": "Thủ công",
+      "ci": "CI"
     },
     "results": "{{passed}} đạt · {{failed}} không đạt / {{total}}"
   }

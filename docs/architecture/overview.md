@@ -12,10 +12,10 @@ tessio/
 ├── client/                    Next.js 16 app (TypeScript, Mantine 9, SCSS modules)
 ├── server/                    FastAPI app: REST API + MCP server + BullMQ worker
 ├── claude/                    Claude Code plugin
-│   ├── skills/                run-story-tests, review-readiness, rerun-failed
+│   ├── skills/                run-story-tests, run-suite, review-readiness, rerun-failed, answer-gaps, import-cases, draft-cases
 │   ├── hooks/                 upload_screenshots.py (PostToolUse hook) and its tests
 │   ├── .mcp.json              the Tessio MCP server, authenticated with a tsio_ API token
-│   └── scripts/               measure-tokens.sh
+│   └── scripts/               measure-tokens.sh, extract_file.py
 ├── .claude-plugin/            marketplace.json: the marketplace whose plugin source is ./claude
 ├── e2e/                       Playwright end-to-end suite
 ├── deploy/                    Caddyfile, deploy.sh and the deploy run book
@@ -55,7 +55,7 @@ flowchart LR
 3. It reads and writes through repository ports (`domains/<name>/repository.py`, ABCs), implemented by `Postgres<Name>Repository` classes in `infrastructure/`, inside one transaction.
 4. Errors are `TessioError` subclasses; [app/api/error_handlers.py](../../server/app/api/error_handlers.py) turns them into `{"code", "message"}` with the matching HTTP status.
 
-MCP tools (`modules/{runs,gaps,story_context}/mcp_tools.py`, registered in `Container.mcp_server`) call the **same use cases** with an API-token `Actor`, so REST and MCP share every rule. [app/container.py](../../server/app/container.py) is the only place that builds adapters; `import-linter` keeps the module layers in order ([server proposal §3](../discussions/server-proposal.md#3-code-layout)).
+MCP tools (`modules/{runs,gaps,story_context,test_cases}/mcp_tools.py`, registered in `Container.mcp_server`) call the **same use cases** with an API-token `Actor`, so REST and MCP share every rule. [app/container.py](../../server/app/container.py) is the only place that builds adapters; `import-linter` keeps the module layers in order ([server proposal §3](../discussions/server-proposal.md#3-code-layout)).
 
 ## Cross-cutting pieces
 
@@ -67,6 +67,7 @@ MCP tools (`modules/{runs,gaps,story_context}/mcp_tools.py`, registered in `Cont
 | Email | `QueuedMailer` → `email.send` job → `SmtpMailer` | Mail is queued, then sent by the worker over SMTP |
 | Secrets | `SecretCipher` (AES-256-GCM with a key ring), `SecretMasker` | Encrypts TOTP keys, secrets and the Jira token; masks resolved secret values in summaries, results and errors |
 | Rate limits | `RedisRateLimiter` in `app/shared/rate_limit/` | Fixed-window counters in Redis, keyed by client IP, on the public auth routes (sign-in, two-factor, invite and password links); fails open when Redis is down |
+| Claude plugin | `modules/plugin`: `DirectoryPluginBundleLoader`, `CheckPluginVersionUseCase` | Serves `claude/` as `GET /api/plugin/marketplace.json` plus a zip, and refuses MCP calls from an older plugin with `PLUGIN_OUTDATED` ([ADR 0010](../decisions/0010-tessio-serves-its-claude-plugin.md)) |
 
 ## Client data layer
 
@@ -80,6 +81,6 @@ MCP tools (`modules/{runs,gaps,story_context}/mcp_tools.py`, registered in `Cont
 
 - [Server proposal](../discussions/server-proposal.md): schema, endpoints, MCP tools, screenshots, jobs, deployment.
 - [Functional specs](../spec/README.md) and the [user flows and state diagrams](../design/user-flows.md).
-- Decisions: [0001](../decisions/0001-frontend-stack.md) frontend stack, [0002](../decisions/0002-ui-library.md) UI library, [0003](../decisions/0003-translations.md) translations, [0004](../decisions/0004-backend-stack.md) backend stack, [0005](../decisions/0005-local-object-storage.md) local object storage, [0006](../decisions/0006-background-jobs-redis-bullmq.md) background jobs, [0007](../decisions/0007-hosting-vps-docker.md) hosting, [0008](../decisions/0008-branching-strategy.md) branching, [0009](../decisions/0009-production-storage-and-proxy.md) production storage and reverse proxy.
+- Decisions: [0001](../decisions/0001-frontend-stack.md) frontend stack, [0002](../decisions/0002-ui-library.md) UI library, [0003](../decisions/0003-translations.md) translations, [0004](../decisions/0004-backend-stack.md) backend stack, [0005](../decisions/0005-local-object-storage.md) local object storage, [0006](../decisions/0006-background-jobs-redis-bullmq.md) background jobs, [0007](../decisions/0007-hosting-vps-docker.md) hosting, [0008](../decisions/0008-branching-strategy.md) branching, [0009](../decisions/0009-production-storage-and-proxy.md) production storage and reverse proxy, [0010](../decisions/0010-tessio-serves-its-claude-plugin.md) Tessio serves its Claude plugin.
 - [deploy/README.md](../../deploy/README.md): running Tessio on the VPS.
 - [Claude setup guide](../guides/claude-setup.md): connecting Claude Code to Tessio.

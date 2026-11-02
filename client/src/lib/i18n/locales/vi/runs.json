@@ -20,7 +20,8 @@
   },
   "executor": {
     "claude": "Claude",
-    "manual": "Thủ công"
+    "manual": "Thủ công",
+    "ci": "CI"
   },
   "abortReason": {
     "no_results": "Không có kết quả nào được báo cáo",
@@ -70,14 +71,17 @@
   "tabs": {
     "label": "Mục của lượt chạy",
     "results": "Kết quả",
-    "report": "Báo cáo"
+    "report": "Báo cáo",
+    "log": "Nhật ký"
   },
   "case": {
     "listLabel": "Kết quả ca kiểm thử",
     "version": "v{{number}}",
     "showSteps": "Hiện các bước",
     "hideSteps": "Ẩn các bước",
-    "stepsLabel": "Các bước của {{code}}"
+    "stepsLabel": "Các bước của {{code}}",
+    "showDetails": "Chi tiết ca kiểm thử",
+    "hideDetails": "Ẩn chi tiết ca kiểm thử"
   },
   "step": {
     "label": "Bước {{order}}",
@@ -128,5 +132,37 @@
   "limitNotice": "Đang hiện {{count}} lượt chạy gần nhất.",
   "loading": "Đang tải lượt chạy",
   "loadError": "Không tải được lượt chạy",
-  "retry": "Thử lại"
+  "retry": "Thử lại",
+  "log": {
+    "loading": "Đang tải nhật ký của Claude",
+    "loadError": "Không tải được nhật ký.",
+    "pending": "Nhật ký của Claude sẽ có khi lượt chạy kết thúc.",
+    "missing": "Không nhận được nhật ký cho lượt chạy này.",
+    "tokens": "{{total}} token",
+    "tokensPerCase": "{{total}} token · khoảng {{perCase}} mỗi ca",
+    "cut": "Nhật ký đã bị cắt ở 3.000 mục.",
+    "setup": "Chuẩn bị",
+    "wrapUp": "Kết thúc",
+    "unknownCase": "Ca khác",
+    "duration": "{{seconds}} giây",
+    "error": "Lỗi",
+    "tool": "Công cụ",
+    "input": "Đầu vào",
+    "output": "Kết quả",
+    "labels": {
+      "opened": "Đã mở {{url}}",
+      "filled": "Đã điền {{value}}",
+      "lookedFor": "Đã tìm {{query}}",
+      "readPage": "Đã đọc trang",
+      "attachedFile": "Đã đính kèm tệp",
+      "screenshot": "Đã chụp màn hình",
+      "typed": "Đã gõ {{text}}",
+      "pressed": "Đã nhấn {{key}}",
+      "scrolled": "Đã cuộn",
+      "clicked": "Đã nhấp",
+      "tessio": "Tessio: {{tool}}",
+      "ran": "Đã chạy {{command}}",
+      "tool": "{{tool}}"
+    }
+  }
 }

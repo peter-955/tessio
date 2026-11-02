@@ -60,7 +60,10 @@ const FAILED_CASE = createRunCase({
     id: "d6200000-0000-4000-8000-000000000002",
     status: "failed",
     durationMs: 9000,
+    suspectedCause: null,
+    causeReason: null,
     recordedAt: "2026-10-20T10:01:30Z",
+    iteration: 0,
   },
   steps: [
     createStepResult({ order: 1, action: "Enter an expired card" }),
@@ -151,6 +154,7 @@ const FINISHED_RUN = createRunDetail({
     ],
     summary: "Checkout fails when paying by card.",
     builtAt: "2026-10-20T10:02:05Z",
+    unmappedTestCount: 0,
   },
 });
 
@@ -229,12 +233,95 @@ describe("RunDetailPage", () => {
     expect(passedCase.getByText("v2")).toBeInTheDocument();
     expect(passedCase.getByRole("link", { name: "TC-1" })).toHaveAttribute(
       "href",
-      "/projects/APP/test-cases/TC-1",
+      "/projects/APP/test-cases/TC-1?tab=history&version=2",
     );
     const unreportedCase = within(await findCase("TC-3"));
     expect(unreportedCase.getByText("Not reported")).toBeInTheDocument();
     expect(unreportedCase.getByText(detail.notReportedHint)).toBeInTheDocument();
     expect(screen.queryByText(detail.live)).not.toBeInTheDocument();
+  });
+
+  it("shows the case details and the data values of the run environment", async () => {
+    respondWithRun(
+      createSuccessResult({
+        ...FINISHED_RUN,
+        data: [
+          { key: "user_email", kind: "variable", value: "anna@shop.test" },
+          { key: "user_password", kind: "secret", value: null },
+        ],
+        cases: [
+          createRunCase({
+            preconditions: "Signed out as {{data.user_email}}",
+            criteria: [{ code: "AC1", text: "Pay by card" }],
+            steps: [
+              createStepResult({
+                action: "Sign in with {{data.user_password}}",
+                expected: "Hello {{data.user_email}}",
+              }),
+            ],
+          }),
+        ],
+      }),
+    );
+    const user = userEvent.setup();
+    const { container } = renderPage();
+
+    const passedCase = within(await findCase("TC-1"));
+    await user.click(passedCase.getByRole("button", { name: "Show steps" }));
+    expect(passedCase.getByText("Hello")).toBeInTheDocument();
+    expect(passedCase.getAllByText("anna@shop.test")).toHaveLength(1);
+    await user.click(passedCase.getByRole("button", { name: "Case details" }));
+
+    expect(passedCase.getByRole("region", { name: "Before you start" })).toHaveTextContent(
+      "Signed out as anna@shop.test",
+    );
+    expect(passedCase.getByRole("region", { name: "Covers" })).toHaveTextContent("AC1Pay by card");
+    expect(
+      passedCase.queryByRole("button", { name: "Reveal user_password" }),
+    ).not.toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("shows why a step failed and the suspected cause", async () => {
+    respondWithRun(
+      createSuccessResult({
+        ...FINISHED_RUN,
+        cases: [
+          createRunCase({
+            result: {
+              id: "d6200000-0000-4000-8000-000000000009",
+              status: "failed",
+              durationMs: 4000,
+              suspectedCause: "app_bug",
+              causeReason: "The payments API answered 502",
+              recordedAt: "2026-10-20T10:01:00Z",
+              iteration: 0,
+            },
+            steps: [
+              createStepResult({
+                status: "failed",
+                diagnosis: {
+                  pageUrl: "https://staging.shop.test/checkout",
+                  consoleErrors: [],
+                  failedRequests: [
+                    { method: "POST", path: "/api/payments", status: 502, excerpt: null },
+                  ],
+                },
+              }),
+            ],
+          }),
+        ],
+      }),
+    );
+    const { container } = renderPage();
+
+    const failedCase = within(await findCase("TC-1"));
+    expect(failedCase.getByText("App bug")).toBeInTheDocument();
+    expect(failedCase.getByText("The payments API answered 502")).toBeInTheDocument();
+    const diagnosis = failedCase.getByRole("region", { name: "Why it failed" });
+    expect(within(diagnosis).getByText("POST /api/payments → 502")).toBeInTheDocument();
+    expect(within(diagnosis).getByText("https://staging.shop.test/checkout")).toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   it("shows live progress and pending cases while the run is running", async () => {
@@ -358,7 +445,10 @@ describe("RunDetailPage", () => {
                 id: "d6200000-0000-4000-8000-000000000011",
                 status: "blocked",
                 durationMs: 1000,
+                suspectedCause: null,
+                causeReason: null,
                 recordedAt: "2026-10-20T10:01:40Z",
+                iteration: 0,
               },
             }
           : runCase;
@@ -432,6 +522,76 @@ describe("RunDetailPage", () => {
     const { container } = renderPage(RUN_ID, RunDetailTab.RESULTS, "Re-run failed");
 
     expect(await screen.findByRole("button", { name: "Re-run failed" })).toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("shows Claude's log grouped by case in the Log tab", async () => {
+    const user = userEvent.setup();
+    respondWithRoutes(apiGet, {
+      [RUN_PATH]: createSuccessResult(FINISHED_RUN),
+      "/api/projects/{project_key}/runs/{run_id}/log": createSuccessResult({
+        receivedAt: "2026-10-20T10:10:00Z",
+        isCut: false,
+        usage: {
+          inputTokens: 10,
+          cacheCreationInputTokens: 0,
+          cacheReadInputTokens: 1990,
+          outputTokens: 0,
+        },
+        entries: [
+          {
+            position: 0,
+            phase: "setup",
+            testCaseId: null,
+            kind: "action",
+            at: "2026-10-20T10:00:00Z",
+            tool: "Bash",
+            input: { command: "curl -fsS https://shop.test" },
+            output: "200",
+            isError: false,
+            durationMs: 300,
+          },
+          {
+            position: 1,
+            phase: "case",
+            testCaseId: PASSED_CASE.testCaseId,
+            kind: "note",
+            at: "2026-10-20T10:00:05Z",
+            tool: null,
+            input: null,
+            output: "Signing in as the buyer.",
+            isError: false,
+            durationMs: null,
+          },
+          {
+            position: 2,
+            phase: "case",
+            testCaseId: PASSED_CASE.testCaseId,
+            kind: "action",
+            at: "2026-10-20T10:01:10Z",
+            tool: "mcp__claude-in-chrome__navigate",
+            input: { url: "https://shop.test/checkout" },
+            output: null,
+            isError: true,
+            durationMs: 1200,
+          },
+        ],
+      }),
+    });
+    const { container } = renderPage();
+
+    await user.click(await screen.findByRole("tab", { name: englishRuns.tabs.log }));
+
+    expect(await screen.findByRole("region", { name: englishRuns.log.setup })).toBeInTheDocument();
+    const caseSection = screen.getByRole("region", {
+      name: `${PASSED_CASE.code} · ${PASSED_CASE.title}`,
+    });
+    expect(within(caseSection).getByText("Signing in as the buyer.")).toBeInTheDocument();
+    expect(within(caseSection).getByText("Opened https://shop.test/checkout")).toBeInTheDocument();
+    expect(within(caseSection).getByText("+1:10")).toBeInTheDocument();
+    expect(within(caseSection).getByText(englishRuns.log.error)).toBeInTheDocument();
+    expect(screen.getByText("Ran curl -fsS https://shop.test")).toBeInTheDocument();
+    expect(screen.getByText(/2,000 tokens/)).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
   });
 });

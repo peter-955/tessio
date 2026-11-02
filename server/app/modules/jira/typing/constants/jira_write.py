@@ -1,0 +1,24 @@
+from app.modules.jira.typing.enums import JiraPermission
+
+JIRA_WRITE_PERMISSIONS = (
+    JiraPermission.CREATE_ISSUES,
+    JiraPermission.ADD_COMMENTS,
+    JiraPermission.CREATE_ATTACHMENTS,
+    JiraPermission.LINK_ISSUES,
+)
+JIRA_RELATES_LINK_TYPE_NAME = "Relates"
+JIRA_DONE_STATUS_CATEGORY_KEY = "done"
+JIRA_STATUS_FIELDS = ("status",)
+JIRA_STATUS_SEARCH_BATCH_SIZE = 100
+JIRA_SUMMARY_MAX_LENGTH = 255
+JIRA_ADF_VERSION = 1
+JIRA_ADF_HEADING_LEVEL = 3
+JIRA_NO_CHECK_HEADERS = {"X-Atlassian-Token": "no-check"}
+JIRA_WRITE_INVALID_CREDENTIALS_STATUS_CODES = frozenset({401})
+JIRA_WRITE_FORBIDDEN_STATUS_CODES = frozenset({403})
+JIRA_WRITE_REJECTED_STATUS_CODES = frozenset({400, 404})
+JIRA_PERMISSION_REJECTED_STATUS_CODES = frozenset({400, 404})
+JIRA_ISSUE_BROWSE_URL_TEMPLATE = "{site_url}/browse/{issue_key}"
+JIRA_ISSUE_KEYS_JQL_TEMPLATE = "key in ({issue_keys}) ORDER BY key ASC"
+JIRA_COMMENT_JOB_ID_TEMPLATE = "jira-comment:{run_id}:{story_id}"
+JIRA_ISSUE_KEY_PATTERN = r"^[A-Z][A-Z0-9_]*-[1-9][0-9]*$"

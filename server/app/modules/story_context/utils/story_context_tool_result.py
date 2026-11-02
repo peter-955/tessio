@@ -23,9 +23,9 @@ def build_story_context_tool_result(story_context: StoryContext) -> CallToolResu
     entries_by_key: dict[str, list[DataEntry]] = {}
     for entry in story_context.data_entries:
         entries_by_key.setdefault(entry.key, []).append(entry)
-    content = _compact(
+    content = compact_json(
         {
-            "story": _compact(
+            "story": compact_json(
                 {
                     "key": story_context.story.jira_key,
                     "title": story_context.story.title,
@@ -34,41 +34,41 @@ def build_story_context_tool_result(story_context: StoryContext) -> CallToolResu
                 }
             ),
             "criteria": [
-                _compact({"code": criterion.code, "text": criterion.text})
+                compact_json({"code": criterion.code, "text": criterion.text})
                 for criterion in story_context.criteria
                 if not criterion.is_removed
             ],
-            "cases": [_build_case(case, active_codes_by_id) for case in story_context.cases],
+            "cases": [build_context_case_json(case, active_codes_by_id) for case in story_context.cases],
             "other_case_count": story_context.other_case_count,
             "data": [
-                _build_data_item(key, entries_by_key[key], story_context.environments)
+                build_context_data_json(key, entries_by_key[key], story_context.environments)
                 for key in used_keys
                 if key in entries_by_key
             ],
             "missing_data_keys": [key for key in used_keys if key not in entries_by_key],
             "files": [
-                _compact({"case": case.code, "key": file.key, "file_name": file.file_name})
+                compact_json({"case": case.code, "key": file.key, "file_name": file.file_name})
                 for case in story_context.cases
                 for file in case.files
             ],
-            "environments": [_build_environment(environment) for environment in story_context.environments],
+            "environments": [build_context_environment_json(environment) for environment in story_context.environments],
         }
     )
-    return _build_tool_result(content)
+    return build_compact_tool_result(content)
 
 
 def build_resolved_data_tool_result(resolved_data: ResolvedData) -> CallToolResult:
-    content = _compact({"values": dict(resolved_data.values), "unknown_keys": list(resolved_data.unknown_keys)})
-    return _build_tool_result(content)
+    content = compact_json({"values": dict(resolved_data.values), "unknown_keys": list(resolved_data.unknown_keys)})
+    return build_compact_tool_result(content)
 
 
 def build_test_file_tool_result(test_file_link: TestFileLink) -> CallToolResult:
     content: dict[str, JsonValue] = {"file_name": test_file_link.file_name, "url": test_file_link.url}
-    return _build_tool_result(content)
+    return build_compact_tool_result(content)
 
 
-def _build_case(case: ContextCase, active_codes_by_id: Mapping[UUID, str]) -> JsonValue:
-    return _compact(
+def build_context_case_json(case: ContextCase, active_codes_by_id: Mapping[UUID, str]) -> JsonValue:
+    return compact_json(
         {
             "id": str(case.id),
             "code": case.code,
@@ -83,17 +83,29 @@ def _build_case(case: ContextCase, active_codes_by_id: Mapping[UUID, str]) -> Js
             "business_value": case.business_value,
             "preconditions": case.preconditions,
             "steps": [
-                _compact({"order": step.order, "action": step.action, "expected": step.expected}) for step in case.steps
+                compact_json({"order": step.order, "action": step.action, "expected": step.expected})
+                for step in case.steps
             ],
             "data_keys": list(case.data_keys),
             "file_keys": [file.key for file in case.files],
+            "labels": list(case.labels),
+            "parameters": list(case.parameters),
+            "data_rows": [dict(row) for row in case.data_rows],
         }
     )
 
 
-def _build_data_item(key: str, entries: list[DataEntry], environments: list[ContextEnvironment]) -> JsonValue:
+def build_context_data_json(key: str, entries: list[DataEntry], environments: list[ContextEnvironment]) -> JsonValue:
+    description = next((entry.description for entry in entries if entry.description), None)
     if any(entry.is_secret for entry in entries):
-        return {"key": key, "kind": DataItemKind.SECRET.value, "value": build_data_reference(key)}
+        return compact_json(
+            {
+                "key": key,
+                "kind": DataItemKind.SECRET.value,
+                "value": build_data_reference(key),
+                "description": description,
+            }
+        )
     project_entry = next((entry for entry in entries if entry.environment_id is None), None)
     entries_by_environment_id = {entry.environment_id: entry for entry in entries if entry.environment_id is not None}
     by_environment: dict[str, JsonValue] = {
@@ -101,18 +113,19 @@ def _build_data_item(key: str, entries: list[DataEntry], environments: list[Cont
         for environment in environments
         if environment.id in entries_by_environment_id
     }
-    return _compact(
+    return compact_json(
         {
             "key": key,
             "kind": (project_entry or entries[0]).kind.value,
             "value": None if project_entry is None else project_entry.value,
-            "by_environment": _compact(by_environment),
+            "by_environment": compact_json(by_environment),
+            "description": description,
         }
     )
 
 
-def _build_environment(environment: ContextEnvironment) -> JsonValue:
-    return _compact(
+def build_context_environment_json(environment: ContextEnvironment) -> JsonValue:
+    return compact_json(
         {
             "name": environment.name,
             "base_url": environment.base_url,
@@ -122,7 +135,7 @@ def _build_environment(environment: ContextEnvironment) -> JsonValue:
     )
 
 
-def _compact(content: Mapping[str, JsonValue]) -> dict[str, JsonValue]:
+def compact_json(content: Mapping[str, JsonValue]) -> dict[str, JsonValue]:
     return {key: value for key, value in content.items() if not _is_empty(value)}
 
 
@@ -130,5 +143,5 @@ def _is_empty(value: JsonValue) -> bool:
     return value is None or value is False or value in ("", [], {})
 
 
-def _build_tool_result(content: Mapping[str, JsonValue]) -> CallToolResult:
+def build_compact_tool_result(content: Mapping[str, JsonValue]) -> CallToolResult:
     return CallToolResult(content=[TextContent(type="text", text=json.dumps(content, separators=(",", ":")))])

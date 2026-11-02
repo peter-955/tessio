@@ -1,9 +1,11 @@
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import ForeignKey, Index, Text, Uuid
+from sqlalchemy import Computed, ForeignKey, Index, Text, Uuid
+from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import Mapped, mapped_column
 
+from app.modules.gaps.typing.constants import SEARCH_VECTOR_EXPRESSION
 from app.modules.gaps.typing.enums import GapDataScope, GapSeverity, GapStatus, GapTargetType, GapType
 from app.shared.permissions import ProjectRole
 from app.shared.postgres import TableBase, build_text_enum
@@ -11,7 +13,10 @@ from app.shared.postgres import TableBase, build_text_enum
 
 class GapTable(TableBase):
     __tablename__ = "gaps"
-    __table_args__ = (Index("ix_gaps_story_id_status", "story_id", "status"),)
+    __table_args__ = (
+        Index("ix_gaps_story_id_status", "story_id", "status"),
+        Index("ix_gaps_search_vector", "search_vector", postgresql_using="gin"),
+    )
 
     id: Mapped[UUID] = mapped_column(primary_key=True)
     project_id: Mapped[UUID] = mapped_column(ForeignKey("projects.id"), index=True)
@@ -30,6 +35,10 @@ class GapTable(TableBase):
     answer: Mapped[str | None] = mapped_column(Text)
     answered_by: Mapped[UUID | None] = mapped_column(ForeignKey("users.id"))
     answered_at: Mapped[datetime | None]
+    answered_via_token_id: Mapped[UUID | None] = mapped_column(Uuid)
     reopened_by: Mapped[UUID | None] = mapped_column(ForeignKey("users.id"))
     reopened_at: Mapped[datetime | None]
     created_at: Mapped[datetime]
+    search_vector: Mapped[str | None] = mapped_column(
+        TSVECTOR, Computed(SEARCH_VECTOR_EXPRESSION, persisted=True), deferred=True
+    )

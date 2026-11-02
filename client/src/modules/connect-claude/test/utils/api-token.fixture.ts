@@ -10,8 +10,10 @@ export const createApiToken = (changes: Partial<ApiToken> = {}): ApiToken => {
     projectKey: "TES",
     projectName: "Tessio",
     status: "active",
+    scope: "mcp",
     expiresAt: "2026-12-01T10:00:00Z",
     lastUsedAt: null,
+    pluginVersion: null,
     revokedAt: null,
     createdAt: "2026-11-01T10:00:00Z",
     ...changes,
@@ -30,6 +32,7 @@ export const createProject = (changes: Partial<Project> = {}): Project => {
     description: null,
     jiraProjectKey: "TES",
     jiraBoardId: 1,
+    isLinkedToJira: true,
     allowedFileTypes: ["image/png"],
     isArchived: false,
     archivedAt: null,
@@ -37,6 +40,7 @@ export const createProject = (changes: Partial<Project> = {}): Project => {
     myRole: "qc",
     capabilities: ["project.view"],
     defaultEnvironmentId: null,
+    requireSeparateReviewer: false,
     ...changes,
   };
 };

@@ -24,7 +24,7 @@ As a PM or BA, I want the current sprint's testing status at a glance, so that I
 - AC2: The current sprint is the `active` sprint with the latest start date. A "Sprint" picker can show any synced sprint (`sprintId`); an unknown sprint id gives "Sprint not found" with "Show the current sprint".
 - AC3: The panel shows the number of stories, open gaps, active failures (`open`, `fixed` or `reopened`) and AC covered as a percentage.
 - AC4: "Stories by test status" counts the sprint's stories per status: Not started, Ready for test, In test, Passed, Failed.
-- AC5: "AC coverage" shows "{covered} of {total} AC covered" and a bar split into Passed, Failed, Blocked, Not run and Uncovered, from the AC status rule in [traceability](traceability.md). Removed AC are not counted.
+- AC5: "AC coverage" shows "{covered} of {total} AC covered" and a bar split into Passed, Failed, Blocked, Not run and Uncovered, from the AC status rule in [traceability](traceability.md). Removed AC are not counted. Results of suite runs count for each case's own story; the stories-by-test-status counts never change because of a suite run ([SUITE-7](suites-and-plans.md#suite-7-read-models-with-suite-runs-wbs-91)).
 - AC6: With no active sprint and none picked, the panel says "No active sprint" ("Pick a sprint, or sync with Jira once a sprint starts.").
 
 ### DASH-2 Recent runs (WBS 3.4.2)
@@ -34,6 +34,7 @@ As a team member, I want the latest runs on the dashboard, so that I see what ju
 - AC1: "Recent runs" lists the 5 newest runs of the project (`GET /api/projects/{project_key}/runs?limit=5`) with status, story, executor, environment, who started it, when, and "{passed} passed · {failed} failed of {total}".
 - AC2: Aborted runs show their reason (no results or inactive).
 - AC3: "View all runs" opens `/projects/[projectKey]/runs`. With no runs it says "No runs yet".
+- AC4: A suite run is listed with the suite's name instead of a story ([SUITE-7](suites-and-plans.md#suite-7-read-models-with-suite-runs-wbs-91)).
 
 ### DASH-3 My work per role (WBS 3.4.3)
 

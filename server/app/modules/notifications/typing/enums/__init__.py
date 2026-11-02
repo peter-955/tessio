@@ -1,3 +1,4 @@
-from app.modules.notifications.typing.enums.notification import NotificationKind, RunOutcome
+from app.modules.notifications.typing.enums.notification import NotificationChannel, NotificationKind, RunOutcome
+from app.modules.notifications.typing.enums.report import ReportFormat, ReportSource
 
-__all__ = ["NotificationKind", "RunOutcome"]
+__all__ = ["NotificationChannel", "NotificationKind", "ReportFormat", "ReportSource", "RunOutcome"]

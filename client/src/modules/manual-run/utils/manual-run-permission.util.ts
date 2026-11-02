@@ -8,7 +8,7 @@ type RecordableRun = Pick<ManualRunActionsRun, "executor" | "status" | "startedB
 
 type RerunnableRun = Pick<
   ManualRunActionsRun,
-  "executor" | "status" | "failedCount" | "blockedCount"
+  "executor" | "status" | "failedCount" | "blockedCount" | "isUntargeted"
 >;
 
 const checkCanRecordManually = (project: PermissionProject): boolean => {
@@ -32,12 +32,28 @@ export const checkCanRecordRun = (
   );
 };
 
+export const checkCanRevealRunSecrets = (
+  project: PermissionProject,
+  run: Pick<ManualRunActionsRun, "startedBy">,
+  userId: string,
+): boolean => {
+  return (
+    !project.isArchived &&
+    checkHasProjectCapability(project, "secret.use_in_run") &&
+    run.startedBy === userId
+  );
+};
+
 export const checkCanRerunFailed = (project: PermissionProject, run: RerunnableRun): boolean => {
   if (project.isArchived || !checkHasProjectCapability(project, "run.start")) {
     return false;
   }
 
   if (run.status === "running" || run.failedCount + run.blockedCount === 0) {
+    return false;
+  }
+
+  if (run.isUntargeted === true) {
     return false;
   }
 

@@ -1,0 +1,49 @@
+{
+  "badges": {
+    "flaky": "Không ổn định",
+    "disagreeing": "Kết quả lệch nhau",
+    "quarantined": "Đang cách ly"
+  },
+  "filters": {
+    "flaky": "Chỉ ca không ổn định",
+    "disagreeing": "Chỉ ca có kết quả lệch nhau",
+    "quarantined": "Chỉ ca đang cách ly"
+  },
+  "alerts": {
+    "flakyTitle": "Ca kiểm thử không ổn định",
+    "flaky_one": "{{count}} lần đổi đạt/không đạt trong 10 kết quả gần nhất của phiên bản này, không ổn định từ {{date}}. Hãy kiểm tra các bước và dữ liệu kiểm thử trước khi tin vào một lần không đạt.",
+    "flaky_other": "{{count}} lần đổi đạt/không đạt trong 10 kết quả gần nhất của phiên bản này, không ổn định từ {{date}}. Hãy kiểm tra các bước và dữ liệu kiểm thử trước khi tin vào một lần không đạt.",
+    "disagreeingTitle": "Người kiểm thử và Claude cho kết quả khác nhau",
+    "disagreeing": "Một kết quả thủ công và một kết quả của Claude trên phiên bản này khác nhau và được ghi cách nhau không quá 24 giờ (gần nhất lúc {{date}}). Hãy xác định kết quả nào đúng.",
+    "quarantinedTitle": "Đang cách ly",
+    "quarantined": "Đang cách ly từ {{date}}, bởi {{name}}.",
+    "quarantinedReason": "Lý do: {{reason}}",
+    "quarantineNote": "Hiện tại cách ly chỉ là một dấu đánh: ca vẫn được chạy và khi không đạt vẫn mở lỗi. Ca tự ra khỏi cách ly sau 10 lần đạt liên tiếp.",
+    "formerMember": "một thành viên cũ"
+  },
+  "actions": {
+    "quarantine": "Cách ly",
+    "release": "Bỏ cách ly"
+  },
+  "modal": {
+    "title": "Cách ly {{code}}?",
+    "message": "Đánh dấu ca này là đang cách ly trong lúc bạn tìm nguyên nhân. Ca tự ra khỏi cách ly sau 10 lần đạt liên tiếp.",
+    "reason": "Lý do",
+    "reasonDescription": "Không bắt buộc, tối đa 500 ký tự.",
+    "reasonPlaceholder": "Ví dụ: không đạt ngẫu nhiên ở bước thanh toán"
+  },
+  "toasts": {
+    "quarantined": "{{code}} đang được cách ly.",
+    "released": "{{code}} đã ra khỏi cách ly."
+  },
+  "history": {
+    "title": "Lịch sử cách ly",
+    "quarantined": "Cách ly bởi {{name}}",
+    "released": "Bỏ cách ly bởi {{name}}",
+    "autoReleased": "Tự bỏ cách ly sau 10 lần đạt liên tiếp",
+    "reason": "Lý do: {{reason}}",
+    "formerMember": "một thành viên cũ",
+    "loadError": "Không tải được lịch sử cách ly.",
+    "retry": "Thử lại"
+  }
+}

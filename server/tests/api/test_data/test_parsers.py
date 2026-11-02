@@ -20,8 +20,19 @@ def test_dotenv_skips_blank_lines_and_comments_and_strips_export() -> None:
     parsed = parse_dotenv("\n# a comment\n   # indented comment\nexport BASE_URL=https://shop.test\nUSER=alice\n")
 
     assert parsed.format is ImportFormat.DOTENV
-    assert parsed.entries == entries_of(("BASE_URL", "https://shop.test"), ("USER", "alice"))
+    assert parsed.entries == [
+        ImportEntry(key="BASE_URL", value="https://shop.test", description="a comment indented comment"),
+        ImportEntry(key="USER", value="alice"),
+    ]
     assert parsed.skipped == []
+
+
+def test_dotenv_comments_right_above_a_key_become_its_description() -> None:
+    parsed = parse_dotenv(
+        "# Shop admin sign-in\nADMIN_USER=admin\n# Not about LOCALE\n\nLOCALE=fr\n#\n# " + "x" * 600 + "\nNOTE=n\n"
+    )
+
+    assert [entry.description for entry in parsed.entries] == ["Shop admin sign-in", None, "x" * 500]
 
 
 def test_dotenv_double_quotes_unescape_newlines_tabs_quotes_and_backslashes() -> None:
@@ -188,21 +199,21 @@ def test_more_than_one_thousand_entries_are_refused() -> None:
 
 
 @pytest.mark.parametrize(
-    ("key", "value", "kind"),
+    ("key", "kind"),
     [
-        ("ADMIN_PASSWORD", "x", DataItemKind.SECRET),
-        ("db.passwd", "x", DataItemKind.SECRET),
-        ("PWD", "x", DataItemKind.SECRET),
-        ("client_secret", "x", DataItemKind.SECRET),
-        ("ACCESS_TOKEN", "https://not-an-endpoint.test", DataItemKind.SECRET),
-        ("stripe.api-key", "x", DataItemKind.SECRET),
-        ("PRIVATE_KEY", "x", DataItemKind.SECRET),
-        ("aws_credentials", "x", DataItemKind.SECRET),
-        ("CHECKOUT_URL", "https://shop.test/checkout", DataItemKind.ENDPOINT),
-        ("LEGACY", "http://old.test", DataItemKind.ENDPOINT),
-        ("USER", "alice", DataItemKind.VARIABLE),
-        ("NOTE", "see https://shop.test", DataItemKind.VARIABLE),
+        ("ADMIN_PASSWORD", DataItemKind.SECRET),
+        ("db.passwd", DataItemKind.SECRET),
+        ("PWD", DataItemKind.SECRET),
+        ("client_secret", DataItemKind.SECRET),
+        ("ACCESS_TOKEN", DataItemKind.SECRET),
+        ("stripe.api-key", DataItemKind.SECRET),
+        ("PRIVATE_KEY", DataItemKind.SECRET),
+        ("aws_credentials", DataItemKind.SECRET),
+        ("CHECKOUT_URL", DataItemKind.VARIABLE),
+        ("LEGACY", DataItemKind.VARIABLE),
+        ("USER", DataItemKind.VARIABLE),
+        ("NOTE", DataItemKind.VARIABLE),
     ],
 )
-def test_suggest_kind(key: str, value: str, kind: DataItemKind) -> None:
-    assert suggest_kind(key, value) is kind
+def test_suggest_kind(key: str, kind: DataItemKind) -> None:
+    assert suggest_kind(key) is kind

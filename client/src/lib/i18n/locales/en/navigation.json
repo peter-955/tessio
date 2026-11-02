@@ -14,5 +14,10 @@
   "profile": "Profile",
   "connectClaude": "Connect Claude",
   "gapInbox": "My gaps",
-  "environments": "Environments"
+  "environments": "Environments",
+  "aiHarness": "AI Harness",
+  "suites": "Suites",
+  "plans": "Plans",
+  "sharedSteps": "Shared steps",
+  "insights": "Insights"
 }

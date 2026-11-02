@@ -2,20 +2,28 @@
 
 **Status:** Draft, written 2026-11-01 for the build after W7. WBS 8.2.
 
-This page is for Dev and QC, and for Admins, PMs and BAs who want Claude to review a story's readiness. One plugin install gives Claude Code the Tessio MCP server `plugin:tessio:tessio`, the screenshot upload hook and three skills, and the only inputs are your Tessio URL and a token.
+This page is for Dev and QC, and for Admins, PMs and BAs who want Claude to review a story's readiness or answer the gaps waiting for them. QC and Admins can also have Claude import or draft test cases. One plugin install gives Claude Code the Tessio MCP server `plugin:tessio:tessio`, the screenshot upload hook and seven skills, and the only inputs are your Tessio URL and a token.
 
 ## What Claude can do for your role
 
-| Project role | `/tessio:review-readiness` | `/tessio:run-story-tests` | `/tessio:rerun-failed` |
-| --- | --- | --- | --- |
-| Admin | Yes | Yes | Yes |
-| QC | Yes | Yes | Yes |
-| Dev | Yes | Yes | Yes |
-| PM | Yes | No | No |
-| BA | Yes | No | No |
-| Viewer | Read only | No | No |
+| Project role | `/tessio:review-readiness` | `/tessio:answer-gaps` | `/tessio:run-story-tests`, `/tessio:run-suite` | `/tessio:rerun-failed` | `/tessio:import-cases`, `/tessio:draft-cases` |
+| --- | --- | --- | --- | --- | --- |
+| Admin | Yes | Yes | Yes | Yes | Yes |
+| QC | Yes | Yes | Yes | Yes | Yes |
+| Dev | Yes | Yes | Yes | Yes | No |
+| PM | Yes | Yes, without saving test data | No | No | No |
+| BA | Yes | Yes, without saving test data | No | No | No |
+| Viewer | Read only | No | No | No | No |
 
-A Viewer's token can read the story, its gaps and its runs. Filing gaps and starting runs are refused with `PERMISSION_DENIED`.
+A Viewer's token can read the story, its gaps and its runs. Filing or answering gaps and starting runs are refused with `PERMISSION_DENIED`.
+
+`/tessio:answer-gaps [STORY-KEY | mine]` works through the open gaps assigned to you or to your role queue, high severity first. For each gap it says what the question means and what it blocks, and offers two or three answers, each with its source: the story, an AC, an earlier answer to a similar question, existing test data, or the product's code (file and line) when you run Claude Code in the product's repository. You pick one with a key press, write your own, reassign the gap or skip it. Nothing is saved until you confirm the batch. For missing plain test data, Admin, QC and Dev also have the value saved to **Test data**; PM and BA answer only, and a QC or Dev adds the value. Claude never asks for a secret: it gives you the link to the project's **Test data** page instead. It never edits cases or Jira; at the end it lists the cases the answers suggest updating, for QC.
+
+`/tessio:run-suite <suite> [environment] [case codes]` runs a regression suite: the Ready cases of many stories, picked on the suite page in Tessio. Quote a name with spaces (`/tessio:run-suite "Checkout regression" staging`). Claude first lists the cases the suite skips (not Ready, or flagged *Needs review*), then runs the rest in runs of at most 50 cases, one after the other, and reports the results per story. A suite run never changes a story's test status; its failures open on each case's story. If Claude stops before the end, it gives you the command that runs the cases that are left.
+
+When a run is blocked by open gaps, `/tessio:run-story-tests`, `/tessio:run-suite` and `/tessio:rerun-failed` list the gaps by who must answer them, offer `/tessio:answer-gaps` for yours, and name the people or role queues for the rest.
+
+`/tessio:import-cases <file> [STORY-KEY]` turns a test plan file (xlsx, csv, docx, pdf, text or an image) into test cases. `/tessio:draft-cases <STORY-KEY>` writes cases from the story's acceptance criteria. Both show you a summary and ask before creating anything, and every case they create is a Draft that QC reviews before it can run.
 
 The token always acts with your current role in that one project. If your role changes, the next call uses the new role.
 
@@ -57,19 +65,19 @@ Each project needs its own token.
 Run the command from the dialog in your terminal. It has this shape:
 
 ```bash
-claude plugin install tessio --marketplace <marketplace> --config tessio_url=https://tessio.example.com --config tessio_token=tsio_...
+claude plugin install tessio --marketplace https://tessio.example.com/api/plugin/marketplace.json --config tessio_url=https://tessio.example.com --config tessio_token=tsio_...
 ```
 
 | Argument | What it is |
 | --- | --- |
 | `tessio` | The plugin. Once installed, its id is `tessio@tessio`. |
-| `--marketplace <marketplace>` | Where the plugin lives. Your workspace admin sets it. Claude Code adds the marketplace first if it does not know it yet. |
+| `--marketplace …/api/plugin/marketplace.json` | Where the plugin lives: your Tessio server serves it ([ADR 0010](../decisions/0010-tessio-serves-its-claude-plugin.md)). Claude Code adds the marketplace first if it does not know it yet. |
 | `--config tessio_url=...` | The address you use for Tessio in the browser, without `/mcp`. The page fills it in for you. |
 | `--config tessio_token=...` | Your `tsio_...` token. It is marked sensitive, so Claude Code keeps it in its secure credential storage and not in `settings.json`. |
 
 The plugin is installed for your user by default (`-s user`). Then restart Claude Code, or run `/reload-plugins` in a running session.
 
-In local development, the web app on `http://localhost:3201` forwards `/api` and `/mcp` to the server, so both `http://localhost:3201` and `http://localhost:3202` work as `tessio_url`.
+Claude Code installs the plugin only from an HTTPS address, so the command works against the deployed Tessio and not against `localhost`. In local development, load the plugin from the repository with `claude --plugin-dir <path to the repo>/claude`; the web app on `http://localhost:3201` forwards `/api` and `/mcp` to the server, so both `http://localhost:3201` and `http://localhost:3202` work as `tessio_url`.
 
 ### Keep the token out of your shell history
 
@@ -78,7 +86,7 @@ The command on the page puts the token on the command line. To avoid that, use o
 Leave out the token option, and Claude Code asks for it:
 
 ```bash
-claude plugin install tessio --marketplace <marketplace> --config tessio_url=https://tessio.example.com
+claude plugin install tessio --marketplace https://tessio.example.com/api/plugin/marketplace.json --config tessio_url=https://tessio.example.com
 ```
 
 Or write the values in a file with an editor, and pipe the file in:
@@ -97,13 +105,9 @@ rm values.json
 If `claude plugin install --help` does not list `--config`, add the marketplace first, then install. The install asks for both options.
 
 ```bash
-claude plugin marketplace add <marketplace>
+claude plugin marketplace add https://tessio.example.com/api/plugin/marketplace.json
 claude plugin install tessio@tessio
 ```
-
-### If the command shows `<marketplace>`
-
-The plugin source is not set yet, and the dialog says "The plugin source is not configured. Replace <marketplace> with the value your admin gives you." Ask your workspace admin for the value. Admins: see [For workspace admins: the plugin source](#for-workspace-admins-the-plugin-source).
 
 ## 3. Check that it works
 
@@ -125,7 +129,7 @@ It lists `tessio@tessio` as enabled. Then, in a Claude Code session:
 | --- | --- |
 | `/mcp` | `plugin:tessio:tessio` is connected. |
 | `/hooks` | A `PostToolUse` hook with the matcher `mcp__plugin_tessio_tessio__record_case_result`. |
-| Type `/tessio:` | `/tessio:run-story-tests`, `/tessio:rerun-failed` and `/tessio:review-readiness` are listed. |
+| Type `/tessio:` | `/tessio:run-story-tests`, `/tessio:run-suite`, `/tessio:rerun-failed`, `/tessio:review-readiness`, `/tessio:answer-gaps`, `/tessio:import-cases` and `/tessio:draft-cases` are listed. |
 
 Make a first real call with your own story key:
 
@@ -134,6 +138,10 @@ Make a first real call with your own story key:
 ```
 
 The full run flow is in the [Dev guide](user/dev.md#run-the-tests).
+
+## Execution log
+
+After `finish_run`, the plugin also uploads Claude's notes and actions of the run, with secrets masked. Testers read them on the run's **Log** tab. A log that could not be sent waits in `~/.tessio/pending-run-logs/` and is sent with the next run.
 
 ## Screenshot compression
 
@@ -177,12 +185,14 @@ A token stops working when it expires. Create a new one before then and configur
 
 ## Update or remove the plugin
 
-Get the latest plugin version, then restart Claude Code:
+Everyone must run the plugin version the server serves. When Tessio is updated, Claude's Tessio tools answer `PLUGIN_OUTDATED` with the command to run. Get the latest version, then restart Claude Code:
 
 ```bash
 claude plugin marketplace update tessio
 claude plugin update tessio@tessio
 ```
+
+To get new versions without being asked, open `/plugin` in a session, go to **Marketplaces**, select `tessio` and turn on **Enable auto-update**. Claude Code then updates the plugin in the background and tells you to run `/reload-plugins`.
 
 Remove the plugin:
 
@@ -192,15 +202,15 @@ claude plugin uninstall tessio@tessio
 
 ## Manual setup without the plugin
 
-Use this only if the marketplace is not reachable from your machine, or if plugins are blocked by policy.
+Use this only if the marketplace is not reachable from your machine, or if plugins are blocked by policy. The server refuses MCP calls without the plugin version, so this setup sends it by hand and must be updated with each release.
 
 1. Connect the MCP server at local or user scope:
 
    ```bash
-   claude mcp add --transport http tessio https://tessio.example.com/mcp --header "Authorization: Bearer tsio_..." -s user
+   claude mcp add --transport http tessio https://tessio.example.com/mcp --header "Authorization: Bearer tsio_..." --header "X-Tessio-Plugin-Version: 0.2.0" -s user
    ```
 
-   Never use `-s project`. It writes the token to the project's shared `.mcp.json`.
+   Never use `-s project`. It writes the token to the project's shared `.mcp.json`. Use the version in `claude/.claude-plugin/plugin.json` of the release your Tessio runs.
 
 2. Add the hook and the settings to `~/.claude/settings.json` or to the project's `.claude/settings.local.json`. Never put them in a committed `.claude/settings.json`. These files hold the token in plain text.
 
@@ -235,18 +245,7 @@ Limits of this setup:
 
 ## For workspace admins: the plugin source
 
-The Connect Claude page builds the install command with the plugin source that was set when the client image was built.
-
-1. Set the GitHub repository variable `TESSIO_PLUGIN_MARKETPLACE` to the repository that holds `.claude-plugin/marketplace.json`. The CI workflow passes it to the build argument `NEXT_PUBLIC_TESSIO_PLUGIN_MARKETPLACE`.
-2. Rebuild and deploy the client image.
-
-| Form | Example |
-| --- | --- |
-| `owner/repo` | `acme/tessio` |
-| A git or https URL | `https://git.example.com/acme/tessio.git` |
-| A path | `/opt/tessio` |
-
-For a private repository, each developer needs git read access with their usual credentials. Until the variable is set, the page shows `<marketplace>`.
+Nothing to set up. The API serves the plugin from the `claude/` folder it was built with, at `https://<your Tessio>/api/plugin/marketplace.json`, and the Connect Claude page builds the install command from the page's own address. `CLIENT_URL` must be the public HTTPS address, because the marketplace file points at the zip under it. See [ADR 0010](../decisions/0010-tessio-serves-its-claude-plugin.md).
 
 ## Troubleshooting
 
@@ -256,12 +255,17 @@ An MCP tool error reads `Error executing tool <tool>: <CODE>: <message>`. Look u
 | --- | --- | --- |
 | `/mcp` shows `plugin:tessio:tessio` as failed | The URL is wrong, `/mcp` was added to `tessio_url`, or the server is down. | Run the `curl` health check. Set `tessio_url` to the browser address without `/mcp`, then `/reload-plugins`. |
 | `INVALID_API_TOKEN` | The token expired or was revoked, your user was deactivated, you were removed from the project, or the value is not a `tsio_` token. | Create a new token and configure it. |
+| `PLUGIN_OUTDATED` | Your plugin is older than the one this Tessio serves. | Run `claude plugin marketplace update tessio && claude plugin update tessio@tessio`, then restart Claude Code. |
 | `PERMISSION_DENIED` | Your role in the project cannot do this. | See [What Claude can do for your role](#what-claude-can-do-for-your-role). Ask a project admin for another role. |
 | `NOT_FOUND` on a story | The story belongs to another project than the token's. | Switch to a token for that project. |
+| `NOT_FOUND` on a suite | No suite of the token's project has that name or id. | Copy the command from the suite page in Tessio, or quote a name with spaces. |
 | `PROJECT_ARCHIVED` | The project is archived. | Ask a project admin. |
-| `OPEN_GAPS_BLOCK_RUN` | The story has open gaps. | Get the gaps answered, then start again. |
+| `OPEN_GAPS_BLOCK_RUN` | The story has open gaps. For a suite run: a story with a case in the suite has open gaps. | Answer yours with `/tessio:answer-gaps <STORY-KEY>` (or `/tessio:answer-gaps` for several stories); Claude names who must answer the rest. Then start again. |
 | `NO_READY_CASES` | The story has no *Ready* test cases. | Ask QC to move the cases to *Ready*. |
 | `RUN_ALREADY_RUNNING` | A run is already in progress for this story. | Wait for it to finish, or ask the person who started it. |
+| `SUITE_ALREADY_RUNNING` | A run of this suite is already in progress. | Wait for it to finish, or ask the person who started it. A run with no activity for 4 hours is aborted on its own. |
+| `SUITE_EMPTY` | The suite has no *Ready* case that isn't flagged *Needs review*. | Ask QC to move the cases to *Ready* or clear the flag. |
+| `SUITE_ARCHIVED` | The suite is archived. | Run another suite, or ask QC. |
 | `RUN_NOT_OWNED` | Only the person who started the run can record results or finish it. | Use your own run. |
 | Hook stderr says "Tessio hook: set the plugin options tessio_url and tessio_token (...), or TESSIO_URL and TESSIO_TOKEN, to upload screenshots." | Claude Code did not pass the sensitive option to the hook. | Add `TESSIO_URL` and `TESSIO_TOKEN` under `env` in `~/.claude/settings.json`, as in the manual setup. |
 | `finish_run` lists missing screenshots | The uploads did not reach storage. | Check `~/.tessio/pending-uploads.jsonl` and your network. Pending uploads are retried on the next hook run. |

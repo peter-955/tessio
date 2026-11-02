@@ -1,7 +1,7 @@
 from collections.abc import Collection
 from uuid import UUID
 
-from sqlalchemy import and_, case, func, or_, select
+from sqlalchemy import and_, case, func, or_, select, union
 from sqlalchemy.dialects.postgresql import distinct_on
 
 from app.modules.failures.infrastructure import FailureTable
@@ -22,7 +22,7 @@ from app.modules.insights.typing.constants import (
     FAILURE_TO_FIX_STATUSES,
 )
 from app.modules.insights.utils.case_code import format_case_code
-from app.modules.runs.infrastructure import RunTable
+from app.modules.runs.infrastructure import RunCaseTable, RunTable
 from app.modules.stories.infrastructure import StoryTable
 from app.modules.test_cases.infrastructure import TestCaseTable
 from app.shared.permissions import ProjectRole
@@ -65,11 +65,34 @@ class PostgresActivityReader(ActivityReader):
     async def find_last_runs(self, project_id: UUID, story_ids: Collection[UUID]) -> dict[UUID, RunReference]:
         if not story_ids:
             return {}
+        story_runs = select(
+            RunTable.story_id.label("story_id"),
+            RunTable.id.label("run_id"),
+            RunTable.status.label("status"),
+            RunTable.started_at.label("started_at"),
+            RunTable.finished_at.label("finished_at"),
+        ).where(RunTable.project_id == project_id, RunTable.story_id.in_(story_ids))
+        storyless_runs = (
+            select(
+                TestCaseTable.story_id.label("story_id"),
+                RunTable.id.label("run_id"),
+                RunTable.status.label("status"),
+                RunTable.started_at.label("started_at"),
+                RunTable.finished_at.label("finished_at"),
+            )
+            .join(RunCaseTable, RunCaseTable.run_id == RunTable.id)
+            .join(TestCaseTable, TestCaseTable.id == RunCaseTable.test_case_id)
+            .where(
+                RunTable.project_id == project_id,
+                RunTable.story_id.is_(None),
+                TestCaseTable.story_id.in_(story_ids),
+            )
+        )
+        runs = union(story_runs, storyless_runs).subquery("story_runs")
         result = await self._database.get_current_session().execute(
-            select(RunTable.story_id, RunTable.id, RunTable.status, RunTable.started_at, RunTable.finished_at)
-            .ext(distinct_on(RunTable.story_id))
-            .where(RunTable.project_id == project_id, RunTable.story_id.in_(story_ids))
-            .order_by(RunTable.story_id, RunTable.started_at.desc(), RunTable.id.desc())
+            select(runs.c.story_id, runs.c.run_id, runs.c.status, runs.c.started_at, runs.c.finished_at)
+            .ext(distinct_on(runs.c.story_id))
+            .order_by(runs.c.story_id, runs.c.started_at.desc(), runs.c.run_id.desc())
         )
         return {
             story_id: RunReference(id=run_id, status=status, started_at=started_at, finished_at=finished_at)

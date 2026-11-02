@@ -1,0 +1,14 @@
+{
+  "whyItFailed": "Why it failed",
+  "suspectedCause": "Suspected cause",
+  "page": "Page",
+  "consoleErrors": "Console errors",
+  "failedRequests": "Failed requests",
+  "cause": {
+    "app_bug": "App bug",
+    "test_data": "Test data",
+    "environment": "Environment",
+    "test_case": "Test case out of date",
+    "unknown": "Unknown"
+  }
+}

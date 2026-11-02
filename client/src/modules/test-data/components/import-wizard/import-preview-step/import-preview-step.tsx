@@ -134,7 +134,12 @@ export const ImportPreviewStep: FC<Props> = ({
                         }}
                       />
                     </td>
-                    <td className={styles.key}>{row.key}</td>
+                    <td className={styles.key}>
+                      {row.key}
+                      {row.description !== null && (
+                        <span className={styles.description}>{row.description}</span>
+                      )}
+                    </td>
                     <td>
                       {row.value === null ? (
                         <span className={styles.mask}>{SECRET_MASK}</span>

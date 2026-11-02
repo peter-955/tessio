@@ -1,0 +1,67 @@
+{
+  "actions": {
+    "openImport": "Nhập kết quả JUnit",
+    "import": "Nhập",
+    "close": "Đóng",
+    "openRun": "Mở lượt chạy"
+  },
+  "form": {
+    "title": "Nhập kết quả JUnit",
+    "description": "Tải lên báo cáo JUnit XML từ Playwright, Jest, pytest hoặc công cụ khác. Một bài test được tính cho một test case khi tên của nó hoặc thuộc tính tessio.case chứa mã test case, ví dụ TC-12.",
+    "loading": "Đang tải môi trường",
+    "noEnvironment": "Dự án này chưa có môi trường nào đang hoạt động.",
+    "environment": "Môi trường",
+    "environmentPlaceholder": "Chọn một môi trường",
+    "suite": "Bộ kiểm thử",
+    "suitePlaceholder": "Không có bộ kiểm thử",
+    "suiteDescription": "Không bắt buộc. Khi chọn, lượt chạy thuộc về bộ kiểm thử này.",
+    "suiteNotFound": "Không có bộ kiểm thử phù hợp",
+    "dropTitle": "Thả tệp JUnit XML vào đây",
+    "dropDescription": "Hoặc bấm để chọn tệp. Tối đa 10 MB.",
+    "chosenFile": "Tệp: {{name}}"
+  },
+  "errors": {
+    "notXml": "Chọn một tệp .xml.",
+    "tooLarge": "Tệp lớn hơn 10 MB.",
+    "empty": "Tệp trống.",
+    "fileRequired": "Chọn một tệp JUnit XML.",
+    "environmentRequired": "Chọn một môi trường.",
+    "unknownReference": "Môi trường hoặc bộ kiểm thử này không còn tồn tại. Hãy chọn cái khác.",
+    "environmentsLoadFailed": "Không tải được danh sách môi trường.",
+    "suitesLoadFailed": "Không tải được danh sách bộ kiểm thử."
+  },
+  "result": {
+    "heading": "Đã nhập kết quả",
+    "title": {
+      "passed": "Lượt chạy CI đạt",
+      "failed": "Lượt chạy CI không đạt"
+    },
+    "counts": "{{total}} test case: {{passed}} đạt, {{failed}} không đạt, {{skipped}} bỏ qua.",
+    "mapped_one": "{{count}} bài test khớp với một test case.",
+    "mapped_other": "{{count}} bài test khớp với một test case.",
+    "unmapped_one": "{{count}} bài test không khớp test case nào.",
+    "unmapped_other": "{{count}} bài test không khớp test case nào."
+  },
+  "unmapped": {
+    "title_one": "{{count}} bài test chưa liên kết",
+    "title_other": "{{count}} bài test chưa liên kết",
+    "description": "Các bài test này có trong tệp JUnit nhưng không nêu test case nào của dự án. Hãy thêm mã test case vào tên bài test hoặc thuộc tính tessio.case.",
+    "tableLabel": "Bài test chưa liên kết",
+    "columns": {
+      "test": "Bài test",
+      "result": "Kết quả",
+      "reason": "Lý do"
+    },
+    "reasons": {
+      "no_case_code": "Không có mã test case",
+      "unknown_case": "Test case không tồn tại hoặc đã ngừng dùng"
+    },
+    "notListed_one": "Còn {{count}} bài test không được liệt kê.",
+    "notListed_other": "Còn {{count}} bài test không được liệt kê."
+  },
+  "ciRun": {
+    "target": "Nhập từ CI",
+    "detailTitle": "Nhập từ CI",
+    "detailDescription": "Kết quả JUnit được nhập từ CI, trên các story của dự án."
+  }
+}

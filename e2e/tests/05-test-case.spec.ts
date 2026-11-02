@@ -39,10 +39,10 @@ test("the QC writes a test case and makes it ready", async ({ qcPage }) => {
   await expect(
     qcPage.getByRole("heading", { name: `${CASE_CODE} · ${CASE.title}`, level: 1 }),
   ).toBeVisible();
-  await expect(qcPage.getByRole("combobox", { name: "Priority" })).toHaveValue(CASE.priority);
-  await expect(qcPage.getByRole("tabpanel", { name: "Details" })).toContainText(
-    `${CASE.criterionCode} · ${SAVED_CARD_STORY.acceptanceCriteria[0]}`,
-  );
+  await expect(qcPage.getByRole("main").getByText(CASE.priority, { exact: true })).toBeVisible();
+  const covers = qcPage.getByRole("region", { name: "Covers" });
+  await expect(covers).toContainText(CASE.criterionCode);
+  await expect(covers).toContainText(SAVED_CARD_STORY.acceptanceCriteria[0] ?? "");
   const savedSteps = qcPage.getByRole("region", { name: "Steps" }).getByRole("listitem");
   await expect(savedSteps).toHaveCount(CASE.steps.length);
 

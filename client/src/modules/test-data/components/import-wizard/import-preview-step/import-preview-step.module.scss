@@ -45,3 +45,10 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+.description {
+  display: block;
+  font-family: var(--mantine-font-family);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

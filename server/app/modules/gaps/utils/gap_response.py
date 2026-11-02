@@ -30,6 +30,7 @@ def build_gap_response(view: GapView) -> GapResponse:
         answered_by=gap.answered_by,
         answered_by_name=view.answered_by_name,
         answered_at=gap.answered_at,
+        is_answered_via_claude=gap.answered_via_token_id is not None,
         reopened_by_name=view.reopened_by_name,
         reopened_at=gap.reopened_at,
         created_at=gap.created_at,

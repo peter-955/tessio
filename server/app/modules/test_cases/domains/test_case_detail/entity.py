@@ -1,3 +1,4 @@
+from app.modules.labels import Label
 from app.modules.test_cases.domains.case_criterion.entity import CaseCriterion
 from app.modules.test_cases.domains.case_story.entity import CaseStory
 from app.modules.test_cases.domains.test_case.entity import TestCase
@@ -13,3 +14,4 @@ class TestCaseDetail(Entity):
     criteria: list[CaseCriterion]
     files: list[TestFileDetail]
     unknown_references: list[str]
+    labels: list[Label]

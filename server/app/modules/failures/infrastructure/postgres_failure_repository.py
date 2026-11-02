@@ -73,6 +73,18 @@ class PostgresFailureRepository(FailureRepository):
         )
         return count or 0
 
+    async def list_active_with_jira_issue(self, project_id: UUID) -> list[Failure]:
+        rows = await self._database.get_current_session().scalars(
+            select(FailureTable)
+            .where(
+                FailureTable.project_id == project_id,
+                FailureTable.jira_issue_key.is_not(None),
+                FailureTable.status.in_(ACTIVE_FAILURE_STATUSES),
+            )
+            .order_by(FailureTable.created_at, FailureTable.id)
+        )
+        return [Failure.model_validate(row) for row in rows]
+
     async def find_view(self, project_id: UUID, failure_id: UUID) -> FailureView | None:
         result = await self._database.get_current_session().execute(
             self._select_views().where(FailureTable.project_id == project_id, FailureTable.id == failure_id)

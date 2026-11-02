@@ -1,5 +1,7 @@
 FROM ghcr.io/astral-sh/uv:0.13.6-python3.14-trixie-slim
 
+RUN apt-get update && apt-get install -y --no-install-recommends libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core && rm -rf /var/lib/apt/lists/*
+
 RUN groupadd --system --gid 10001 tessio && useradd --system --uid 10001 --gid tessio --no-create-home tessio
 
 WORKDIR /app
@@ -11,7 +13,9 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY . .
 RUN uv sync --frozen --no-dev
 
-ENV PATH="/app/.venv/bin:$PATH" PYTHONUNBUFFERED=1
+COPY --from=plugin . /app/plugin
+
+ENV PATH="/app/.venv/bin:$PATH" PYTHONUNBUFFERED=1 TESSIO_PLUGIN_DIR=/app/plugin
 
 USER tessio
 EXPOSE 8000

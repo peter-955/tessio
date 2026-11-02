@@ -21,18 +21,23 @@ from app.modules.runs.domains.step_result.entity import StepResult
 from app.modules.runs.errors import (
     CaseResultExistsError,
     InvalidStepOrderError,
+    IterationOutOfRangeError,
     RunNotFoundError,
     RunNotOwnedError,
     RunNotRunningError,
     UnknownCaseError,
 )
 from app.modules.runs.ports.case_result_recorded_handler import CaseResultRecordedHandler
+from app.modules.runs.ports.flaky_recompute_requester import FlakyRecomputeRequester
 from app.modules.runs.typing.constants.screenshot import PENDING_SCREENSHOT_CONTENT_TYPE, PENDING_SCREENSHOT_SUFFIX
 from app.modules.runs.typing.enums import ResultStatus
+from app.modules.runs.utils.case_story import resolve_case_story_id
 from app.modules.runs.utils.run_event import build_run_case_recorded_event
+from app.modules.runs.utils.step_diagnosis import build_step_diagnosis, select_suspected_cause
+from app.modules.runs.utils.worst_iteration import is_new_case_outcome
 from app.modules.test_data import SecretValueReader
 from app.shared.common import Transaction
-from app.shared.events import LiveEventPublisher
+from app.shared.events import LiveEvent, LiveEventPublisher
 from app.shared.masking import SecretMasker
 from app.shared.permissions import Actor, Capability, ProjectAccessResolver, ProjectNotFoundError, require
 
@@ -48,6 +53,7 @@ class RecordCaseResultUseCase:
         stored_file_repository: StoredFileRepository,
         secret_value_reader: SecretValueReader,
         case_result_recorded_handler: CaseResultRecordedHandler,
+        flaky_recompute_requester: FlakyRecomputeRequester,
         live_event_publisher: LiveEventPublisher,
     ) -> None:
         self._transaction = transaction
@@ -58,6 +64,7 @@ class RecordCaseResultUseCase:
         self._stored_file_repository = stored_file_repository
         self._secret_value_reader = secret_value_reader
         self._case_result_recorded_handler = case_result_recorded_handler
+        self._flaky_recompute_requester = flaky_recompute_requester
         self._live_event_publisher = live_event_publisher
 
     async def execute(self, actor: Actor, report: CaseReport) -> UUID:
@@ -75,11 +82,17 @@ class RecordCaseResultUseCase:
             if not run.is_running:
                 raise RunNotRunningError
             run_case = await self._find_run_case(run, report.case_id)
-            if await self._case_result_repository.exists(run.id, run_case.test_case_id):
+            if report.iteration >= run_case.version.iteration_count:
+                raise IterationOutOfRangeError(report.iteration, run_case.version.iteration_count)
+            earlier_results = await self._case_result_repository.list_for_case(run.id, run_case.test_case_id)
+            if any(earlier.iteration == report.iteration for earlier in earlier_results):
                 raise CaseResultExistsError
             self._check_step_orders(run_case, report.steps)
             masker = SecretMasker(
                 await self._secret_value_reader.list_secret_values(run.project_id, run.environment_id)
+            )
+            suspected_cause, cause_reason = select_suspected_cause(
+                report.status, report.suspected_cause, report.cause_reason, masker
             )
             case_result = CaseResult(
                 id=uuid7(),
@@ -88,25 +101,36 @@ class RecordCaseResultUseCase:
                 test_case_version_id=run_case.version.id,
                 status=report.status,
                 duration_ms=report.duration_ms,
+                suspected_cause=suspected_cause,
+                cause_reason=cause_reason,
                 recorded_by=actor.user_id,
                 created_at=now,
+                iteration=report.iteration,
             )
             step_results = await self._build_step_results(run, case_result, run_case, report.steps, masker, now)
             await self._case_result_repository.add(case_result, step_results)
             await self._run_repository.save(run.model_copy(update={"last_activity_at": now}))
-            await self._case_result_recorded_handler.handle(
-                RecordedCaseResult(
-                    project_id=run.project_id,
-                    story_id=run.story_id,
-                    run_id=run.id,
-                    case_result_id=case_result.id,
-                    test_case_id=case_result.test_case_id,
-                    status=case_result.status,
-                    recorded_by=actor.user_id,
-                    recorded_at=now,
+            case_story_id = resolve_case_story_id(run, run_case)
+            failure_events: list[LiveEvent] = []
+            if is_new_case_outcome(case_result, earlier_results):
+                failure_events = await self._case_result_recorded_handler.handle(
+                    RecordedCaseResult(
+                        project_id=run.project_id,
+                        story_id=case_story_id,
+                        run_id=run.id,
+                        case_result_id=case_result.id,
+                        test_case_id=case_result.test_case_id,
+                        status=case_result.status,
+                        suspected_cause=case_result.suspected_cause,
+                        cause_reason=case_result.cause_reason,
+                        recorded_by=actor.user_id,
+                        recorded_at=now,
+                    )
                 )
-            )
-        await self._live_event_publisher.publish(build_run_case_recorded_event(run, case_result))
+        await self._live_event_publisher.publish(build_run_case_recorded_event(run, case_result, case_story_id))
+        for failure_event in failure_events:
+            await self._live_event_publisher.publish(failure_event)
+        await self._flaky_recompute_requester.request(case_result.test_case_id)
         return case_result.id
 
     async def _find_run_case(self, run: Run, test_case_id: UUID) -> RunCaseView:
@@ -153,6 +177,7 @@ class RecordCaseResultUseCase:
                     error=None if step_report is None else masker.mask_optional(step_report.error),
                     screenshot_file_id=screenshot_file_id,
                     evidence_file_id=None,
+                    diagnosis=None if step_report is None else build_step_diagnosis(step_report, masker),
                     created_at=now,
                 )
             )

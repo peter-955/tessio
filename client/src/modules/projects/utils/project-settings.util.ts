@@ -7,7 +7,7 @@ export const buildGeneralSettingsValues = (project: Project): GeneralSettingsVal
   return {
     name: project.name,
     description: project.description ?? "",
-    jiraBoardId: String(project.jiraBoardId),
+    jiraBoardId: project.jiraBoardId === null ? null : String(project.jiraBoardId),
   };
 };
 

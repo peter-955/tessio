@@ -17,7 +17,7 @@ uv run python -m app.workers.worker        # in a second terminal: runs backgrou
 ```
 
 - API: http://localhost:3202 · OpenAPI docs: http://localhost:3202/docs
-- Worker: sends email (`email.send`), runs the Jira sync (`jira.sync_project`) and three maintenance schedules: `runs.abort_stale` every 15 minutes, `files.delete_orphans` at 03:00 and `sessions.delete_expired` at 03:30
+- Worker: sends email (`email.send`), runs the Jira sync (`jira.sync_project`), creates Jira bugs from failures (`jira.create_issue`), posts results on Jira stories (`jira.post_comment`) and three maintenance schedules: `runs.abort_stale` every 15 minutes, `files.delete_orphans` at 03:00 and `sessions.delete_expired` at 03:30
 - Emails (invites, password reset): queued in Redis, sent by the worker, caught by Mailpit at http://localhost:3207
 - Queue: Bull Board at http://localhost:3205 (waiting, active, failed and retried jobs); Redis at localhost:3204 (`docker compose exec redis redis-cli`), BullMQ keys start with `bull:`
 - MCP server: http://localhost:3202/mcp, authenticated with a personal `tsio_` API token; Claude Code setup in the [Claude setup guide](../docs/guides/claude-setup.md)

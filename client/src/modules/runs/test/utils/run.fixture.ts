@@ -47,6 +47,7 @@ export const createStepResult = (overrides: Partial<StepResult> = {}): StepResul
     screenshotFileId: null,
     screenshotStatus: null,
     evidenceFileId: null,
+    diagnosis: null,
     ...overrides,
   };
 };
@@ -59,12 +60,21 @@ export const createRunCase = (overrides: Partial<RunCase> = {}): RunCase => {
     versionId: "d6100000-0000-4000-8000-000000000001",
     versionNumber: 2,
     position: 1,
+    businessValue: null,
+    preconditions: null,
+    criteria: [],
+    files: [],
     result: {
       id: "d6200000-0000-4000-8000-000000000001",
       status: "passed",
       durationMs: 4000,
+      suspectedCause: null,
+      causeReason: null,
       recordedAt: "2026-10-20T10:01:00Z",
+      iteration: 0,
     },
+    parameters: [],
+    iterations: [],
     steps: [createStepResult()],
     ...overrides,
   };
@@ -77,6 +87,8 @@ export const createRunDetail = (overrides: Partial<RunDetail> = {}): RunDetail =
     report: null,
     childRunIds: [],
     cases: [createRunCase()],
+    environmentBaseUrl: "https://staging.shop.test",
+    data: [],
     ...overrides,
   };
 };

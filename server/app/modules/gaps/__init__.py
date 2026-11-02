@@ -5,6 +5,7 @@ from app.modules.gaps.router import gaps_router
 from app.modules.gaps.typing.enums import GapStatus, GapType
 from app.modules.gaps.usecases.answer_gap import AnswerGapUseCase
 from app.modules.gaps.usecases.get_gap import GetGapUseCase
+from app.modules.gaps.usecases.get_my_gaps import GetMyGapsUseCase
 from app.modules.gaps.usecases.get_open_gaps import GetOpenGapsUseCase
 from app.modules.gaps.usecases.list_gap_inbox import ListGapInboxUseCase
 from app.modules.gaps.usecases.list_gaps import ListGapsUseCase
@@ -19,6 +20,7 @@ __all__ = [
     "GapStatus",
     "GapType",
     "GetGapUseCase",
+    "GetMyGapsUseCase",
     "GetOpenGapsUseCase",
     "ListGapInboxUseCase",
     "ListGapsUseCase",

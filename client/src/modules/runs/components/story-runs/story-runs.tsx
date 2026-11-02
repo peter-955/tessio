@@ -27,6 +27,7 @@ export const StoryRuns: FC<Props> = ({ jiraKey, actions }) => {
   const { data, error, isPending, isError, isFetching, refetch } = useGetRuns(project.key, {
     status: null,
     storyKey: jiraKey,
+    suiteId: null,
   });
 
   const renderRuns = (): ReactNode => {

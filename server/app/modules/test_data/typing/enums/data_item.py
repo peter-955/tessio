@@ -3,7 +3,6 @@ from enum import StrEnum
 
 class DataItemKind(StrEnum):
     VARIABLE = "variable"
-    ENDPOINT = "endpoint"
     SECRET = "secret"
 
 
@@ -24,3 +23,15 @@ class ImportSkipReason(StrEnum):
     INVALID_KEY = "invalid_key"
     UNSUPPORTED_VALUE = "unsupported_value"
     VALUE_TOO_LONG = "value_too_long"
+
+
+class DataToolKind(StrEnum):
+    VARIABLE = "variable"
+    ENDPOINT = "endpoint"
+    SECRET = "secret"
+
+
+class DataSaveAction(StrEnum):
+    CREATED = "created"
+    UPDATED = "updated"
+    UNCHANGED = "unchanged"

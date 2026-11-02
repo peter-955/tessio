@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import ForeignKey, Text, UniqueConstraint, Uuid
+from sqlalchemy import ForeignKey, Text, UniqueConstraint, Uuid, text
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -29,5 +29,11 @@ class TestCaseTable(TableBase):
     needs_review_criterion_ids: Mapped[list[UUID]] = mapped_column(ARRAY(Uuid))
     reviewed_at: Mapped[datetime | None]
     reviewed_by: Mapped[UUID | None] = mapped_column(ForeignKey("users.id"))
+    flaky_score: Mapped[int] = mapped_column(server_default=text("0"))
+    flaky_since: Mapped[datetime | None]
+    disagreed_at: Mapped[datetime | None]
+    quarantined_at: Mapped[datetime | None]
+    quarantined_by: Mapped[UUID | None] = mapped_column(ForeignKey("users.id", name="test_cases_quarantined_by_fkey"))
+    quarantine_reason: Mapped[str | None] = mapped_column(Text)
     created_by: Mapped[UUID] = mapped_column(ForeignKey("users.id"))
     created_at: Mapped[datetime]

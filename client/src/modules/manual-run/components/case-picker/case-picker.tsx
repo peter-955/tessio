@@ -3,11 +3,11 @@
 import { DSButton, DSCheckbox, DSText } from "@/components/design-system";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
-import type { ReadyTestCase } from "../../typing/types/manual-run.type";
+import type { CasePickerItem } from "../../typing/types/case-picker-item.type";
 import styles from "./case-picker.module.scss";
 
 interface Props {
-  cases: ReadyTestCase[];
+  cases: CasePickerItem[];
   selectedIds: readonly string[];
   onChange: (selectedIds: string[]) => void;
   isDisabled?: boolean;
@@ -55,7 +55,7 @@ export const CasePicker: FC<Props> = ({ cases, selectedIds, onChange, isDisabled
           return (
             <li key={testCase.id} className={styles.item}>
               <DSCheckbox
-                label={`${testCase.code} · ${testCase.title} · ${t("new.stepCount", { count: testCase.stepCount })}`}
+                label={testCase.label}
                 isChecked={selectedIds.includes(testCase.id)}
                 isDisabled={isDisabled}
                 onChange={(isChecked) => {

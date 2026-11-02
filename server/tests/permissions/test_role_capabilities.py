@@ -44,7 +44,12 @@ EXPECTED: dict[ProjectRole, set[str]] = {
         "jira.sync",
         "story.mark_ready_for_test",
         "story.sign_off",
+        "story.edit",
         "test_case.edit",
+        "test_case.quarantine",
+        "suite.edit",
+        "plan.edit",
+        "plan.sign_off",
         "environment.manage",
         "test_data.edit",
         "secret.edit",
@@ -56,14 +61,21 @@ EXPECTED: dict[ProjectRole, set[str]] = {
         "failure.assign",
         "failure.mark_fixed",
         "failure.verify",
+        "failure.create_jira_issue",
+        "integration.manage",
     },
-    ProjectRole.PM: EVERY_ROLE | GAPS | {"jira.sync"},
-    ProjectRole.BA: EVERY_ROLE | GAPS | {"jira.sync"},
+    ProjectRole.PM: EVERY_ROLE | GAPS | {"jira.sync", "story.edit", "plan.edit"},
+    ProjectRole.BA: EVERY_ROLE | GAPS | {"jira.sync", "story.edit"},
     ProjectRole.QC: EVERY_ROLE
     | GAPS
     | {
         "story.sign_off",
+        "story.edit",
         "test_case.edit",
+        "test_case.quarantine",
+        "suite.edit",
+        "plan.edit",
+        "plan.sign_off",
         "environment.manage",
         "test_data.edit",
         "secret.edit",
@@ -73,6 +85,7 @@ EXPECTED: dict[ProjectRole, set[str]] = {
         "run.record_manual",
         "failure.assign",
         "failure.verify",
+        "failure.create_jira_issue",
     },
     ProjectRole.DEV: EVERY_ROLE
     | GAPS
@@ -84,6 +97,7 @@ EXPECTED: dict[ProjectRole, set[str]] = {
         "run.start",
         "failure.assign",
         "failure.mark_fixed",
+        "failure.create_jira_issue",
     },
     ProjectRole.VIEWER: EVERY_ROLE,
 }

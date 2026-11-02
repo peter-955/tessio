@@ -244,7 +244,11 @@ async def test_the_story_detail_includes_removed_criteria_and_the_available_stat
         "availableTestStatuses",
         "testStatusChangedAt",
         "jiraUpdatedAt",
+        "source",
+        "descriptionText",
     }
+    assert detail["source"] == "jira"
+    assert detail["descriptionText"] is None
     assert detail["jiraKey"] == f"{project.key}-2"
     assert detail["sprint"]["name"] == "Current"
     assert detail["sprint"]["state"] == "active"

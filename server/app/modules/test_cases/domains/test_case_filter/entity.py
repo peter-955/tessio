@@ -11,3 +11,7 @@ class TestCaseFilter(Entity):
     criterion_id: UUID | None = None
     is_needing_review: bool | None = None
     query: str | None = None
+    label_names: tuple[str, ...] = ()
+    is_flaky: bool | None = None
+    is_disagreeing: bool | None = None
+    is_quarantined: bool | None = None

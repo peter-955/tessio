@@ -102,20 +102,22 @@ As a user, I want to pick the theme and language on my profile, so that they fol
 As a developer or tester, I want a personal token and one install command, so that Claude Code can run tests in my project.
 
 - AC1: `/connect-claude` creates a token with `POST /api/me/api-tokens`: a name (1 to 100 characters), one project, and a lifetime of 7, 30, 60 or 90 days (30 by default; the API accepts 1 to 90).
-- AC2: The token has the form `tsio_<prefix>_<secret>`. It is shown once, inside `claude plugin install tessio --marketplace <marketplace> --config tessio_url=<origin> --config tessio_token=<token>`, and is never kept in the query cache. The server stores only its SHA-256 hash.
-- AC3: The marketplace comes from `NEXT_PUBLIC_TESSIO_PLUGIN_MARKETPLACE`; until it is set the command shows `<marketplace>` and a hint.
+- AC2: The token has the form `tsio_<prefix>_<secret>`. It is shown once, inside `claude plugin install tessio --marketplace <origin>/api/plugin/marketplace.json --config tessio_url=<origin> --config tessio_token=<token>`, and is never kept in the query cache. The server stores only its SHA-256 hash.
+- AC3: The marketplace is the one this Tessio serves ([ADR 0010](../decisions/0010-tessio-serves-its-claude-plugin.md)), built from the page's own address. On an address that is not HTTPS, the dialog adds: "Claude Code installs the plugin only from an HTTPS address. On a local copy of Tessio, start Claude Code with claude --plugin-dir claude from the repository instead."
 - AC4: A user can hold at most 10 active tokens (`TOKEN_LIMIT_REACHED`, "You have 10 active tokens. Revoke one to create another.").
 - AC5: The caller must be a real member of the project (`PERMISSION_DENIED` otherwise). Acting as a workspace admin is not enough. A call made with an API token cannot create tokens.
 - AC6: A Viewer may create a token. The page warns "You are a Viewer in this project, so Claude can read but not record results."
 - AC7: Creating a token on an archived project is refused with `PROJECT_ARCHIVED`.
+- AC8: A token has a scope (`scope`, WBS 9.6): `mcp` (the default, for Claude Code and the plugin hooks) or `api` (for the public REST routes, from CI). The list and create answers return it. An `mcp` token is refused on REST routes that need a session, as before; an `api` token works only on the routes [integrations.md, INT-6](integrations.md#int-6-api-scope-tokens-for-the-public-rest-api-wbs-96) lists, and gets `TOKEN_SCOPE_NOT_ALLOWED` everywhere else, including `/mcp`. The form's "Used for" field picks the scope; for an `api` token the dialog shows a `curl` call to the JUnit import instead of the plugin install command, and the token list has a "Used for" column ([integrations.md, Screens and states](integrations.md#screens-and-states)).
 
 ### AUTH-11 List and revoke tokens (WBS 3.2.6)
 
 As a token owner, I want to see and revoke my tokens, so that I can cut off a lost laptop.
 
-- AC1: `GET /api/me/api-tokens` lists the caller's tokens with name, project, prefix, status (`active`, `expired`, `revoked`), expiry, last used and created dates. Revoked and expired tokens stay listed.
+- AC1: `GET /api/me/api-tokens` lists the caller's tokens with name, project, prefix, status (`active`, `expired`, `revoked`), expiry, last used and created dates, and the plugin version the token last sent (`pluginVersion`, shown in the Plugin column). Revoked and expired tokens stay listed.
 - AC2: `DELETE /api/me/api-tokens/{token_id}` revokes a token at once; another user's token gets `NOT_FOUND`.
-- AC3: "Last used" is refreshed at most once every 60 seconds.
+- AC3: "Last used" is refreshed at most once every 60 seconds, and at once when the plugin version changes.
+- AC4: Each MCP call saves the `X-Tessio-Plugin-Version` header on the token before the plugin version check, so an outdated plugin's version is kept ([AI Harness rules](ai-harness.md#rules)).
 
 ### AUTH-12 Sign out and sign out of all devices (WBS 3.2.7)
 

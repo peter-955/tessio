@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  DSSegmentedControl,
-  DSText,
-  DSTextarea,
-  type DSSegmentedOption,
-} from "@/components/design-system";
+import { DSSegmentedControl, DSTextarea, type DSSegmentedOption } from "@/components/design-system";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { MAX_RESULT_TEXT_LENGTH } from "../../typing/constants/manual-run.constant";
@@ -14,19 +9,18 @@ import {
   NOT_REPORTED_CHOICE,
   RESULT_STATUS_ORDER,
 } from "../../typing/constants/result-status.constant";
-import type { ManualRunStep } from "../../typing/types/manual-run.type";
 import type { StepDraft } from "../../typing/types/step-draft.type";
 import type { StepStatusChoice } from "../../typing/types/step-status-choice.type";
 import { StepEvidenceField } from "../step-evidence-field/step-evidence-field";
 import styles from "./step-recorder.module.scss";
 
 interface Props {
-  step: ManualRunStep;
+  order: number;
   stepDraft: StepDraft;
   onChange: (changes: Partial<StepDraft>) => void;
 }
 
-export const StepRecorder: FC<Props> = ({ step, stepDraft, onChange }) => {
+export const StepRecorder: FC<Props> = ({ order, stepDraft, onChange }) => {
   const { t } = useTranslation("manualRun");
   const statusOptions: DSSegmentedOption<StepStatusChoice>[] = [
     { value: NOT_REPORTED_CHOICE, label: t("record.notReported") },
@@ -42,24 +36,13 @@ export const StepRecorder: FC<Props> = ({ step, stepDraft, onChange }) => {
   };
 
   return (
-    <li className={styles.step}>
-      <div className={styles.instructions}>
-        <DSText size="sm" weight="medium" component="span">
-          {t("record.step", { order: step.order })}
-        </DSText>
-        <DSText className={styles.text}>{step.action}</DSText>
-        {step.expected !== null && (
-          <DSText size="sm" color="muted" className={styles.text}>
-            {t("record.expectedValue", { text: step.expected })}
-          </DSText>
-        )}
-      </div>
+    <div className={styles.recorder}>
       <div className={styles.status}>
         <DSSegmentedControl<StepStatusChoice>
           value={stepDraft.status ?? NOT_REPORTED_CHOICE}
           options={statusOptions}
           onChange={handleStatusChange}
-          ariaLabel={t("record.stepStatus", { order: step.order })}
+          ariaLabel={t("record.stepStatus", { order })}
           size="xs"
         />
       </div>
@@ -70,7 +53,8 @@ export const StepRecorder: FC<Props> = ({ step, stepDraft, onChange }) => {
           onChange({ actualResult });
         }}
         maxLength={MAX_RESULT_TEXT_LENGTH}
-        minRows={2}
+        minRows={1}
+        isAutosize
       />
       {isErrorShown && (
         <DSTextarea
@@ -84,6 +68,6 @@ export const StepRecorder: FC<Props> = ({ step, stepDraft, onChange }) => {
         />
       )}
       <StepEvidenceField stepDraft={stepDraft} onChange={onChange} />
-    </li>
+    </div>
   );
 };

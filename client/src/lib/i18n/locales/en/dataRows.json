@@ -1,0 +1,49 @@
+{
+  "editor": {
+    "title": "Parameters and data rows",
+    "hint": "Use {{prefix}}name}} in the preconditions and steps. Each data row runs the case once, as one iteration. A value may be a test data reference such as {{dataExample}}; never type a secret here.",
+    "tableLabel": "Data rows",
+    "row": "Row",
+    "rowActions": "Row actions",
+    "parameterName": "Parameter {{position}} name",
+    "parameterPlaceholder": "name",
+    "parameterFallback": "parameter {{position}}",
+    "cellLabel": "Row {{row}}, {{parameter}}",
+    "removeParameter": "Remove parameter {{name}}",
+    "removeRow": "Remove row {{row}}",
+    "noParameters": "No parameters. The case runs once.",
+    "noRows": "No data rows yet. Add one row for each set of values.",
+    "addParameter": "Add parameter",
+    "addRow": "Add data row",
+    "errors": {
+      "required": "Name the parameter.",
+      "invalidName": "Use letters, digits and _, starting with a letter.",
+      "duplicateName": "Each parameter needs its own name.",
+      "tooLong": "Use at most {{max}} characters.",
+      "tooManyParameters": "A case can have at most {{max}} parameters.",
+      "tooManyRows": "A case can have at most {{max}} data rows.",
+      "rowsWithoutParameters": "Add the parameters before the data rows.",
+      "parametersWithoutRows": "Add at least one data row for the parameters, or remove the parameters."
+    }
+  },
+  "table": {
+    "title_one": "Data rows ({{count}} iteration)",
+    "title_other": "Data rows ({{count}} iterations)",
+    "label": "Data rows",
+    "iteration": "Iteration"
+  },
+  "iteration": {
+    "title": "Iteration {{number}}",
+    "values": "Values for this iteration",
+    "emptyValue": "empty",
+    "listLabel": "Iterations of {{code}}",
+    "stepsLabel": "Steps of {{code}}, iteration {{number}}",
+    "summary_one": "{{recorded}} of {{count}} iteration recorded",
+    "summary_other": "{{recorded}} of {{count}} iterations recorded",
+    "recordHint": "Run the case once for each data row and record each iteration on its own.",
+    "record": "Record iteration {{number}}",
+    "showSteps": "Show iteration {{number}}",
+    "save": "Save iteration {{number}}",
+    "saved": "{{code}}, iteration {{number}} saved."
+  }
+}

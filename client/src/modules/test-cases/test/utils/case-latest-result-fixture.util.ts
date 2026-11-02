@@ -23,6 +23,9 @@ export const buildCaseLatestResult = (
     code: "TC-1",
     storyId: STORY_ID,
     latestResult: buildLatestResult(),
+    isFlaky: false,
+    isDisagreeing: false,
+    isQuarantined: false,
     ...overrides,
   };
 };

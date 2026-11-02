@@ -1,7 +1,10 @@
 name: tessio-e2e
 
 x-backend: &backend
-  build: ../server
+  build:
+    context: ../server
+    additional_contexts:
+      plugin: ../claude
   image: tessio-e2e-api
   environment:
     DATABASE_URL: postgresql+asyncpg://tessio:tessio@postgres:5432/tessio_e2e

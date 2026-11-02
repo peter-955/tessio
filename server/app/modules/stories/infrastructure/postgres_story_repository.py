@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import func, or_, select, update
+from sqlalchemy import delete, func, or_, select, update
 from sqlalchemy.dialects.postgresql import insert
 
 from app.modules.stories.domains.story.entity import Story
@@ -99,6 +99,12 @@ class PostgresStoryRepository(StoryRepository):
         if not isinstance(story_id, UUID):
             raise RuntimeError("Story upsert returned no id")
         return story_id
+
+    async def save(self, story: Story) -> None:
+        await self._database.get_current_session().merge(StoryTable(**story.model_dump()))
+
+    async def delete(self, story_id: UUID) -> None:
+        await self._database.get_current_session().execute(delete(StoryTable).where(StoryTable.id == story_id))
 
     async def update_test_status(
         self, story_id: UUID, test_status: TestStatus, changed_by: UUID, changed_at: datetime

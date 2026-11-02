@@ -15,12 +15,15 @@ async def run_worker() -> None:
     for signal_number in STOP_SIGNALS:
         loop.add_signal_handler(signal_number, stop_requested.set)
     job_workers = container.job_workers
+    live_event_listener = container.live_event_listener
     try:
         await container.job_queue.replace_schedules(container.job_schedules)
         for job_worker in job_workers:
             job_worker.start()
+        live_event_listener.start()
         await stop_requested.wait()
     finally:
+        await live_event_listener.close()
         await asyncio.gather(*(job_worker.close() for job_worker in job_workers))
         await container.close()
         for signal_number in STOP_SIGNALS:

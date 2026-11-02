@@ -56,13 +56,17 @@ A = Admin. "Yes" means the role can do it.
 | Mark a story *Ready for test*, or move it back to *Not started* | Yes | No | No | No | Yes | No |
 | Mark a story *Passed* or *Failed* | Yes | No | No | Yes | No | No |
 | Write, edit and import test cases; attach test files | Yes | No | No | Yes | No | No |
+| Write shared steps; set a case's parameters and data rows | Yes | No | No | Yes | No | No |
+| Create, edit and archive regression suites | Yes | No | No | Yes | No | No |
+| Create, edit and close test plans | Yes | Yes | No | Yes | No | No |
+| Sign off a test plan | Yes | No | No | Yes | No | No |
 | Manage environments; edit variables and endpoints | Yes | No | No | Yes | Yes | No |
 | Save and reveal secret values | Yes | No | No | Yes | No | No |
 | Use secrets in Claude runs | Yes | No | No | Yes | Yes | No |
 | Raise, answer and reassign gaps | Yes | Yes | Yes | Yes | Yes | No |
 | Reopen any answered gap | Yes | No | No | Yes | No | No |
 | Reopen an answered gap you raised | Yes | Yes | Yes | Yes | Yes | No |
-| Start Claude runs | Yes | No | No | Yes | Yes | No |
+| Start Claude runs (story and suite runs) | Yes | No | No | Yes | Yes | No |
 | Start and record manual runs | Yes | No | No | Yes | No | No |
 | Finish another person's run | Yes | No | No | No | No | No |
 | Assign failures | Yes | No | No | Yes | Yes | No |
@@ -70,7 +74,7 @@ A = Admin. "Yes" means the role can do it.
 | **Verify** and **Reopen** a failure | Yes | No | No | Yes | No | No |
 | Members and project settings | Yes | No | No | No | No | No |
 
-PM and BA have the same rights, so they share one page.
+PM and BA have the same rights, except that a PM can also create, edit and close test plans, so they share one page.
 
 ### Archived projects
 
@@ -86,7 +90,11 @@ The full list is in the [product glossary](../../product/glossary.md).
 | AC | An acceptance criterion of a story, numbered AC1, AC2 and so on. |
 | Test case | Steps with expected results that cover one or more AC. Code TC-1, TC-2 and so on. |
 | Gap | A question about a story, AC or test case that must be answered before a run. |
-| Run | One go through the *Ready* cases of a story, by Claude or by hand. |
+| Run | One go through the *Ready* cases of a story or a suite, by Claude or by hand. |
+| Suite | A regression suite: a fixed list of cases from many stories, run again every sprint. |
+| Plan | A test plan: the suites and stories of a release, tracked up to sign-off. |
+| Shared step | Steps such as logging in, written once and inserted into many cases. |
+| Iteration | One run of a data-driven case with one data row's values. |
 | Case result | The outcome of one case in a run: *Passed*, *Failed*, *Blocked* or *Skipped*. |
 | Failure | A failed case that a Dev fixes and a QC verifies. |
 | Environment | Where tests run: a base URL and an optional health-check URL. |

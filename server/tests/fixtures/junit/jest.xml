@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="1" errors="0" time="0.612">
+  <testsuite name="Login" errors="0" failures="1" skipped="0" timestamp="2026-11-01T10:00:00" time="0.6" tests="3">
+    <testcase classname="Login TC-1 signs in" name="Login TC-1 signs in" time="0.3">
+    </testcase>
+    <testcase classname="Login TC-2 shows an error for a wrong password" name="Login TC-2 shows an error for a wrong password" time="0.2">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "Wrong password"
+Received: "Server error"
+    at Object.&lt;anonymous&gt; (src/login.test.ts:22:25)</failure>
+    </testcase>
+    <testcase classname="Login remembers the email" name="Login remembers the email" time="0.112">
+    </testcase>
+  </testsuite>
+</testsuites>

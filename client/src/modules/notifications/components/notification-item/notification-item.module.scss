@@ -84,6 +84,7 @@
   display: flex;
   min-width: var(--space-6);
   justify-content: flex-end;
+  gap: var(--space-1);
 }
 
 .visuallyHidden {

@@ -1,5 +1,7 @@
 from datetime import UTC, datetime
 
+from app.modules.labels import TestCaseLabelRepository
+from app.modules.shared_steps import SharedStepRepository
 from app.modules.test_cases.domains.test_case.repository import TestCaseRepository
 from app.modules.test_cases.domains.test_case_changes.entity import TestCaseChanges
 from app.modules.test_cases.domains.test_case_detail.entity import TestCaseDetail
@@ -9,8 +11,10 @@ from app.modules.test_cases.errors import TestCaseDeprecatedError, TestCaseVersi
 from app.modules.test_cases.ports.criterion_reader import CriterionReader
 from app.modules.test_cases.ports.data_key_reader import DataKeyReader
 from app.modules.test_cases.ports.story_reader import StoryReader
+from app.modules.test_cases.typing.constants.flaky_case import FLAKY_STATE_RESET
 from app.modules.test_cases.typing.enums import TestCaseStatus
 from app.modules.test_cases.utils.available_references import load_available_references
+from app.modules.test_cases.utils.case_content_check import check_case_content
 from app.modules.test_cases.utils.criterion_links import require_linkable
 from app.modules.test_cases.utils.readiness import require_ready
 from app.modules.test_cases.utils.test_case_changes import build_version_content, merge_changes
@@ -18,6 +22,7 @@ from app.modules.test_cases.utils.test_case_detail import load_test_case_detail
 from app.modules.test_cases.utils.test_case_event import build_test_case_changed_event
 from app.modules.test_cases.utils.test_case_lookup import require_current_version, require_locked_test_case
 from app.modules.test_cases.utils.test_case_version import build_test_case_version
+from app.modules.test_data import SecretValueReader
 from app.shared.common import Transaction
 from app.shared.events import LiveEventPublisher
 from app.shared.permissions import Actor, Capability, ProjectAccessResolver, require
@@ -34,7 +39,10 @@ class UpdateTestCaseUseCase:
         story_reader: StoryReader,
         criterion_reader: CriterionReader,
         data_key_reader: DataKeyReader,
+        test_case_label_repository: TestCaseLabelRepository,
         live_event_publisher: LiveEventPublisher,
+        shared_step_repository: SharedStepRepository,
+        secret_value_reader: SecretValueReader,
     ) -> None:
         self._transaction = transaction
         self._project_access_resolver = project_access_resolver
@@ -44,7 +52,10 @@ class UpdateTestCaseUseCase:
         self._story_reader = story_reader
         self._criterion_reader = criterion_reader
         self._data_key_reader = data_key_reader
+        self._test_case_label_repository = test_case_label_repository
         self._live_event_publisher = live_event_publisher
+        self._shared_step_repository = shared_step_repository
+        self._secret_value_reader = secret_value_reader
 
     async def execute(
         self, actor: Actor, project_key: str, case_code: str, base_version_number: int, changes: TestCaseChanges
@@ -69,6 +80,13 @@ class UpdateTestCaseUseCase:
             content = merged_content.model_copy(update={"criterion_ids": criterion_ids})
             is_changing = content != current_content
             if is_changing:
+                shared_data_keys = await check_case_content(
+                    self._shared_step_repository,
+                    self._secret_value_reader,
+                    access.project_id,
+                    content,
+                    current_version,
+                )
                 version = build_test_case_version(
                     test_case.id,
                     current_version.number + 1,
@@ -76,6 +94,7 @@ class UpdateTestCaseUseCase:
                     current_version.file_version_ids,
                     actor.user_id,
                     now,
+                    shared_data_keys,
                 )
                 if test_case.status is TestCaseStatus.READY:
                     available = await load_available_references(
@@ -83,7 +102,12 @@ class UpdateTestCaseUseCase:
                     )
                     require_ready(version, available.data_keys, available.file_keys)
                 test_case = test_case.model_copy(
-                    update={"title": version.title, "priority": version.priority, "current_version_id": version.id}
+                    update={
+                        "title": version.title,
+                        "priority": version.priority,
+                        "current_version_id": version.id,
+                        **FLAKY_STATE_RESET,
+                    }
                 )
                 await self._test_case_repository.add_version(test_case, version)
             detail = await load_test_case_detail(
@@ -93,6 +117,7 @@ class UpdateTestCaseUseCase:
                 self._story_reader,
                 self._criterion_reader,
                 self._data_key_reader,
+                self._test_case_label_repository,
             )
         if is_changing:
             await self._live_event_publisher.publish(build_test_case_changed_event(test_case))

@@ -6,28 +6,36 @@ from fastapi import APIRouter, Depends, Query, status
 from app.modules.projects import get_signed_in_actor
 from app.modules.stories.dependencies import (
     get_change_test_status,
+    get_create_written_story,
+    get_delete_written_story,
     get_get_sprint,
     get_get_story,
     get_get_sync_status,
     get_list_sprints,
     get_list_stories,
     get_request_jira_sync,
+    get_update_written_story,
 )
 from app.modules.stories.domains.story_filter.entity import StoryFilter
+from app.modules.stories.domains.written_story.entity import WrittenStory
 from app.modules.stories.models.change_test_status_request import ChangeTestStatusRequest
 from app.modules.stories.models.project_sync_state_response import ProjectSyncStateResponse
 from app.modules.stories.models.sprint_response import SprintResponse
 from app.modules.stories.models.story_detail_response import StoryDetailResponse
+from app.modules.stories.models.story_request import StoryRequest
 from app.modules.stories.models.story_summary_response import StorySummaryResponse
 from app.modules.stories.typing.constants import STORY_QUERY_MAX_LENGTH
 from app.modules.stories.typing.enums import TestStatus
 from app.modules.stories.usecases.change_test_status import ChangeTestStatusUseCase
+from app.modules.stories.usecases.create_written_story import CreateWrittenStoryUseCase
+from app.modules.stories.usecases.delete_written_story import DeleteWrittenStoryUseCase
 from app.modules.stories.usecases.get_sprint import GetSprintUseCase
 from app.modules.stories.usecases.get_story import GetStoryUseCase
 from app.modules.stories.usecases.get_sync_status import GetSyncStatusUseCase
 from app.modules.stories.usecases.list_sprints import ListSprintsUseCase
 from app.modules.stories.usecases.list_stories import ListStoriesUseCase
 from app.modules.stories.usecases.request_jira_sync import RequestJiraSyncUseCase
+from app.modules.stories.usecases.update_written_story import UpdateWrittenStoryUseCase
 from app.modules.stories.utils.responses import (
     build_project_sync_state_response,
     build_sprint_response,
@@ -112,3 +120,41 @@ async def request_jira_sync(
     use_case: Annotated[RequestJiraSyncUseCase, Depends(get_request_jira_sync)],
 ) -> ProjectSyncStateResponse:
     return build_project_sync_state_response(await use_case.execute(actor, project_key))
+
+
+def build_written_story(body: StoryRequest) -> WrittenStory:
+    description = None if body.description is None else body.description.strip() or None
+    return WrittenStory(title=body.title, description=description, criteria=list(body.criteria))
+
+
+@stories_router.post("/projects/{project_key}/stories", status_code=status.HTTP_201_CREATED)
+async def create_written_story(
+    project_key: str,
+    body: StoryRequest,
+    actor: SignedInActor,
+    use_case: Annotated[CreateWrittenStoryUseCase, Depends(get_create_written_story)],
+) -> StoryDetailResponse:
+    detail = await use_case.execute(actor, project_key, build_written_story(body))
+    return build_story_detail_response(detail)
+
+
+@stories_router.patch("/projects/{project_key}/stories/{jira_key}")
+async def update_written_story(
+    project_key: str,
+    jira_key: str,
+    body: StoryRequest,
+    actor: SignedInActor,
+    use_case: Annotated[UpdateWrittenStoryUseCase, Depends(get_update_written_story)],
+) -> StoryDetailResponse:
+    detail = await use_case.execute(actor, project_key, jira_key, build_written_story(body))
+    return build_story_detail_response(detail)
+
+
+@stories_router.delete("/projects/{project_key}/stories/{jira_key}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_written_story(
+    project_key: str,
+    jira_key: str,
+    actor: SignedInActor,
+    use_case: Annotated[DeleteWrittenStoryUseCase, Depends(get_delete_written_story)],
+) -> None:
+    await use_case.execute(actor, project_key, jira_key)

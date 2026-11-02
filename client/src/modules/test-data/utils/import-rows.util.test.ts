@@ -3,10 +3,16 @@ import type { ImportPreviewItem } from "../typing/types/import.type";
 import { buildImportRows, isImportRowLocked } from "./import-rows.util";
 
 const items: ImportPreviewItem[] = [
-  { key: "API_URL", kind: "endpoint", value: "https://api.example.test", action: "create" },
-  { key: "USER", kind: "variable", value: "ada", action: "update" },
-  { key: "LOCALE", kind: "variable", value: "en", action: "unchanged" },
-  { key: "PASSWORD", kind: "secret", value: null, action: "create" },
+  {
+    key: "API_URL",
+    kind: "variable",
+    value: "https://api.example.test",
+    action: "create",
+    description: "Shop API",
+  },
+  { key: "USER", kind: "variable", value: "ada", action: "update", description: null },
+  { key: "LOCALE", kind: "variable", value: "en", action: "unchanged", description: null },
+  { key: "PASSWORD", kind: "secret", value: null, action: "create", description: null },
 ];
 
 describe("buildImportRows", () => {
@@ -19,6 +25,7 @@ describe("buildImportRows", () => {
       kind: "secret",
       suggestedKind: "secret",
       value: null,
+      description: null,
       action: "create",
       isIncluded: true,
     });

@@ -65,3 +65,13 @@ class ImportInvalidFileError(TessioError):
 class ImportKeyNotInFileError(TessioError):
     def __init__(self) -> None:
         super().__init__(ErrorCode.INVALID_REQUEST, "A chosen key is not in the import file.")
+
+
+class SecretNotSettableError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.INVALID_REQUEST, "Claude never saves secrets. Add the secret on the Test data page.")
+
+
+class DataKeyIsSecretError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(ErrorCode.INVALID_REQUEST, "This key is a secret. Change it on the Test data page.")

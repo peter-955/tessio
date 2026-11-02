@@ -17,7 +17,8 @@
   },
   "executor": {
     "claude": "Claude",
-    "manual": "Thủ công"
+    "manual": "Thủ công",
+    "ci": "CI"
   },
   "roles": {
     "admin": "Admin",
@@ -47,6 +48,7 @@
     "lastFailed": "Lần thất bại gần nhất",
     "run": "Lần chạy",
     "result": "Kết quả",
+    "iteration": "Lượt",
     "executor": "Người thực hiện",
     "duration": "Thời lượng",
     "startedBy": "Người bắt đầu"
@@ -102,7 +104,8 @@
     "assigned": "Đã giao cho {{name}}",
     "unassigned": "Chưa giao",
     "by": "bởi {{name}}",
-    "automatic": "Tự động"
+    "automatic": "Tự động",
+    "causeChanged": "Nguyên nhân nghi ngờ: {{from}} → {{to}}"
   },
   "actions": {
     "markFixed": "Đánh dấu đã sửa",
@@ -120,10 +123,19 @@
   "toasts": {
     "statusChanged": "{{code}} hiện ở trạng thái {{status}}.",
     "assigned": "Đã giao {{code}} cho {{name}}.",
-    "unassigned": "{{code}} hiện chưa được giao."
+    "unassigned": "{{code}} hiện chưa được giao.",
+    "causeChanged": "Đã thay đổi nguyên nhân nghi ngờ của {{code}}"
   },
   "errors": {
     "changedMeanwhile": "Lỗi kiểm thử này đã thay đổi trong lúc đó. Dữ liệu đã được tải lại.",
     "assigneeNotActive": "Hãy chọn một thành viên đang hoạt động của dự án."
+  },
+  "cause": {
+    "title": "Nguyên nhân nghi ngờ",
+    "none": "Chưa có nguyên nhân nghi ngờ.",
+    "change": "Thay đổi",
+    "modalTitle": "Thay đổi nguyên nhân nghi ngờ",
+    "reason": "Lý do (không bắt buộc)",
+    "save": "Lưu nguyên nhân"
   }
 }

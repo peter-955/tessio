@@ -7,12 +7,18 @@ from app.modules.runs.domains.case_result.repository import CaseResultRepository
 from app.modules.runs.domains.run.repository import RunRepository
 from app.modules.runs.domains.run_case.repository import RunCaseRepository
 from app.modules.runs.domains.run_case_detail.entity import RunCaseDetail
+from app.modules.runs.domains.run_case_file.entity import RunCaseFile
+from app.modules.runs.domains.run_case_iteration.entity import RunCaseIteration
 from app.modules.runs.domains.run_case_view.entity import RunCaseView
+from app.modules.runs.domains.run_criterion.entity import RunCriterion
+from app.modules.runs.domains.run_data_value.entity import RunDataValue
 from app.modules.runs.domains.run_detail.entity import RunDetail
 from app.modules.runs.domains.step_result.entity import StepResult
 from app.modules.runs.domains.step_result_view.entity import StepResultView
 from app.modules.runs.errors import RunNotFoundError
 from app.modules.runs.ports.run_view_reader import RunViewReader
+from app.modules.runs.utils.worst_iteration import select_worst_results
+from app.modules.test_data import DataItemRepository, select_effective_items
 from app.shared.common import Transaction
 from app.shared.permissions import Actor, Capability, ProjectAccessResolver, require
 
@@ -26,6 +32,7 @@ class GetRunUseCase:
         run_case_repository: RunCaseRepository,
         case_result_repository: CaseResultRepository,
         run_view_reader: RunViewReader,
+        data_item_repository: DataItemRepository,
     ) -> None:
         self._transaction = transaction
         self._project_access_resolver = project_access_resolver
@@ -33,6 +40,7 @@ class GetRunUseCase:
         self._run_case_repository = run_case_repository
         self._case_result_repository = case_result_repository
         self._run_view_reader = run_view_reader
+        self._data_item_repository = data_item_repository
 
     async def execute(self, actor: Actor, project_key: str, run_id: UUID) -> RunDetail:
         async with self._transaction.begin():
@@ -47,7 +55,17 @@ class GetRunUseCase:
             step_results = await self._case_result_repository.list_steps_for_run(run.id)
             screenshot_statuses = await self._run_view_reader.list_screenshot_statuses(run.id)
             child_run_ids = await self._run_view_reader.list_child_run_ids(run.id)
-        results_by_case_id = {case_result.test_case_id: case_result for case_result in case_results}
+            criteria = await self._run_view_reader.map_active_criteria(
+                {criterion_id for run_case in run_cases for criterion_id in run_case.version.criterion_ids}
+            )
+            files = await self._run_view_reader.map_case_files(
+                {file_version_id for run_case in run_cases for file_version_id in run_case.version.file_version_ids}
+            )
+            data = await self._list_data_values(access.project_id, run.environment_id, run_cases)
+        results_by_case_id = select_worst_results(case_results)
+        results_by_iteration = {
+            (case_result.test_case_id, case_result.iteration): case_result for case_result in case_results
+        }
         steps_by_case_result_id: defaultdict[UUID, dict[int, StepResult]] = defaultdict(dict)
         for step_result in step_results:
             steps_by_case_result_id[step_result.case_result_id][step_result.step_order] = step_result
@@ -58,32 +76,83 @@ class GetRunUseCase:
                 self._build_case_detail(
                     run_case,
                     results_by_case_id.get(run_case.test_case_id),
+                    [
+                        results_by_iteration.get((run_case.test_case_id, iteration))
+                        for iteration in range(len(run_case.version.data_rows))
+                    ],
                     steps_by_case_result_id,
                     screenshot_statuses,
+                    criteria,
+                    files,
                 )
                 for run_case in run_cases
             ],
             child_run_ids=child_run_ids,
+            data=data,
         )
 
     @staticmethod
-    def _build_case_detail(
+    def _build_step_views(
         run_case: RunCaseView,
         case_result: CaseResult | None,
         steps_by_case_result_id: defaultdict[UUID, dict[int, StepResult]],
         screenshot_statuses: dict[UUID, StoredFileStatus],
-    ) -> RunCaseDetail:
+    ) -> list[StepResultView]:
         step_results = {} if case_result is None else steps_by_case_result_id[case_result.id]
         step_views: list[StepResultView] = []
         for step in sorted(run_case.version.steps, key=lambda version_step: version_step.order):
             step_result = step_results.get(step.order)
             screenshot_file_id = None if step_result is None else step_result.screenshot_file_id
             screenshot_status = None if screenshot_file_id is None else screenshot_statuses.get(screenshot_file_id)
-            step_views.append(
-                StepResultView(
-                    step=step,
-                    result=step_result,
-                    screenshot_status=screenshot_status,
+            step_views.append(StepResultView(step=step, result=step_result, screenshot_status=screenshot_status))
+        return step_views
+
+    async def _list_data_values(
+        self, project_id: UUID, environment_id: UUID, run_cases: list[RunCaseView]
+    ) -> list[RunDataValue]:
+        used_keys = {key for run_case in run_cases for key in run_case.version.data_keys}
+        if not used_keys:
+            return []
+        items = await self._data_item_repository.list_for_environment(project_id, environment_id)
+        return [
+            RunDataValue(key=item.key, kind=item.kind, value=None if item.is_secret else item.value)
+            for item in select_effective_items(items, environment_id)
+            if item.key in used_keys
+        ]
+
+    def _build_case_detail(
+        self,
+        run_case: RunCaseView,
+        case_result: CaseResult | None,
+        iteration_results: list[CaseResult | None],
+        steps_by_case_result_id: defaultdict[UUID, dict[int, StepResult]],
+        screenshot_statuses: dict[UUID, StoredFileStatus],
+        criteria: dict[UUID, RunCriterion],
+        files: dict[UUID, RunCaseFile],
+    ) -> RunCaseDetail:
+        return RunCaseDetail(
+            view=run_case,
+            result=case_result,
+            steps=self._build_step_views(run_case, case_result, steps_by_case_result_id, screenshot_statuses),
+            iterations=[
+                RunCaseIteration(
+                    iteration=iteration,
+                    values=run_case.version.data_rows[iteration],
+                    result=iteration_result,
+                    steps=self._build_step_views(
+                        run_case, iteration_result, steps_by_case_result_id, screenshot_statuses
+                    ),
                 )
-            )
-        return RunCaseDetail(view=run_case, result=case_result, steps=step_views)
+                for iteration, iteration_result in enumerate(iteration_results)
+            ],
+            criteria=[
+                criterion
+                for criterion_id, criterion in criteria.items()
+                if criterion_id in run_case.version.criterion_ids
+            ],
+            files=[
+                files[file_version_id]
+                for file_version_id in run_case.version.file_version_ids
+                if file_version_id in files
+            ],
+        )

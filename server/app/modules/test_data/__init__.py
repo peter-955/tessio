@@ -1,6 +1,8 @@
 from app.modules.test_data.domains.data_item.entity import DataItem
+from app.modules.test_data.domains.data_item.repository import DataItemRepository
 from app.modules.test_data.domains.environment.entity import Environment
 from app.modules.test_data.domains.import_choice.entity import ImportChoice
+from app.modules.test_data.mcp_tools import register_test_data_tools
 from app.modules.test_data.ports.environment_usage_checker import EnvironmentUsageChecker
 from app.modules.test_data.ports.import_file_reader import ImportFileReader
 from app.modules.test_data.router import test_data_router
@@ -17,9 +19,11 @@ from app.modules.test_data.usecases.list_environments import ListEnvironmentsUse
 from app.modules.test_data.usecases.preview_import import PreviewImportUseCase
 from app.modules.test_data.usecases.reveal_secret import RevealSecretUseCase
 from app.modules.test_data.usecases.secret_value_reader import SecretValueReader
+from app.modules.test_data.usecases.set_test_data import SetTestDataUseCase
 from app.modules.test_data.usecases.unarchive_environment import UnarchiveEnvironmentUseCase
 from app.modules.test_data.usecases.update_data_item import UpdateDataItemUseCase
 from app.modules.test_data.usecases.update_environment import UpdateEnvironmentUseCase
+from app.modules.test_data.utils.effective_data_items import select_effective_items
 
 __all__ = [
     "ArchiveEnvironmentUseCase",
@@ -28,6 +32,7 @@ __all__ = [
     "CreateEnvironmentUseCase",
     "DataItem",
     "DataItemKind",
+    "DataItemRepository",
     "DeleteDataItemUseCase",
     "DeleteEnvironmentUseCase",
     "Environment",
@@ -40,8 +45,11 @@ __all__ = [
     "PreviewImportUseCase",
     "RevealSecretUseCase",
     "SecretValueReader",
+    "SetTestDataUseCase",
     "UnarchiveEnvironmentUseCase",
     "UpdateDataItemUseCase",
     "UpdateEnvironmentUseCase",
+    "register_test_data_tools",
+    "select_effective_items",
     "test_data_router",
 ]

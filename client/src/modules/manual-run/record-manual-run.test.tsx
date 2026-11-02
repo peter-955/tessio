@@ -48,6 +48,7 @@ vi.mock("@/lib/uploads/hooks/use-signed-upload", async () => {
 const RUN_PATH = "/api/projects/{project_key}/runs/{run_id}";
 const CASE_RESULT_PATH = "/api/projects/{project_key}/runs/{run_id}/cases/{test_case_id}";
 const FINISH_PATH = "/api/projects/{project_key}/runs/{run_id}/finish";
+const RESOLVE_DATA_PATH = "/api/projects/{project_key}/runs/{run_id}/resolve-data";
 
 const { errors, evidence, finish, record, status } = englishManualRun;
 
@@ -94,6 +95,11 @@ const chooseStepStatus = async (
   await user.click(within(group).getByRole("radio", { name: statusLabel }));
 };
 
+const openFirstDropzone = async (user: UserEvent): Promise<void> => {
+  const [attachButton] = screen.getAllByRole("button", { name: evidence.attach });
+  await user.click(attachButton as HTMLElement);
+};
+
 const readPutBody = (): unknown => {
   const [, options] = apiPut.mock.calls[0] ?? [];
 
@@ -132,8 +138,11 @@ describe("RecordManualRunPage", () => {
     const { container } = renderPage();
 
     expect(await screen.findByRole("heading", { name: "Manual run · SHOP-1" })).toBeInTheDocument();
-    expect(screen.getByText("Staging · Started by Quinn QC")).toBeInTheDocument();
-    expect(screen.getByText("0 of 2 cases recorded")).toBeInTheDocument();
+    expect(screen.getByText("Started by Quinn QC · 0 of 2 cases recorded")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open Staging in a new tab" })).toHaveAttribute(
+      "href",
+      "https://staging.shop.test",
+    );
     const navigation = screen.getByRole("navigation", { name: record.caseList });
     expect(within(navigation).getByRole("button", { name: /^TC-1/ })).toHaveAttribute(
       "aria-current",
@@ -141,6 +150,9 @@ describe("RecordManualRunPage", () => {
     );
     expect(within(navigation).getAllByText(record.notRecorded)).toHaveLength(2);
     expect(screen.getByText("Suggested: Skipped")).toBeInTheDocument();
+    expect(
+      screen.getByText("2 steps are not marked and will be saved as Skipped."),
+    ).toBeInTheDocument();
 
     await chooseStepStatus(user, 1, status.passed);
     expect(screen.getByText("Suggested: Passed")).toBeInTheDocument();
@@ -148,6 +160,77 @@ describe("RecordManualRunPage", () => {
     expect(screen.getByText("Suggested: Failed")).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: record.error })).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("shows the case sheet with data values and reveals a secret on demand", async () => {
+    currentRun = buildRun({
+      data: [
+        { key: "user_email", kind: "variable", value: "anna@shop.test" },
+        { key: "user_password", kind: "secret", value: null },
+      ],
+      cases: [
+        buildRunCase({
+          businessValue: "Shoppers pay in one click",
+          preconditions: "Signed out as {{data.user_email}}",
+          criteria: [{ code: "AC1", text: "The saved card is offered" }],
+          steps: [
+            buildStep({
+              order: 1,
+              action: "Sign in with {{data.user_password}}",
+              expected: "Hello {{data.user_email}}",
+            }),
+            buildStep({ order: 2, action: "Type {{data.coupon}}", expected: null }),
+          ],
+        }),
+      ],
+    });
+    respondWithRoutes(apiPost, {
+      [RESOLVE_DATA_PATH]: createSuccessResult({
+        values: { user_password: "S3cret" },
+        unknownKeys: [],
+      }),
+    });
+    const user = userEvent.setup();
+    const { container } = renderPage();
+
+    expect(await screen.findByRole("region", { name: "Before you start" })).toHaveTextContent(
+      "Signed out as anna@shop.test",
+    );
+    expect(screen.getByRole("region", { name: "Covers" })).toHaveTextContent(
+      "AC1The saved card is offered",
+    );
+    expect(screen.getByRole("region", { name: "Why it matters" })).toBeInTheDocument();
+    expect(screen.getAllByText("No value for coupon on Staging")).toHaveLength(2);
+    expect(screen.queryByText("S3cret")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Reveal user_password" }));
+
+    expect(await screen.findAllByText("S3cret")).not.toHaveLength(0);
+    expect(apiPost).toHaveBeenCalledWith(
+      RESOLVE_DATA_PATH,
+      expect.objectContaining({ body: { keys: ["user_password"] } }),
+    );
+    await user.click(screen.getByRole("button", { name: "Hide user_password" }));
+    expect(screen.queryByText("S3cret")).not.toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("does not offer to reveal secrets of a run someone else started", async () => {
+    currentRun = buildRun({
+      startedBy: OTHER_USER_ID,
+      data: [{ key: "user_password", kind: "secret", value: null }],
+      cases: [
+        buildRunCase({
+          steps: [buildStep({ order: 1, action: "Sign in with {{data.user_password}}" })],
+        }),
+      ],
+    });
+    renderPage(
+      buildRunProject({ capabilities: [...buildRunProject().capabilities, "run.finish_any"] }),
+    );
+
+    expect(await screen.findByText("Hidden")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Reveal user_password" })).not.toBeInTheDocument();
   });
 
   it("sends the override, then moves on to the next unrecorded case", async () => {
@@ -166,6 +249,7 @@ describe("RecordManualRunPage", () => {
     expect(readPutBody()).toEqual({
       status: "blocked",
       durationMs: null,
+      iteration: 0,
       steps: [
         { order: 1, status: "passed", actualResult: "Opened", error: null, evidenceFileId: null },
       ],
@@ -182,7 +266,35 @@ describe("RecordManualRunPage", () => {
         },
       }),
     );
-    expect(screen.getByText("1 of 2 cases recorded")).toBeInTheDocument();
+    expect(screen.getByText("Started by Quinn QC · 1 of 2 cases recorded")).toBeInTheDocument();
+  });
+
+  it("asks for a suspected cause once the case fails and sends it", async () => {
+    const user = userEvent.setup();
+    renderPage();
+
+    expect(await screen.findByRole("radiogroup", { name: "Step 1 status" })).toBeInTheDocument();
+    expect(screen.queryByRole("combobox", { name: /^Suspected cause/ })).not.toBeInTheDocument();
+    await chooseStepStatus(user, 1, status.failed);
+    await chooseSelectOption(user, /^Suspected cause/, "Environment");
+    await user.type(
+      screen.getByRole("textbox", { name: record.causeReason }),
+      " Staging was down ",
+    );
+    await user.click(screen.getByRole("button", { name: record.save }));
+
+    await waitFor(() => {
+      expect(readPutBody()).toEqual({
+        status: null,
+        durationMs: null,
+        iteration: 0,
+        steps: [
+          { order: 1, status: "failed", actualResult: "", error: null, evidenceFileId: null },
+        ],
+        suspectedCause: "environment",
+        causeReason: "Staging was down",
+      });
+    });
   });
 
   it("blocks saving while evidence uploads and sends the evidence id", async () => {
@@ -199,6 +311,7 @@ describe("RecordManualRunPage", () => {
 
     await chooseStepStatus(user, 1, status.failed);
     const file = new File(["image"], "cart.png", { type: "image/png" });
+    await openFirstDropzone(user);
     const [fileInput] = container.querySelectorAll<HTMLInputElement>('input[type="file"]');
     await user.upload(fileInput as HTMLInputElement, file);
 
@@ -216,6 +329,7 @@ describe("RecordManualRunPage", () => {
       expect(readPutBody()).toEqual({
         status: null,
         durationMs: null,
+        iteration: 0,
         steps: [
           {
             order: 1,
@@ -237,6 +351,7 @@ describe("RecordManualRunPage", () => {
     const { container } = renderPage();
 
     await chooseStepStatus(user, 1, status.passed);
+    await openFirstDropzone(user);
     const [fileInput] = container.querySelectorAll<HTMLInputElement>('input[type="file"]');
     await user.upload(
       fileInput as HTMLInputElement,
@@ -259,7 +374,9 @@ describe("RecordManualRunPage", () => {
     expect(screen.queryByRole("button", { name: record.save })).not.toBeInTheDocument();
     expect(screen.queryByRole("radiogroup")).not.toBeInTheDocument();
     expect(screen.getByText(record.evidenceAttached)).toBeInTheDocument();
-    expect(screen.getByText(`${record.error}: Card refused`)).toBeInTheDocument();
+    const steps = screen.getByRole("list", { name: record.stepsOf.replace("{{code}}", "TC-1") });
+    expect(within(steps).getByText(record.error)).toBeInTheDocument();
+    expect(within(steps).getByText("Card refused")).toBeInTheDocument();
   });
 
   it("shows the CASE_RESULT_EXISTS message", async () => {

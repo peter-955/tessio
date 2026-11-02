@@ -7,4 +7,5 @@ export interface ManualRunActionsRun {
   startedBy: string;
   failedCount: number;
   blockedCount: number;
+  isUntargeted?: boolean;
 }

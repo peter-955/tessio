@@ -6,7 +6,6 @@ import type { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { CreateProjectForm } from "./components/create-project-form/create-project-form";
 import { JiraLoadError } from "./components/jira-load-error/jira-load-error";
-import { JiraRequiredNotice } from "./components/jira-required-notice/jira-required-notice";
 import { LoadingState } from "./components/loading-state/loading-state";
 import { useGetJiraProjects } from "./hooks/queries/use-get-jira-projects";
 import { useIsWorkspaceAdmin } from "./hooks/use-is-workspace-admin";
@@ -42,7 +41,17 @@ export const NewProjectPage: FC = () => {
     }
 
     if (isJiraNotConfigured) {
-      return <JiraRequiredNotice />;
+      return (
+        <CreateProjectForm
+          jiraProjects={null}
+          onJiraProjectLinked={() => {
+            void jiraProjects.refetch();
+          }}
+          onJiraNotConfigured={() => {
+            void connection.refetch();
+          }}
+        />
+      );
     }
 
     if (jiraProjects.isPending) {

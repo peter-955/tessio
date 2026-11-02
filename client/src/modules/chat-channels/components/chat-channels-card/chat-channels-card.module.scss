@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.channelCell {
+  font-weight: inherit;
+  text-align: left;
+}
+
+.channel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.channelName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.url {
+  overflow-wrap: anywhere;
+}
+
+.eventsCell {
+  min-width: 160px;
+}
+
+.deliveryCell {
+  min-width: 140px;
+}
+
+.actionsCell {
+  width: 1%;
+  text-align: right;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

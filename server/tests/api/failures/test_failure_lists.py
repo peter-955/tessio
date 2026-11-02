@@ -181,6 +181,7 @@ async def test_the_detail_has_the_failed_step_history_and_events(
         "actualResult": "The total stayed at 0.",
         "error": "Expected 42.",
         "screenshotFileId": str(screenshot_id),
+        "diagnosis": None,
     }
     assert [result["caseResultId"] for result in body["results"]] == [
         str(latest.case_result_id),

@@ -17,6 +17,13 @@ class JiraNotConfiguredError(TessioError):
         super().__init__(ErrorCode.JIRA_NOT_CONFIGURED, "Connect Jira before creating a project.")
 
 
+class ProjectNotLinkedToJiraError(TessioError):
+    def __init__(self) -> None:
+        super().__init__(
+            ErrorCode.JIRA_NOT_CONFIGURED, "This project writes its stories in Tessio, so it has no Jira board."
+        )
+
+
 class LastProjectAdminError(TessioError):
     def __init__(self) -> None:
         super().__init__(ErrorCode.LAST_PROJECT_ADMIN, "A project needs at least one Admin.")

@@ -37,11 +37,13 @@ class CreateProjectUseCase:
         key: str,
         name: str,
         description: str | None,
-        jira_project_key: str,
-        jira_board_id: int,
+        jira_project_key: str | None,
+        jira_board_id: int | None,
     ) -> ProjectOverview:
         require_workspace(actor, WorkspaceCapability.PROJECT_CREATE)
-        if not await self._jira_connection_checker.is_configured():
+        cleaned_jira_project_key = None if jira_project_key is None else jira_project_key.strip() or None
+        is_linked_to_jira = cleaned_jira_project_key is not None and jira_board_id is not None
+        if is_linked_to_jira and not await self._jira_connection_checker.is_configured():
             raise JiraNotConfiguredError
         now = datetime.now(UTC)
         stripped_description = None if description is None else description.strip()
@@ -50,8 +52,8 @@ class CreateProjectUseCase:
             key=key,
             name=name.strip(),
             description=stripped_description or None,
-            jira_project_key=jira_project_key.strip(),
-            jira_board_id=jira_board_id,
+            jira_project_key=cleaned_jira_project_key if is_linked_to_jira else None,
+            jira_board_id=jira_board_id if is_linked_to_jira else None,
             allowed_file_types=list(DEFAULT_ALLOWED_FILE_TYPES),
             archived_at=None,
             created_at=now,
@@ -59,7 +61,10 @@ class CreateProjectUseCase:
         async with self._transaction.begin():
             if await self._project_repository.find_by_key(project.key) is not None:
                 raise ProjectKeyAlreadyUsedError
-            if await self._project_repository.find_by_jira_project_key(project.jira_project_key) is not None:
+            if (
+                project.jira_project_key is not None
+                and await self._project_repository.find_by_jira_project_key(project.jira_project_key) is not None
+            ):
                 raise JiraProjectAlreadyLinkedError
             await self._project_repository.save(project)
             await self._project_member_repository.save(

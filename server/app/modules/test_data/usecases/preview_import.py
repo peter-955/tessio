@@ -49,13 +49,14 @@ class PreviewImportUseCase:
             }
         items = []
         for entry in parsed_import.entries:
-            kind = suggest_kind(entry.key, entry.value)
+            kind = suggest_kind(entry.key)
             items.append(
                 ImportPreviewItem(
                     key=entry.key,
                     kind=kind,
                     value=None if kind is DataItemKind.SECRET else entry.value,
                     action=resolve_import_action(scope_items.get(entry.key), kind, entry.value, self._secret_cipher),
+                    description=entry.description,
                 )
             )
         return ImportPreview(format=parsed_import.format, items=items, skipped=parsed_import.skipped)

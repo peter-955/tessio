@@ -1,0 +1,200 @@
+{
+  "page": {
+    "title": "Kế hoạch",
+    "description": "Kế hoạch kiểm thử theo dõi các bộ kiểm thử và story của một bản phát hành đến khi phê duyệt."
+  },
+  "list": {
+    "newPlan": "Kế hoạch mới",
+    "statusFilter": "Trạng thái kế hoạch",
+    "label": "Kế hoạch kiểm thử",
+    "loadError": "Không tải được danh sách kế hoạch.",
+    "anyEnvironment": "Mọi môi trường",
+    "noTargetDate": "Chưa có ngày mục tiêu",
+    "itemCount_one": "{{count}} mục",
+    "itemCount_other": "{{count}} mục",
+    "columns": {
+      "name": "Kế hoạch",
+      "status": "Trạng thái",
+      "progress": "Tiến độ",
+      "targetDate": "Ngày mục tiêu",
+      "environment": "Môi trường",
+      "items": "Bao gồm"
+    },
+    "filters": {
+      "all": "Tất cả",
+      "open": "Đang mở",
+      "signed_off": "Đã phê duyệt",
+      "closed": "Đã đóng"
+    },
+    "empty": {
+      "title": "Chưa có kế hoạch kiểm thử",
+      "description": "Kế hoạch kiểm thử gom các bộ kiểm thử và story cho một bản phát hành và ghi lại lần phê duyệt.",
+      "noMatch": "Không có kế hoạch nào ở trạng thái này",
+      "noMatchDescription": "Chọn trạng thái khác hoặc hiện tất cả kế hoạch.",
+      "showAll": "Hiện tất cả kế hoạch"
+    }
+  },
+  "status": {
+    "open": "Đang mở",
+    "signed_off": "Đã phê duyệt",
+    "closed": "Đã đóng"
+  },
+  "caseStatus": {
+    "passed": "Đạt",
+    "failed": "Không đạt",
+    "blocked": "Bị chặn",
+    "skipped": "Bỏ qua",
+    "notRun": "Chưa chạy"
+  },
+  "progress": {
+    "title": "Tiến độ",
+    "label": "Tiến độ kế hoạch",
+    "segment": "{{status}}: {{count}}",
+    "passedPercent": "Đạt {{percent}}%",
+    "summary": "{{passed}} / {{total}} ca đạt",
+    "noCases": "Chưa có ca nào",
+    "frozenSignedOff": "Tính các kết quả đến lúc phê duyệt.",
+    "frozenClosed": "Tính các kết quả đến lúc đóng.",
+    "since": "Tính các kết quả ghi nhận từ {{date}}."
+  },
+  "detail": {
+    "back": "Quay lại danh sách kế hoạch",
+    "loadError": "Không tải được kế hoạch.",
+    "notFoundTitle": "Không tìm thấy kế hoạch",
+    "notFoundDescription": "Kế hoạch này không tồn tại hoặc thuộc dự án khác.",
+    "targetDate": "Ngày mục tiêu",
+    "environment": "Môi trường",
+    "anyEnvironment": "Mọi môi trường",
+    "noTargetDate": "Không có",
+    "createdBy": "{{name}} tạo lúc {{date}}",
+    "signedOffBy": "{{name}} phê duyệt lúc {{date}}",
+    "closedBy": "{{name}} đóng lúc {{date}}",
+    "unknownUser": "một thành viên cũ",
+    "readOnlyArchived": "Dự án này đã được lưu trữ nên các kế hoạch chỉ đọc được."
+  },
+  "actions": {
+    "edit": "Sửa",
+    "chooseItems": "Chọn bộ kiểm thử và story",
+    "signOff": "Phê duyệt",
+    "close": "Đóng kế hoạch"
+  },
+  "form": {
+    "createTitle": "Kế hoạch kiểm thử mới",
+    "editTitle": "Sửa kế hoạch",
+    "name": "Tên",
+    "namePlaceholder": "Kiểm thử hồi quy bản 4.2",
+    "nameRequired": "Nhập tên.",
+    "nameTooLong": "Dùng tối đa {{max}} ký tự.",
+    "description": "Mô tả",
+    "descriptionPlaceholder": "Những gì kế hoạch này phải chứng minh trước khi phát hành",
+    "targetDate": "Ngày mục tiêu",
+    "environment": "Môi trường",
+    "environmentPlaceholder": "Mọi môi trường",
+    "environmentDescription": "Khi được chọn, chỉ tính kết quả của các lần chạy trên môi trường này.",
+    "create": "Tạo kế hoạch",
+    "save": "Lưu"
+  },
+  "items": {
+    "title": "Phạm vi của kế hoạch",
+    "modalTitle": "Chọn bộ kiểm thử và story",
+    "suites": "Bộ kiểm thử hồi quy",
+    "suitesPlaceholder": "Chọn bộ kiểm thử",
+    "stories": "Story",
+    "storiesPlaceholder": "Chọn story",
+    "nothingFound": "Không có kết quả",
+    "description": "Các ca của kế hoạch là các ca của từng bộ kiểm thử, rồi đến các ca của từng story. Một ca có ở hai mục chỉ được liệt kê một lần.",
+    "tooMany": "Một kế hoạch có tối đa {{max}} bộ kiểm thử và story.",
+    "loadError": "Không tải được bộ kiểm thử và story.",
+    "none": "Kế hoạch này chưa có bộ kiểm thử hay story nào.",
+    "save": "Lưu",
+    "archived": "{{name}} (đã lưu trữ)",
+    "archivedBadge": "Đã lưu trữ",
+    "caseCount_one": "{{count}} ca",
+    "caseCount_other": "{{count}} ca",
+    "kind": {
+      "suite": "Bộ kiểm thử",
+      "story": "Story"
+    }
+  },
+  "cases": {
+    "title": "Ca theo trạng thái",
+    "filterLabel": "Lọc ca theo trạng thái",
+    "tableLabel": "Các ca của kế hoạch",
+    "noCases": "Thêm bộ kiểm thử hoặc story để xem các ca ở đây.",
+    "noMatch": "Không có ca nào của kế hoạch ở trạng thái này.",
+    "needsReview": "Cần xem lại",
+    "notRun": "Chưa chạy",
+    "filters": {
+      "all": "Tất cả",
+      "passed": "Đạt",
+      "failed": "Không đạt",
+      "blocked": "Bị chặn",
+      "skipped": "Bỏ qua",
+      "notRun": "Chưa chạy"
+    },
+    "columns": {
+      "case": "Ca",
+      "story": "Story",
+      "result": "Kết quả mới nhất",
+      "recordedAt": "Ghi nhận",
+      "failure": "Lỗi"
+    },
+    "caseStatus": {
+      "draft": "Bản nháp",
+      "in_review": "Đang duyệt",
+      "ready": "Sẵn sàng",
+      "deprecated": "Ngừng dùng"
+    }
+  },
+  "blockers": {
+    "title": "Điểm chặn",
+    "failures": "Lỗi đang mở",
+    "gaps": "Câu hỏi đang mở",
+    "noFailures": "Không có lỗi đang mở trên các ca của kế hoạch.",
+    "noGaps": "Không có câu hỏi đang mở trên các story của kế hoạch.",
+    "unassigned": "Chưa giao",
+    "assignedToRole": "Vai trò {{role}}",
+    "severity": {
+      "high": "Cao",
+      "medium": "Trung bình",
+      "low": "Thấp"
+    },
+    "roles": {
+      "admin": "Admin",
+      "pm": "PM",
+      "ba": "BA",
+      "qc": "QC",
+      "dev": "Dev",
+      "viewer": "Người xem"
+    }
+  },
+  "signOff": {
+    "title": "Phê duyệt {{name}}?",
+    "message": "Phê duyệt ghi nhận bạn đồng ý cho bản phát hành này. Số liệu của kế hoạch sẽ không thay đổi nữa, và không thể đổi bộ kiểm thử hay story của nó.",
+    "blocked_one": "Xử lý {{count}} lỗi đang mở trên các ca của kế hoạch trước khi phê duyệt.",
+    "blocked_other": "Xử lý {{count}} lỗi đang mở trên các ca của kế hoạch trước khi phê duyệt.",
+    "notRun_one": "{{count}} ca chưa chạy.",
+    "notRun_other": "{{count}} ca chưa chạy.",
+    "openGaps_one": "{{count}} câu hỏi vẫn đang mở.",
+    "openGaps_other": "{{count}} câu hỏi vẫn đang mở."
+  },
+  "close": {
+    "title": "Đóng {{name}}?",
+    "message": "Đóng là vĩnh viễn: kế hoạch vẫn xem được, nhưng không thể mở lại hay thay đổi.",
+    "messageSignedOff": "Đóng là vĩnh viễn. Kế hoạch giữ lần phê duyệt và vẫn xem được."
+  },
+  "toasts": {
+    "created": "Đã tạo kế hoạch.",
+    "updated": "Đã lưu kế hoạch.",
+    "itemsSaved": "Đã lưu bộ kiểm thử và story của kế hoạch.",
+    "signedOff": "Đã phê duyệt kế hoạch.",
+    "closed": "Đã đóng kế hoạch."
+  },
+  "errors": {
+    "notOpen": "Kế hoạch này không còn mở. Trang đang hiện trạng thái hiện tại của nó.",
+    "failuresActive": "Xử lý các lỗi đang mở trên các ca của kế hoạch trước khi phê duyệt.",
+    "unknownReference": "Một bộ kiểm thử, story hoặc môi trường bạn chọn không còn trong dự án này.",
+    "invalidRequest": "Chọn mỗi bộ kiểm thử và story một lần, tối đa 100 mục."
+  },
+  "retry": "Thử lại"
+}

@@ -36,7 +36,7 @@ async def create_api_token(
     actor: SignedInActor,
     use_case: Annotated[CreateApiTokenUseCase, Depends(get_create_api_token)],
 ) -> CreatedApiTokenResponse:
-    created_api_token = await use_case.execute(actor, body.project_key, body.name, body.expires_in_days)
+    created_api_token = await use_case.execute(actor, body.project_key, body.name, body.expires_in_days, body.scope)
     return CreatedApiTokenResponse(
         token=created_api_token.token,
         api_token=build_api_token_response(created_api_token.summary, datetime.now(UTC)),

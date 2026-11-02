@@ -1,0 +1,52 @@
+.url {
+  overflow-wrap: anywhere;
+}
+
+.eventCell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-weight: inherit;
+  text-align: left;
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 8rem;
+}
+
+.error {
+  overflow-wrap: anywhere;
+}
+
+.muted {
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.actionsCell {
+  width: 1%;
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.payloadCell {
+  max-width: 0;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

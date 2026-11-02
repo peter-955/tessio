@@ -10,6 +10,7 @@ from tests.api.security.secured_route import SecuredRoute
 PLACEHOLDER_PATTERN = re.compile(r"\{(\w+)\}")
 FIXED_PATH_VALUES = {"jira_key": "X-1", "case_code": "TC-1", "file_key": "key", "token": "unknown-token"}
 MCP_PATH = "/mcp"
+SAMPLE_UPLOAD = b'<testsuite name="smoke"><testcase name="TC-1 opens the shop"/></testsuite>'
 
 
 def build_path(route: SecuredRoute, project_key: str) -> str:
@@ -25,6 +26,14 @@ def build_path(route: SecuredRoute, project_key: str) -> str:
 async def send(
     client: AsyncClient, route: SecuredRoute, project_key: str, headers: dict[str, str] | None = None
 ) -> Response:
+    if route.form is not None:
+        return await client.request(
+            route.method,
+            build_path(route, project_key),
+            data=route.form,
+            files={"file": ("results.xml", SAMPLE_UPLOAD, "application/xml")},
+            headers=headers,
+        )
     return await client.request(route.method, build_path(route, project_key), json=route.body, headers=headers)
 
 

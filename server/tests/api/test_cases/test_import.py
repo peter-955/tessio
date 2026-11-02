@@ -173,8 +173,8 @@ async def test_commit_creates_the_chosen_cases_as_drafts(
     assert first["priority"] == "high"
     assert first["currentVersion"]["preconditions"] == "Signed in"
     assert first["currentVersion"]["steps"] == [
-        {"order": 1, "action": "Open cart", "expected": "Cart is shown"},
-        {"order": 2, "action": "Pay", "expected": "Paid"},
+        {"order": 1, "action": "Open cart", "expected": "Cart is shown", "sharedStepKey": None},
+        {"order": 2, "action": "Pay", "expected": "Paid", "sharedStepKey": None},
     ]
     assert [criterion["code"] for criterion in first["criteria"]] == ["AC1"]
     new_events = recording_live_event_publisher.events[events_before:]

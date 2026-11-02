@@ -1,6 +1,6 @@
 # Work Breakdown Structure (WBS)
 
-**Status:** Draft, build status updated 2026-11-01 after waves W1–W7 and W8, updated 2026-10-31 for the accepted [testing workflow proposal](../discussions/testing-workflow-proposal.md), the [server proposal](../discussions/server-proposal.md) and [ADR 0004](../decisions/0004-backend-stack.md).
+**Status:** Draft, build status updated 2026-11-02 after waves W9 and W10 (2026-11-01 after waves W1–W7 and W8), updated 2026-10-31 for the accepted [testing workflow proposal](../discussions/testing-workflow-proposal.md), the [server proposal](../discussions/server-proposal.md) and [ADR 0004](../decisions/0004-backend-stack.md).
 
 A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowest-level item is a **work package**: small enough to design, estimate and assign.
 
@@ -18,17 +18,18 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 
 ## Build progress
 
-✅ means built, wired into the base app and covered by passing automated tests: server `pytest` (1861 tests), client `vitest` (1103 tests in 190 files) and the plugin hook unit tests. The missing manual browser pass is a release gate (B-13), not a 🚧 on every screen. 🚧 means part of the package is missing or it waits on an outside resource.
+✅ means built, wired into the base app and covered by passing automated tests: server `pytest` (2362 tests), client `vitest` (1392 tests in 238 files), the plugin unit tests (59) and the Playwright e2e suite (37 tests), as of W10 POST on 2026-11-02. The missing manual browser pass is a release gate (B-13), not a 🚧 on every screen. 🚧 means part of the package is missing or it waits on an outside resource.
 
 | Area | ✅ Done | 🚧 Partly done | Mock or placeholder | Next gap |
 | --- | --- | --- | --- | --- |
 | 1–2 Planning & design | 1.1, 1.2, 1.3, 1.4, 1.5, 1.7.1, 1.7.2, 1.7.3, 2.1, 2.3, 2.4, 2.4b, 2.5, 2.8 | 1.6, 1.7.4, 2.2 | | Real Jira check (1.7.4); release dates (1.6); final brand, wireframes and mockups (2.2, 2.6, 2.7) |
-| 3 Client | 3.1.1, 3.1.2, 3.1.4–3.1.6, 3.2.1–3.2.7, 3.3.1–3.3.4, 3.3b.1–3.3b.4, 3.4.1–3.4.3, 3.5.1–3.5.6, 3.6.1–3.6.6 (with 3.6.4b), 3.7.1–3.7.4, 3.8.1–3.8.5, 3.9.1–3.9.4, 3.10.1–3.10.6, 3.10.8, 3.11.1–3.11.3, 3.11.5, 3.12.1, 3.13.1, 3.13.2, 3.13.4, 3.14.1–3.14.6 | 3.6.7, 3.9.5 | | Real import samples (3.6.7, 3.9.5); manual browser pass (B-13) |
-| 4 Server | 4.0, 4.1, 4.2, 4.2b, 4.2c, 4.3, 4.4, 4.5, 4.7, 4.8, 4.9, 4.11, 4.12 | 4.6, 4.6b | | VPS + SMTP (7.3, 4.6b); production object storage (4.6) |
-| 5 Claude integration | 5.1, 5.2, 5.4, 5.5, 5.6 | 5.3, 5.7 | | Original team skills (5.3); token measurement in the pilot (5.7) |
+| 3 Client | 3.1.1, 3.1.2, 3.1.4–3.1.6, 3.2.1–3.2.7, 3.3.1–3.3.5, 3.3b.1–3.3b.4, 3.4.1–3.4.3, 3.5.1–3.5.7, 3.6.1–3.6.6 (with 3.6.4b), 3.6.10, 3.7.1–3.7.4, 3.8.1–3.8.5, 3.9.1–3.9.4, 3.9.7, 3.10.1–3.10.6, 3.10.8, 3.10.9, 3.10.11, 3.11.1–3.11.3, 3.11.5, 3.11.6, 3.12.1, 3.13.1, 3.13.2, 3.13.4, 3.14.1–3.14.6 | 3.6.7, 3.6.8, 3.6.9, 3.9.5, 3.10.10 | | Real import samples (3.6.7, 3.6.9, 3.9.5); manual browser pass (B-13) |
+| 4 Server | 4.0, 4.1, 4.2, 4.2b, 4.2c, 4.3, 4.4, 4.5, 4.7, 4.8, 4.9, 4.11, 4.12, 4.13, 4.14 | 4.6, 4.6b | | VPS + SMTP (7.3, 4.6b); production object storage (4.6) |
+| 5 Claude integration | 5.1, 5.2, 5.4, 5.5, 5.6, 5.8, 5.10, 5.11, 5.12, 5.15 | 5.3, 5.7, 5.9, 5.13, 5.14 | | Original team skills (5.3); token measurement in the pilot (5.7); first real Claude import (5.9); first real failing run with diagnosis (5.14) |
 | 6 QA | 6.1, 6.2, 6.3, 6.5 | 6.4 | | Manual keyboard and screen-reader pass (6.4); first e2e run in CI (B-1) |
 | 7 DevOps | 7.1b | 7.1, 7.2, 7.3, 7.3b, 7.4 | | First commit and CI run (7.1, 7.2); VPS + SMTP (7.3, 4.6b) |
 | 8 Docs & rollout | 8.2, 8.3 | 8.1, 8.4 | | Pilot (8.4) |
+| 9 Competitive features (W9 and W10 so far) | 9.1, 9.2, 9.3 | 9.13, 9.18 | | `/tessio:answer-gaps` dry run in a real Claude session (9.18); quarantine in script runs (9.13, W13); `/tessio:run-suite` and per-iteration recording not yet tried in a real Claude session (9.1, 9.2) |
 
 ---
 
@@ -54,7 +55,7 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 2.1 | Collect Mobbin references ([mobbin-references.md](../design/mobbin-references.md)) | MVP | ✅ |
 | 2.2 | Brand: blue palette and logo ([design/brand/](../design/brand/)) | MVP | 🚧 logo drafted; current `DSLogo` and blue accepted for MVP (B-14) |
 | 2.3 | Mantine 9 setup with the Tessio theme (blue, Geist, sizes), light/dark switch ([ADR 0002](../decisions/0002-ui-library.md)) | MVP | ✅ |
-| 2.4 | Custom components Mantine lacks: step editor, traceability matrix, run step timeline, empty states | MVP | ✅ `DSStepEditor`, `DSStepTimeline`, `DSTraceabilityMatrix`, `DSEmptyState` |
+| 2.4 | Custom components Mantine lacks: step editor, traceability matrix, run step timeline, empty states | MVP | ✅ `DSStepEditor`, `DSStepTimeline` (also numbered steps for the case page, editor and manual recording, 2026-11-02), `DSTraceabilityMatrix`, `DSEmptyState` |
 | 2.4b | Translations EN / FR / VI with language switcher ([ADR 0003](../decisions/0003-translations.md)) | MVP | ✅ |
 | 2.5 | User flows: invite → set password → set up 2FA; sync sprint → write test cases → readiness review → run → assign failure → fix → re-run failed → QC sign-off | MVP | ✅ [user-flows.md](../design/user-flows.md); Mermaid checked by a structural script only (B-16) |
 | 2.6 | Wireframes for every screen in section 3 | MVP | |
@@ -83,7 +84,7 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 3.2.3 | Two-factor setup (authenticator app) and recovery codes, required for all | MVP | ✅ `/two-factor/setup` and `/two-factor`, 10 recovery codes; rate limited per IP (SEC-3) |
 | 3.2.4 | Forgot / reset password | MVP | ✅ `/forgot-password`, `/reset-password/[token]`; rate limited per IP and per email (SEC-3) |
 | 3.2.5 | Profile: name, avatar, password, two-factor (reset own authenticator, regenerate recovery codes), theme, language | MVP | ✅ `/profile`: name, avatar (auto-cropped to a centred square, at most 512 px), password, recovery codes and authenticator reset (both ask for the password; reset goes to `/two-factor/setup?next=%2Fprofile`), theme, language |
-| 3.2.6 | "Connect Claude" page: create a personal API token (one project each, shown once, expire within 90 days, revocable) and show the one terminal command that installs the Tessio Claude plugin with it | MVP | ✅ `/connect-claude`: lifetimes 7/30/60/90 days (30 default), the token is shown once inside `claude plugin install tessio --marketplace … --config tessio_url=… --config tessio_token=…` and never stored in the query cache; the marketplace comes from `NEXT_PUBLIC_TESSIO_PLUGIN_MARKETPLACE` (shows `<marketplace>` until set); revoked and expired tokens stay listed |
+| 3.2.6 | "Connect Claude" page: create a personal API token (one project each, shown once, expire within 90 days, revocable) and show the one terminal command that installs the Tessio Claude plugin with it | MVP | ✅ `/connect-claude`: lifetimes 7/30/60/90 days (30 default), the token is shown once inside `claude plugin install tessio --marketplace … --config tessio_url=… --config tessio_token=…` and never stored in the query cache; the marketplace is `<origin>/api/plugin/marketplace.json`, served by the API (ADR 0010), with an HTTPS-only hint on other addresses; revoked and expired tokens stay listed |
 | 3.2.7 | Sign out of all devices | MVP | ✅ user menu → confirm → `POST /api/auth/sign-out-all`, clears the query cache and goes to `/sign-in` |
 | 3.2.8 | SSO (Google, Microsoft, Atlassian) | Later | |
 
@@ -95,6 +96,7 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 3.3.2 | Edit / archive project (archived = read-only, history kept) | MVP | ✅ `/projects/[projectKey]/settings`; archive only for workspace admins |
 | 3.3.3 | Project switcher (only projects the user belongs to) | MVP | ✅ top-bar switcher, remembers the last project |
 | 3.3.4 | Project members: add workspace users, one role each (Admin, PM, BA, QC, Dev, Viewer) | MVP | ✅ `/projects/[projectKey]/members`; the last Admin cannot be removed or demoted |
+| 3.3.5 | Project without Jira: create a project whose stories are written in Tessio, also when no Jira connection is set ([proposal](../discussions/projects-without-jira-proposal.md)) | MVP | ✅ migration 0017; create form choice; `tests/api/stories/test_written_stories.py` |
 
 ### 3.3b User management (workspace)
 
@@ -124,6 +126,7 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 3.5.4 | *Sync from Jira* button, the only time Tessio calls Jira (no automatic sync): last-sync time, "Never synced" and "Syncing…" states | MVP | ✅ sync control on the stories page, `jira.sync_project` job |
 | 3.5.5 | QC sign-off: mark story *Passed* / *Failed* | MVP | ✅ story detail; *Passed* refused while failures are active or a run is running |
 | 3.5.6 | Dev marks story *Ready for test* | MVP | ✅ story detail, Dev and Admin |
+| 3.5.7 | Stories and AC written in Tessio in a project without Jira: create, edit, delete; keys `<KEY>-<n>`; `story.edit` for Admin, PM, BA, QC ([proposal](../discussions/projects-without-jira-proposal.md)) | MVP | ✅ story editor, edit and delete on the story page |
 
 ### 3.6 Test cases
 
@@ -137,7 +140,9 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 3.6.5 | Review workflow: Draft → In review → Ready → Deprecated; only *Ready* cases can run | MVP | ✅ status actions in the editor, QC and Admin |
 | 3.6.6 | Version history (every save adds a version); each run records the version it executed | MVP | ✅ History tab with *Compare versions*; `run_cases` keep the version |
 | 3.6.7 | Import from Google Sheets / CSV (tab = Jira story key) | MVP | 🚧 .xlsx tab = Jira key or .csv with a Story column; column format a guess; no Google Sheets API (B-7, B-9) |
-| 3.6.8 | Claude drafts test cases from AC for QC to review | Later | |
+| 3.6.8 | Claude drafts test cases from AC for QC to review (`/tessio:draft-cases`, [proposal](../discussions/claude-drafts-cases-proposal.md)) | Later | 🚧 built ahead of plan: skill `draft-cases` on the 5.8 tools; not tried in a real Claude session |
+| 3.6.9 | Claude imports test cases from any file (xlsx, csv, docx, pdf, text, images) as Draft (`/tessio:import-cases`, [proposal](../discussions/claude-drafts-cases-proposal.md)) | MVP | 🚧 skill `import-cases`, `extract_file.py` and the 5.8 tools built and tested; not tried in a real Claude session or on a real QC file (B-7, B-9) |
+| 3.6.10 | Read view of a test case for everyone, values shown for `{{data.key}}`, *Edit* switches to the form ([proposal](../discussions/readable-cases-proposal.md)) | MVP | ✅ read view in the Details tab with *Edit*; `/test-data/effective` for values |
 
 ### 3.7 Traceability
 
@@ -168,6 +173,7 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 3.9.4 | Secret masking and role-based reveal | MVP | ✅ masked values, reveal with `secret.reveal`, audited |
 | 3.9.5 | Import the existing shared data file | MVP | 🚧 .env/JSON/YAML import (B-8) |
 | 3.9.6 | "Where used" list for each data key | Later | |
+| 3.9.7 | Test data: one description per key, a Secret checkbox instead of three kinds (`endpoint` removed), descriptions shown in suggestions and to Claude ([proposal](../discussions/test-data-descriptions-proposal.md)) | MVP | ✅ migration 0015, `test_data_descriptions`; Secret checkbox and description in the form, grid and import preview; `tests/api/test_data/test_data_descriptions.py` |
 
 ### 3.10 Runs
 
@@ -181,6 +187,9 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 3.10.6 | Generated run report (summary, failures, AC impact) | MVP | ✅ Report tab, secrets masked |
 | 3.10.7 | Export report (PDF / Markdown) | Later | |
 | 3.10.8 | Aborted runs (no activity for 4 hours): shown in the list and the status filter; cases the run never reported keep their previous result | MVP | ✅ `runs.abort_stale` every 15 minutes; *Aborted* in the status filter |
+| 3.10.9 | Readable case sheet in runs: preconditions, AC, test data values and the environment URL on the manual recording screen and the run detail; audited secret reveal in a manual run ([proposal](../discussions/readable-cases-proposal.md)) | MVP | ✅ `components/case-sheet` on `/runs/[runId]/record` and `/runs/[runId]`; `POST …/runs/{run_id}/resolve-data` |
+| 3.10.10 | Execution log on the run page: Claude's notes and actions per case, input and output, timings and token counts ([proposal](../discussions/execution-log-proposal.md)) | MVP | 🚧 Log tab on Claude runs (`modules/run-log`); not seen on a real Claude run yet |
+| 3.10.11 | Why it failed: suspected cause on each failed or blocked case, and a panel with page URL, failed requests and console errors on the failing step; cause in the report and in manual runs ([proposal](../discussions/failure-diagnosis-proposal.md)) | MVP | ✅ `components/step-diagnosis`, `components/suspected-cause`; cause picker on `/runs/[runId]/record` |
 
 ### 3.11 Failures
 
@@ -191,6 +200,7 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 3.11.3 | Dev marks *Fixed*; QC marks *Verified* or *Reopened*; a failed result on a *Fixed* failure reopens it automatically | MVP | ✅ status actions on the failure detail; automatic reopen |
 | 3.11.4 | Comments on a failure | Later | |
 | 3.11.5 | Assign / reassign a failure: Admin, QC or Dev, to any project member; new failures start unassigned | MVP | ✅ assign modal on the list and the detail |
+| 3.11.6 | Suspected cause on the failure: shown with the failing step's diagnosis, changeable by Admin, QC or Dev, recorded in the timeline ([proposal](../discussions/failure-diagnosis-proposal.md)) | MVP | ✅ *Suspected cause* card with *Change* on `/failures/[failureId]` |
 
 ### 3.12 Notifications
 
@@ -239,6 +249,8 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 4.10 | Full audit log (secret access is already logged in 4.5) | Later | |
 | 4.11 | Background jobs (Redis + BullMQ worker, [ADR 0006](../decisions/0006-background-jobs-redis-bullmq.md)): Jira sync, email, closing stale runs, deleting orphan uploads and expired sessions | MVP | ✅ queues `email`, `jira`, `maintenance`; `runs.abort_stale` every 15 min, `files.delete_orphans` and `sessions.delete_expired` nightly |
 | 4.12 | Run and failure rules: open gaps block a run; only *Ready* cases run; a case keeps its previous result when a newer run has none; runs idle for 4 hours are aborted; failures start unassigned and reopen automatically | MVP | ✅ run start gate, one running run per story, stale abort, failure rules in `app/modules/failures` |
+| 4.13 | Run log storage: `POST /api/runs/{run_id}/log` after finish, masked again, entries assigned to cases, `run_log_entries` table ([proposal §4](../discussions/execution-log-proposal.md#4-server-wbs-413)) | MVP | ✅ module `run_logs`, migration 0018; `tests/api/runs/test_run_log.py` |
+| 4.14 | Failure diagnosis storage: `step_results.diagnosis`, the case result's suspected cause, the failure's cause, `PUT …/failures/{failure_id}/cause` ([proposal](../discussions/failure-diagnosis-proposal.md)) | MVP | ✅ migration `0016`; masked, query strings dropped |
 
 ## 5. Claude integration
 
@@ -248,9 +260,17 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 5.2 | Token auth for MCP, scoped to project and role (see 4.2c) | MVP | ✅ `tsio_` bearer token on `/mcp`, project and current role checked per call |
 | 5.3 | Migrate existing skills, commands and hooks to call Tessio MCP | MVP | 🚧 new skills `run-story-tests`, `review-readiness`, `rerun-failed`; original team skills not in the repo (B-12) |
 | 5.4 | Health check before each run: Claude calls the environment's health-check URL itself (returned by `start_run`) | MVP | ✅ `start_run` returns the health-check URL; `run-story-tests` calls it first |
-| 5.5 | Tessio Claude plugin: MCP server, screenshot upload hook and skills in one install; the developer adds only their token | MVP | ✅ `claude/` + `.claude-plugin/marketplace.json`, marketplace host open (B-11) |
+| 5.5 | Tessio Claude plugin: MCP server, screenshot upload hook and skills in one install; the developer adds only their token | MVP | ✅ `claude/`, served by the API (5.10); the root `.claude-plugin/marketplace.json` stays for local checkouts |
 | 5.6 | Screenshot upload hook: after `record_case_result`, fetch one signed upload per case, upload Claude in Chrome's JPEGs as they are (other formats compressed with `sips` / `cwebp`), keep a retry list | MVP | ✅ [claude/hooks/upload_screenshots.py](../../claude/hooks/upload_screenshots.py), setup in [claude-setup.md](../guides/claude-setup.md) |
 | 5.7 | Measure tokens per test case on a pilot story, before and after `scale: 0.5` for navigation screenshots | MVP | 🚧 `claude/scripts/measure-tokens.sh` and procedure only (B-10) |
+| 5.8 | MCP tools `check_draft_cases` and `create_draft_cases`: the import preview checks on cases Claude sends, then create them as Draft (`test_case.edit`, 100 per call, all or nothing) ([proposal §3](../discussions/claude-drafts-cases-proposal.md#3-mcp-tools-wbs-58)) | MVP | ✅ `modules/test_cases/mcp_tools.py`; `tests/api/test_cases/test_draft_case_tools.py` |
+| 5.10 | The API serves the plugin: `GET /api/plugin/marketplace.json` and the zip it points at, built from `claude/` at start-up ([ADR 0010](../decisions/0010-tessio-serves-its-claude-plugin.md)) | MVP | ✅ `modules/plugin`; `tests/api/plugin/`, `tests/unit/plugin/`; served `marketplace.json` and unpacked zip pass `claude plugin validate --strict`; not installed from a real HTTPS host yet (B-3) |
+| 5.11 | One plugin version for everyone: the plugin sends `X-Tessio-Plugin-Version` and MCP refuses a missing or older version with `PLUGIN_OUTDATED` | MVP | ✅ checked in `AuthenticateApiTokenUseCase.execute_for_mcp` after the token, once the sent version is saved on it (5.15); plugin 0.2.0 |
+| 5.12 | Project rules for Claude in the repository, so every developer's Claude follows the same decisions | MVP | ✅ [CLAUDE.md](../../CLAUDE.md) |
+| 5.9 | Plugin skills `import-cases` and `draft-cases`, plus `claude/scripts/extract_file.py` (stdlib xlsx and docx to text) ([proposal §4](../discussions/claude-drafts-cases-proposal.md#4-skills-wbs-59)) | MVP | 🚧 skills and script with unit tests (`test_extract_file.py`, `test_plugin_files.py`); not tried in a real Claude session (B-7, B-9) |
+| 5.13 | Log upload hook: after `finish_run`, read the run's slice of Claude Code's session log, mask secrets, drop images, upload once ([proposal §3](../discussions/execution-log-proposal.md#3-the-hook-wbs-513)) | MVP | 🚧 `claude/hooks/upload_run_log.py` with unit tests on a synthetic session log; not tried on a real session; plugin 0.3.0 |
+| 5.14 | `run-story-tests` diagnoses the failing step: page URL, console errors, failed requests, suspected cause ([proposal](../discussions/failure-diagnosis-proposal.md)) | MVP | 🚧 skill and `record_case_result` fields built and tested; not tried in a real Claude in Chrome run |
+| 5.15 | AI Harness page `/ai-harness` for every signed-in user: the plugin's skills, commands, hooks, MCP server and tools, the server and plugin versions, and the plugin version each of the user's tokens last sent ([proposal](../discussions/ai-harness-proposal.md)) | MVP | ✅ `modules/ai_harness` (`GET /api/ai-harness`), `api_tokens.plugin_version` (migration 0019), capability in each MCP tool's `_meta`; client `modules/ai-harness` and a Plugin column on Connect Claude; [spec](../spec/ai-harness.md); not checked in a real browser (B-13) |
 
 ## 6. Quality assurance of Tessio
 
@@ -312,6 +332,31 @@ A deliverable-oriented breakdown of everything needed to ship Tessio. Each lowes
 | 8.3 | Developer docs (this `docs/` folder) | MVP | ✅ stale paths, stack names and SP column names fixed (W8.T4) |
 | 8.4 | Pilot: one sprint in parallel with Google Sheets, then retire the sheet | MVP | 🚧 checklist in [pilot.md](../guides/pilot.md); pilot not started (B-10) |
 
+## 9. Competitive features
+
+Accepted by Peter on 2026-11-02: [competitive features proposal](../discussions/competitive-features-proposal.md). Build order, tasks and checks: [build plan](../discussions/competitive-features-plan.md), waves W9 to W15. The proposal's phase is in brackets. W9 starts now, in parallel with go-live. Claude always runs in a person's terminal through Tessio MCP, and there is no runner.
+
+| ID | Work package | Phase | Status |
+| --- | --- | --- | --- |
+| 9.1 | F1 Regression suites, test plans with sign-off, labels on test cases; open gaps block suite runs (proposal phase 1) | Later | ✅ Labels in W9.T3 ([CASE-13](../spec/test-cases.md#case-13-labels-wbs-91), [SET-5](../spec/settings.md#set-5-labels-wbs-91)). Suites, suite runs and test plans in W10.T1 to W10.T4: modules `suites` and `plans`, migrations 0024 and 0025, suite and plan routes, `start_run(suite=…)` and MCP `get_suite_context`, open gaps on any of the suite's stories block it (`OPEN_GAPS_BLOCK_RUN`), one running run per suite, results by story, plan progress and sign-off (`PLAN_FAILURES_ACTIVE`), the Suites and Plans screens, `/tessio:run-suite`, plugin 0.5.0, e2e `13-suite-run` ([suites-and-plans.md](../spec/suites-and-plans.md)). Not verified: `/tessio:run-suite` in a real Claude Code session; browser pass waits on B-13 |
+| 9.2 | F2 Shared steps and data-driven cases (proposal phase 1) | Later | ✅ W10.T5 and W10.T6: module `shared_steps`, migration 0026, shared step routes with versions and usage, `{sharedStepKey}` case steps, parameters and data rows (no literal secrets), the `run_cases.steps` snapshot with shared steps expanded, `iteration` on results (worst iteration counts), the shared step library, the case editor parts, iteration blocks on run detail and manual recording, one `record_case_result` per iteration in the plugin ([CASE-16](../spec/test-cases.md#case-16-shared-steps-and-data-driven-cases-wbs-92), [RUN-14](../spec/runs.md#run-14-shared-steps-and-iterations-in-a-run-wbs-92)). Not verified: a data-driven case run in a real Claude Code session; browser pass waits on B-13 |
+| 9.3 | F3 Version compare, review comments, "reviewer must not be the author" setting (proposal phase 1) | Later | ✅ W9.T5: migration 0023, review comment routes, `REVIEW_COMMENTS_OPEN` and `REVIEWER_IS_AUTHOR`, the Review and Compare tabs, the Review settings card ([CASE-15](../spec/test-cases.md#case-15-version-compare-and-review-comments-wbs-93), [SET-4](../spec/settings.md#set-4-reviewer-must-not-be-the-author-wbs-93)). Browser pass waits on B-13 |
+| 9.4 | F4 Two-way Jira: Jira bug from a failure, results posted on the story (proposal phase 1) | Later | |
+| 9.5 | F5 Insights page and report export to Markdown and PDF; covers 3.10.7 (proposal phase 1) | Later | |
+| 9.6 | F6 Email, Slack and Teams notifications, outbound webhooks, `api` token scope, JUnit result import; covers 3.12.2 and 3.13.3 (proposal phase 1) | Later | |
+| 9.7 | F7 Google and Microsoft sign-in, full audit log, failure comments; covers 4.10 and 3.11.4 (proposal: any time) | Later | |
+| 9.8 | F8 Playwright scripts written by Claude from passing runs, reviewed by QC, repaired with `/tessio:repair-script` (proposal phase 2) | Later | |
+| 9.9 | F9 Screenshot comparison against approved baselines (proposal phase 3) | Later | |
+| 9.10 | F10 Exploratory sessions run by Claude, with findings (proposal phase 3) | Later | |
+| 9.11 | F11 Accessibility and page-speed checks during runs (proposal phase 2) | Later | |
+| 9.12 | F12 Picking regression cases from a code diff or labels (proposal phase 3) | Later | |
+| 9.13 | F13 Flaky-case detection and quarantine (proposal phase 1) | Later | 🚧 W9.T4: migration 0022, flaky and disagreement recompute (job `test_cases.recompute_flaky` after each result, nightly `test_cases.sweep_flaky`), quarantine routes with history, auto-release after 10 passes, badges, filters and actions ([CASE-14](../spec/test-cases.md#case-14-flaky-cases-and-quarantine-wbs-913)). Missing: quarantine changes nothing in runs until script runs (W13.T4); the nightly schedule never fired on a real worker |
+| 9.14 | F14 Steps to reproduce from Claude; Playwright trace and video on failure (proposal phase 2) | Later | |
+| 9.15 | F15 Browser and screen-size matrix (proposal phase 2) | Later | |
+| 9.16 | F16 API steps in test cases (proposal phase 2) | Later | |
+| 9.17 | F17a Script runs started by a person from Claude Code (`/tessio:run-scripts`), with results uploaded by a plugin script (proposal phase 2) | Later | |
+| 9.18 | F18 `/tessio:answer-gaps`: Claude helps the person who must answer clear open gaps, with suggested answers and sources; MCP `get_my_gaps`, `answer_gap`, `reassign_gap`, `set_test_data` (proposal phase 1) | Later | 🚧 W9.T1 and W9.T2: migration 0020, the four MCP tools, "via Claude" on answered gaps, the `/tessio:answer-gaps` skill and the shared blocked-run procedure, plugin 0.4.0, e2e `12-answer-gaps` ([GAP-8](../spec/readiness-review.md#gap-8-answer-gaps-with-claude-wbs-918), [DATA-7](../spec/environments-and-test-data.md#data-7-save-missing-test-data-from-claude-wbs-918)). Missing: the dry run in a real Claude Code session (answer two gaps, reassign one, skip one) |
+
 ---
 
 ## Assumptions & blockers
@@ -332,7 +377,7 @@ An assumption is the common real-world default chosen where the spec was silent.
 | B-8 | No sample of the shared data file | 3.9.5 | The file is .env, JSON or YAML; secret-looking keys become secrets | The real shared data file (with dummy secrets) |
 | B-9 | The xlsx case-import column format is a guess | 3.6.7 | A header row with title and action columns, plus optional columns | A sample sheet to confirm the columns |
 | B-10 | No pilot people and no pilot sprint | 8.4, 5.7, 8.1, 1.4 | The pilot checklist, the token measurement script and the user guide exist; the 27 guide screenshots and the NFR [ASSUME] measurements wait for the pilot | A pilot lead, a team and one sprint |
-| B-11 | Plugin marketplace repo host not chosen | 5.5, 3.2.6 | The install command shows `<marketplace>` until `NEXT_PUBLIC_TESSIO_PLUGIN_MARKETPLACE` is set at client build time | A repo host the team can reach |
+| B-11 | Closed on 2026-11-01: the API serves the plugin itself ([ADR 0010](../decisions/0010-tessio-serves-its-claude-plugin.md)) | 5.5, 5.10, 3.2.6 | The install command uses `<origin>/api/plugin/marketplace.json` | Only the production HTTPS address (B-3) |
 | B-12 | The original team skills are not in the repo | 5.3 | New skills written from the server proposal (`run-story-tests`, `review-readiness`, `rerun-failed`) | The old skills, to migrate their wording |
 | B-13 | No manual pass in a real browser against a running stack | 6.4, section 3 | Automated tests (jsdom, axe) cover the screens, and the Playwright e2e suite checks in Chromium that 17 screens have no horizontal scroll at 375 px and that the focused-input border has enough contrast in light and dark; not checked: 200 % zoom, the skip link, VoiceOver and NVDA, a real QR scan, real uploads to RustFS, live SSE updates | One full manual pass on a running stack |
 | B-14 | Final brand, wireframes and mockups | 2.2, 2.6, 2.7 | The current `DSLogo` and Tessio blue are accepted for MVP | A designer's final brand and screens |
@@ -348,12 +393,14 @@ An assumption is the common real-world default chosen where the spec was silent.
 | **3.1.6** | The row was marked ✅ while `error.tsx` and `global-error.tsx` were missing. | Both were built in W2.T5 and the status was corrected. |
 | **3.2.3** | Which QR library to use, and how to use `@mantine/form`. | `qrcode.react` wrapped as `DSQrCode`; `@mantine/form` only through the DS `useDSForm`. |
 | **3.2.5** | Avatar limits and where avatars are stored. | PNG, JPEG or WebP up to 2 MB, cropped square on the client, uploaded through the files module (`POST /api/me/avatar-upload`) under `users/{id}/avatar/{fileId}`. |
-| **3.2.6** | Token defaults and the plugin marketplace source. | 30 days by default, 90 at most, 10 active per user, membership checked at create, Viewer tokens read-only; the marketplace comes from `NEXT_PUBLIC_TESSIO_PLUGIN_MARKETPLACE` (B-11). |
+| **3.2.6** | Token defaults and the plugin marketplace source. | 30 days by default, 90 at most, 10 active per user, membership checked at create, Viewer tokens read-only; the marketplace is the one the API serves (ADR 0010, which closed B-11). |
 | **3.3.1** | The project key format, and creating a project without Jira. | The key matches `^[A-Z][A-Z0-9]{1,9}$` and never changes. Without a Jira connection, create is refused with a call to action. The Jira dropdowns call Jira directly. |
 | **3.3.4** | The last project admin, and who the member picker lists. | The last Admin cannot be removed or demoted. The picker lists active and invited workspace users. |
 | **3.3b.2** | Who manages admins, and ownership transfer. | Only the Owner manages admins. Nobody can deactivate the Owner or themselves. Ownership transfer is Later. |
 | **3.4.1** | Several sprints can be active at once. | The dashboard shows the one with the latest start and offers a sprint picker. |
 | **3.4.3** | Test cases have no assignee. | QC "to write" means uncovered AC plus the user's own draft and in-review cases. |
+| **3.5.7** | How to store a story written in Tessio in a table built for Jira stories. | The `jira_*` columns stay required and get placeholders (`jira_id` = `tessio:<id>`, empty URL and status, issue type "Story"), and `source` says where the story came from. This differs from the proposal (nullable columns) and keeps every reader, MCP tool and screen working unchanged. The description is stored as a one-paragraph-per-line document so the existing renderer shows it. A story with test cases, runs or gaps cannot be deleted. |
+| **3.10.10, 4.13, 5.13** | Where the log lives, how entries map to cases, and where failed uploads wait. | A separate module and tables (`run_logs`, `run_log_entries`) instead of new `runs` columns, so the runs code is untouched. Setup ends at the first browser action; each case ends at its `record_case_result`. Failed uploads wait in their own folder `~/.tessio/pending-run-logs/`, because the screenshot hook rewrites `pending-uploads.jsonl` with only its own lines. The run page shows the log in a Log tab grouped by case, not under each case's steps. |
 | **3.5.4** | The permission table leaves QC and Dev out of sync. | Follow the table: Admin, PM and BA can sync. |
 | **3.5.5** | The sign-off rules. | QC or Admin signs off from *In test*, or switches between *Passed* and *Failed*. *Passed* is refused while failures are active or a run is running. A new run resets the story to *In test*. |
 | **3.5.6** | Whether *Ready for test* gates runs. | It does not. Dev and Admin can set it. |
@@ -361,6 +408,9 @@ An assumption is the common real-world default chosen where the spec was silent.
 | **3.6.4b** | The scope of a file key. | Unique per case. A new file version adds a case version. |
 | **3.6.5** | The review rules. | Any QC or Admin can review, their own cases included. Editing keeps the status. *Ready* needs steps and known references. |
 | **3.6.7** | The Google Sheets format is unknown, and there is no Google sign-in. | An uploaded .xlsx (tab = Jira key) or a .csv with a Story column (B-7, B-9). |
+| **3.6.8, 3.6.9** | Where Claude drafts or imports cases, and how far it is trusted. (Decided with Peter on 2026-11-01.) | In Claude Code through the plugin, never on the server (no API key). Every created case is Draft, so QC reviews it. The server re-checks every case with the import preview rules. The web import stays. 3.6.9 is MVP because it takes the guessed column format off the pilot's path; 3.6.8 stays Later. |
+| **5.8** | Batch size and partial failure for `create_draft_cases`. | 100 cases per call, all or nothing: one case with a problem refuses the call. Duplicates are allowed once the user confirms them, as in the web import. |
+| **5.9** | Reading xlsx and docx in Claude Code, and secrets found in a file. | A standard-library script turns xlsx and docx into text, because Claude Code reads PDF, images and text but not Office files. Secret-looking values become `{{data.key}}` and are never sent to Tessio. |
 | **3.8.2** | Routing when several members or none match, and deactivated users. | Several matches go to a role queue, none goes to Admin, and deactivated users are never assigned. Claude passes `dataScope=environment` for data gaps. |
 | **3.8.3** | Answering versus resolving. | Answering resolves the gap. The raiser, QC or Admin can reopen it. Every role except Viewer can raise gaps in the UI. Severity is high, medium or low. |
 | **3.9.1** | Who manages environments. | Admin, QC and Dev, on the Test data page. |
@@ -386,6 +436,7 @@ An assumption is the common real-world default chosen where the spec was silent.
 | **7.2** | There is no GitHub remote. | GitHub Actions workflows are written but never ran (B-1). |
 | **7.3** | No VPS, domain or remote. | `compose.prod.yml` and Caddy checked locally; the deploy job is gated; Bull Board is not public (B-3). |
 | **8.4** | The pilot needs people and a sprint. | Only the checklist exists; the row stays open (B-10). |
+| **9.1–9.18** | Which competitive features to build, and how. | Peter, 2026-11-02: all of them, except the runner (dropped). The [proposal](../discussions/competitive-features-proposal.md) holds the design and the [build plan](../discussions/competitive-features-plan.md) the order. Tessio stays one company, one workspace. Claude stays in a person's terminal, because Peter tried unattended Claude with an API key and with a plan token and neither worked as expected. A suite run is blocked by any open gap on its stories. |
 
 ### Implementation assumptions
 
@@ -574,6 +625,16 @@ Each bullet is one behaviour, rule, limit, default, permission, error code or da
 - Duplicates (same story and title, ignoring case, in the file or already saved) are flagged but can still be imported. (W4.T1)
 - Story keys from tab names or the Story column are upper-cased. (W4.T1)
 - NUL characters in imported cells are stripped silently. (W4 fix)
+
+#### 3.6.9 Claude imports test cases from any file (with 3.6.8, 5.8, 5.9)
+
+- `check_draft_cases` returns `case_count`, `creatable_count` and only the cases with an issue, so a clean file of 100 cases costs a few tokens. `create_draft_cases` returns only the new codes, in input order. (3.6.9 build)
+- Both tools need `test_case.edit`, so both are refused on an archived project, the check included, like the web import preview. (3.6.9 build)
+- A case needs a title, at least one step and a `source`; text lengths and step counts are not validated on input, so they come back as `text_too_long` or `too_many_steps` problems instead of failing the whole call. (3.6.9 build)
+- AC codes go through the import's `AC2` / `AC-2` / `AC 2` reader; any other code is kept upper-cased and reported as unknown, never dropped silently. (3.6.9 build)
+- The import plan and case creation are shared with the web import (`load_case_import_plan` takes a list of cases; `create_imported_case` in `utils/imported_case_creation.py`). (3.6.9 build)
+- `extract_file.py` shows a line break inside a cell as `⏎` and a `|` as `\|`, repeats merged cells, marks hidden sheets and refuses files over 5 MB, 100 MB unpacked or 5000 rows. (3.6.9 build)
+- The import skill runs the script as `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/extract_file.py`, which Claude Code substitutes in plugin skills and pre-approves through `allowed-tools`. (3.6.9 build)
 
 #### 3.7.3 AC pass / fail status
 
@@ -836,6 +897,21 @@ Each bullet is one behaviour, rule, limit, default, permission, error code or da
 - The plugin reads `CLAUDE_PLUGIN_OPTION_TESSIO_URL` and `CLAUDE_PLUGIN_OPTION_TESSIO_TOKEN`, with `TESSIO_*` variables as the fallback. (W1.T7)
 - The marketplace sits at the repo root and points at `./claude`; the plugin has no licence, icon or privacy URL, and `plugin validate --strict` passes. (W1.T7)
 
+#### 5.10 and 5.11 The API serves the plugin, one version for everyone
+
+- Both plugin routes are public and left out of the OpenAPI document: the plugin holds no secrets, and the token is entered at install. (5.10 build)
+- The zip is built in memory when the API starts, from `TESSIO_PLUGIN_DIR` (the repo's `claude/` by default, `/app/plugin` in the image). It leaves out `tests/`, `__pycache__`, `.pyc` and `.DS_Store`, uses fixed timestamps and keeps the executable bit, so its sha256 is the same on every start. A missing or invalid `plugin.json` stops the API at start-up. (5.10 build)
+- The archive URL in `marketplace.json` is built from `CLIENT_URL`, the public address. The zip is cached for a year (its name holds the version); `marketplace.json` is `no-cache`. (5.10 build)
+- The version check needs `MAJOR.MINOR.PATCH` and compares by number; a newer plugin than the server's is accepted, so the plugin can be released before the API. `PLUGIN_OUTDATED` maps to HTTP 426 for REST, though only MCP uses it. (5.11 build)
+- The screenshot-upload REST route used by the hook does not check the plugin version: the hook ships inside the plugin, and refusing an upload would lose evidence. (5.11 build)
+
+#### 5.15 AI Harness page
+
+- The route is `GET /api/ai-harness` in a new top-layer module `ai_harness`, not under `/api/plugin`: the `plugin` module is in the lowest import layer and can't use the session check. (5.15 build)
+- The token is now checked before the plugin version, so an outdated plugin's version can be saved and shown. An unknown token now gets `INVALID_API_TOKEN` instead of `PLUGIN_OUTDATED`. "Last used" is refreshed even when the call is then refused for an old plugin or a missing capability. (5.15 build)
+- The server version is `TESSIO_SERVER_VERSION`, or else the `version` in `server/pyproject.toml`; `TESSIO_BUILD_COMMIT` is optional and no image sets it yet. (5.15 build)
+- "AI Harness" is a product name and stays in English in French and Vietnamese. (5.15 build)
+
 #### 5.6 Screenshot upload hook
 
 - The hook reads the case result id from the first content block only. (W1.T7)
@@ -924,9 +1000,197 @@ Each bullet is one behaviour, rule, limit, default, permission, error code or da
 - The proxy-header item from W7 is closed by documentation: the server image already trusts forwarded headers, and the API is reachable only through Caddy. (W8.T4)
 - The ADR template's superseded placeholder is plain text, so the docs link check passes. (W8.T4)
 
+#### 9 Competitive features: wave W9 integration
+
+- W9 has no runnable spike: S1 to S7 belong to W11, W12, W14 and W15, so none was run. (W9.PRE)
+- No `GAP_NOT_ASSIGNABLE_HERE` error code: `ReassignGapUseCase` already refuses a non-member or Viewer with `ASSIGNEE_NOT_ACTIVE_MEMBER` and another project's gap with `NOT_FOUND`, and the MCP `reassign_gap` reuses it. (W9.PRE)
+- `REVIEWER_IS_AUTHOR` is 403, like `RUN_NOT_OWNED`, because the refusal is about who the actor is; `REVIEW_COMMENTS_OPEN` is 409, like the other state conflicts. (W9.PRE)
+- `labels` is its own import layer, directly below `test_cases` and above `stories`, so `test_cases`, `gaps`, `runs`, `failures`, `story_context` and `insights` may import it and it never imports them. Its router was registered in `main.py` by PRE. (W9.PRE)
+- Live events `label.changed` and `review_comment.changed`; a case's labels, quarantine, the flaky recompute and the review rules reuse `test_case.changed`. (W9.PRE)
+- Jobs `test_cases.recompute_flaky` (one case) and `test_cases.sweep_flaky` (the nightly sweep, because a `JobSchedule` carries no data) run on the existing `maintenance` queue. (W9.PRE)
+- Translation namespaces `labels`, `flakyCases` and `caseReview`; the "via Claude" answer badge reuses the `gaps` namespace. Icons `label`, `flaky`, `quarantine`, `comment` and `compare` were added to `DS_ICONS`. W9 adds no sidebar entry. (W9.PRE)
+- The test container records jobs in `RecordingJobQueue` (`server/tests/support/`), so no test reaches the dev Redis; worker job tests use the testcontainer Redis. (W9.PRE)
+- The parallel tasks checked their migrations on their own throwaway databases (`tessio_migcheck_<task>` or a testcontainer Postgres) so they would not drop each other's `tessio_migcheck`; POST ran the official check on `tessio_migcheck`. The dev database `tessio` was never touched. (W9.T1, W9.T3, W9.T4, W9.T5)
+- The plugin went from 0.3.0 to 0.4.0 (minor: a new skill and new MCP tools). The server takes its required version from `claude/.claude-plugin/plugin.json`, so MCP calls from a 0.3.x plugin get `PLUGIN_OUTDATED`. (W9 POST)
+- The e2e spec `12-answer-gaps` creates a Dev API token through `POST /api/me/api-tokens` with the Dev's session, calls `get_my_gaps` and `answer_gap` on `/mcp` with the plugin version read from `plugin.json`, checks `isAnsweredViaClaude` over REST and the "via Claude" badge on the story's Gaps tab, then revokes the token. It uses SHOP-2, so the SHOP-1 flow of specs 05 to 09 is unchanged. (W9 POST)
+- `GET_LABELS_KEY` stays on `label.changed` only: when someone else changes a case's labels (`test_case.changed`), the "Used by n cases" counts in the label manager refresh on the next fetch, not live. Adding the key to `test_case.changed` would refetch the labels list after every case change. (W9 POST, from W9.T3)
+
+#### 9 Competitive features: wave W10 integration
+
+- W10 has no runnable spike: S1 to S7 belong to W11, W12, W14 and W15, so none was run. (W10.PRE)
+- No `GAPS_OPEN` error code: a suite run blocked by open gaps gets the existing `OPEN_GAPS_BLOCK_RUN` (409), which the skills and the client already handle; `when-gaps-block.md` now says so. (W10.PRE, W10.T4)
+- Import layers: `plans` above `suites`, `suites` above `story_context | insights` (so above `runs`), and `shared_steps` beside `labels` directly below `test_cases`. `runs` reads suites only through its `SuiteRunScopeReader` port, implemented in `suites` and wired in `container.py`; run list, run detail and the insights read models get the suite name through their own SQL. (W10.PRE, W10.T1)
+- Suite names are unique without case among a project's active suites (`SUITE_NAME_ALREADY_USED`), because `/tessio:run-suite <name>` finds a suite by name; plan names need not be unique. (W10.PRE)
+- Error codes reserved and used: `SUITE_ALREADY_RUNNING`, `SUITE_EMPTY`, `SUITE_NAME_ALREADY_USED`, `SUITE_ARCHIVED`, `PLAN_FAILURES_ACTIVE`, `PLAN_NOT_OPEN` (409); `SHARED_STEP_KEY_ALREADY_USED` (409); `UNKNOWN_SHARED_STEP`, `INVALID_STEP_SHAPE`, `SECRET_IN_DATA_ROW`, `ITERATION_OUT_OF_RANGE` (422). Specific codes, not `INVALID_REQUEST`, so Claude and the client can explain the problem. The `SECRET_IN_DATA_ROW` message avoids a literal `{{data.key}}`, which i18next would interpolate away. (W10.PRE)
+- Closing a plan needs `plan.edit`; `signed_off` and `closed` plans refuse edits with `PLAN_NOT_OPEN`. The plan's "`plan.signed_off` event" is a live event of that name (W11 webhooks subscribe to the Redis live events), published with `plan.changed`. (W10.PRE)
+- Reads: Suites and Shared steps use `test_case.view`, Plans `report.view`, MCP `get_suite_context` `run.view`; every role holds them. The sidebar order is Test cases, Shared steps, Suites, Runs, Plans, Failures. (W10.PRE)
+- Translation namespaces `suites` (including the suite strings on run screens and manual run creation), `plans`, `sharedSteps` and `dataRows`. (W10.PRE)
+- T1 creates `docs/spec/suites-and-plans.md` and its index row; T3 adds the Plans part. (W10.PRE)
+- The parallel tasks checked their migrations on their own throwaway databases (`tessio_migcheck_<task>`); POST ran the official check on `tessio_migcheck`. The dev database `tessio` was never touched. (W10.T1, W10.T3, W10.T5 and their reviews)
+- Live refresh added by POST, as the T2 and T3 reviews asked: `test_case.changed` also refreshes the suites list, suite detail and plan detail, and `suite.changed` the plan detail. (W10 POST) W10.FIX added the plans list to `test_case.changed` and `suite.changed`, and the plans list and plan detail to `story.changed`, because the list's counts come from the plans' suites and stories. (W10.FIX)
+- The plugin went from 0.4.0 to 0.5.0 (minor: a new skill, a new MCP tool, `start_run(suite=…)` and `record_case_result(iteration=…)`). The server reads its required version from `claude/.claude-plugin/plugin.json`, so a 0.4.x plugin gets `PLUGIN_OUTDATED`. (W10 POST)
+- 9.1 and 9.2 are ✅ although `/tessio:run-suite` and the per-iteration recording were never tried in a real Claude Code session: no W10 "Done when" item asks for that run, and the run rules say a missing real-system run alone doesn't make a task 🚧. It is named as "Not verified" in the rows and in the M13 exit criterion. (W10 POST; W9 POST set 9.18 to 🚧 because its dry run was a Done-when item)
+- The e2e spec `13-suite-run` labels TC-1 `regression` from the case page, creates the suite "Checkout regression" and fills it with Add by filter, raises a gap on SHOP-1 for the Dev, sees the manual suite start refused with the open-gaps message, lets the Dev answer on `/gaps`, opens the plan "Release 1.0" on the suite, runs the suite by hand (SHOP-1 stays *Passed*), and signs off the plan at 1 of 1 passed. It runs through the UI only, no MCP. (W10 POST)
+
+#### 9.1 Labels (W9.T3)
+
+- `PUT …/test-cases/{case_code}/labels` and `SetTestCaseLabelsUseCase` live in `test_cases`, which calls the `labels` repositories; `labels` never imports `test_cases`, and `test_case_labels.test_case_id` names its FK by table name. (W9.T3)
+- That PUT returns the case's labels as `[{id, name, color}]`, sorted by name, not the whole case; the case detail and every case-list row carry `labels`. (W9.T3)
+- Colours are a fixed palette of 8 names (`gray` by default, `red`, `orange`, `yellow`, `green`, `teal`, `blue`, `violet`), not hex values. `DSBadge` gained `orange`, `teal`, `blue` and `violet`, each with a `--color-<colour>-text` token; their AA contrast was not measured with a tool. (W9.T3)
+- Names are trimmed, 1 to 40 characters and unique per project without regard to case, checked in the use case; a duplicate gets the existing `CONFLICT` (409). The database constraint `UNIQUE(project_id, name)` is case-sensitive, as for environments. (W9.T3)
+- A label of another project or an unknown id in the PUT gets `INVALID_REQUEST` (422); on PATCH and DELETE it gets `NOT_FOUND`. At most 20 ids per request (repeats count), and the case-list `label` filter takes at most 20 names. (W9.T3)
+- The `label` filter takes names, repeatable, AND, trimmed and matched without case; an unknown name matches nothing. (W9.T3)
+- Labels are not versioned and can change in any status, Deprecated included. (W9.T3)
+- The label manager card is in project settings, which only `project.edit` (Admin) sees. QC (`test_case.edit`) creates labels from the case's label picker, but renames, recolours and deletes only through the Admin's card. (W9.T3)
+- No labels MCP tool in W9: labels show in `get_story_context`, and `list_cases(filter)` comes in W14. (W9.T3)
+- Spec numbers: CASE-13 and SET-5. (W9.T3)
+- The picker is a "Labels" box on the case page's Details tab, outside the versioned case form. The New case page has no picker. It saves on an explicit "Save labels" (one PUT, nothing when unchanged). "Create and add" creates the label in `gray`, or picks an existing label with that name in any case. (W9.T3)
+- A label name in the URL that matches no label is kept and shown as its own filter option. The filter is hidden while the project has no labels and none is chosen. The UI says "Color", as in "Color theme". (W9.T3)
+
+#### 9.1 Suites and suite runs (W10.T1, W10.T2, W10.T4)
+
+- A label can be deleted while suites hold its cases: Add by filter is a one-shot fixed list and no filter is stored, so the plan's "refuse while a suite filter uses the label" doesn't apply; the suite keeps its cases (CASE-13 AC4, SUITE-3 AC5). (W10.T1)
+- A suite run's run-finished notification is a new kind, `suite_run_finished` (`runId`, `testSuiteId`, `testSuiteName`, outcome, counts); `run_finished` keeps its shape. Migration 0024 widens the `notification_kind` check. The bell wording is in `notifications.json` (`kind.suiteRunFinished`). (W10.T1, W10.T2)
+- Skip reasons: a case that isn't `ready` is `not_ready`, a Ready case flagged Needs review is `needs_review`. They are stored on the run (`runs.skipped_cases`, JSONB, in 0024), so the report keeps them after the suite changes. (W10.T1)
+- Open gaps on any story with a case in the suite block it, skipped cases included. The message lists up to 20 gaps (story key, gap id, assignee name, role or "nobody", question cut to 120 characters). (W10.T1) When the message ends with "; and N more", `when-gaps-block.md` takes the candidate stories from the suite context (`stories[].key` and `skipped_cases[].story_key`) and calls `get_open_gaps` for each, and it always takes severity, target and a deactivated assignee from the `get_open_gaps` / `get_my_gaps` replies, never from the message (GAP-6 AC4; the exact message format is in SUITE-4 AC2). (W10.FIX)
+- `start_run` takes `suite` as a name (without case) or an id; exactly one of `story_key` and `suite` is needed, so `story_key` is optional in the tool schema. A name used only by an archived suite gives `SUITE_ARCHIVED`, not `NOT_FOUND`. (W10.T1)
+- `start_run(suite, case_ids=[…])` runs chosen cases of the suite in that order and lists nothing as skipped; `/tessio:run-suite` uses it for its 50-case batches. (W10.T1, W10.T4)
+- A suite run and a story run don't block each other; each one-running-run rule applies to its own kind of run. (W10.T1)
+- A suite run's AC impact lists only the active ACs a case of the run is linked to, grouped by story; a story's last run in story progress is the newest run that ran one of its cases. (W10.T1)
+- The API's `RunExecutor` stays `claude` and `manual`; the database accepts `script` and `ci` since 0024 (one migration of `runs`), and W11 (`ci`) and W12 (`script`) add them to the API. (W10.T1)
+- Limits: suite name 1 to 120 characters, description up to 2000, at most 1000 cases per suite, 20 labels per filter, MCP suite reference 1 to 200 characters (in `get_suite_context`, and since W10.FIX in `start_run.suite` too, `MAX_SUITE_REFERENCE_LENGTH` in the runs module). Filters: `labels` by name, all must match; `priorities` any; `storyKey` and `sprintId` narrow; they combine; deprecated cases never match; at least one filter. (W10.T1)
+- `get_suite_context` needs `run.view` plus `story.view`, `test_case.view` and `test_data.view`, like `get_story_context`, and reuses `story_context`'s JSON builders, which T1 made public (renames only). (W10.T1)
+- Archiving is one-way and idempotent; a suite run in progress keeps running. (W10.T1)
+- New response fields (`testSuiteId`, `testSuiteName`, `skippedCases`, the report's `stories`, the case `story*` fields) have defaults, so the generated client types mark them optional. (W10.T1)
+- Story sign-off's running-run check (`PostgresRunningRunChecker`) counts a story run of the story and a running suite run that holds a case of the story (a `run_cases` row whose case belongs to the story), so either blocks `Mark passed` with `STORY_SIGN_OFF_BLOCKED`; a running suite run without a case of the story doesn't (SUITE-7 AC7, STORY AC3). Raised by the T1 review; the T1 review's recommendation was taken, not decided by Peter. (W10.T1 review, W10.FIX)
+- Drag to reorder is a new design-system component, `DSSortableList`, on native HTML5 drag and drop with no new dependency: drag by the handle, arrow keys on the handle, and *Move up/down/to the top/to the bottom* in the row menu. Each move saves at once with `PUT …/cases`; moves during a save are queued, and a refused save puts the server's order back. (W10.T2)
+- A manual suite run with every runnable case checked sends `{suiteId, environmentId}` without `testCaseIds`, so the run keeps its skipped cases; with some left out it sends `testCaseIds` and lists nothing as skipped. The case labels show the story key, because `SuiteCaseResponse` has no step count. (W10.T2)
+- The manual suite run page doesn't list the open gaps before the start (no "gaps of a suite" read exists); the refusal shows a translated message pointing at the stories and `/tessio:answer-gaps`. (W10.T2)
+- On the run list, the Story and Suite filters exclude each other; the Suite filter lists archived suites as "(archived)" and is hidden while the project has no suite. (W10.T2)
+- The copyable command quotes a name with a space (`/tessio:run-suite "Checkout regression"`) and uses the suite id when the name has a double quote. (W10.T2, W10.T4)
+- T2 overwrote PRE's French `suites.json` page text without reading it first; the current French `page.title` and `page.description` are T2's translation of the English. (W10.T2, noted by its review)
+- `/tessio:run-suite` arguments: a quoted name or an id, an unquoted first word is the suite, and after `NOT_FOUND` the whole argument text is tried once as the name; `TC-<n>` words are case codes, another word is the environment. The environment is the argument, else the context's `is_default` one, else the only one, else Claude asks, and the same one is used for every batch. (W10.T4)
+- Batches of at most 50 follow the `get_suite_context` order (stories in order, then each story's cases). `case_ids` are passed only when more than one run is needed or the user gave case codes; follow-up runs start on their own, one after the other after each `finish_run`. When the skill stops early it prints the command for the rest. On `CASE_NOT_READY` or `UNKNOWN_REFERENCE` for a case it reloads the context and retries once. With more than three blocked stories it calls `get_my_gaps()` once. (W10.T4) On `UNKNOWN_REFERENCE` naming an environment (archived since the context was loaded) it reloads the context, lists its environments, asks which to use for this and every later batch, and retries; with no environment left it stops (SUITE-8 AC6). (W10.FIX)
+- `rerun-failed` re-runs a suite run with `start_run(suite=…, parent_run_id=…)` as one linked child run when it has 50 failed or blocked cases or fewer. With more (a large manual suite run), it keeps only the failed cases still in the suite context's `stories[].cases`, reports the dropped codes, and, if more than 50 are left, runs them in batches of at most 50 with `start_run(suite=<id>, environment, case_ids=…)`, one after the other, without a parent link (`start_run` refuses `case_ids` with `parent_run_id`); each `finish_run` summary names the parent run (SUITE-8 AC8). A story run's re-run stays one run. (W10.T4, W10.FIX)
+- Skills link bundled files with relative markdown links, as `run-story-tests`, `rerun-failed` and `draft-cases` already do; `${CLAUDE_PLUGIN_ROOT}` stays for script paths. (W10.T4 review)
+
+#### 9.1 Test plans (W10.T3)
+
+- States: `open -> signed_off -> closed` and `open -> closed`; closed is final, and a signed-off plan keeps its sign-off when closed. `PLAN_NOT_OPEN` covers PATCH, `PUT …/items` and sign-off on a signed-off or closed plan, and close on a closed plan. (W10.T3)
+- "Since the plan opened" means since `test_plans.created_at`; a plan never reopens. A signed-off plan counts results up to `signed_off_at`, one closed without sign-off up to `closed_at`; failures and gaps always show today's state. (W10.T3)
+- The plan's environment, when set, keeps only results of runs on it (an active environment of the project, else `UNKNOWN_REFERENCE`); `null` means any environment. (W10.T3)
+- A case's latest result uses the traceability rule (the newest result from any run, `skipped` only when there is no other), with the worst iteration of a data-driven case, whatever order the iterations were recorded in (PLAN-3 AC4; a test since W10.FIX). (W10.T3, W10.T5, W10.FIX)
+- The plan's cases: suite cases in suite order, then story cases by case number, following item order, each case once (first place wins); deprecated cases left out; Draft, In review and Needs-review cases kept. Blocker gaps are the open gaps of every story with a case in the plan, plus every story item. (W10.T3)
+- Only active failures (`open`, `fixed`, `reopened`) on the plan's cases block sign-off; open gaps, cases not run, running runs and an empty plan don't. (W10.T3)
+- An archived suite can be a plan item and stays, with its frozen cases. Extra columns: `test_plans.closed_by`, `closed_at`, `test_plan_items.position`; limits: name 1 to 120, description up to 2000, 100 items. (W10.T3)
+- Progress is part of `GET …/plans/{plan_id}` (no separate route); the list carries `counts` and `itemCount`. Items take `{"suiteId"}` or `{"storyId"}` (story by id); both or neither is a 422 body validation error. Input validation runs before the permission check, as in suites. (W10.T3, W10.T3 review)
+- `plan.signed_off` carries `ids.planId` only. No MCP tool and no audit event for plans. (W10.T3)
+- The items dialog has two searchable multi-selects (active suites plus any archived suite already in the plan, and every story); saving sends suites first, then stories, in the order picked. The plans module reads suites with its own hook (`GET_PLAN_SUITES_KEY`). (W10.T3)
+- *Sign off* stays visible with `plan.sign_off`; while failures are active its dialog says so and the confirm button is disabled. Edit and *Choose suites and stories* show for an open plan with `plan.edit`, *Close plan* for an open or signed-off plan with `plan.edit`; none in an archived project. (W10.T3)
+- The progress bar is a new design-system component, `DSProgress` (a stacked Mantine `Progress`, one named `progressbar` per section). The plans list's status filter is component state, not in the URL. After a create, the new plan opens. (W10.T3)
+
+#### 9.2 Shared steps and data-driven cases (W10.T5, W10.T6)
+
+- A case version stores a shared step as `{order, shared_step_key}`, never a copy; the editor's step response shows `{order, action: null, expected: null, sharedStepKey}` and every plain step has `sharedStepKey: null`. Expanded snapshot steps keep `shared_step_key` and `shared_step_version_number`; run step responses don't carry `sharedStepKey`. (W10.T5)
+- Keys: letters, digits and `_`, starting with a letter, at most 64, stored in lowercase, unique per project including archived steps, so a reference never changes meaning. A bad key gets `INVALID_REQUEST` (pydantic checks the pattern before trimming). (W10.T5)
+- Only new steps add a shared step version; a title change, archive and restore don't. `PATCH` needs `baseVersionNumber` (`CONFLICT` when stale), as for test cases. (W10.T5)
+- An archived shared step can't be added to a case; a case that already uses it keeps it, can be edited, and runs its last version. Archiving has no confirmation, because Restore undoes it. (W10.T5, W10.T6)
+- "Used by N cases" counts the cases whose current version uses the step, Deprecated cases left out. (W10.T5)
+- `parameters` is a list of names and `dataRows` a list of `{name: value}` objects with exactly those names; names `^[A-Za-z][A-Za-z0-9_]{0,49}$`, unique without case; values up to 1000 characters; rows without parameters refused; an unknown `{{param.x}}` is listed in `unknownReferences` and blocks Ready. (W10.T5) Since W10.FIX every save also refuses parameters without rows (`require_data_table`, `INVALID_STEP_SHAPE`, "Add at least one data row for the parameters, or remove the parameters."), so no saved version has them; the Ready guard in `utils/readiness.py` stays for versions saved before the rule. The case editor checks the same before the save (`validateDataTable` -> `parametersWithoutRows`) and sends nothing (CASE-16 AC8, AC10, AC16). (W10.FIX)
+- A row value is refused (`SECRET_IN_DATA_ROW`) when it contains any secret value of the project, in any environment; checked only when the rows change. (W10.T5)
+- A case version's data keys are its own, its rows' and its shared steps' as they were at save time. A `{{param.x}}` inside a shared step is not checked against each case's parameters; runs and the context tools always read the current shared steps. (W10.T5)
+- Worst-iteration order: `failed`, `blocked`, `passed`, `skipped`, the lowest iteration on a tie. Only the first failing iteration in a run opens or updates the failure; the flaky score takes one decisive result per run. (W10.T5)
+- Run detail: `RunCaseResponse` gains `parameters` and `iterations[]` (`iteration`, `values`, `result`, `steps`; empty without rows); `result` and `steps` show the worst iteration; `RunCaseResultResponse` gains `iteration`; the manual run reply gains `parameters` and `dataRows`; the manual record reply has `iteration`; missing screenshots name their `iteration` for a data-driven case (`null` otherwise in the REST report, left out of a plain case's `finish_run` reply). (W10.T5, W10.T6)
+- `run.case_recorded` keeps its ids, with no iteration added; `shared_step.changed` carries `sharedStepKey` and `sharedStepId`. (W10.T5)
+- The CSV and xlsx import and `create_draft_cases` accept plain steps only; shared steps, parameters and rows are added in the editor (plan item 6, confirmed). (W10.T5)
+- The 0026 downgrade deletes results with `iteration > 0` (and their step results) before restoring the old unique key, and fails if a failure points at one of them, so nothing is lost silently. (W10.T5)
+- Claude runs a data-driven case once per row in row order (iteration = row index from 0), each iteration from the preconditions, with `{{param.name}}` replaced in preconditions, actions and expected results; a failed or blocked iteration ends only itself. It records each iteration right after its last executed step, and resolves `{{data.key}}` row values with `resolve_data` just before the iteration, writing only the reference in chat and results. (W10.T6)
+- The manual record body always carries `iteration` (`0` without data rows); five existing tests that compare the exact PUT body now expect `iteration: 0` (a request-shape change, no assertion removed). (W10.T6)
+- The editor and read view find a referenced shared step through one `GET …/shared-steps?archived=true` per project; a key the list lacks shows "This shared step no longer exists in the project." Expanded, it shows the shared step's current version, read-only. Both the editor and the read view show `{{data.key}}` in the expanded step as value chips; the editor takes its references from the effective test data of the project's default environment (else the first one) and the case's files, with secrets masked and no Reveal (CASE-16 AC15). (W10.T6, W10.T6 review, W10.FIX)
+- Run detail and recording replace `{{param.name}}` with the iteration's value and list the row values above the steps. Recording opens one iteration block at a time (the first without a result), moves on after each save, keeps a draft per iteration, and counts a case as recorded only when every iteration is. (W10.T6)
+- The shared step page is its own route, `/projects/[projectKey]/shared-steps/[key]`; keys are lowercased, and one that can't match the pattern shows "not found" without a request. (W10.T6)
+- Version history and Compare show a shared step as "Shared step: key". A version that changes the parameters or data rows shows a "Parameters and data rows" entry in History and a row in Compare (the parameter names, then "1. value | value" per row, with the word diff), so it never shows "identical"; Compare shows the row only when one of the versions has parameters (CASE-7 AC3, CASE-15 AC9). (W10.T6, W10.T6 review, W10.FIX)
+- No `{{param.` autocomplete in the step editor (the design-system suggestions know only `data` and `file`); an unknown `{{param.x}}` is reported by the server on Ready. The usage list's `status` is a plain string in the API: a known value shows the badge, an unknown one raw text. (W10.T6)
+- Design-system additions: `DSInput.isLabelHidden`, `DSStepEditor.renderSharedStep` and `footerActions`, `DSStepEditorStep.sharedStepKey`. Fixtures and three small spots in other modules (case-review compare, review comment step option, version history) were updated only for the regenerated API types. (W10.T6)
+
+#### 9.1 and 9.2 fix-up of the W10 review items (W10.FIX)
+
+What the code does now for the W10 review items that W10.FIX fixed, and the choices its fixers made. Checks after the fix-up: server `pytest` 2385, client Vitest 1422 in 244 files, plugin 62, e2e 37, all passing.
+
+- Story sign-off: a running suite run that holds a case of the story blocks `Mark passed` (see 9.1 Suites above); a running suite run with no case of the story doesn't. (W10.FIX)
+- The 0024 downgrade first deletes the suite runs and every row that depends on them (their `suite_run_finished` notifications, the failures a suite run opened with their events and `failure_assigned` notifications, step and case results, run cases, run files and run logs), clears `failure_events.case_result_id` and `parent_run_id` links that point at them, then makes `runs.story_id` NOT NULL again. A story-run failure whose latest result came from a suite run is kept and points back at its newest story-run result, or at its opening result if there is none. Audit events keep their `run_id`, which has no foreign key. `tests/migrations/test_suites_downgrade.py` runs the downgrade for real on its own database (`tessio_migration_downgrade` on the test container), never on `tessio` or `tessio_migcheck`. (W10.FIX)
+- `PUT …/suites/{suite_id}/cases` with the same cases in the same order writes nothing and publishes no `suite.changed` (SUITE-1 AC5). Unknown or foreign case ids are still checked before the comparison, so a bad request fails as before. (W10.FIX)
+- SUITE-4 AC2 now spells out the real `OPEN_GAPS_BLOCK_RUN` message: the lead sentence, gaps separated by "; ", `{key} gap {id} (assigned to {x}): {question}`, the assignee as a name, "the {Role} role" or "nobody", whitespace collapsed, the question cut to 120 characters ending in "…", and "; and {n} more". (W10.FIX)
+- MCP `start_run.suite` takes 1 to 200 characters (`MAX_SUITE_REFERENCE_LENGTH`). An empty `suite` is now refused by MCP input validation; before, it counted as no suite and gave `INVALID_REQUEST` ("exactly one of story_key and suite"). (W10.FIX)
+- Project isolation of the write routes is tested: a foreign suite gives 404 `NOT_FOUND` on PATCH, archive, `PUT …/cases`, by-filter and a manual run with its `suiteId`, and a foreign plan on PATCH, `PUT …/items`, sign-off and close, each leaving the foreign record unchanged. (W10.FIX)
+- Shared step messages: a step with both an action and `sharedStepKey` gets "Step n: a shared step has no action or expected result of its own." (it said "shared step step"); CASE-16 AC6 quotes both step-shape messages. (W10.FIX)
+- Expanded step limit: a case save whose steps, with shared steps expanded, go over 200 is refused (`INVALID_STEP_SHAPE`, `ExpandedCaseTooLongError`), and so is a shared step save that would push any case using it over 200 (no version is added). The check covers the current version of every non-Deprecated case that names the shared step, the same set as "Used by N cases"; an archived shared step a case still uses counts with its current steps. The limit is its own constant, `MAX_EXPANDED_CASE_STEPS = 200` in `shared_steps`, because `test_cases` can't import `runs`; a unit test keeps it equal to `MAX_STEPS_PER_CASE` and the manual route's `max_length`. A run start doesn't refuse an older case over 200 steps, but any save of that case reruns the check. (W10.FIX)
+- A case saved before these rules (parameters without rows, or over 200 expanded steps) is refused on its next edit, even a title change, because `update_test_case` reruns `check_case_content`; the message says what to fix. Accepted by the G2 review. (W10.FIX)
+- `PostgresStoryContextReader` gets the container's `case_step_expander` injected (`container.py`); a test swaps the container's expander for a recording one and checks the reader uses it. (W10.FIX)
+- Two concurrent creates of the same shared step key: the repository maps the unique violation on `shared_steps_project_id_key_key` (the default name migration 0026 creates; 0026 not edited) to `SHARED_STEP_KEY_ALREADY_USED` (CASE-16 AC2). The race is tested with a repository whose key lookup misses; a real two-request HTTP race was not run. (W10.FIX)
+- A failure's result history lists every iteration with its number: `iteration` on `CaseResultHistoryItem` and `FailureResultResponse` is the data row index (from 0) for a case version with data rows, `null` otherwise (the same rule as `missingScreenshots`, RUN-6 AC5), joined through `case_results.test_case_version_id`. The client shows an "Iteration" column after Result, numbered from 1 (`formatIterationNumber`), "—" for none, hidden when no result has one (FAIL-3 AC3b). (W10.FIX)
+- French `suites.json` says "Étiquettes" / "étiquette" in the filter dialog and the empty suite text, like `labels.json`; a Vitest test checks the term in all three languages. (W10.FIX)
+- A preselected suite in the manual-run select is named from the loaded suite (with "(archived)" when archived), never its id; the field stays empty until the suite loads. The run list's Suite filter follows the same rule. (W10.FIX)
+- "{code} removed from the suite" shows only once the `PUT …/cases` succeeds: on each successful save, every removed case missing from that save's ids gets its toast; a failed save drops the pending toasts, because the order goes back. (W10.FIX)
+- The plugin stays 0.5.0: the W10.FIX skill changes ship with the 0.5.0 that W10 POST set, so no version bump. (W10.FIX)
+- `runs.md` RUN-9 AC1 points to the suite run page and the suite re-run (SUITE-5 AC6, SUITE-8 AC7 and AC8) and to RUN-8 AC1 for *A story* / *A suite*, which W10 POST had already updated; RUN-7 AC6b was added by W10 POST. RUN-9 AC2 also names the suite re-run call and the batches of at most 50 (SUITE-8 AC8). (W10.FIX)
+
+#### 9.3 Version compare and review comments (W9.T5)
+
+- Review comments live in the `test_cases` module (no new module), because the Ready rule is in `ChangeTestCaseStatusUseCase`. The resolve route is nested under the case: `PUT …/test-cases/{case_code}/review-comments/{comment_id}/resolve`. (W9.T5)
+- "The author" for `requireSeparateReviewer` is whoever saved the current version (`currentVersion.createdBy`), not the case's creator; if a reviewer edits the case, the first author may then review it. Both review actions count: Mark ready and Mark reviewed. Submit for review, Back to draft, Back to review and Deprecate stay open to the author. (W9.T5)
+- An open comment, on any version, blocks only the move to Ready. Adding a comment to a Ready case leaves it Ready, and editing a Ready case keeps it Ready, so with the setting on an author can still change a Ready case without a second review (open point for Peter). (W9.T5)
+- Admin and QC (`test_case.edit`) comment and resolve, any comment including their own; everyone with `test_case.view` reads. Resolving twice changes nothing. Comments are never edited, reopened or deleted. (W9.T5)
+- A comment takes an optional `versionNumber` (default: current) and `stepOrder` (must exist in that version, else `INVALID_REQUEST`); an unknown version gets `NOT_FOUND`. A deprecated case takes no new comments (`CONFLICT`), but its comments can still be resolved. (W9.T5)
+- `REVIEW_COMMENTS_OPEN` puts the open count in the message only. The Ready checks run in this order: separate reviewer (403), open comments (409), then `CASE_NOT_READY` and `UNKNOWN_REFERENCE`. (W9.T5)
+- The comment reply carries `authorName` and `resolvedByName`. `review_comment.changed` carries `testCaseId`, `code`, `storyId` and `commentId`, and is published only when something changed. (W9.T5)
+- `ProjectResponse.requireSeparateReviewer` is always present; in `PATCH /api/projects/{project_key}` a missing field or null keeps the saved value (`project.edit`). (W9.T5)
+- No MCP tool or plugin change: `get_story_context` serves only Ready cases, which by rule have no open comments. Spec numbers: CASE-15 and SET-4. (W9.T5)
+- The compare view and the comments panel are two new case tabs, Review (with the open count) and Compare (`?tab=review`, `?tab=compare`). The History tab and its inline compare stay, because CASE-7 relies on them; History still lists AC links, data keys and files, which Compare leaves out. (W9.T5)
+- Compare lines steps up by content (longest common subsequence on action plus expected result), not by position, and starts on the previous and the current version. (W9.T5)
+- A new comment sends the current version's number explicitly. If the case was saved in between, the server still accepts that older number: the comment stays on the version the reviewer saw and shows "On version n". (W9.T5, wording corrected by the W9.T5 review)
+- The client compares the signed-in user with `currentVersion.createdBy` to hide Mark ready and Mark reviewed from a blocked author, and disables Mark ready while a comment is open; the server rules stay the real check. Screens without a session hide nothing. (W9.T5)
+- The Review settings card sits after the Labels card and is visible only with `project.edit`. The new required `requireSeparateReviewer` meant adding it to 10 project test fixtures. (W9.T5)
+
+#### 9.13 Flaky cases and quarantine (W9.T4)
+
+- Only `passed` and `failed` count as flips; `blocked` and `skipped` are skipped, then the last 10 decisive results are taken, across executors. (W9.T4)
+- "The same case version" is the current version. Saving a new version (an edit or a file attach) resets the score, `flakySince` and the disagreement at once, in `add_version`. (W9.T4)
+- `flakySince` is when the case first reached 3 flips, kept while it stays flaky, cleared below 3; `isFlaky` is `flakySince != null`. (W9.T4)
+- Disagreement compares the latest manual with the latest automated decisive result on the current version (automated = any executor other than `manual`), at most 24 hours apart (exactly 24 h counts); `disagreedAt` is the later time, stored in `test_cases.disagreed_at`. An older differing pair (manual pass, then Claude fail, then Claude pass) does not count: Peter to confirm "latest against latest". (W9.T4)
+- Auto-release counts the 10 most recent decisive results after `quarantinedAt`, on any version. (W9.T4)
+- The quarantine audit trail is a new table `test_case_quarantine_events` in 0022 (`quarantined`, `released`, `auto_released`, actor null for the automatic release), read through `GET …/quarantine-events` (`test_case.view`), because `audit_events.actor_id` is NOT NULL and its action enum widens only in W15. Migration 0022 also adds `disagreed_at` and `quarantine_reason`. (W9.T4)
+- An optional reason, up to 500 characters, is stored on the case and the event. A PUT on a quarantined case or a DELETE on one that isn't is a no-op that returns 200, keeps the first reason and time, and adds no event. Both work in any status. (W9.T4)
+- Recompute jobs are not deduplicated (the recompute is idempotent and cheap). They are enqueued after the result's transaction commits; a Redis error is logged and swallowed, and the nightly sweep at 03:45 UTC catches up. The sweep recomputes every case, one transaction each. (W9.T4)
+- Ports: runs owns `FlakyRecomputeRequester`; test_cases owns `CaseResultHistoryReader`, which runs implements, because test_cases sits below runs. (W9.T4)
+- List filters `flaky`, `disagreeing` and `quarantined` take `true` or `false`; the screen has "only" checkboxes that send `true` or nothing. (W9.T4)
+- Badges sit in the Status cell (Flaky yellow, Disagreeing red, Quarantined gray). Quarantine and Release are header buttons for `test_case.quarantine` on a project that is not archived; Release has no confirmation. The alert names the member who quarantined the case, or "a former member". The quarantine history is a timeline on the History tab. (W9.T4)
+- The disagreement alert says "A person and Claude disagree", because `claude` is the only automated executor today; it needs new wording when `script` and `ci` arrive (W12, W13). (W9.T4)
+
+#### 9.18 Answer gaps with Claude (W9.T1, W9.T2)
+
+- The REST field is `isAnsweredViaClaude`, not the plan's `answeredViaClaude`, following the predicate rule and the sibling `isRaisedViaClaude`. It always describes the latest answer: a reopened gap keeps its old answer, and the next answer sets the flag again. (W9.T1)
+- `get_my_gaps` needs `gap.answer` and is `is_write=True` in the MCP tool catalog, though the reservation said `false`: in `test_mcp_tool_access.py` the flag means "refused for Viewers and on archived projects", and the plan wants a Viewer 403. (W9.T1)
+- `set_test_data` takes `kind` in `variable | endpoint | secret`; `endpoint` is stored as `variable` (merged by migration 0015), and `secret` is refused with `INVALID_REQUEST`. A key that is a secret in any scope is refused too. (W9.T1)
+- `set_test_data` with no environment writes to All environments; with an environment name (trimmed, any case) it writes that environment's override and leaves the project value alone. An existing value is updated (same value: `unchanged`), the key's description is kept, an unknown environment gets `NOT_FOUND` and an archived one `INVALID_REQUEST`. A project write also returns `overridden_in`. (W9.T1)
+- Similar answers use Postgres full-text search on `search_vector` (`'simple'` config): words of 3 or more letters, minus a short English stop-word list and repeats, at most 20, joined with OR. Only resolved gaps of the token's project match, same story first, then rank, then the latest answer, 3 at most. French and Vietnamese common words are not dropped. One query runs per listed gap (up to 50). (W9.T1)
+- `get_my_gaps` replies `{gap_count, gaps[], stories[], assignees[]}`, at most 50 gaps, high severity first, then story key, then age; `assignees` lists the active non-Viewer members so the skill can reassign. `answer_gap` replies `{status, open_gap_count, is_ready}` and `reassign_gap` `{assignee_name}` or `{assignee_role}`. (W9.T1)
+- `reassign_gap` takes exactly one of `assignee_user_id` and `assignee_role` (never `viewer`), with the REST validator's messages. (W9.T1)
+- `api_tokens` moved to its own import layer below `jira | test_data`, so the `test_data` MCP tool can use token authentication. (W9.T1)
+- The "via Claude" badge for an answer sits in the answer box beside "Answered by"; a gap raised and answered with Claude shows two badges. It reuses the `gaps.badge.viaClaude` text. (W9.T1)
+- The blocked-run procedure handles `OPEN_GAPS_BLOCK_RUN` (story runs and re-runs today) and `GAPS_OPEN` (suite runs, W10); W10 must keep `GAPS_OPEN` or update the procedure. (W9.T2) W10 updated the procedure: suite runs get `OPEN_GAPS_BLOCK_RUN` too. (W10.T4)
+- `get_open_gaps` gained `assignee_name` or `assignee_role` and `is_assignee_deactivated`, so the procedure can name who must answer; MCP only, no REST change. (W9.T2)
+- `get_my_gaps` returns `test_data_url` (`CLIENT_URL` + `/projects/{key}/test-data`) when a listed gap is `missing_test_data`, so the skill can send secrets to the Test data page. (W9.T2)
+- Claude Code's question prompt allows 2 to 4 options: "write my own" is the built-in free text, and with three suggestions "Not mine" and "Skip" merge into one option with a follow-up. Up to four gaps per prompt, then one batch summary with Save all, Change one or Cancel; picking alone saves nothing. (W9.T2)
+- `set_test_data` runs before `answer_gap`. On `PERMISSION_DENIED` (PM, BA) the answer is still saved and Claude says a QC, Dev or Admin must add the value. (W9.T2)
+- Only `/tessio:run-story-tests` is offered for a ready story; `/tessio:run-scripts` arrives in W12. (W9.T2)
+- Claude cites product code only after a quick `Glob` finds source files in the working directory, and never edits. Secrets are passwords, tokens, API keys, private keys, card security codes and other credentials, or keys the context or `set_test_data` reports as secret. (W9.T2)
+- The argument hint `[STORY-KEY | mine]` is quoted, and a plugin test refuses unquoted front matter values that start with a YAML indicator. (W9.T2)
+- T2 changed server code the reservations did not list: additive MCP reply fields in the `gaps` module and one line in `container.py`; no migration, capability, error code, event or REST change. (W9.T2)
+
 ### Open issues (parked)
 
-Each item was checked against the code on 2026-11-01 and is still true.
+Each item was checked against the code on 2026-11-01 and is still true. The W10 review items that W10.FIX fixed were removed on 2026-11-02; what the code does now is under [Implementation assumptions](#91-and-92-fix-up-of-the-w10-review-items-w10fix).
 
 - 3.3b.4: `/users/[userId]` lists real memberships only; a workspace admin's implicit Admin access to every project is not shown.
 - 3.3.1: project create does not check the Jira project key or board against Jira; only the "already linked" check runs.
@@ -947,7 +1211,16 @@ Each item was checked against the code on 2026-11-01 and is still true.
 - 3.14.2: `RATE_LIMITED` shows the generic message without the `Retry-After` value.
 - 2.5: the Mermaid diagrams have not been parsed by mermaid-cli (B-16).
 - 7.1b: the local dev containers still run the old unpinned images (postgres:17-alpine, redis:8-alpine, rustfs latest, Mailpit v1.27) until the next `docker compose up -d`.
-- 6.2: the e2e suite does not cover file uploads (so bucket CORS stays a manual check), a real Jira site, Claude runs over MCP or the date input focus border.
+- 6.2: the e2e suite does not cover file uploads (so bucket CORS stays a manual check), a real Jira site, Claude runs over MCP or the date input focus border. Since W9, `12-answer-gaps` calls two MCP gap tools over `/mcp` with an API token, but no Claude session. Since W10, `13-suite-run` covers a manual suite run and a plan sign-off, but not shared steps, data-driven cases or a Claude suite run.
+- 9.18: `/tessio:answer-gaps <STORY-KEY>` on a story blocked only by other people's gaps says "Nothing is waiting for you" and doesn't say the story is still blocked, because `get_my_gaps` returns `stories` only for the listed gaps (W9.T2 review). Fix: call `get_open_gaps` and follow the blocked-run procedure.
+- 9.18: `get_my_gaps` runs one similar-answer query per listed gap (up to 50 in one transaction); batch it if the call gets slow (W9.T1 review).
+- 9.1: label names are unique without regard to case only in the use case; the database constraint is case-sensitive, so two concurrent creates of "Smoke" and "smoke" can both succeed, and two identical concurrent names can end in an unmapped integrity error (W9.T3 review). Fix: a unique index on `(project_id, lower(name))` or map the error to `CONFLICT`.
+- 9.1: QC can create labels from the case picker but has no screen to rename, recolour or delete them, because the label manager card is on the Admin-only settings page (W9.T3).
+- 9.3: with "Reviewer must not be the author" on, an author can still edit a Ready case and it stays Ready, skipping a second review; Peter to decide whether an edit should send it back to In review (W9.T5 review).
+- 9.3: the client modules `test-cases` and `case-review` import each other; move `TextDiff` and the version types to `shared/` later (W9.T5 review).
+- 9.13: the nightly flaky sweep recomputes every case in every project, archived ones included; limit it to cases with a new result or a flag once projects grow (W9.T4 review).
+- 9.1: the plans list runs 2N+3 queries for N plans (counts per plan); batch it when plan lists grow (W10.T3 review).
+- 9.1: the `suite-detail.test.tsx` "moves a case to the bottom…" test failed once under full parallel load and passed on every re-run; watch it for flakiness (W10.T2, T3 and T6 reports).
 
 ---
 

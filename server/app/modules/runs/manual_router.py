@@ -38,7 +38,9 @@ async def create_manual_run(
     actor: SignedInActor,
     use_case: Annotated[CreateManualRunUseCase, Depends(get_create_manual_run)],
 ) -> ManualRunResponse:
-    sheet = await use_case.execute(actor, project_key, body.story_key, body.environment_id, body.test_case_ids)
+    sheet = await use_case.execute(
+        actor, project_key, body.story_key, body.environment_id, body.test_case_ids, body.suite_id
+    )
     return build_manual_run_response(sheet)
 
 
@@ -64,6 +66,9 @@ async def record_manual_case_result(
             )
             for step in body.steps
         ],
+        suspected_cause=body.suspected_cause,
+        cause_reason=body.cause_reason,
+        iteration=body.iteration,
     )
     recorded = await use_case.execute(actor, project_key, run_id, test_case_id, report)
     return build_manual_case_result_response(recorded)

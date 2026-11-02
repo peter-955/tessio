@@ -23,3 +23,5 @@ export type FailureRun = components["schemas"]["RunDetailResponse"];
 export type RunStepResult = components["schemas"]["StepResultResponse"];
 
 export type DownloadLink = components["schemas"]["DownloadLinkResponse"];
+
+export type ChangeFailureCauseRequest = components["schemas"]["ChangeFailureCauseRequest"];

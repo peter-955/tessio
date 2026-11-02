@@ -41,7 +41,6 @@
   },
   "kind": {
     "variable": "Biến",
-    "endpoint": "Endpoint",
     "secret": "Bí mật"
   },
   "secret": {
@@ -62,14 +61,17 @@
     "key": "Khóa",
     "keyHint": "Bắt đầu bằng một chữ cái. Chỉ gồm chữ cái, chữ số, _ . và -.",
     "keyInvalid": "Hãy bắt đầu bằng một chữ cái và chỉ dùng chữ cái, chữ số, _ . và - (tối đa 100 ký tự).",
-    "kind": "Loại",
     "secretLocked": "Chỉ Admin và QC mới lưu được bí mật.",
     "scope": "Phạm vi",
     "value": "Giá trị",
     "secretValue": "Giá trị bí mật",
     "keepSecretHint": "Để trống để giữ giá trị hiện tại",
     "valueRequired": "Hãy nhập giá trị.",
-    "valueTooLong": "Dùng tối đa {{max}} ký tự."
+    "valueTooLong": "Dùng tối đa {{max}} ký tự.",
+    "secret": "Bí mật",
+    "secretHint": "Được mã hóa, ẩn khỏi danh sách và che trong mọi kết quả và báo cáo.",
+    "description": "Mô tả",
+    "descriptionHint": "Khóa này dùng để làm gì. Dùng chung cho mọi giá trị của khóa, hiển thị trong trình soạn ca kiểm thử và gửi cho Claude."
   },
   "delete": {
     "title": "Xóa dữ liệu kiểm thử",

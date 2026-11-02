@@ -1,0 +1,5 @@
+export const MAX_STORY_TITLE_LENGTH = 255;
+
+export const MAX_STORY_DESCRIPTION_LENGTH = 20000;
+
+export const MAX_STORY_CRITERIA = 50;

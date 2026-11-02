@@ -8,3 +8,4 @@ class RunFilter(Entity):
     story_id: UUID | None
     status: RunStatus | None
     limit: int
+    test_suite_id: UUID | None = None

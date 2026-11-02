@@ -1,7 +1,9 @@
 from datetime import datetime
 from uuid import UUID
 
+from pydantic import JsonValue
 from sqlalchemy import ForeignKey, UniqueConstraint
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.shared.postgres import TableBase
@@ -17,3 +19,4 @@ class RunCaseTable(TableBase):
     test_case_version_id: Mapped[UUID] = mapped_column(ForeignKey("test_case_versions.id"))
     position: Mapped[int]
     created_at: Mapped[datetime]
+    steps: Mapped[JsonValue | None] = mapped_column(JSONB, nullable=True)

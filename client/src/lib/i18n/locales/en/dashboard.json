@@ -147,7 +147,8 @@
     },
     "executor": {
       "claude": "Claude",
-      "manual": "Manual"
+      "manual": "Manual",
+      "ci": "CI"
     },
     "results": "{{passed}} passed · {{failed}} failed of {{total}}"
   }

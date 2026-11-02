@@ -1,0 +1,88 @@
+{
+  "card": {
+    "title": "Chat channels",
+    "description": "Post this project's runs, failures, gaps and sign-offs to Slack or Teams channels through incoming webhooks.",
+    "add": "Add channel",
+    "limitReached": "A project can have at most {{max}} chat channels.",
+    "loading": "Loading chat channels",
+    "loadError": "Chat channels could not be loaded",
+    "retry": "Try again",
+    "empty": "No chat channels yet.",
+    "tableLabel": "Chat channels",
+    "channel": "Channel",
+    "events": "Events",
+    "lastDelivery": "Last message",
+    "actions": "Actions",
+    "actionsFor": "Actions for {{name}}",
+    "off": "Off",
+    "sendTest": "Send test message",
+    "edit": "Edit",
+    "turnOff": "Turn off",
+    "turnOn": "Turn on",
+    "delete": "Delete"
+  },
+  "kinds": {
+    "slack": "Slack",
+    "teams": "Teams"
+  },
+  "events": {
+    "runStarted": "Run started",
+    "runFinished": "Run finished",
+    "failureOpened": "Failure opened",
+    "failureStatusChanged": "Failure status changed",
+    "gapRaised": "Gap raised",
+    "storySignedOff": "Story signed off",
+    "planSignedOff": "Plan signed off"
+  },
+  "delivery": {
+    "none": "Not sent yet",
+    "delivered": "Delivered",
+    "failed": "Failed"
+  },
+  "form": {
+    "createTitle": "Add chat channel",
+    "editTitle": "Edit chat channel",
+    "kind": "Chat app",
+    "name": "Name",
+    "namePlaceholder": "#qa-results",
+    "webhookUrl": "Webhook URL",
+    "newWebhookUrl": "New webhook URL",
+    "webhookUrlPlaceholder": "https://",
+    "slackHelp": "In Slack, add an incoming webhook to the channel and paste its URL (https://hooks.slack.com/…).",
+    "teamsHelp": "In Teams, add the Workflows template \"Post to a channel when a webhook request is received\" to the channel and paste its URL.",
+    "savedUrl": "Saved URL: {{url}}. Leave empty to keep it.",
+    "secretNote": "Tessio stores the URL encrypted and shows only its end afterwards.",
+    "events": "Events",
+    "eventsDescription": "Tessio posts one message for each event you pick.",
+    "isActive": "Post messages to this channel",
+    "create": "Add channel",
+    "save": "Save"
+  },
+  "delete": {
+    "title": "Delete chat channel",
+    "message": "Delete {{name}}? Tessio stops posting to this channel. The webhook itself stays in Slack or Teams.",
+    "confirm": "Delete"
+  },
+  "validation": {
+    "nameRequired": "Enter a name.",
+    "nameTooLong": "Use at most {{max}} characters.",
+    "nameAlreadyUsed": "A chat channel with this name already exists.",
+    "urlRequired": "Paste the webhook URL.",
+    "urlTooLong": "Use at most {{max}} characters.",
+    "urlNotHttps": "Enter an https URL, for example https://hooks.slack.com/….",
+    "eventsRequired": "Pick at least one event."
+  },
+  "toasts": {
+    "created": "Chat channel added",
+    "updated": "Chat channel saved",
+    "deleted": "Chat channel deleted",
+    "turnedOn": "{{name}} turned on",
+    "turnedOff": "{{name}} turned off",
+    "testSent": "Test message sent to {{name}}",
+    "testFailed": "The test message to {{name}} was not delivered. The reason is shown on the channel."
+  },
+  "errors": {
+    "notFound": "This chat channel no longer exists. Reload to see the current channels.",
+    "urlInvalid": "Enter a public https URL from Slack or Teams."
+  }
+}

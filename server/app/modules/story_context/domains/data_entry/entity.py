@@ -10,6 +10,7 @@ class DataEntry(Entity):
     kind: DataItemKind
     value: str | None
     environment_id: UUID | None
+    description: str | None = None
 
     @property
     def is_secret(self) -> bool:

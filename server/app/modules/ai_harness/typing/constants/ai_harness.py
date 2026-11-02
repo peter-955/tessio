@@ -1,0 +1,7 @@
+AI_HARNESS_ROUTE_PREFIX = "/api/ai-harness"
+PLUGIN_ROOT_VARIABLE = "${CLAUDE_PLUGIN_ROOT}/"
+PLUGIN_URL_VARIABLE = "${user_config.tessio_url}"
+SLASH_COMMAND_TEMPLATE = "/{plugin}:{name}"
+MCP_TOOL_NAME_SEPARATOR = "__"
+MCP_TOOL_NAME_START = "mcp__"
+COMMAND_QUOTES = "\"'"

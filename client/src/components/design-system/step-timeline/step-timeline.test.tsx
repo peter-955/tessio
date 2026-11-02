@@ -78,4 +78,57 @@ describe("DSStepTimeline", () => {
     expect(within(items[2]).queryByText("Actual result")).not.toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it("numbers steps that have no status and links each one to the next", async () => {
+    const { container } = render(
+      <DSStepTimeline
+        steps={[
+          { key: "1", order: 1, action: "Open the cart", expected: "The cart is shown" },
+          { key: "2", order: 2, action: "Pay with a card", expected: null },
+        ]}
+        labels={{ step: LABELS.step, expected: LABELS.expected }}
+        ariaLabel="Steps of TC-2"
+      />,
+      { wrapper },
+    );
+
+    const items = within(screen.getByRole("list", { name: "Steps of TC-2" })).getAllByRole(
+      "listitem",
+    );
+    expect(items).toHaveLength(2);
+    expect(within(items[0] as HTMLElement).getByText("1")).toBeInTheDocument();
+    expect(within(items[0] as HTMLElement).getByText("Step 1")).toBeInTheDocument();
+    expect(within(items[0] as HTMLElement).getByText("The cart is shown")).toBeInTheDocument();
+    expect(within(items[1] as HTMLElement).getByText("2")).toBeInTheDocument();
+    expect(within(items[1] as HTMLElement).queryByText("Expected")).not.toBeInTheDocument();
+    expect(within(items[1] as HTMLElement).queryByText("Passed")).not.toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("shows a header action and custom details in a step", () => {
+    render(
+      <DSStepTimeline
+        steps={[
+          {
+            key: "a",
+            order: 1,
+            action: null,
+            expected: null,
+            titleId: "step-a",
+            headerAction: <button type="button">Step actions</button>,
+            details: (
+              <div role="group" aria-labelledby="step-a">
+                Fields
+              </div>
+            ),
+          },
+        ]}
+        labels={{ step: LABELS.step, expected: LABELS.expected }}
+      />,
+      { wrapper },
+    );
+
+    expect(screen.getByRole("button", { name: "Step actions" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Step 1" })).toHaveTextContent("Fields");
+  });
 });

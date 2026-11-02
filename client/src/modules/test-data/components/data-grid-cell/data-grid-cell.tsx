@@ -6,7 +6,7 @@ import { checkHasProjectCapability } from "@/components/project-context/utils/pr
 import classNames from "classnames";
 import type { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { ENDPOINT_LINK_PATTERN } from "../../typing/constants/test-data.constant";
+import { LINK_VALUE_PATTERN } from "../../typing/constants/test-data.constant";
 import type { DataGridColumn } from "../../typing/types/data-grid-column.type";
 import type { DataItemCreatePreset } from "../../typing/types/data-item-modal-state.type";
 import type { DataItem, DataItemKind } from "../../typing/types/data-item.type";
@@ -18,6 +18,7 @@ import styles from "./data-grid-cell.module.scss";
 interface Props {
   dataKey: string;
   rowKind: DataItemKind;
+  rowDescription: string | null;
   column: DataGridColumn;
   scopeName: string;
   item: DataItem | undefined;
@@ -31,6 +32,7 @@ interface Props {
 export const DataGridCell: FC<Props> = ({
   dataKey,
   rowKind,
+  rowDescription,
   column,
   scopeName,
   item,
@@ -51,7 +53,12 @@ export const DataGridCell: FC<Props> = ({
     const canCreate = !column.isArchived && canEditDataItemKinds(project, [presetKind]);
 
     const handleCreate = (): void => {
-      onCreate({ key: dataKey, kind: presetKind, scopeId: column.scopeId });
+      onCreate({
+        key: dataKey,
+        kind: presetKind,
+        scopeId: column.scopeId,
+        description: rowDescription,
+      });
     };
 
     return (
@@ -99,7 +106,7 @@ export const DataGridCell: FC<Props> = ({
     }
 
     const value = item.value ?? "";
-    if (item.kind === "endpoint" && ENDPOINT_LINK_PATTERN.test(value)) {
+    if (LINK_VALUE_PATTERN.test(value)) {
       return (
         <DSTooltip label={value}>
           <a

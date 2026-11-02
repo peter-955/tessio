@@ -29,8 +29,8 @@
     "notRecorded": "Chưa ghi",
     "caseList": "Các ca",
     "step": "Bước {{order}}",
+    "stepsOf": "Các bước của {{code}}",
     "stepStatus": "Trạng thái bước {{order}}",
-    "expectedValue": "Kết quả mong đợi: {{text}}",
     "actualResult": "Kết quả thực tế",
     "error": "Điều gì không ổn",
     "notReported": "Chưa báo cáo",
@@ -50,7 +50,13 @@
     "notFound": "Không tìm thấy lượt chạy",
     "backToRuns": "Quay lại danh sách lượt chạy",
     "loadError": "Không thể tải trang này.",
-    "retry": "Thử lại"
+    "retry": "Thử lại",
+    "expected": "Kết quả mong đợi",
+    "openEnvironment": "Mở {{environment}} trong thẻ mới",
+    "unmarkedSteps_one": "{{count}} bước chưa được đánh dấu và sẽ được lưu là Bỏ qua.",
+    "unmarkedSteps_other": "{{count}} bước chưa được đánh dấu và sẽ được lưu là Bỏ qua.",
+    "causePlaceholder": "Chọn nguyên nhân (không bắt buộc)",
+    "causeReason": "Vì sao bạn nghĩ vậy? (không bắt buộc)"
   },
   "evidence": {
     "label": "Bằng chứng (không bắt buộc)",
@@ -58,7 +64,8 @@
     "dropDescription": "Tối đa {{size}}",
     "uploading": "Đang tải lên {{percent}}%",
     "cancel": "Hủy tải lên",
-    "remove": "Gỡ bỏ"
+    "remove": "Gỡ bỏ",
+    "attach": "Đính kèm bằng chứng"
   },
   "finish": {
     "action": "Kết thúc lượt chạy",

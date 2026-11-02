@@ -5,7 +5,7 @@ from pydantic import JsonValue
 
 from app.modules.stories.models.acceptance_criterion_response import AcceptanceCriterionResponse
 from app.modules.stories.models.sprint_reference_response import SprintReferenceResponse
-from app.modules.stories.typing.enums import TestStatus
+from app.modules.stories.typing.enums import StorySource, TestStatus
 from app.shared.common import WireModel
 
 
@@ -25,3 +25,5 @@ class StoryDetailResponse(WireModel):
     available_test_statuses: list[TestStatus]
     test_status_changed_at: datetime | None
     jira_updated_at: datetime
+    source: StorySource
+    description_text: str | None

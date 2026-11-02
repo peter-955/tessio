@@ -1,3 +1,4 @@
+import englishLabels from "@/lib/i18n/locales/en/labels.json";
 import englishTestCases from "@/lib/i18n/locales/en/testCases.json";
 import englishTraceability from "@/lib/i18n/locales/en/traceability.json";
 import { screen, waitFor, within } from "@testing-library/react";
@@ -295,5 +296,38 @@ describe("TestCasesPage", () => {
     await screen.findByRole("link", { name: "TC-1" });
     expect(screen.queryByRole("button", { name: actions.import })).toBeNull();
     expect(screen.queryByRole("link", { name: actions.new })).toBeNull();
+  });
+
+  it("shows each case's label chips and filters the list by label", async () => {
+    const user = userEvent.setup();
+    const smoke = {
+      id: "c9000000-0000-4000-8000-000000000001",
+      name: "smoke",
+      color: "green",
+    } as const;
+    respondWithRoutes(apiGet, {
+      [TEST_CASES_PATH]: createSuccessResult([buildTestCaseSummary({ labels: [smoke] })]),
+      [LATEST_RESULTS_PATH]: createSuccessResult(LATEST_RESULTS),
+      [STORIES_PATH]: createSuccessResult([buildStorySummary()]),
+      "/api/projects/{project_key}/labels": createSuccessResult([
+        { ...smoke, caseCount: 1, createdAt: "2026-10-20T09:00:00Z" },
+      ]),
+    });
+    renderPage();
+
+    const row = (await screen.findByRole("link", { name: "TC-1" })).closest("tr");
+    if (row === null) {
+      throw new Error("No row for TC-1");
+    }
+    expect(
+      within(row).getByRole("list", { name: englishLabels.chips.ariaLabel }),
+    ).toHaveTextContent("smoke");
+    await screen.findByRole("combobox", { name: new RegExp(`^${englishLabels.filter.label}`) });
+    await chooseOption(user, englishLabels.filter.label, "smoke");
+
+    expect(routerReplace).toHaveBeenLastCalledWith(`${PAGE_PATH}?label=smoke`, { scroll: false });
+    await waitFor(() => {
+      expect(readListQueries().at(-1)).toEqual({ label: ["smoke"] });
+    });
   });
 });

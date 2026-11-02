@@ -100,6 +100,7 @@ async def insert_token(
                 token_hash=hash_api_token(token),
                 expires_at=expires_at,
                 last_used_at=None,
+                plugin_version=None,
                 revoked_at=revoked_at,
                 created_at=datetime.now(UTC),
             )

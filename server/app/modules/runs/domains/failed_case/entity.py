@@ -9,3 +9,4 @@ class FailedCase(Entity):
     code: str
     title: str
     status: ResultStatus
+    story_jira_key: str | None = None

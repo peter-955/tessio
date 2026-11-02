@@ -1,0 +1,49 @@
+{
+  "badges": {
+    "flaky": "Instable",
+    "disagreeing": "Désaccord",
+    "quarantined": "En quarantaine"
+  },
+  "filters": {
+    "flaky": "Instables uniquement",
+    "disagreeing": "En désaccord uniquement",
+    "quarantined": "En quarantaine uniquement"
+  },
+  "alerts": {
+    "flakyTitle": "Cas instable",
+    "flaky_one": "{{count}} alternance réussi/échoué dans les 10 derniers résultats de cette version, instable depuis le {{date}}. Vérifiez les étapes et les données de test avant de croire un échec.",
+    "flaky_other": "{{count}} alternances réussi/échoué dans les 10 derniers résultats de cette version, instable depuis le {{date}}. Vérifiez les étapes et les données de test avant de croire un échec.",
+    "disagreeingTitle": "Une personne et Claude ne sont pas d'accord",
+    "disagreeing": "Un résultat manuel et un résultat de Claude sur cette version diffèrent et ont été enregistrés à moins de 24 heures d'écart (dernier le {{date}}). Vérifiez lequel est juste.",
+    "quarantinedTitle": "En quarantaine",
+    "quarantined": "En quarantaine depuis le {{date}}, par {{name}}.",
+    "quarantinedReason": "Motif : {{reason}}",
+    "quarantineNote": "Pour l'instant, la quarantaine est un simple marqueur : le cas est toujours exécuté et ses échecs ouvrent toujours des anomalies. Il sort de quarantaine tout seul après 10 réussites d'affilée.",
+    "formerMember": "un ancien membre"
+  },
+  "actions": {
+    "quarantine": "Mettre en quarantaine",
+    "release": "Sortir de quarantaine"
+  },
+  "modal": {
+    "title": "Mettre {{code}} en quarantaine ?",
+    "message": "Marquez ce cas comme en quarantaine le temps de l'analyser. Il sort de quarantaine tout seul après 10 réussites d'affilée.",
+    "reason": "Motif",
+    "reasonDescription": "Facultatif, 500 caractères au plus.",
+    "reasonPlaceholder": "Par exemple : échoue au hasard à l'étape de paiement"
+  },
+  "toasts": {
+    "quarantined": "{{code}} est en quarantaine.",
+    "released": "{{code}} est sorti de quarantaine."
+  },
+  "history": {
+    "title": "Historique de quarantaine",
+    "quarantined": "Mis en quarantaine par {{name}}",
+    "released": "Sorti de quarantaine par {{name}}",
+    "autoReleased": "Sorti de quarantaine après 10 réussites d'affilée",
+    "reason": "Motif : {{reason}}",
+    "formerMember": "un ancien membre",
+    "loadError": "Impossible de charger l'historique de quarantaine.",
+    "retry": "Réessayer"
+  }
+}

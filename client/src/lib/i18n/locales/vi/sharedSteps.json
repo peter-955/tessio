@@ -1,0 +1,131 @@
+{
+  "page": {
+    "title": "Bước dùng chung",
+    "description": "Các bước như đăng nhập, viết một lần và dùng lại trong nhiều ca."
+  },
+  "list": {
+    "newSharedStep": "Bước dùng chung mới",
+    "loading": "Đang tải các bước dùng chung",
+    "loadError": "Không tải được các bước dùng chung.",
+    "retry": "Thử lại",
+    "emptyTitle": "Chưa có bước dùng chung nào",
+    "emptyDescription": "Viết một chuỗi bước hay dùng, ví dụ đăng nhập bằng admin, một lần và chèn vào bất kỳ ca nào.",
+    "emptyReadOnlyDescription": "Các bước dùng chung do nhóm QC viết sẽ hiện ở đây.",
+    "showArchived": "Hiện bước đã lưu trữ",
+    "tableLabel": "Bước dùng chung",
+    "columns": {
+      "title": "Tiêu đề",
+      "key": "Khóa",
+      "steps": "Số bước",
+      "usage": "Được dùng bởi",
+      "version": "Phiên bản hiện tại"
+    },
+    "archived": "Đã lưu trữ",
+    "stepCount_one": "{{count}} bước",
+    "stepCount_other": "{{count}} bước",
+    "versionOn": "v{{number}} · {{date}}"
+  },
+  "usage": {
+    "count_one": "Được dùng bởi {{count}} ca",
+    "count_other": "Được dùng bởi {{count}} ca",
+    "description": "Các ca có phiên bản hiện tại chèn bước dùng chung này. Không tính các ca đã ngừng dùng.",
+    "loading": "Đang tải các ca dùng bước này",
+    "loadError": "Không tải được các ca dùng bước này.",
+    "retry": "Thử lại",
+    "emptyTitle": "Chưa có ca nào dùng bước này",
+    "emptyDescription": "Hãy chèn nó từ phần các bước của một ca kiểm thử.",
+    "tableLabel": "Các ca dùng bước dùng chung này",
+    "columns": {
+      "case": "Ca",
+      "story": "Story",
+      "status": "Trạng thái"
+    }
+  },
+  "steps": {
+    "step": "Bước {{order}}",
+    "expected": "Kết quả mong đợi"
+  },
+  "reference": {
+    "loading": "Đang tải bước dùng chung",
+    "badge": "Bước dùng chung",
+    "missing": "Bước dùng chung này không còn trong dự án.",
+    "loadError": "Không tải được bước dùng chung.",
+    "archived": "Đã lưu trữ",
+    "stepCount_one": "{{count}} bước",
+    "stepCount_other": "{{count}} bước",
+    "showSteps": "Hiện các bước",
+    "hideSteps": "Ẩn các bước",
+    "stepsOf": "Các bước của {{title}}",
+    "textLabel": "Bước dùng chung: {{key}}"
+  },
+  "picker": {
+    "open": "Chèn bước dùng chung",
+    "title": "Chèn một bước dùng chung",
+    "loading": "Đang tải các bước dùng chung",
+    "loadError": "Không tải được các bước dùng chung.",
+    "retry": "Thử lại",
+    "emptyTitle": "Không có bước dùng chung nào để chèn",
+    "emptyDescription": "Hãy tạo một bước dùng chung trong thư viện trước.",
+    "openLibrary": "Mở thư viện",
+    "select": "Bước dùng chung",
+    "selectPlaceholder": "Tìm theo tiêu đề hoặc khóa",
+    "nothingFound": "Không có bước dùng chung nào khớp",
+    "preview_one": "Thêm {{count}} bước. Ca luôn chạy phiên bản mới nhất của bước dùng chung.",
+    "preview_other": "Thêm {{count}} bước. Ca luôn chạy phiên bản mới nhất của bước dùng chung.",
+    "insert": "Chèn"
+  },
+  "form": {
+    "createTitle": "Bước dùng chung mới",
+    "editTitle": "Sửa bước dùng chung",
+    "create": "Tạo",
+    "save": "Lưu",
+    "title": "Tiêu đề",
+    "titlePlaceholder": "Đăng nhập bằng admin",
+    "key": "Khóa",
+    "keyPlaceholder": "login_as_admin",
+    "keyDescription": "Chữ cái, chữ số và _, bắt đầu bằng chữ cái. Không đổi được khóa sau này.",
+    "steps": "Các bước",
+    "step": "Bước {{position}}",
+    "action": "Thao tác",
+    "expected": "Kết quả mong đợi",
+    "addStep": "Thêm bước",
+    "moveUp": "Lên trên",
+    "moveDown": "Xuống dưới",
+    "removeStep": "Xóa bước",
+    "stepActions": "Thao tác cho bước {{position}}",
+    "suggestions": "Khóa dữ liệu kiểm thử",
+    "noSuggestions": "Không có khóa nào khớp",
+    "errors": {
+      "required": "Trường này là bắt buộc.",
+      "tooLong": "Dùng tối đa {{max}} ký tự.",
+      "tooMany": "Một bước dùng chung có tối đa {{max}} bước.",
+      "invalidKey": "Dùng chữ cái, chữ số và _, bắt đầu bằng chữ cái."
+    }
+  },
+  "errors": {
+    "keyAlreadyUsed": "Một bước dùng chung khác trong dự án đã dùng khóa này.",
+    "invalidStepShape": "Mỗi bước cần có thao tác. Một bước dùng chung không thể chứa bước dùng chung khác.",
+    "conflict": "Người khác vừa lưu bước dùng chung này. Hãy tải lại trang rồi thử lại."
+  },
+  "toasts": {
+    "created": "Đã tạo bước dùng chung \"{{title}}\".",
+    "saved": "Đã lưu bước dùng chung \"{{title}}\".",
+    "archived": "Đã lưu trữ bước dùng chung \"{{title}}\".",
+    "restored": "Đã khôi phục bước dùng chung \"{{title}}\"."
+  },
+  "detail": {
+    "back": "Quay lại các bước dùng chung",
+    "edit": "Sửa",
+    "archive": "Lưu trữ",
+    "restore": "Khôi phục",
+    "version": "Phiên bản {{number}} · {{date}}",
+    "archivedNotice": "Bước dùng chung này đã được lưu trữ. Các ca đang dùng vẫn tiếp tục chạy nó, nhưng không thể chèn nó vào ca khác.",
+    "stepsTitle": "Các bước",
+    "dataKeys": "Dữ liệu kiểm thử được dùng: {{keys}}",
+    "notFoundTitle": "Không tìm thấy bước dùng chung",
+    "notFoundDescription": "Có thể nó có khóa khác, hoặc thuộc về dự án khác.",
+    "loading": "Đang tải bước dùng chung",
+    "loadError": "Không tải được bước dùng chung.",
+    "retry": "Thử lại"
+  }
+}

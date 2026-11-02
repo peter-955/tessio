@@ -25,39 +25,25 @@ describe("quoteShellArgument", () => {
 });
 
 describe("buildPluginInstallCommand", () => {
-  it("builds the one-step install command", () => {
+  it("installs from the marketplace this Tessio serves", () => {
     expect(
       buildPluginInstallCommand({
-        marketplace: "acme/tessio",
         tessioUrl: "https://tessio.example.com",
         token: "tsio_a1b2c3d4_secret",
       }),
     ).toBe(
-      "claude plugin install tessio --marketplace acme/tessio --config tessio_url=https://tessio.example.com --config tessio_token=tsio_a1b2c3d4_secret",
+      "claude plugin install tessio --marketplace https://tessio.example.com/api/plugin/marketplace.json --config tessio_url=https://tessio.example.com --config tessio_token=tsio_a1b2c3d4_secret",
     );
   });
 
   it("quotes values that need it", () => {
     expect(
       buildPluginInstallCommand({
-        marketplace: "git@host:team/tessio repo.git",
-        tessioUrl: "https://tessio.example.com",
+        tessioUrl: "https://tessio.example.com/team a",
         token: "tsio_x'y",
       }),
     ).toBe(
-      "claude plugin install tessio --marketplace 'git@host:team/tessio repo.git' --config tessio_url=https://tessio.example.com --config tessio_token='tsio_x'\\''y'",
-    );
-  });
-
-  it("shows the placeholder when the marketplace is not configured", () => {
-    expect(
-      buildPluginInstallCommand({
-        marketplace: "",
-        tessioUrl: "http://localhost:3201",
-        token: "tsio_a1b2c3d4_secret",
-      }),
-    ).toBe(
-      "claude plugin install tessio --marketplace <marketplace> --config tessio_url=http://localhost:3201 --config tessio_token=tsio_a1b2c3d4_secret",
+      "claude plugin install tessio --marketplace 'https://tessio.example.com/team a/api/plugin/marketplace.json' --config tessio_url='https://tessio.example.com/team a' --config tessio_token='tsio_x'\\''y'",
     );
   });
 });

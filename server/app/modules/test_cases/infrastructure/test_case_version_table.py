@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import UUID
 
 from pydantic import JsonValue
-from sqlalchemy import ForeignKey, String, Text, UniqueConstraint, Uuid
+from sqlalchemy import ForeignKey, String, Text, UniqueConstraint, Uuid, text
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -27,3 +27,5 @@ class TestCaseVersionTable(TableBase):
     file_version_ids: Mapped[list[UUID]] = mapped_column(ARRAY(Uuid))
     created_by: Mapped[UUID] = mapped_column(ForeignKey("users.id"))
     created_at: Mapped[datetime]
+    parameters: Mapped[JsonValue] = mapped_column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    data_rows: Mapped[JsonValue] = mapped_column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))

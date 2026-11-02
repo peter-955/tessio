@@ -1,12 +1,17 @@
 "use client";
 
 import {
+  DSGroup,
   DSPageHeader,
   DSStack,
   DSTabPanel,
   DSTabs,
   type DSTabItem,
 } from "@/components/design-system";
+import { ExportReportButton } from "@/modules/reports/components/export-report-button/export-report-button";
+import { RunLogView } from "@/modules/run-log/components/run-log/run-log";
+import { RunSkippedCases } from "@/modules/suites/components/run-skipped-cases/run-skipped-cases";
+import { buildSuitePath } from "@/modules/suites/utils/suite-path.util";
 import type { RunDetail } from "@/shared/typing/types/test-run.type";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,6 +21,7 @@ import { RUNS_TAB_PARAMETER_VALUE, TAB_PARAMETER } from "../../typing/constants/
 import { RunDetailTab } from "../../typing/enums/run-detail-tab.enum";
 import { parseRunDetailTab } from "../../utils/run-detail-tab.util";
 import { buildStoryPath } from "../../utils/run-path.util";
+import { checkIsUntargetedRun } from "../../utils/run-target.util";
 import { RunCaseList } from "../run-case-list/run-case-list";
 import { RunDetailsCard } from "../run-details-card/run-details-card";
 import { RunProgress } from "../run-progress/run-progress";
@@ -31,6 +37,8 @@ interface Props {
 
 export const RunDetailView: FC<Props> = ({ projectKey, run, initialTab, actions }) => {
   const { t } = useTranslation("runs");
+  const { t: tSuites } = useTranslation("suites");
+  const { t: tJunitImport } = useTranslation("junitImport");
   const router = useRouter();
   const searchParams = useSearchParams();
   const urlTab = parseRunDetailTab(searchParams.get(TAB_PARAMETER));
@@ -42,7 +50,11 @@ export const RunDetailView: FC<Props> = ({ projectKey, run, initialTab, actions 
     setSelectedTab(urlTab);
   }
 
-  const activeTab = run.report === null ? RunDetailTab.RESULTS : selectedTab;
+  const isClaudeRun = run.executor === "claude";
+  const isTabUnavailable =
+    (selectedTab === RunDetailTab.REPORT && run.report === null) ||
+    (selectedTab === RunDetailTab.LOG && !isClaudeRun);
+  const activeTab = isTabUnavailable ? RunDetailTab.RESULTS : selectedTab;
   const reportedCount = run.cases.filter((runCase) => {
     return runCase.result !== null;
   }).length;
@@ -54,7 +66,49 @@ export const RunDetailView: FC<Props> = ({ projectKey, run, initialTab, actions 
       icon: "file",
       isDisabled: run.report === null,
     },
+    ...(isClaudeRun
+      ? [{ value: RunDetailTab.LOG, label: t("tabs.log"), icon: "runs" as const }]
+      : []),
   ];
+
+  const suiteId = run.testSuiteId ?? null;
+  const isUntargetedRun = checkIsUntargetedRun(run);
+
+  const buildHeader = (): { title: string; description: ReactNode } => {
+    if (isUntargetedRun) {
+      return {
+        title: tJunitImport("ciRun.detailTitle"),
+        description: tJunitImport("ciRun.detailDescription"),
+      };
+    }
+
+    if (suiteId === null || run.storyJiraKey !== null) {
+      return {
+        title: t("detail.title", { jiraKey: run.storyJiraKey }),
+        description: (
+          <span className={styles.story}>
+            <Link
+              href={buildStoryPath(projectKey, run.storyJiraKey ?? "", RUNS_TAB_PARAMETER_VALUE)}
+            >
+              {run.storyJiraKey}
+            </Link>
+            <span>{run.storyTitle}</span>
+          </span>
+        ),
+      };
+    }
+
+    return {
+      title: tSuites("runs.detailTitle", { name: run.testSuiteName ?? suiteId }),
+      description: (
+        <span className={styles.story}>
+          <Link href={buildSuitePath(projectKey, suiteId)}>{tSuites("runs.openSuite")}</Link>
+        </span>
+      ),
+    };
+  };
+
+  const header = buildHeader();
 
   const handleTabChange = (tab: RunDetailTab): void => {
     setSelectedTab(tab);
@@ -66,16 +120,14 @@ export const RunDetailView: FC<Props> = ({ projectKey, run, initialTab, actions 
   return (
     <>
       <DSPageHeader
-        title={t("detail.title", { jiraKey: run.storyJiraKey })}
-        description={
-          <span className={styles.story}>
-            <Link href={buildStoryPath(projectKey, run.storyJiraKey, RUNS_TAB_PARAMETER_VALUE)}>
-              {run.storyJiraKey}
-            </Link>
-            <span>{run.storyTitle}</span>
-          </span>
+        title={header.title}
+        description={header.description}
+        actions={
+          <DSGroup gap={2} isWrapping>
+            {actions}
+            <ExportReportButton target={{ source: "run", runId: run.id }} />
+          </DSGroup>
         }
-        actions={actions}
       />
       <DSStack gap={4}>
         {run.status === "running" && (
@@ -89,13 +141,26 @@ export const RunDetailView: FC<Props> = ({ projectKey, run, initialTab, actions 
           ariaLabel={t("tabs.label")}
         >
           <DSTabPanel value={RunDetailTab.RESULTS}>
-            <RunCaseList projectKey={projectKey} run={run} />
+            <DSStack gap={4}>
+              <RunCaseList projectKey={projectKey} run={run} />
+              <RunSkippedCases projectKey={projectKey} skippedCases={run.skippedCases ?? []} />
+            </DSStack>
           </DSTabPanel>
           <DSTabPanel value={RunDetailTab.REPORT}>
             {run.report !== null && (
-              <RunReport projectKey={projectKey} runId={run.id} report={run.report} />
+              <RunReport
+                projectKey={projectKey}
+                runId={run.id}
+                report={run.report}
+                isSuiteRun={suiteId !== null || isUntargetedRun}
+              />
             )}
           </DSTabPanel>
+          {isClaudeRun && (
+            <DSTabPanel value={RunDetailTab.LOG}>
+              {activeTab === RunDetailTab.LOG && <RunLogView projectKey={projectKey} run={run} />}
+            </DSTabPanel>
+          )}
         </DSTabs>
       </DSStack>
     </>

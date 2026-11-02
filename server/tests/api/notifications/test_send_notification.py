@@ -213,6 +213,8 @@ async def test_events_are_published_after_the_transaction_ends(
         PostgresNotificationRepository(container.database),
         PostgresRecipientDirectory(container.database),
         publisher,
+        container.notification_preference_repository,
+        container.notification_email_requester,
     )
 
     notifications = await use_case.execute(project.id, build_gap_payload(), None, {first_id, second_id})

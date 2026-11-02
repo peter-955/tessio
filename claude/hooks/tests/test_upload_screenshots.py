@@ -144,6 +144,22 @@ class BuildUploadsTest(unittest.TestCase):
             [{"path": "/screenshots/one.jpg", "order": 1, "run_id": "R", "case_result_id": "C"}],
         )
 
+    def test_each_iteration_uploads_to_its_own_case_result(self) -> None:
+        uploads: list[object] = []
+        for iteration, case_result_id in ((0, "C0"), (1, "C1")):
+            step = {"order": 1, "status": "passed", "screenshot_path": f"/s/{iteration}.jpg"}
+            payload = json.loads(build_payload([step]))
+            payload["tool_input"]["iteration"] = iteration
+            payload["tool_response"] = [{"type": "text", "text": json.dumps({"case_result_id": case_result_id})}]
+            uploads.extend(upload_screenshots.build_uploads(payload))
+        self.assertEqual(
+            uploads,
+            [
+                {"path": "/s/0.jpg", "order": 1, "run_id": "R", "case_result_id": "C0"},
+                {"path": "/s/1.jpg", "order": 1, "run_id": "R", "case_result_id": "C1"},
+            ],
+        )
+
     def test_missing_run_id_gives_no_uploads(self) -> None:
         payload = json.loads(build_payload([{"order": 1, "screenshot_path": "/screenshots/one.jpg"}]))
         del payload["tool_input"]["run_id"]

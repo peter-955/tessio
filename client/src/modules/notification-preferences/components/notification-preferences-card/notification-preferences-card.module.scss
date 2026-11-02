@@ -1,0 +1,29 @@
+.kindCell {
+  font-weight: inherit;
+  text-align: left;
+}
+
+.kindText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.channelCell {
+  width: 1%;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.checkbox {
+  display: inline-flex;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

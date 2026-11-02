@@ -30,6 +30,7 @@ export const buildProject = (overrides: Partial<Project> = {}): Project => {
     description: null,
     jiraProjectKey: "SHOP",
     jiraBoardId: 1,
+    isLinkedToJira: true,
     allowedFileTypes: [],
     isArchived: false,
     archivedAt: null,
@@ -37,6 +38,7 @@ export const buildProject = (overrides: Partial<Project> = {}): Project => {
     myRole: "viewer",
     capabilities: VIEWER_CAPABILITIES,
     defaultEnvironmentId: null,
+    requireSeparateReviewer: false,
     ...overrides,
   };
 };

@@ -92,6 +92,9 @@ def build_case_latest_result_response(case_result: CaseLatestResult) -> CaseLate
         code=case_result.code,
         story_id=case_result.story_id,
         latest_result=build_latest_result_response(case_result.latest_result),
+        is_flaky=case_result.is_flaky,
+        is_disagreeing=case_result.is_disagreeing,
+        is_quarantined=case_result.is_quarantined,
     )
 
 

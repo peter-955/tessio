@@ -165,7 +165,8 @@
       "preconditions": "Preconditions",
       "criteria": "Acceptance criteria",
       "files": "Files",
-      "steps": "Steps"
+      "steps": "Steps",
+      "dataTable": "Parameters and data rows"
     },
     "diffAdded": "Added",
     "diffRemoved": "Removed",
@@ -240,5 +241,10 @@
     "uploadNotCompleted": "The upload did not finish. Try again.",
     "fileTypeNotAllowed": "This file type is not allowed in this project.",
     "fileTooLarge": "Files can be at most 20 MB."
+  },
+  "read": {
+    "environment": "Values from",
+    "edit": "Edit",
+    "cancel": "Cancel"
   }
 }

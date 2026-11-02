@@ -1,0 +1,118 @@
+{
+  "webhooks": {
+    "title": "Webhooks",
+    "description": "Tessio sends a signed POST to these HTTPS addresses when the chosen events happen.",
+    "add": "Add webhook",
+    "empty": "No webhooks yet.",
+    "loading": "Loading webhooks",
+    "loadError": "Webhooks could not be loaded",
+    "retry": "Try again",
+    "tableLabel": "Webhooks",
+    "columns": {
+      "url": "URL",
+      "events": "Events",
+      "status": "Status",
+      "lastDelivery": "Last delivery",
+      "actions": "Actions"
+    },
+    "active": "Active",
+    "inactive": "Off",
+    "noDelivery": "None yet",
+    "allEvents": "All events",
+    "actionsFor": "Actions for {{url}}",
+    "secretHint": "Secret {{hint}}",
+    "menu": {
+      "deliveries": "Delivery log",
+      "edit": "Edit",
+      "rotate": "Rotate secret",
+      "delete": "Remove"
+    }
+  },
+  "events": {
+    "runStarted": "Run started",
+    "runFinished": "Run finished",
+    "failureOpened": "Failure opened",
+    "failureStatusChanged": "Failure status changed",
+    "gapRaised": "Gap raised",
+    "storySignedOff": "Story signed off",
+    "planSignedOff": "Plan signed off"
+  },
+  "form": {
+    "createTitle": "Add webhook",
+    "editTitle": "Edit webhook",
+    "url": "Payload URL",
+    "urlPlaceholder": "https://ci.example.com/hooks/tessio",
+    "urlDescription": "A public https address. Private and local addresses are refused.",
+    "description": "Description",
+    "descriptionPlaceholder": "e.g. Release dashboard",
+    "events": "Events",
+    "eventsDescription": "Send a delivery when any of these happen.",
+    "isActive": "Active",
+    "isActiveDescription": "When off, Tessio sends nothing to this URL.",
+    "create": "Add webhook",
+    "save": "Save"
+  },
+  "errors": {
+    "urlRequired": "Enter the URL.",
+    "urlTooLong": "Use at most 2048 characters.",
+    "urlNotHttps": "Use an https:// address.",
+    "urlInvalid": "Enter a valid public https URL.",
+    "descriptionTooLong": "Use at most 200 characters.",
+    "eventsRequired": "Choose at least one event.",
+    "limitReached": "A project can have 20 webhooks. Remove one to add another.",
+    "notFound": "This webhook no longer exists."
+  },
+  "secret": {
+    "title": "Signing secret",
+    "shownOnce": "Copy it now. You will not see this secret again.",
+    "explanation": "Each delivery has an X-Tessio-Signature header: sha256= and the HMAC-SHA256 of the X-Tessio-Timestamp header, a dot and the raw body, with this secret as the key.",
+    "done": "Done"
+  },
+  "rotate": {
+    "title": "Rotate the secret?",
+    "description": "Tessio signs every later delivery to {{url}} with a new secret, retries included. Update your receiver right after.",
+    "confirm": "Rotate secret"
+  },
+  "delete": {
+    "title": "Remove this webhook?",
+    "description": "{{url}} and its delivery log are removed. Deliveries not sent yet are dropped.",
+    "confirm": "Remove"
+  },
+  "toasts": {
+    "created": "Webhook added",
+    "updated": "Webhook saved",
+    "deleted": "Webhook removed",
+    "rotated": "Secret rotated",
+    "redelivered": "Delivery queued again"
+  },
+  "deliveries": {
+    "title": "Delivery log",
+    "description": "Deliveries of the last 30 days, newest first.",
+    "close": "Close",
+    "loading": "Loading deliveries",
+    "loadError": "Deliveries could not be loaded",
+    "empty": "No deliveries yet",
+    "tableLabel": "Deliveries",
+    "columns": {
+      "event": "Event",
+      "status": "Status",
+      "attempts": "Tries",
+      "response": "Answer",
+      "time": "Sent",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "Pending",
+      "succeeded": "Delivered",
+      "failed": "Failed"
+    },
+    "attempts_one": "{{count}} try",
+    "attempts_other": "{{count}} tries",
+    "noResponse": "–",
+    "redelivery": "Redelivery",
+    "redeliver": "Redeliver",
+    "redeliverLabel": "Redeliver {{event}} of {{time}}",
+    "showPayload": "Show the payload of {{event}} of {{time}}",
+    "hidePayload": "Hide the payload of {{event}} of {{time}}"
+  }
+}

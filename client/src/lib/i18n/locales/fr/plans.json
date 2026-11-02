@@ -1,0 +1,200 @@
+{
+  "page": {
+    "title": "Plans",
+    "description": "Les plans de test suivent les suites et stories d'une version jusqu'à leur validation."
+  },
+  "list": {
+    "newPlan": "Nouveau plan",
+    "statusFilter": "Statut du plan",
+    "label": "Plans de test",
+    "loadError": "Impossible de charger les plans.",
+    "anyEnvironment": "Tout environnement",
+    "noTargetDate": "Pas de date cible",
+    "itemCount_one": "{{count}} élément",
+    "itemCount_other": "{{count}} éléments",
+    "columns": {
+      "name": "Plan",
+      "status": "Statut",
+      "progress": "Avancement",
+      "targetDate": "Date cible",
+      "environment": "Environnement",
+      "items": "Couvre"
+    },
+    "filters": {
+      "all": "Tous",
+      "open": "Ouverts",
+      "signed_off": "Validés",
+      "closed": "Clos"
+    },
+    "empty": {
+      "title": "Aucun plan de test",
+      "description": "Un plan de test regroupe des suites et des stories pour une version et enregistre sa validation.",
+      "noMatch": "Aucun plan n'a ce statut",
+      "noMatchDescription": "Choisissez un autre statut ou affichez tous les plans.",
+      "showAll": "Afficher tous les plans"
+    }
+  },
+  "status": {
+    "open": "Ouvert",
+    "signed_off": "Validé",
+    "closed": "Clos"
+  },
+  "caseStatus": {
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "blocked": "Bloqué",
+    "skipped": "Ignoré",
+    "notRun": "Non exécuté"
+  },
+  "progress": {
+    "title": "Avancement",
+    "label": "Avancement du plan",
+    "segment": "{{status}} : {{count}}",
+    "passedPercent": "{{percent}} % réussis",
+    "summary": "{{passed}} cas réussis sur {{total}}",
+    "noCases": "Aucun cas pour l'instant",
+    "frozenSignedOff": "Les résultats jusqu'à la validation sont comptés.",
+    "frozenClosed": "Les résultats jusqu'à la clôture sont comptés.",
+    "since": "Les résultats enregistrés depuis le {{date}} sont comptés."
+  },
+  "detail": {
+    "back": "Retour aux plans",
+    "loadError": "Impossible de charger le plan.",
+    "notFoundTitle": "Plan introuvable",
+    "notFoundDescription": "Ce plan n'existe pas ou appartient à un autre projet.",
+    "targetDate": "Date cible",
+    "environment": "Environnement",
+    "anyEnvironment": "Tout environnement",
+    "noTargetDate": "Aucune",
+    "createdBy": "Créé par {{name}} le {{date}}",
+    "signedOffBy": "Validé par {{name}} le {{date}}",
+    "closedBy": "Clos par {{name}} le {{date}}",
+    "unknownUser": "un ancien membre",
+    "readOnlyArchived": "Ce projet est archivé : ses plans sont en lecture seule."
+  },
+  "actions": {
+    "edit": "Modifier",
+    "chooseItems": "Choisir les suites et stories",
+    "signOff": "Valider",
+    "close": "Clore le plan"
+  },
+  "form": {
+    "createTitle": "Nouveau plan de test",
+    "editTitle": "Modifier le plan",
+    "name": "Nom",
+    "namePlaceholder": "Régression version 4.2",
+    "nameRequired": "Saisissez un nom.",
+    "nameTooLong": "Utilisez au plus {{max}} caractères.",
+    "description": "Description",
+    "descriptionPlaceholder": "Ce que ce plan doit prouver avant la sortie de la version",
+    "targetDate": "Date cible",
+    "environment": "Environnement",
+    "environmentPlaceholder": "Tout environnement",
+    "environmentDescription": "S'il est choisi, seuls les résultats des exécutions sur cet environnement comptent.",
+    "create": "Créer le plan",
+    "save": "Enregistrer"
+  },
+  "items": {
+    "title": "Ce que couvre le plan",
+    "modalTitle": "Choisir les suites et stories",
+    "suites": "Suites de régression",
+    "suitesPlaceholder": "Choisir des suites",
+    "stories": "Stories",
+    "storiesPlaceholder": "Choisir des stories",
+    "nothingFound": "Aucun résultat",
+    "description": "Les cas du plan sont ceux de chaque suite, puis ceux de chaque story. Un cas apporté par deux éléments n'apparaît qu'une fois.",
+    "tooMany": "Un plan contient au plus {{max}} suites et stories.",
+    "loadError": "Impossible de charger les suites et les stories.",
+    "none": "Ce plan ne couvre encore aucune suite ni story.",
+    "save": "Enregistrer",
+    "archived": "{{name}} (archivée)",
+    "archivedBadge": "Archivée",
+    "caseCount_one": "{{count}} cas",
+    "caseCount_other": "{{count}} cas",
+    "kind": {
+      "suite": "Suite",
+      "story": "Story"
+    }
+  },
+  "cases": {
+    "title": "Cas par statut",
+    "filterLabel": "Filtrer les cas par statut",
+    "tableLabel": "Cas du plan",
+    "noCases": "Ajoutez des suites ou des stories pour voir leurs cas ici.",
+    "noMatch": "Aucun cas de ce plan n'a ce statut.",
+    "needsReview": "À revoir",
+    "notRun": "Pas encore exécuté",
+    "filters": {
+      "all": "Tous",
+      "passed": "Réussis",
+      "failed": "Échoués",
+      "blocked": "Bloqués",
+      "skipped": "Ignorés",
+      "notRun": "Non exécutés"
+    },
+    "columns": {
+      "case": "Cas",
+      "story": "Story",
+      "result": "Dernier résultat",
+      "recordedAt": "Enregistré",
+      "failure": "Échec"
+    },
+    "caseStatus": {
+      "draft": "Brouillon",
+      "in_review": "En revue",
+      "ready": "Prêt",
+      "deprecated": "Obsolète"
+    }
+  },
+  "blockers": {
+    "title": "Points bloquants",
+    "failures": "Échecs actifs",
+    "gaps": "Questions ouvertes",
+    "noFailures": "Aucun échec actif sur les cas de ce plan.",
+    "noGaps": "Aucune question ouverte sur les stories de ce plan.",
+    "unassigned": "Non assigné",
+    "assignedToRole": "Rôle {{role}}",
+    "severity": {
+      "high": "Haute",
+      "medium": "Moyenne",
+      "low": "Basse"
+    },
+    "roles": {
+      "admin": "Admin",
+      "pm": "PM",
+      "ba": "BA",
+      "qc": "QC",
+      "dev": "Dev",
+      "viewer": "Lecteur"
+    }
+  },
+  "signOff": {
+    "title": "Valider {{name}} ?",
+    "message": "La validation enregistre votre feu vert pour cette version. Les chiffres du plan ne bougent plus, et ses suites et stories ne peuvent plus changer.",
+    "blocked_one": "Résolvez l'échec actif sur les cas de ce plan avant de le valider.",
+    "blocked_other": "Résolvez les {{count}} échecs actifs sur les cas de ce plan avant de le valider.",
+    "notRun_one": "{{count}} cas n'a pas encore été exécuté.",
+    "notRun_other": "{{count}} cas n'ont pas encore été exécutés.",
+    "openGaps_one": "{{count}} question est encore ouverte.",
+    "openGaps_other": "{{count}} questions sont encore ouvertes."
+  },
+  "close": {
+    "title": "Clore {{name}} ?",
+    "message": "La clôture est définitive : le plan reste consultable, mais rien ne peut le rouvrir ni le modifier.",
+    "messageSignedOff": "La clôture est définitive. Le plan garde sa validation et reste consultable."
+  },
+  "toasts": {
+    "created": "Plan créé.",
+    "updated": "Plan enregistré.",
+    "itemsSaved": "Les suites et stories du plan ont été enregistrées.",
+    "signedOff": "Plan validé.",
+    "closed": "Plan clos."
+  },
+  "errors": {
+    "notOpen": "Ce plan n'est plus ouvert. La page affiche maintenant son état actuel.",
+    "failuresActive": "Résolvez les échecs actifs sur les cas de ce plan avant de le valider.",
+    "unknownReference": "Une suite, une story ou un environnement choisi n'existe plus dans ce projet.",
+    "invalidRequest": "Choisissez chaque suite et chaque story une seule fois, 100 au plus."
+  },
+  "retry": "Réessayer"
+}

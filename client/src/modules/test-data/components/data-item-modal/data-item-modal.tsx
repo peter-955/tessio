@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  DSCheckbox,
   DSInput,
   DSModal,
   DSPasswordInput,
@@ -21,13 +22,13 @@ import { usePostDataItem } from "../../hooks/mutations/use-post-data-item";
 import { usePutDataItem } from "../../hooks/mutations/use-put-data-item";
 import {
   DATA_ITEM_KEY_PATTERN,
-  DATA_ITEM_KINDS,
+  MAX_DATA_ITEM_DESCRIPTION_LENGTH,
   MAX_DATA_ITEM_VALUE_LENGTH,
   PROJECT_SCOPE_ID,
 } from "../../typing/constants/test-data.constant";
 import type { DataItemFormValues } from "../../typing/types/data-item-form-values.type";
 import type { DataItemModalState } from "../../typing/types/data-item-modal-state.type";
-import type { DataItem, DataItemKind } from "../../typing/types/data-item.type";
+import type { DataItem } from "../../typing/types/data-item.type";
 import type { Environment } from "../../typing/types/environment.type";
 import {
   buildCreateDataItemRequest,
@@ -117,14 +118,6 @@ export const DataItemModal: FC<Props> = ({ projectKey, state, environments, onCl
   const isSecret = form.values.kind === "secret";
   const isKeepingSecret = isKeepingSecretValue(editingItem, form.values.kind);
 
-  const kindOptions: DSSelectOption<DataItemKind>[] = DATA_ITEM_KINDS.map((kind) => {
-    return {
-      value: kind,
-      label: t(`kind.${kind}`),
-      isDisabled: kind === "secret" && !canEditSecrets,
-    };
-  });
-
   const scopeOptions: DSSelectOption<string>[] = [
     { value: PROJECT_SCOPE_ID, label: t("grid.allEnvironments") },
     ...environments
@@ -150,10 +143,12 @@ export const DataItemModal: FC<Props> = ({ projectKey, state, environments, onCl
     form.setFieldValue("key", value);
   };
 
-  const handleKindChange = (kind: DataItemKind | null): void => {
-    if (kind !== null) {
-      form.setFieldValue("kind", kind);
-    }
+  const handleSecretChange = (isChecked: boolean): void => {
+    form.setFieldValue("kind", isChecked ? "secret" : "variable");
+  };
+
+  const handleDescriptionChange = (value: string): void => {
+    form.setFieldValue("description", value);
   };
 
   const handleScopeChange = (scopeId: string | null): void => {
@@ -190,14 +185,6 @@ export const DataItemModal: FC<Props> = ({ projectKey, state, environments, onCl
             isAutoFocused={!isFromCell}
           />
           <DSSelect
-            label={t("form.kind")}
-            description={canEditSecrets ? undefined : t("form.secretLocked")}
-            value={form.values.kind}
-            options={kindOptions}
-            onChange={handleKindChange}
-            isRequired
-          />
-          <DSSelect
             label={t("form.scope")}
             value={form.values.scopeId}
             options={scopeOptions}
@@ -228,6 +215,21 @@ export const DataItemModal: FC<Props> = ({ projectKey, state, environments, onCl
               isMonospace
             />
           )}
+          <DSCheckbox
+            label={t("form.secret")}
+            description={canEditSecrets ? t("form.secretHint") : t("form.secretLocked")}
+            isChecked={isSecret}
+            onChange={handleSecretChange}
+            isDisabled={!canEditSecrets}
+          />
+          <DSTextarea
+            label={t("form.description")}
+            description={t("form.descriptionHint")}
+            value={form.values.description}
+            onChange={handleDescriptionChange}
+            minRows={2}
+            maxLength={MAX_DATA_ITEM_DESCRIPTION_LENGTH}
+          />
         </DSStack>
       </form>
     </DSModal>

@@ -33,6 +33,7 @@ import { buildDataGridColumns } from "../../utils/build-data-grid-columns.util";
 import {
   buildDataGridRows,
   filterDataGridRows,
+  findRowDescription,
   findRowKind,
   resolveDataItemScopeId,
 } from "../../utils/build-data-grid-rows.util";
@@ -151,16 +152,18 @@ export const DataGrid: FC<Props> = ({
           <tbody>
             {visibleRows.map((row) => {
               const rowKind = findRowKind(row);
+              const rowDescription = findRowDescription(row);
 
               return (
                 <tr key={row.key}>
                   <th scope="row" className={styles.rowHeader}>
                     <span className={styles.keyCell}>
                       <span className={styles.key}>{row.key}</span>
-                      <DSBadge color={rowKind === "secret" ? "yellow" : "tessio"}>
-                        {t(`kind.${rowKind}`)}
-                      </DSBadge>
+                      {rowKind === "secret" && <DSBadge color="yellow">{t("kind.secret")}</DSBadge>}
                     </span>
+                    {rowDescription !== null && (
+                      <span className={styles.keyDescription}>{rowDescription}</span>
+                    )}
                   </th>
                   {columns.map((column) => {
                     return (
@@ -168,6 +171,7 @@ export const DataGrid: FC<Props> = ({
                         <DataGridCell
                           dataKey={row.key}
                           rowKind={rowKind}
+                          rowDescription={rowDescription}
                           column={column}
                           scopeName={findColumnName(column)}
                           item={row.itemByScopeId[column.scopeId]}

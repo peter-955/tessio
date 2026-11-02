@@ -27,25 +27,41 @@ class PostgresCaseResultRepository(CaseResultRepository):
         )
         return None if row is None else CaseResult.model_validate(row)
 
-    async def find_for_case(self, run_id: UUID, test_case_id: UUID) -> CaseResult | None:
+    async def find_for_case(self, run_id: UUID, test_case_id: UUID, iteration: int = 0) -> CaseResult | None:
         row = await self._database.get_current_session().scalar(
             select(CaseResultTable).where(
-                CaseResultTable.run_id == run_id, CaseResultTable.test_case_id == test_case_id
+                CaseResultTable.run_id == run_id,
+                CaseResultTable.test_case_id == test_case_id,
+                CaseResultTable.iteration == iteration,
             )
         )
         return None if row is None else CaseResult.model_validate(row)
 
-    async def exists(self, run_id: UUID, test_case_id: UUID) -> bool:
+    async def exists(self, run_id: UUID, test_case_id: UUID, iteration: int = 0) -> bool:
         is_recorded = await self._database.get_current_session().scalar(
-            select(exists().where(CaseResultTable.run_id == run_id, CaseResultTable.test_case_id == test_case_id))
+            select(
+                exists().where(
+                    CaseResultTable.run_id == run_id,
+                    CaseResultTable.test_case_id == test_case_id,
+                    CaseResultTable.iteration == iteration,
+                )
+            )
         )
         return bool(is_recorded)
+
+    async def list_for_case(self, run_id: UUID, test_case_id: UUID) -> list[CaseResult]:
+        rows = await self._database.get_current_session().scalars(
+            select(CaseResultTable)
+            .where(CaseResultTable.run_id == run_id, CaseResultTable.test_case_id == test_case_id)
+            .order_by(CaseResultTable.iteration)
+        )
+        return [CaseResult.model_validate(row) for row in rows]
 
     async def list_for_run(self, run_id: UUID) -> list[CaseResult]:
         rows = await self._database.get_current_session().scalars(
             select(CaseResultTable)
             .where(CaseResultTable.run_id == run_id)
-            .order_by(CaseResultTable.created_at, CaseResultTable.id)
+            .order_by(CaseResultTable.created_at, CaseResultTable.iteration, CaseResultTable.id)
         )
         return [CaseResult.model_validate(row) for row in rows]
 

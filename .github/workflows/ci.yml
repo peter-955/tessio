@@ -39,6 +39,8 @@ jobs:
         with:
           version: "0.13.6"
       - run: uv python install 3.14
+      - name: Pango for WeasyPrint PDF export
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core
       - run: uv sync --frozen
       - run: uv run ruff check .
       - run: uv run ruff format --check .
@@ -103,7 +105,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.9"
-      - run: python3 -m py_compile claude/hooks/upload_screenshots.py claude/hooks/tests/*.py
+      - run: python3 -m py_compile claude/hooks/upload_screenshots.py claude/hooks/upload_run_log.py claude/scripts/extract_file.py claude/hooks/tests/*.py
       - run: python3 -m unittest discover -s claude/hooks/tests -v
 
   docker:
@@ -127,6 +129,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: server
+          build-contexts: |
+            plugin=claude
           push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           tags: |
             ghcr.io/${{ env.OWNER }}/tessio-api:${{ github.sha }}
@@ -137,8 +141,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: client
-          build-args: |
-            NEXT_PUBLIC_TESSIO_PLUGIN_MARKETPLACE=${{ vars.TESSIO_PLUGIN_MARKETPLACE }}
           push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           tags: |
             ghcr.io/${{ env.OWNER }}/tessio-client:${{ github.sha }}

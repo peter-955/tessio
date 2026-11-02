@@ -1,0 +1,91 @@
+{
+  "retry": "Try again",
+  "tabs": {
+    "review": "Review",
+    "compare": "Compare"
+  },
+  "compare": {
+    "title": "Compare versions side by side",
+    "description": "Pick two versions to see their fields and steps next to each other. Changed lines are marked, and changed words are highlighted.",
+    "from": "From version",
+    "to": "To version",
+    "versionOption": "Version {{number}}",
+    "currentOption": "Version {{number}} (current)",
+    "heading": "Version {{number}} · {{name}}, {{date}}",
+    "formerMember": "Former member",
+    "onlyChanges": "Show only changes",
+    "changeCount_one": "{{count}} change between these versions.",
+    "changeCount_other": "{{count}} changes between these versions.",
+    "identical": "These versions have the same fields, steps and data rows.",
+    "single": "Only one version so far. Compare two versions after the next save.",
+    "loadError": "The versions could not be loaded.",
+    "tableLabel": "Version {{from}} and version {{to}} side by side",
+    "itemColumn": "Part of the case",
+    "fields": {
+      "title": "Title",
+      "priority": "Priority",
+      "businessValue": "Business value",
+      "preconditions": "Preconditions",
+      "dataTable": "Parameters and data rows"
+    },
+    "stepsLabel": "Steps",
+    "noSteps": "Neither version has steps.",
+    "step": "Step {{order}}",
+    "stepMoved": "Step {{from}} → {{to}}",
+    "noStep": "Not in this version",
+    "action": "Action",
+    "expected": "Expected result",
+    "empty": "Empty",
+    "added": "Added",
+    "removed": "Removed",
+    "kind": {
+      "unchanged": "Same",
+      "changed": "Changed",
+      "added": "Added",
+      "removed": "Removed"
+    }
+  },
+  "comments": {
+    "formLabel": "Add a review comment",
+    "target": "Comment on",
+    "targetDescription": "The comment is saved on version {{number}}.",
+    "wholeCase": "The whole case",
+    "step": "Step {{order}}",
+    "stepOption": "Step {{order}} · {{action}}",
+    "body": "Comment",
+    "bodyPlaceholder": "What should the author change?",
+    "bodyRequired": "Write a comment first.",
+    "add": "Add comment",
+    "added": "Comment added.",
+    "resolve": "Resolve",
+    "resolveLabel": "Resolve the comment from {{name}} on {{target}}",
+    "resolved": "Comment resolved.",
+    "resolvedBy": "Resolved by {{name}}, {{date}}",
+    "formerMember": "a former member",
+    "version": "Version {{number}}",
+    "olderVersion": "On version {{number}}",
+    "openTitle": "Open comments ({{count}})",
+    "resolvedTitle": "Resolved ({{count}})",
+    "emptyTitle": "No open comments",
+    "emptyDescription": "Open comments block marking the case Ready until someone resolves them.",
+    "deprecated": "This case is deprecated. Restore it to Draft to add comments.",
+    "loadError": "The review comments could not be loaded.",
+    "errors": {
+      "stepMissing": "That step is not in the current version. Reload the case and pick the step again.",
+      "deprecated": "Restore the test case to Draft before commenting on it."
+    }
+  },
+  "notice": {
+    "openComments_one": "{{count}} review comment is open. Resolve it before marking the case Ready.",
+    "openComments_other": "{{count}} review comments are open. Resolve them before marking the case Ready.",
+    "showComments": "Show comments",
+    "separateReviewer": "You saved version {{number}}, and this project needs a different reviewer. Another QC or Admin must mark the case Ready or reviewed.",
+    "resolveFirst": "Resolve the open review comments first."
+  },
+  "settings": {
+    "title": "Review",
+    "separateReviewer": "Reviewer must not be the author",
+    "separateReviewerDescription": "When on, the person who saved a case's current version can't mark it Ready or reviewed. Another QC or Admin has to.",
+    "saved": "Review settings saved."
+  }
+}

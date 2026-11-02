@@ -38,3 +38,6 @@ class SlowFailureRepository(FailureRepository):
 
     async def list_views(self, project_id: UUID, failure_filter: FailureFilter, limit: int) -> list[FailureView]:
         return await self._failure_repository.list_views(project_id, failure_filter, limit)
+
+    async def list_active_with_jira_issue(self, project_id: UUID) -> list[Failure]:
+        return await self._failure_repository.list_active_with_jira_issue(project_id)

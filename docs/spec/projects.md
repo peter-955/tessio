@@ -23,10 +23,11 @@ A project is one Jira project (one-to-one) plus everything Tessio keeps for it: 
 
 ### PROJ-1 Create a project (WBS 3.3.1)
 
-As a workspace admin, I want to create a project linked to a Jira project and board, so that its sprints can be synced.
+As a workspace admin, I want to create a project linked to a Jira project and board, or one whose stories are written in Tessio, so that the team can test with or without Jira.
 
 - AC1: `/projects/new` is open to the Owner and Workspace admins only; others see "Only workspace admins can create projects".
-- AC2: When Jira is not connected, the page shows "Connect Jira first" with a link to the Jira settings, and `POST /api/projects` answers `JIRA_NOT_CONFIGURED`.
+- AC2: The form starts with a choice: "Link a Jira project" or "Write stories in Tessio" (WBS 3.3.5, [proposal](../discussions/projects-without-jira-proposal.md)). When Jira is not connected, only "Write stories in Tessio" is offered, with "Jira isn't connected, so this project's stories will be written in Tessio…". `POST /api/projects` without `jiraProjectKey` and `jiraBoardId` creates a project without Jira, connection or not; giving only one of them gets 422; giving both without a connection gets `JIRA_NOT_CONFIGURED`.
+- AC2b: A project without Jira has `jiraProjectKey` and `jiraBoardId` null and `isLinkedToJira` false. Its settings show "Stories: Written in Tessio" and no board; setting a board gets `JIRA_NOT_CONFIGURED`. The project list shows "Written in Tessio" in the Jira column.
 - AC3: The Jira project dropdown is filled from `GET /api/workspace/jira/projects`, which leaves out Jira projects already linked. The board dropdown is filled from `GET /api/workspace/jira/boards?jiraProjectKey=…`.
 - AC4: The key must match `^[A-Z][A-Z0-9]{1,9}$` and cannot be changed later. A used key gets `PROJECT_KEY_ALREADY_USED`; a Jira project already linked gets `JIRA_PROJECT_ALREADY_LINKED`.
 - AC5: Name (1 to 200 characters) and description (up to 2000) are trimmed. The project starts with the 10 default allowed file types.
@@ -135,7 +136,6 @@ As a member of several projects, I want to switch project from the top bar, so t
 ## Differences from the proposals
 
 - Archiving needs the workspace capability `project.archive`. The [platform proposal §3](../discussions/platform-features-proposal.md#3-project-management) let the project's managers do it.
-- Project create needs a Jira connection; there is no project without a Jira link.
 - Members are set with one `PUT` per user (add or change) rather than a list update.
 
 ## Open points

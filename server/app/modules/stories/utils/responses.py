@@ -11,6 +11,7 @@ from app.modules.stories.models.sprint_response import SprintResponse
 from app.modules.stories.models.story_detail_response import StoryDetailResponse
 from app.modules.stories.models.story_summary_response import StorySummaryResponse
 from app.modules.stories.typing.enums import TestStatus
+from app.modules.stories.utils.plain_text_document import read_plain_text
 
 
 def build_sprint_response(overview: SprintOverview) -> SprintResponse:
@@ -47,6 +48,7 @@ def build_story_summary_response(summary: StorySummary) -> StorySummaryResponse:
         criterion_count=summary.criterion_count,
         synced_at=story.synced_at,
         jira_missing_at=story.jira_missing_at,
+        source=story.source,
     )
 
 
@@ -82,6 +84,8 @@ def build_story_detail_response(detail: StoryDetail) -> StoryDetailResponse:
         available_test_statuses=[status for status in TestStatus if status in detail.available_test_statuses],
         test_status_changed_at=story.test_status_changed_at,
         jira_updated_at=story.jira_updated_at,
+        source=story.source,
+        description_text=read_plain_text(story.description) if story.is_written_in_tessio else None,
     )
 
 

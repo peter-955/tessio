@@ -1,0 +1,31 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.nameCell {
+  font-weight: inherit;
+  text-align: left;
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.actionsCell {
+  width: 1%;
+  text-align: right;
+}
+
+.caption,
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

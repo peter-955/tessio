@@ -1,3 +1,5 @@
+import { LABEL_PARAMETER } from "@/modules/labels/typing/constants/label.constant";
+import { parseLabelNames } from "@/modules/labels/utils/label-filter.util";
 import { UUID_PATTERN } from "@/modules/sprints/typing/constants/sprint.constant";
 import {
   QUERY_MAX_LENGTH,
@@ -17,6 +19,9 @@ const STATUS_PARAMETER = "status";
 const PRIORITY_PARAMETER = "priority";
 const CRITERION_PARAMETER = "criterion";
 const NEEDS_REVIEW_PARAMETER = "needsReview";
+const FLAKY_PARAMETER = "flaky";
+const DISAGREEING_PARAMETER = "disagreeing";
+const QUARANTINED_PARAMETER = "quarantined";
 const QUERY_PARAMETER = "query";
 const TRUE_VALUE = "true";
 
@@ -26,6 +31,10 @@ export const EMPTY_TEST_CASE_FILTERS: TestCaseFilters = {
   priority: null,
   criterionId: null,
   isNeedingReview: false,
+  isFlaky: false,
+  isDisagreeing: false,
+  isQuarantined: false,
+  labelNames: [],
   query: "",
 };
 
@@ -72,6 +81,10 @@ export const parseTestCaseFilters = (searchParams: TestCaseSearchParams): TestCa
         ? criterionId
         : null,
     isNeedingReview: readFirstValue(searchParams[NEEDS_REVIEW_PARAMETER]) === TRUE_VALUE,
+    isFlaky: readFirstValue(searchParams[FLAKY_PARAMETER]) === TRUE_VALUE,
+    isDisagreeing: readFirstValue(searchParams[DISAGREEING_PARAMETER]) === TRUE_VALUE,
+    isQuarantined: readFirstValue(searchParams[QUARANTINED_PARAMETER]) === TRUE_VALUE,
+    labelNames: parseLabelNames(searchParams[LABEL_PARAMETER]),
     query: (query ?? "").slice(0, QUERY_MAX_LENGTH),
   };
 };
@@ -85,6 +98,10 @@ export const buildTestCaseListQuery = (filters: TestCaseFilters): TestCaseListQu
     ...(filters.priority === null ? {} : { priority: filters.priority }),
     ...(filters.criterionId === null ? {} : { criterionId: filters.criterionId }),
     ...(filters.isNeedingReview ? { needsReview: true } : {}),
+    ...(filters.isFlaky ? { flaky: true } : {}),
+    ...(filters.isDisagreeing ? { disagreeing: true } : {}),
+    ...(filters.isQuarantined ? { quarantined: true } : {}),
+    ...(filters.labelNames.length === 0 ? {} : { label: [...filters.labelNames] }),
     ...(trimmedQuery === "" ? {} : { query: trimmedQuery }),
   };
 };
@@ -113,6 +130,22 @@ export const buildTestCaseFiltersSearch = (filters: TestCaseFilters): string => 
     searchParams.set(NEEDS_REVIEW_PARAMETER, TRUE_VALUE);
   }
 
+  if (filters.isFlaky) {
+    searchParams.set(FLAKY_PARAMETER, TRUE_VALUE);
+  }
+
+  if (filters.isDisagreeing) {
+    searchParams.set(DISAGREEING_PARAMETER, TRUE_VALUE);
+  }
+
+  if (filters.isQuarantined) {
+    searchParams.set(QUARANTINED_PARAMETER, TRUE_VALUE);
+  }
+
+  for (const labelName of filters.labelNames) {
+    searchParams.append(LABEL_PARAMETER, labelName);
+  }
+
   if (trimmedQuery !== "") {
     searchParams.set(QUERY_PARAMETER, trimmedQuery);
   }
@@ -131,6 +164,10 @@ export const checkHasTestCaseFilters = (
     filters.priority !== null ||
     filters.criterionId !== null ||
     filters.isNeedingReview ||
+    filters.isFlaky ||
+    filters.isDisagreeing ||
+    filters.isQuarantined ||
+    filters.labelNames.length > 0 ||
     filters.query.trim() !== "" ||
     (!isStoryFixed && filters.storyKey !== null)
   );

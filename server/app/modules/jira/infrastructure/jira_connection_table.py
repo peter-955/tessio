@@ -1,7 +1,8 @@
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import CheckConstraint, ForeignKey, LargeBinary, SmallInteger, Text
+from sqlalchemy import CheckConstraint, ForeignKey, LargeBinary, SmallInteger, Text, text
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.shared.postgres import TableBase
@@ -19,3 +20,7 @@ class JiraConnectionTable(TableBase):
     account_display_name: Mapped[str] = mapped_column(Text)
     configured_by: Mapped[UUID] = mapped_column(ForeignKey("users.id"))
     configured_at: Mapped[datetime]
+    can_create_issues: Mapped[bool | None]
+    can_comment: Mapped[bool | None]
+    missing_permissions: Mapped[list[str]] = mapped_column(ARRAY(Text), server_default=text("'{}'"))
+    permissions_checked_at: Mapped[datetime | None]

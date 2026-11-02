@@ -17,6 +17,14 @@ export const buildCasePath = (projectKey: string, code: string): string => {
   return buildProjectPath(projectKey, `test-cases/${encodeURIComponent(code)}`);
 };
 
+export const buildCaseVersionPath = (
+  projectKey: string,
+  code: string,
+  versionNumber: number,
+): string => {
+  return `${buildCasePath(projectKey, code)}?tab=history&version=${versionNumber}`;
+};
+
 export const buildStoryPath = (projectKey: string, jiraKey: string, tab?: string): string => {
   const path = buildProjectPath(projectKey, `stories/${encodeURIComponent(jiraKey)}`);
 

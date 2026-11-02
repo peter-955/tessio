@@ -4,6 +4,7 @@ from app.modules.projects.domains.project_member.entity import ProjectMember
 from app.modules.projects.ports.jira_connection_checker import JiraConnectionChecker
 from app.modules.projects.ports.member_directory import MemberDirectory
 from app.modules.projects.router import projects_router
+from app.modules.projects.typing.enums import JiraPostResults
 from app.modules.projects.usecases.archive_project import ArchiveProjectUseCase
 from app.modules.projects.usecases.create_project import CreateProjectUseCase
 from app.modules.projects.usecases.get_project import GetProjectUseCase
@@ -23,6 +24,7 @@ __all__ = [
     "GetProjectUseCase",
     "GetUserAccessUseCase",
     "JiraConnectionChecker",
+    "JiraPostResults",
     "ListMemberCandidatesUseCase",
     "ListProjectMembersUseCase",
     "ListProjectsUseCase",

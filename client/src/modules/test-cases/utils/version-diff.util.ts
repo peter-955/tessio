@@ -1,3 +1,7 @@
+import {
+  checkIsSameDataTable,
+  formatDataTableText,
+} from "@/modules/data-rows/utils/data-table-text.util";
 import { diffArrays, diffWords, type ChangeObject } from "diff";
 import type { LinkedCriterion, TestCaseVersion, TestStep } from "../typing/types/test-case.type";
 import type {
@@ -121,6 +125,17 @@ export const buildVersionDiff = (
   const steps = buildStepDiffs(older, newer);
   if (steps.length > 0) {
     entries.push({ field: "steps", kind: "steps", steps });
+  }
+
+  if (!checkIsSameDataTable(older, newer)) {
+    entries.push({
+      field: "dataTable",
+      kind: "dataTable",
+      tokens: buildWordDiff(
+        formatDataTableText(older.parameters, older.dataRows),
+        formatDataTableText(newer.parameters, newer.dataRows),
+      ),
+    });
   }
 
   const criterionTokens = buildCriterionTokens(older, newer, criteria);

@@ -1,0 +1,84 @@
+{
+  "title": "AI Harness",
+  "description": "Những gì Claude Code nhận được từ plugin Tessio: skill, lệnh, hook và công cụ MCP.",
+  "loadFailed": "Không tải được AI Harness",
+  "retry": "Thử lại",
+  "versions": {
+    "title": "Phiên bản",
+    "server": "Máy chủ Tessio",
+    "plugin": "Plugin Tessio",
+    "pluginHint": "Claude Code phải chạy phiên bản này hoặc mới hơn.",
+    "commit": "commit {{commit}}",
+    "yourPlugins": "Plugin của bạn",
+    "yourPluginsLabel": "Phiên bản plugin trên từng token đang hoạt động của bạn",
+    "token": "Token",
+    "project": "Dự án",
+    "version": "Phiên bản",
+    "lastUsed": "Dùng lần cuối",
+    "state": "Trạng thái",
+    "notUsed": "Chưa dùng",
+    "never": "Chưa bao giờ",
+    "noTokens": "Bạn chưa có token nào đang hoạt động",
+    "noTokensHint": "Tạo một token để kết nối Claude Code với một dự án.",
+    "connect": "Kết nối Claude",
+    "updateTitle": "Cập nhật plugin của bạn",
+    "updateHint": "Chạy lệnh này trong terminal, rồi khởi động lại Claude Code:",
+    "tokensLoadFailed": "Không tải được token của bạn"
+  },
+  "pluginState": {
+    "current": "Mới nhất",
+    "outdated": "Đã cũ",
+    "unused": "Chưa dùng"
+  },
+  "skills": {
+    "title": "Skill",
+    "label": "Skill của plugin",
+    "command": "Lệnh slash",
+    "description": "Chức năng",
+    "copy": "Sao chép {{command}}",
+    "empty": "Plugin không có skill nào"
+  },
+  "commands": {
+    "title": "Lệnh",
+    "label": "Lệnh của plugin",
+    "empty": "Plugin không có lệnh riêng",
+    "emptyHint": "Chạy một skill bằng lệnh slash của nó ở trên."
+  },
+  "hooks": {
+    "title": "Hook",
+    "label": "Hook của plugin",
+    "event": "Sự kiện",
+    "tool": "Sau công cụ",
+    "script": "Script",
+    "timeout": "Thời gian chờ",
+    "timeoutSeconds": "{{count}} giây",
+    "anyTool": "Mọi công cụ",
+    "noTimeout": "Mặc định",
+    "empty": "Plugin không có hook nào"
+  },
+  "mcp": {
+    "title": "Máy chủ MCP",
+    "serversLabel": "Máy chủ MCP trong plugin",
+    "name": "Tên",
+    "transport": "Giao thức",
+    "url": "Địa chỉ",
+    "headers": "Header",
+    "toolsTitle": "Công cụ",
+    "toolsLabel": "Công cụ MCP mà Claude có thể gọi",
+    "tool": "Công cụ",
+    "description": "Chức năng",
+    "capability": "Quyền",
+    "roles": "Vai trò được phép",
+    "noCapability": "Không có",
+    "noRoles": "Không vai trò nào",
+    "empty": "Plugin không có máy chủ MCP"
+  },
+  "roles": {
+    "admin": "Admin",
+    "pm": "PM",
+    "ba": "BA",
+    "qc": "QC",
+    "dev": "Dev",
+    "viewer": "Người xem"
+  }
+}

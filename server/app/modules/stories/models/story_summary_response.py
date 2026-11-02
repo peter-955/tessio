@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from app.modules.stories.typing.enums import TestStatus
+from app.modules.stories.typing.enums import StorySource, TestStatus
 from app.shared.common import WireModel
 
 
@@ -18,3 +18,4 @@ class StorySummaryResponse(WireModel):
     criterion_count: int
     synced_at: datetime
     jira_missing_at: datetime | None
+    source: StorySource

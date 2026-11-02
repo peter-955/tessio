@@ -12,20 +12,35 @@ from app.modules.auth.infrastructure import OneTimeTokenTable, RecoveryCodeTable
 from app.modules.failures.infrastructure import FailureEventTable, FailureTable
 from app.modules.files.infrastructure import StoredFileTable
 from app.modules.gaps.infrastructure import GapTable
+from app.modules.insights.infrastructure import ProjectDailyStatsTable
+from app.modules.integrations.infrastructure import ProjectChatChannelTable, WebhookDeliveryTable, WebhookTable
 from app.modules.jira.infrastructure import JiraConnectionTable
-from app.modules.notifications.infrastructure import NotificationTable
+from app.modules.labels.infrastructure import LabelTable, TestCaseLabelTable
+from app.modules.notifications.infrastructure import NotificationPreferenceTable, NotificationTable
+from app.modules.plans.infrastructure import TestPlanItemTable, TestPlanTable
 from app.modules.projects.infrastructure import ProjectMemberTable, ProjectTable
+from app.modules.run_logs.infrastructure import RunLogEntryTable, RunLogTable
 from app.modules.runs.infrastructure import CaseResultTable, RunCaseTable, RunFileTable, RunTable, StepResultTable
-from app.modules.stories.infrastructure import AcceptanceCriterionTable, ProjectSyncStateTable, SprintTable, StoryTable
+from app.modules.shared_steps.infrastructure import SharedStepTable, SharedStepVersionTable
+from app.modules.stories.infrastructure import (
+    AcceptanceCriterionTable,
+    ProjectSyncStateTable,
+    SprintTable,
+    StoryKeyCounterTable,
+    StoryTable,
+)
+from app.modules.suites.infrastructure import TestSuiteCaseTable, TestSuiteTable
 from app.modules.test_cases.infrastructure import (
     TestCaseCounterTable,
     TestCaseCriterionTable,
+    TestCaseQuarantineEventTable,
+    TestCaseReviewCommentTable,
     TestCaseTable,
     TestCaseVersionTable,
     TestFileTable,
     TestFileVersionTable,
 )
-from app.modules.test_data.infrastructure import DataItemTable, EnvironmentTable
+from app.modules.test_data.infrastructure import DataItemTable, DataKeyDescriptionTable, EnvironmentTable
 from app.modules.users.infrastructure import UserTable
 from app.shared.postgres import TableBase
 
@@ -42,17 +57,29 @@ TABLES = [
     JiraConnectionTable,
     EnvironmentTable,
     DataItemTable,
+    DataKeyDescriptionTable,
     SprintTable,
     StoryTable,
     AcceptanceCriterionTable,
     ProjectSyncStateTable,
+    StoryKeyCounterTable,
     TestCaseCounterTable,
     TestCaseTable,
     TestCaseVersionTable,
     TestCaseCriterionTable,
+    TestCaseQuarantineEventTable,
     TestFileTable,
     TestFileVersionTable,
+    TestCaseReviewCommentTable,
+    LabelTable,
+    TestCaseLabelTable,
+    SharedStepTable,
+    SharedStepVersionTable,
     NotificationTable,
+    NotificationPreferenceTable,
+    ProjectChatChannelTable,
+    WebhookTable,
+    WebhookDeliveryTable,
     GapTable,
     RunTable,
     RunCaseTable,
@@ -61,6 +88,13 @@ TABLES = [
     RunFileTable,
     FailureTable,
     FailureEventTable,
+    RunLogTable,
+    RunLogEntryTable,
+    TestSuiteTable,
+    TestSuiteCaseTable,
+    TestPlanTable,
+    TestPlanItemTable,
+    ProjectDailyStatsTable,
 ]
 
 if context.config.config_file_name is not None:

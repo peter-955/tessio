@@ -31,5 +31,9 @@
       "title": "Sprint introuvable",
       "description": "Il est peut-être sorti du périmètre synchronisé."
     }
+  },
+  "withoutJira": {
+    "title": "Ce projet n'a pas de sprints",
+    "description": "Ses stories sont écrites dans Tessio. Retrouvez-les sur la page Stories."
   }
 }

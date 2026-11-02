@@ -3,7 +3,8 @@ from uuid import UUID
 
 from pydantic import Field, StringConstraints
 
-from app.modules.projects.typing.constants import MIME_TYPE_PATTERN
+from app.modules.projects.typing.constants import MAX_JIRA_ISSUE_TYPE_LENGTH, MIME_TYPE_PATTERN
+from app.modules.projects.typing.enums import JiraPostResults
 from app.shared.common import WireModel
 
 
@@ -15,3 +16,9 @@ class UpdateProjectRequest(WireModel):
         default=None, min_length=1, max_length=50
     )
     default_environment_id: UUID | None = None
+    require_separate_reviewer: bool | None = None
+    jira_bug_issue_type: (
+        Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=MAX_JIRA_ISSUE_TYPE_LENGTH)]
+        | None
+    ) = None
+    jira_post_results: JiraPostResults | None = None

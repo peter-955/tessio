@@ -21,7 +21,6 @@ import {
   VIEWER_CAPABILITIES,
 } from "./test/utils/project-fixture.util";
 import { renderWithProject } from "./test/utils/render-with-project.util";
-import { openSelectOption } from "./test/utils/select-option.util";
 import {
   buildUploadedFile,
   IMPORT_FILE_ID,
@@ -76,7 +75,7 @@ const stagingBasePath = buildDataItem({
 const apiUrl = buildDataItem({
   id: "a1000000-0000-4000-8000-000000000003",
   key: "API_URL",
-  kind: "endpoint",
+  kind: "variable",
   value: "https://api.example.test",
 });
 const password = buildDataItem({
@@ -271,9 +270,7 @@ describe("TestDataPage", () => {
     ).toBeNull();
 
     await openAddModal(user);
-    const secretOption = await openSelectOption(user, /^Kind/, englishTestData.kind.secret);
-
-    expect(secretOption).toHaveAttribute("data-combobox-disabled", "true");
+    expect(screen.getByRole("checkbox", { name: form.secret })).toBeDisabled();
     expect(screen.getByText(form.secretLocked)).toBeInTheDocument();
   });
 
@@ -298,7 +295,7 @@ describe("TestDataPage", () => {
     await waitFor(() => {
       expect(apiPut).toHaveBeenCalledWith("/api/projects/{project_key}/test-data/{item_id}", {
         params: { path: { project_key: "SHOP", item_id: projectBasePath.id } },
-        body: { key: "BASE_PATH", kind: "variable", value: "/store" },
+        body: { key: "BASE_PATH", kind: "variable", value: "/store", description: "" },
       });
     });
     expect(await screen.findByText(toasts.updated)).toBeInTheDocument();
@@ -324,7 +321,7 @@ describe("TestDataPage", () => {
     await waitFor(() => {
       expect(apiPut).toHaveBeenCalledWith("/api/projects/{project_key}/test-data/{item_id}", {
         params: { path: { project_key: "SHOP", item_id: password.id } },
-        body: { key: "PASSWORD", kind: "secret", value: null },
+        body: { key: "PASSWORD", kind: "secret", value: null, description: "" },
       });
     });
   });
@@ -344,7 +341,13 @@ describe("TestDataPage", () => {
     await waitFor(() => {
       expect(apiPost).toHaveBeenCalledWith(TEST_DATA_PATH, {
         params: { path: { project_key: "SHOP" } },
-        body: { key: "NEW_KEY", kind: "variable", value: "hello", environmentId: null },
+        body: {
+          key: "NEW_KEY",
+          kind: "variable",
+          value: "hello",
+          environmentId: null,
+          description: null,
+        },
       });
     });
     expect(await screen.findByText(toasts.created)).toBeInTheDocument();
@@ -403,9 +406,10 @@ describe("TestDataPage", () => {
         params: { path: { project_key: "SHOP" } },
         body: {
           key: "API_URL",
-          kind: "endpoint",
+          kind: "variable",
           value: "https://staging-api.example.test",
           environmentId: STAGING_ENVIRONMENT_ID,
+          description: null,
         },
       });
     });

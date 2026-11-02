@@ -5,6 +5,7 @@ import {
   VIEWER_CAPABILITIES,
 } from "@/components/project-context/test/utils/project-fixture.util";
 import type { Project } from "@/components/project-context/typing/types/project.type";
+import englishLabels from "@/lib/i18n/locales/en/labels.json";
 import englishProjects from "@/lib/i18n/locales/en/projects.json";
 import { GET_PROJECT_KEY } from "@/shared/hooks/queries/use-get-project";
 import { screen, waitFor, within } from "@testing-library/react";
@@ -52,6 +53,7 @@ const respondWithOptions = (): void => {
         createdAt: "2026-10-01T09:00:00Z",
       },
     ]),
+    "/api/projects/{project_key}/labels": buildSuccessResponse([]),
   });
 };
 
@@ -198,6 +200,17 @@ describe("ProjectSettingsPage", () => {
     expect(
       screen.queryByRole("button", { name: englishProjects.settings.archive.action }),
     ).not.toBeInTheDocument();
+  });
+
+  it("shows the label manager card after the allowed file types card", async () => {
+    renderWithContext(<ProjectSettingsPage />, { project: editableProject });
+
+    const labelsCard = await findCard(englishLabels.manager.title);
+    const fileTypesCard = await findCard(englishProjects.settings.fileTypes.title);
+    expect(await within(labelsCard).findByText(englishLabels.manager.empty)).toBeInTheDocument();
+    expect(
+      fileTypesCard.compareDocumentPosition(labelsCard) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
   });
 
   it("shows the read-only notice on an archived project", async () => {

@@ -18,6 +18,8 @@ const resolveEventAppearance = (event: FailureEvent): EventAppearance => {
       return { icon: "user", color: "tessio" };
     case "unassigned":
       return { icon: "user", color: "gray" };
+    case "cause_changed":
+      return { icon: "infoCircle", color: "tessio" };
     case "status_changed":
       if (event.toStatus === "verified") {
         return { icon: "circleCheck", color: "green" };
@@ -49,6 +51,8 @@ const resolveEventTitle = (event: FailureEvent, labels: FailureTimelineLabels): 
         : labels.formatAssigned(event.assigneeName);
     case "unassigned":
       return labels.unassigned;
+    case "cause_changed":
+      return labels.formatCauseChange(event.fromCause, event.toCause);
   }
 };
 

@@ -13,6 +13,7 @@ interface Props {
   type?: "text" | "email";
   autoComplete?: string;
   isAutoFocused?: boolean;
+  isLabelHidden?: boolean;
 }
 
 export const DSInput: FC<Props> = ({
@@ -27,6 +28,7 @@ export const DSInput: FC<Props> = ({
   type = "text",
   autoComplete,
   isAutoFocused = false,
+  isLabelHidden = false,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     onChange(event.currentTarget.value);
@@ -34,7 +36,8 @@ export const DSInput: FC<Props> = ({
 
   return (
     <TextInput
-      label={label}
+      label={isLabelHidden ? undefined : label}
+      aria-label={isLabelHidden ? label : undefined}
       value={value}
       onChange={handleChange}
       placeholder={placeholder}

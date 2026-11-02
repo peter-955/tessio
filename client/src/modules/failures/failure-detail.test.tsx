@@ -53,6 +53,7 @@ const FILE_PATH = "/api/projects/{project_key}/files/{file_id}";
 const MEMBERS_PATH = "/api/projects/{project_key}/members";
 const STATUS_PATH = "/api/projects/{project_key}/failures/{failure_id}/status";
 const ASSIGNEE_PATH = "/api/projects/{project_key}/failures/{failure_id}/assignee";
+const CAUSE_PATH = "/api/projects/{project_key}/failures/{failure_id}/cause";
 const SIGNED_URL = "https://files.example.test/signed/shot.png";
 
 const { actions, assign, detail, history, screenshot, step, timeline } = englishFailures;
@@ -209,6 +210,76 @@ describe("FailureDetailPage", () => {
       "href",
       "/projects/SHOP/runs/b1000000-0000-4000-8000-000000000001",
     );
+  });
+
+  it("shows why the step failed and lets a developer change the suspected cause", async () => {
+    respond(
+      withFailure({
+        cause: "app_bug",
+        causeReason: "The payments API answered 502",
+        failedStep: {
+          ...buildFailureDetail().failedStep!,
+          diagnosis: {
+            pageUrl: "https://staging.shop.test/checkout",
+            consoleErrors: ["TypeError: card is undefined"],
+            failedRequests: [
+              { method: "POST", path: "/api/payments", status: 502, excerpt: "Bad gateway" },
+            ],
+          },
+        },
+        events: [
+          ...buildFailureDetail().events,
+          {
+            ...buildFailureDetail().events[0]!,
+            id: "e3000000-0000-4000-8000-000000000009",
+            kind: "cause_changed",
+            fromStatus: null,
+            toStatus: null,
+            fromCause: "unknown",
+            toCause: "app_bug",
+            actorId: "c9000000-0000-4000-8000-000000000001",
+            actorName: "Dee Dev",
+          },
+        ],
+      }),
+    );
+    apiPut.mockResolvedValue(createSuccessResult(buildFailure({ cause: "test_data" })));
+    const user = userEvent.setup();
+    const { container } = renderPage(DEV_CAPABILITIES);
+
+    await findTitle();
+    const diagnosis = screen.getByRole("region", { name: "Why it failed" });
+    expect(within(diagnosis).getByText("POST /api/payments → 502")).toBeInTheDocument();
+    expect(within(diagnosis).getByText("TypeError: card is undefined")).toBeInTheDocument();
+    expect(screen.getByText("The payments API answered 502")).toBeInTheDocument();
+    expect(screen.getByText("Suspected cause: Unknown → App bug")).toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+
+    await user.click(screen.getByRole("button", { name: englishFailures.cause.change }));
+    const dialog = await screen.findByRole("dialog", { name: englishFailures.cause.modalTitle });
+    await user.click(await openSelectOption(user, /^Suspected cause/, "Test data"));
+    await user.type(
+      within(dialog).getByRole("textbox", { name: englishFailures.cause.reason }),
+      " expired card",
+    );
+    await user.click(within(dialog).getByRole("button", { name: englishFailures.cause.save }));
+
+    await waitFor(() => {
+      expect(readPutBodies(CAUSE_PATH)).toEqual([
+        { cause: "test_data", reason: "The payments API answered 502 expired card" },
+      ]);
+    });
+  });
+
+  it("does not let a viewer change the suspected cause", async () => {
+    respond(withFailure({ cause: "environment", causeReason: null }));
+    renderPage(VIEWER_CAPABILITIES);
+
+    await findTitle();
+    expect(screen.getByText("Environment")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: englishFailures.cause.change }),
+    ).not.toBeInTheDocument();
   });
 
   it("lets a developer mark the failure fixed", async () => {

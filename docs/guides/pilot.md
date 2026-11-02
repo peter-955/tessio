@@ -27,7 +27,7 @@ These are open today. All must be done before setup starts.
 - [ ] VPS, domain, DNS and TLS are in place.
 - [ ] The production SMTP provider is chosen and invite and reset emails arrive.
 - [ ] The object storage bucket exists, with CORS for browser uploads from the Tessio domain. A screenshot upload and an import upload work in the browser.
-- [ ] The plugin marketplace repo host is chosen, and `NEXT_PUBLIC_TESSIO_PLUGIN_MARKETPLACE` is set when the client image is built.
+- [ ] `https://<Tessio>/api/plugin/marketplace.json` answers on the production address, and the install command from the Connect Claude page works on a pilot laptop.
 - [ ] A daily Postgres dump runs and one restore has been tried. Automated backups (WBS 7.5) are Later, so a manual daily dump is the minimum.
 - [ ] The AC format has been checked on real stories of a real Jira Cloud site (WBS 1.7.4).
 - [ ] The case import has been tried on a real sample sheet of the team (WBS 3.6.7).
